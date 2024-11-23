@@ -1,0 +1,24 @@
+GET http://localhost:5000/category
+
+###
+
+POST http://localhost:5000/category
+Content-Type: application/json
+
+{
+    "name": "sport"
+}
+
+###
+
+DELETE http://localhost:5000/category/11
+Content-Type: application/json
+
+###
+
+PUT http://localhost:5000/category/5
+Content-Type: application/json
+
+{
+    "name": "sport"
+}

@@ -1,0 +1,28 @@
+GET http://localhost:5000/tag
+
+###
+
+GET http://localhost:5000/tag/1
+
+###
+
+POST http://localhost:5000/tag
+Content-Type: application/json
+
+{       
+    "name": "Location d'appartement saisonnier"
+}
+
+###
+
+DELETE http://localhost:5000/tag/2
+Content-Type: application/json
+
+###
+
+PUT http://localhost:5000/tag/1
+Content-Type: application/json
+
+{       
+    "name": "Running"
+}
