@@ -15,19 +15,27 @@ const InputForm = styled.input`
     max-width: 360px;
     flex-grow: 1;
     height: 40px;
-    background-color: white;
+    background-color: var(--input);
     padding: 8px;
-    border: 2px solid #ffa41b;
+    border: 2px solid var(--border);
     border-radius: 8px;
     font-size: 12px;
     font-family: inherit;
+
+    &:focus {
+        outline: 1px solid var(--ring);
+    }
 `;
 
 export default function Form() {
     return (
         <ResearchForm>
             <InputForm type="search" />
-            <Button background="#ffa41b" color="white" type="button">
+            <Button
+                background="var(--primary)"
+                color="var(--primary-foreground)"
+                type="button"
+            >
                 <svg
                     aria-hidden="true"
                     width="16"

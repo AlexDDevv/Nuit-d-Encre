@@ -7,7 +7,7 @@ import { Dot } from "lucide-react";
 import styled from "styled-components";
 
 const Navbar = styled.nav`
-    color: #666;
+    color: var(--card-foreground);
     font-size: 12px;
     font-weight: bold;
     display: flex;
@@ -19,7 +19,7 @@ const Navbar = styled.nav`
 `;
 
 const StyledLink = styled(Link)`
-    color: #666;
+    color: var(--card-foreground);
     font-size: 12px;
     font-weight: 600;
     text-decoration: none;

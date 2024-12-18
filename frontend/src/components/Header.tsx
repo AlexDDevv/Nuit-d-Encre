@@ -9,9 +9,9 @@ const HeaderApp = styled.header`
     top: 0;
     left: 0;
     right: 0;
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid var(--border);
     padding: 10px;
-    background-color: white;
+    background-color: var(--card);
     z-index: 500;
 `;
 
@@ -31,7 +31,6 @@ const MainMenu = styled.div`
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    color: #ffa41b;
 `;
 
 const MobileLogo = styled.span`
@@ -63,8 +62,6 @@ export default function Header() {
                     to="ads/newAd"
                     transition="background-color 0.2s ease-in-out,
                     color 0.2s ease-in-out"
-                    backgroundHover="#ffa41b"
-                    colorHover="white"
                 >
                     <MobileLogo>Publier</MobileLogo>
                     <DesktopLogo>Publier une annonce</DesktopLogo>
