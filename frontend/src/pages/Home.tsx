@@ -5,6 +5,14 @@ import { useQuery } from "@apollo/client";
 import { queryAds } from "../api/ads";
 import styled from "styled-components";
 
+const RecentAdds = styled.h2`
+    color: var(--foreground);
+`;
+
+const ShoppingCart = styled.h3`
+    color: var(--foreground);
+`;
+
 const SectionAds = styled.section`
     margin-top: 50px;
 `;
@@ -25,9 +33,9 @@ export default function HomePage() {
 
     return (
         <>
-            <h2>Annonces récentes</h2>
+            <RecentAdds>Annonces récentes</RecentAdds>
             <SectionAds>
-                <h3>Montant du panier : {totalPrice}</h3>
+                <ShoppingCart>Montant du panier : {totalPrice}</ShoppingCart>
                 <AdsContainer>
                     {ads?.map((ad) => (
                         <AdCard
