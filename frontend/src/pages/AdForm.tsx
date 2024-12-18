@@ -14,13 +14,20 @@ import { updateAd } from "../api/updateAd";
 import styled from "styled-components";
 import { Button } from "../components/StyledButton";
 
-const TtitleForm = styled.h1`
-    margin-bottom: 50px;
+const FormSection = styled.div`
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 25px;
 `;
 
-const Form = styled.form`
-    max-width: 400px;
+const TtitleForm = styled.h1`
+    color: var(--card-foreground);
+    margin-bottom: 50px;
+    text-align: center;
 `;
+
+const Form = styled.form``;
 
 const InputsContainer = styled.div`
     display: flex;
@@ -38,31 +45,45 @@ const InputContainer = styled.div`
 `;
 
 const Label = styled.label`
+    color: var(--card-foreground);
     font-size: 14px;
 `;
 
-const Input = styled.input`
-    background-color: white;
-    border: 2px solid #ffa41b;
+export const Input = styled.input`
+    background-color: var(--input);
+    border: none;
     border-radius: 8px;
+    color: var(--accent-foreground);
     padding: 10px;
     font-size: 12px;
 
     &::placeholder {
-        opacity: 0.8;
+        opacity: 0.85;
         font-style: italic;
     }
+
+    &:focus {
+        outline: 2px solid var(--ring);
+    }
+`;
+
+const InputsFlex = styled.div`
+    display: flex;
+    gap: 20px;
+    width: 100%;
+`;
+
+const InputFlex = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
 `;
 
 const TextArea = styled(Input).attrs({ as: "textarea" })`
     font-family: Arial, sans-serif;
     height: 100px;
     resize: none;
-
-    &::placeholder {
-        opacity: 0.8;
-        font-style: italic;
-    }
 `;
 
 const CategoryContainer = styled.div`
@@ -72,10 +93,7 @@ const CategoryContainer = styled.div`
     gap: 10px;
 
     select {
-        width: 60%;
-    }
-    button {
-        width: 40%;
+        width: 75%;
     }
 `;
 
@@ -94,7 +112,12 @@ const TagsContainer = styled.div`
         display: flex;
         align-items: center;
         gap: 5px;
+        color: var(--card-foreground);
         font-size: 12px;
+    }
+
+    button {
+        margin-top: 10px;
     }
 `;
 
@@ -229,7 +252,7 @@ export default function AdFormPage() {
     if (tagsError) return <p>Error : {tagsError.message}</p>;
 
     return (
-        <>
+        <FormSection>
             <TtitleForm>
                 {ad ? "Modifier une annonce" : "Poster une annonce"}
             </TtitleForm>
@@ -250,6 +273,60 @@ export default function AdFormPage() {
                             onChange={(e) => setTitle(e.target.value)}
                         />
                     </InputContainer>
+                    <InputsFlex>
+                        <InputFlex>
+                            <InputContainer>
+                                <Label htmlFor="price">Prix de l'annonce</Label>
+                                <Input
+                                    id="price"
+                                    type="number"
+                                    placeholder="Ajouter un prix..."
+                                    value={price}
+                                    onChange={(e) =>
+                                        setPrice(Number(e.target.value))
+                                    }
+                                />
+                            </InputContainer>
+                            <InputContainer>
+                                <Label htmlFor="picture">URL de l'image</Label>
+                                <Input
+                                    id="picture"
+                                    type="text"
+                                    placeholder="Ajouter l'URL d'une image..."
+                                    value={picture}
+                                    onChange={(e) => setPicture(e.target.value)}
+                                />
+                            </InputContainer>
+                        </InputFlex>
+                        <InputFlex>
+                            <InputContainer>
+                                <Label htmlFor="owner">
+                                    Propriétaire de l'annonce
+                                </Label>
+                                <Input
+                                    id="owner"
+                                    type="text"
+                                    placeholder="Ajouter une adresse mail..."
+                                    value={owner}
+                                    onChange={(e) => setOwner(e.target.value)}
+                                />
+                            </InputContainer>
+                            <InputContainer>
+                                <Label htmlFor="location">
+                                    Localisation de l'annonce
+                                </Label>
+                                <Input
+                                    id="location"
+                                    type="text"
+                                    placeholder="Ajouter une localisation..."
+                                    value={location}
+                                    onChange={(e) =>
+                                        setLocation(e.target.value)
+                                    }
+                                />
+                            </InputContainer>
+                        </InputFlex>
+                    </InputsFlex>
                     <InputContainer>
                         <Label htmlFor="description">
                             Description de l'annonce
@@ -260,48 +337,6 @@ export default function AdFormPage() {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         ></TextArea>
-                    </InputContainer>
-                    <InputContainer>
-                        <Label htmlFor="price">Prix de l'annonce</Label>
-                        <Input
-                            id="price"
-                            type="number"
-                            placeholder="Ajouter un prix..."
-                            value={price}
-                            onChange={(e) => setPrice(Number(e.target.value))}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <Label htmlFor="picture">URL de l'image</Label>
-                        <Input
-                            id="picture"
-                            type="text"
-                            placeholder="Ajouter l'URL d'une image..."
-                            value={picture}
-                            onChange={(e) => setPicture(e.target.value)}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <Label htmlFor="owner">Propriétaire de l'annonce</Label>
-                        <Input
-                            id="owner"
-                            type="text"
-                            placeholder="Ajouter une adresse mail..."
-                            value={owner}
-                            onChange={(e) => setOwner(e.target.value)}
-                        />
-                    </InputContainer>
-                    <InputContainer>
-                        <Label htmlFor="location">
-                            Localisation de l'annonce
-                        </Label>
-                        <Input
-                            id="location"
-                            type="text"
-                            placeholder="Ajouter une localisation..."
-                            value={location}
-                            onChange={(e) => setLocation(e.target.value)}
-                        />
                     </InputContainer>
                     <InputContainer>
                         <Label htmlFor="categories">
@@ -324,7 +359,15 @@ export default function AdFormPage() {
                                     </option>
                                 ))}
                             </Select>
-                            <Button type="button" onClick={handleCategoryForm}>
+                            <Button
+                                minWidth="160px"
+                                width="25%"
+                                height="35px"
+                                transition="background-color 0.2s ease-in-out"
+                                backgroundHover="rgba(255, 204, 102, 0.9)"
+                                type="button"
+                                onClick={handleCategoryForm}
+                            >
                                 {showCategoryForm
                                     ? "Fermer le formulaire"
                                     : "Ajouter une catégorie"}
@@ -379,7 +422,16 @@ export default function AdFormPage() {
                                 </Label>
                             ))}
                         </TagsContainer>
-                        <Button type="button" onClick={handleTagForm}>
+                        <Button
+                            minWidth="160px"
+                            width="25%"
+                            height="35px"
+                            margin="10px 0 0 auto"
+                            transition="background-color 0.2s ease-in-out"
+                            backgroundHover="rgba(255, 204, 102, 0.9)"
+                            type="button"
+                            onClick={handleTagForm}
+                        >
                             {showTagForm
                                 ? "Fermer le formulaire"
                                 : "Ajouter un tag"}
@@ -400,6 +452,6 @@ export default function AdFormPage() {
                 </Button>
                 {loading === true && <p>Envoi...</p>}
             </Form>
-        </>
+        </FormSection>
     );
 }
