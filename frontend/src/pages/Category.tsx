@@ -7,11 +7,19 @@ import styled from "styled-components";
 
 const SectionCategoryPage = styled.section`
     padding-top: 50px;
+
+    h1 {
+        color: var(--foreground);
+    }
 `;
 
 const AdsContainer = styled.div`
     max-width: 350px;
     margin-top: 50px;
+
+    p {
+        color: var(--foreground);
+    }
 `;
 
 export default function CategoryPage() {
