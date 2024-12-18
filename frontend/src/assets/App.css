@@ -10,5 +10,42 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
         sans-serif;
-    background-color: #f5f5f5;
+    background-color: var(--background);
+}
+
+:root {
+    --background: rgb(30, 35, 47);
+    --foreground: rgb(204, 202, 194);
+    --muted: rgb(43, 46, 54);
+    --muted-foreground: rgb(166, 172, 185);
+    --popover: rgb(24, 28, 37);
+    --popover-foreground: rgb(227, 226, 222);
+    --card: rgb(26, 30, 40);
+    --card-foreground: rgb(216, 214, 208);
+    --border: rgb(45, 49, 57);
+    --input: rgb(52, 56, 66);
+    --primary: rgb(255, 204, 102);
+    --primary-foreground: rgb(51, 34, 0);
+    --secondary: rgb(83, 70, 45);
+    --secondary-foreground: rgb(228, 221, 205);
+    --accent: rgb(60, 70, 93);
+    --accent-foreground: rgb(224, 227, 235);
+    --destructive: rgb(240, 83, 56);
+    --destructive-foreground: rgb(255, 255, 255);
+    --ring: rgb(255, 204, 102);
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--accent);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-foreground);
+    border-radius: 8px;
 }
