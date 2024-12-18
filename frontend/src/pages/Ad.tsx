@@ -122,10 +122,16 @@ export default function AdPage() {
                                 </SellerContainer>
                                 <UserActions>
                                     <BtnsContainer>
-                                        <Button bgColor="#ec5a13">
+                                        <Button
+                                            bgColor="var(--primary)"
+                                            color="var(--primary-foreground)"
+                                        >
                                             Acheter
                                         </Button>
-                                        <Button bgColor="#094171">
+                                        <Button
+                                            bgColor="var(--secondary)"
+                                            color="var(--secondary-foreground)"
+                                        >
                                             Message
                                         </Button>
                                     </BtnsContainer>
@@ -145,6 +151,7 @@ export default function AdPage() {
                                 <h3>Localisation de l'annonce :</h3>
                                 <p>{ad.location}</p>
                             </div>
+
                             <div>
                                 <h3>Category de l'annonce :</h3>
                                 <p>{ad.category?.name}</p>
@@ -157,7 +164,7 @@ export default function AdPage() {
                             )}
                             <UserBtnsContainer>
                                 <Button
-                                    bgColor="#ef4444"
+                                    bgColor="var(--destructive)"
                                     radius="6px"
                                     size="14px"
                                     weight="500"
@@ -168,7 +175,8 @@ export default function AdPage() {
                                     Supprimer l'annonce
                                 </Button>
                                 <Button
-                                    bgColor="#ffa41b"
+                                    bgColor="var(--primary)"
+                                    color="var(--primary-foreground)"
                                     radius="6px"
                                     size="14px"
                                     weight="500"
