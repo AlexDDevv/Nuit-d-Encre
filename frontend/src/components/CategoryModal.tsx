@@ -2,49 +2,36 @@ import { useState } from "react";
 import { createCategory } from "../api/createCategory";
 import { useMutation } from "@apollo/client";
 import { Button } from "./StyledButton";
+import { Input } from "../pages/AdForm";
 import styled from "styled-components";
 
-const CategoryForm = styled.div`
-    background-color: white;
-    border: 1px solid #4f6076;
+export const ModalForm = styled.div`
+    background-color: var(--popover);
+    border: 1px solid var(--border);
     border-radius: 6px;
     margin-top: 5px;
     padding: 15px 20px;
 `;
 
-const InputContainer = styled.div`
+export const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 5px;
 `;
 
-const Label = styled.label`
+export const Label = styled.label`
+    color: var(--popover-foreground);
     font-size: 14px;
 `;
 
-const CategoryContainer = styled.div`
+export const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
 
-    button {
-        width: 40%;
-        height: 37px;
-    }
-`;
-
-const Input = styled.input`
-    background-color: white;
-    border: 2px solid #ffa41b;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 12px;
-    width: 60%;
-
-    &::placeholder {
-        opacity: 0.8;
-        font-style: italic;
+    input {
+        width: 75%;
     }
 `;
 
@@ -79,12 +66,12 @@ export default function CategoryModal(props: {
     if (error) return <p>Error : {error.message}</p>;
 
     return (
-        <CategoryForm>
+        <ModalForm>
             <InputContainer>
                 <Label htmlFor="addCategory">
                     Ajouter une nouvelle catégorie
                 </Label>
-                <CategoryContainer>
+                <Container>
                     <Input
                         type="text"
                         id="addCtagory"
@@ -92,11 +79,19 @@ export default function CategoryModal(props: {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
-                    <Button type="button" onClick={addCategory}>
+                    <Button
+                        minWidth="160px"
+                        width="25%"
+                        height="35px"
+                        transition="background-color 0.2s ease-in-out"
+                        backgroundHover="rgba(255, 204, 102, 0.9)"
+                        type="button"
+                        onClick={addCategory}
+                    >
                         Ajouter la catégorie
                     </Button>
-                </CategoryContainer>
+                </Container>
             </InputContainer>
-        </CategoryForm>
+        </ModalForm>
     );
 }
