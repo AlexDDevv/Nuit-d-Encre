@@ -52,7 +52,11 @@ export default function Header() {
         <HeaderApp id="header">
             <MainMenu>
                 <h1>
-                    <StyledLogo to="/">
+                    <StyledLogo
+                        to="/"
+                        background="transparent"
+                        color="var(--primary)"
+                    >
                         <MobileLogo>TGC</MobileLogo>
                         <DesktopLogo>THE GOOD CORNER</DesktopLogo>
                     </StyledLogo>
