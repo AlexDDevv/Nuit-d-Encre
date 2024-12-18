@@ -35,6 +35,7 @@ export default function Form() {
             <Button
                 background="var(--primary)"
                 color="var(--primary-foreground)"
+                padding="0 8px"
                 type="button"
             >
                 <svg
