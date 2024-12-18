@@ -10,10 +10,9 @@ export type ButtonProps = {
 };
 
 export const styledButton = css<ButtonProps>`
-    background-color: ${(props) => props.background || "white"};
+    background-color: ${(props) => props.background || "var(--primary)"};
     border-radius: 8px;
-    border: 2px solid #ffa41b;
-    color: ${(props) => props.color || "#ffa41b"};
+    color: ${(props) => props.color || "var(--primary-foreground)"};
     display: flex;
     align-items: center;
     justify-content: center;
