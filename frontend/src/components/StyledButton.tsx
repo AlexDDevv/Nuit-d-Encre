@@ -3,7 +3,11 @@ import styled, { css } from "styled-components";
 export type ButtonProps = {
     background?: string;
     color?: string;
+    minWidth?: string;
     width?: string;
+    height?: string;
+    margin?: string;
+    padding?: string;
     transition?: string;
     backgroundHover?: string;
     colorHover?: string;
@@ -20,10 +24,11 @@ export const styledButton = css<ButtonProps>`
     gap: 3px;
     font-size: 12px;
     font-weight: bold;
-    min-width: 40px;
+    min-width: ${(props) => props.minWidth || "40px"};
     width: ${(props) => props.width || null};
-    height: 40px;
-    padding: 8px;
+    height: ${(props) => props.height || "40px"};
+    margin: ${(props) => props.margin || null};
+    padding: ${(props) => props.padding || "0 16px"};
     transition: ${(props) => props.transition || null};
     cursor: pointer;
 
