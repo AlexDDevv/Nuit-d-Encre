@@ -3,52 +3,9 @@ import { TagType } from "../../types";
 import { useMutation } from "@apollo/client";
 import { createTag } from "../api/createTag";
 import { queryTags } from "../api/tags";
-import styled from "styled-components";
 import { Button } from "./StyledButton";
-
-const TagForm = styled.div`
-    background-color: white;
-    border: 1px solid #4f6076;
-    border-radius: 6px;
-    margin-top: 5px;
-    padding: 15px 20px;
-`;
-
-const InputContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-`;
-
-const Label = styled.label`
-    font-size: 14px;
-`;
-
-const TagContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    button {
-        width: 40%;
-        height: 37px;
-    }
-`;
-
-const Input = styled.input`
-    background-color: white;
-    border: 2px solid #ffa41b;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 12px;
-    width: 60%;
-
-    &::placeholder {
-        opacity: 0.8;
-        font-style: italic;
-    }
-`;
+import { ModalForm, InputContainer, Label, Container } from "./CategoryModal";
+import { Input } from "../pages/AdForm";
 
 export function TagModal(props: { onTagCreated: (newId: number) => void }) {
     const [name, setName] = useState("");
@@ -75,20 +32,28 @@ export function TagModal(props: { onTagCreated: (newId: number) => void }) {
     }
 
     return (
-        <TagForm>
+        <ModalForm>
             <InputContainer>
                 <Label>Nom du tag :</Label>
-                <TagContainer>
+                <Container>
                     <Input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
-                    <Button type="button" onClick={doSubmit}>
+                    <Button
+                        minWidth="160px"
+                        width="25%"
+                        height="35px"
+                        transition="background-color 0.2s ease-in-out"
+                        backgroundHover="rgba(255, 204, 102, 0.9)"
+                        type="button"
+                        onClick={doSubmit}
+                    >
                         Créer mon tag
                     </Button>
-                </TagContainer>
+                </Container>
             </InputContainer>
-        </TagForm>
+        </ModalForm>
     );
 }
