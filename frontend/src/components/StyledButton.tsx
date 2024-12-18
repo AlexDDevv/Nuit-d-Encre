@@ -12,6 +12,7 @@ export type ButtonProps = {
 export const styledButton = css<ButtonProps>`
     background-color: ${(props) => props.background || "var(--primary)"};
     border-radius: 8px;
+    border: none;
     color: ${(props) => props.color || "var(--primary-foreground)"};
     display: flex;
     align-items: center;
