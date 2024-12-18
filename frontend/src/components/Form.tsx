@@ -6,21 +6,22 @@ const ResearchForm = styled.form`
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    gap: 4px;
+    gap: 10px;
 `;
 
 const InputForm = styled.input`
+    background-color: var(--input);
+    border: none;
+    border-radius: 8px;
+    color: var(--accent-foreground);
+    font-size: 12px;
+    font-family: inherit;
+    height: 40px;
     width: 100%;
     min-width: 120px;
     max-width: 360px;
     flex-grow: 1;
-    height: 40px;
-    background-color: var(--input);
     padding: 8px;
-    border: 2px solid var(--border);
-    border-radius: 8px;
-    font-size: 12px;
-    font-family: inherit;
 
     &:focus {
         outline: 1px solid var(--ring);

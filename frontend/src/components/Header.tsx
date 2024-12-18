@@ -10,7 +10,7 @@ const HeaderApp = styled.header`
     left: 0;
     right: 0;
     border-bottom: 1px solid var(--border);
-    padding: 10px;
+    padding: 20px;
     background-color: var(--card);
     z-index: 500;
 `;

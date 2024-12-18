@@ -13,7 +13,7 @@ const Navbar = styled.nav`
     display: flex;
     justify-content: space-between;
     gap: 15px;
-    padding: 16px 8px;
+    padding: 16px 0;
     white-space: nowrap;
     overflow-x: scroll;
 `;
