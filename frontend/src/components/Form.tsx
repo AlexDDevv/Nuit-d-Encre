@@ -24,7 +24,7 @@ const InputForm = styled.input`
     padding: 8px;
 
     &:focus {
-        outline: 1px solid var(--ring);
+        outline: 2px solid var(--ring);
     }
 `;
 
