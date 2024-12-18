@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { CategoryType, TagType, AdType } from "../../types";
 import { useNavigate } from "react-router-dom";
 import CategoryModal from "../components/CategoryModal";
+import { TagModal } from "../components/TagModal";
 import { useMutation, useQuery } from "@apollo/client";
 import { queryCategories } from "../api/categories";
 import { queryTags } from "../api/tags";
@@ -83,6 +84,20 @@ const Select = styled(Input).attrs({ as: "select" })`
     cursor: pointer;
 `;
 
+const TagsContainer = styled.div`
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    label {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 12px;
+    }
+`;
+
 export default function AdFormPage() {
     const navigate = useNavigate();
     const params = useParams<{ id: string }>();
@@ -104,6 +119,7 @@ export default function AdFormPage() {
     const [categoryId, setCategoryId] = useState<number>();
     const [tagsIds, setTagsIds] = useState<number[]>([]);
     const [showCategoryForm, setShowCategoryForm] = useState(false);
+    const [showTagForm, setShowTagForm] = useState(false);
 
     useEffect(() => {
         if (ad) {
@@ -125,6 +141,10 @@ export default function AdFormPage() {
 
     const handleCategoryForm = () => {
         setShowCategoryForm(!showCategoryForm);
+    };
+
+    const handleTagForm = () => {
+        setShowTagForm(!showTagForm);
     };
 
     const {
@@ -321,14 +341,58 @@ export default function AdFormPage() {
                         )}
                     </InputContainer>
                     <InputContainer>
-                        <Label htmlFor="tags">Sélectionnez un tag</Label>
-                        <Select id="tags">
+                        <Label>Sélectionnez un ou plusieurs tags</Label>
+                        <TagsContainer>
                             {tags?.map((tag) => (
-                                <option key={tag.id} value={tag.name}>
+                                <Label key={tag.id}>
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            tagsIds.includes(tag.id) === true
+                                        }
+                                        onClick={() => {
+                                            if (
+                                                tagsIds.includes(tag.id) ===
+                                                true
+                                            ) {
+                                                const newArray = [];
+                                                for (const entry of tagsIds) {
+                                                    if (entry !== tag.id) {
+                                                        newArray.push(entry);
+                                                    }
+                                                }
+
+                                                setTagsIds(newArray);
+                                            } else {
+                                                tagsIds.push(tag.id);
+
+                                                const newArray = [];
+                                                for (const entry of tagsIds) {
+                                                    newArray.push(entry);
+                                                }
+
+                                                setTagsIds(newArray);
+                                            }
+                                        }}
+                                    />
                                     {tag.name}
-                                </option>
+                                </Label>
                             ))}
-                        </Select>
+                        </TagsContainer>
+                        <Button type="button" onClick={handleTagForm}>
+                            {showTagForm
+                                ? "Fermer le formulaire"
+                                : "Ajouter un tag"}
+                        </Button>
+                        {showTagForm && (
+                            <TagModal
+                                onTagCreated={async (id) => {
+                                    setShowTagForm(false);
+                                    tagsIds.push(id);
+                                    setTagsIds([...tagsIds]);
+                                }}
+                            />
+                        )}
                     </InputContainer>
                 </InputsContainer>
                 <Button>
