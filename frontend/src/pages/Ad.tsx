@@ -169,7 +169,7 @@ export default function AdPage() {
                                     size="14px"
                                     weight="500"
                                     width="175px"
-                                    padding="6px 20px"
+                                    padding="8px 20px"
                                     onClick={onDelete}
                                 >
                                     Supprimer l'annonce
@@ -181,7 +181,7 @@ export default function AdPage() {
                                     size="14px"
                                     weight="500"
                                     width="175px"
-                                    padding="6px 20px"
+                                    padding="8px 20px"
                                     onClick={onUpdate}
                                 >
                                     Modifier l'annonce
