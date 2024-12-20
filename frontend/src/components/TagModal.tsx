@@ -34,7 +34,7 @@ export function TagModal(props: { onTagCreated: (newId: number) => void }) {
     return (
         <ModalForm>
             <InputContainer>
-                <Label>Nom du tag :</Label>
+                <Label>Ajouter un nouveau tag</Label>
                 <Container>
                     <Input
                         type="text"
