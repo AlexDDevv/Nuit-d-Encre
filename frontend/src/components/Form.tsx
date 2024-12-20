@@ -23,6 +23,11 @@ const InputForm = styled.input`
     flex-grow: 1;
     padding: 8px;
 
+    &::placeholder {
+        opacity: 0.85;
+        font-style: italic;
+    }
+
     &:focus {
         outline: 2px solid var(--ring);
     }
@@ -31,7 +36,10 @@ const InputForm = styled.input`
 export default function Form() {
     return (
         <ResearchForm>
-            <InputForm type="search" />
+            <InputForm
+                type="search"
+                placeholder="Rechercher sur The good corner"
+            />
             <Button
                 background="var(--primary)"
                 color="var(--primary-foreground)"
