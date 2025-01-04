@@ -11,7 +11,6 @@ const Navbar = styled.nav`
     font-size: 12px;
     font-weight: bold;
     display: flex;
-    justify-content: space-between;
     gap: 15px;
     padding: 16px 0;
     white-space: nowrap;
