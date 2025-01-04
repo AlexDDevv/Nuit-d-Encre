@@ -13,7 +13,7 @@ import { queryAd } from "../api/ad";
 import { updateAd } from "../api/updateAd";
 import styled from "styled-components";
 import { Button } from "../components/StyledButton";
-import { ImageUp } from "lucide-react";
+import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
 
 const FormSection = styled.div`
     background-color: var(--card);
@@ -79,6 +79,7 @@ const InputFileContainer = styled.div`
     justify-content: center;
     overflow: hidden;
     cursor: pointer;
+    z-index: 150;
 
     &:focus {
         outline: 2px solid var(--ring);
@@ -91,12 +92,24 @@ const InputFile = styled(Input)`
     padding: 0;
 `;
 
-const ImagePreview = styled.div`
+const CarrouselContainer = styled.div`
     position: absolute;
+    inset: 0;
     height: 100%;
     width: 100%;
-    inset: 0;
 `;
+
+const Carrousel = styled.div`
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    padding: 15px 0;
+    overflow: hidden;
+`
 
 const ImageAction = styled.div`
     display: flex;
@@ -117,15 +130,65 @@ const ImageAction = styled.div`
     }
 
     &:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 `;
 
-const Image = styled.img`
-    width: 100%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
+const Image = styled.img<{
+    isVisible: boolean;
+    slideDirection: "left" | "right";
+    isExiting: boolean;
+}>`
+    position: absolute;
+    width: 320px;
+    height: 320px;
     object-fit: cover;
+    border-radius: 8px;
+
+    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
+    transform: ${({ isVisible, slideDirection, isExiting }) =>
+        isVisible
+            ? "translateX(0)"
+            : slideDirection === "right"
+                ? isExiting
+                    ? "translateX(-100%)"
+                    : "translateX(100%)"
+                : isExiting
+                    ? "translateX(100%)"
+                    : "translateX(-100%)"}; 
+
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+`;
+
+
+const ArrowBase = styled.div`
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+
+    svg {
+        color: var(--accent-foreground);
+        width: 100%;
+        height: 100%;
+        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+
+        &:hover {
+            color: var(--primary);
+            transform: scale(1.05);
+        }
+    }
+`;
+
+const ArrowLeft = styled(ArrowBase)`
+    left: 80px;
+`;
+
+const ArrowRight = styled(ArrowBase)`
+    right: 80px;
 `;
 
 const InputsFlex = styled.div`
@@ -198,13 +261,16 @@ export default function AdFormPage() {
     const [description, setDescription] = useState("");
     const [price, setPrice] = useState(0);
     const [location, setLocation] = useState("");
-    const [picture, setPicture] = useState("");
-    const [picturePreview, setPicturePreview] = useState("");
+    const [picture, setPicture] = useState<string[]>([]);
+    const [picturePreview, setPicturePreview] = useState<string[]>([]);
     const [owner, setOwner] = useState("");
     const [categoryId, setCategoryId] = useState<number>();
     const [tagsIds, setTagsIds] = useState<number[]>([]);
     const [showCategoryForm, setShowCategoryForm] = useState(false);
     const [showTagForm, setShowTagForm] = useState(false);
+    const [carrouselIndex, setCarrouselIndex] = useState(0)
+    const [prevIndex, setPrevIndex] = useState<number | null>(null);
+    const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
 
     useEffect(() => {
         if (ad) {
@@ -266,33 +332,68 @@ export default function AdFormPage() {
 
     const loading = createLoading || updateLoading;
 
-    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
+    const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
 
-        if (!file) return;
+        if (!files || files.length === 0) return;
 
-        if (file.size > 2 * 1024 * 1024) {
-            alert("La taille de l'image ne doit pas dépasser 2 Mo.");
-            return;
-        }
+        const maxFileSize = 2 * 1024 * 1024;
+        const validFiles: File[] = [];
+        const previews: string[] = [];
 
-        const reader = new FileReader();
-        reader.onloadend = () => {
-            const base64String = reader.result;
-
-            if (typeof base64String === "string") {
-                setPicture(base64String);
+        Array.from(files).forEach((file) => {
+            if (file.size > maxFileSize) {
+                alert(`La taille de l'image ${file.name} dépasse 2 Mo.`);
             } else {
-                console.error(
-                    "Erreur: La lecture du fichier a échoué ou ne retourne pas une chaîne"
-                );
+                validFiles.push(file);
+                previews.push(URL.createObjectURL(file));
             }
+        });
 
-            setPicturePreview(URL.createObjectURL(file));
-        };
+        const readers = validFiles.map((file) => {
+            return new Promise<string>((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    if (typeof reader.result === "string") {
+                        resolve(reader.result);
+                    } else {
+                        reject(
+                            `Erreur lors de la lecture du fichier ${file.name}`
+                        );
+                    }
+                };
+                reader.readAsDataURL(file);
+            });
+        });
 
-        reader.readAsDataURL(file);
+        Promise.all(readers)
+            .then((base64Strings) => {
+                setPicture((prev) => [...prev, ...base64Strings]);
+                setPicturePreview((prev) => [...prev, ...previews]);
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la lecture des fichiers:", error);
+            });
     };
+
+    const prevSlide = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setSlideDirection("left");
+        setPrevIndex(carrouselIndex)
+        setCarrouselIndex((prevIndex) =>
+            prevIndex === 0 ? picturePreview.length - 1 : prevIndex - 1
+        );
+    };
+
+    const nextSlide = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        setSlideDirection("right");
+        setPrevIndex(carrouselIndex)
+        setCarrouselIndex((prevIndex) =>
+            prevIndex === picturePreview.length - 1 ? 0 : prevIndex + 1
+        );
+    };
+
 
     const doSubmit = async () => {
         try {
@@ -452,7 +553,7 @@ export default function AdFormPage() {
 
                                 const file = e.dataTransfer.files[0];
                                 if (file) {
-                                    handleImage({ target: { files: [file] } });
+                                    handleImages({ target: { files: [file] } });
                                 }
                             }}
                             tabIndex={0}
@@ -462,20 +563,45 @@ export default function AdFormPage() {
                                 type="file"
                                 accept="image/*"
                                 hidden
+                                multiple
                                 className="input-field"
-                                onChange={handleImage}
+                                onChange={handleImages}
                             />
-                            {picturePreview ? (
-                                <ImagePreview>
-                                    <Image src={picturePreview} alt="Preview" />
-                                </ImagePreview>
+                            {picturePreview.length > 0 ? (
+                                <CarrouselContainer>
+                                    <Carrousel>
+                                        {picturePreview.map((preview, index) => {
+                                            const isVisible = index === carrouselIndex;
+                                            const isExiting = index === prevIndex;
+
+                                            return (
+                                                <Image
+                                                    key={index}
+                                                    src={preview}
+                                                    alt={`Preview ${index + 1}`}
+                                                    isVisible={isVisible}
+                                                    isExiting={isExiting}
+                                                    slideDirection={slideDirection}
+                                                />
+                                            );
+                                        })}
+                                    </Carrousel>
+                                </CarrouselContainer>
                             ) : (
                                 <ImageAction>
                                     <ImageUp />
-                                    <p>
-                                        Déposez une image ou téléchargez en une
-                                    </p>
+                                    <p>Déposez une image ou téléchargez en une</p>
                                 </ImageAction>
+                            )}
+                            {picturePreview.length > 1 && (
+                                <>
+                                    <ArrowLeft onClick={prevSlide} role="button" aria-label="Previous slide">
+                                        <SquareChevronLeft />
+                                    </ArrowLeft>
+                                    <ArrowRight onClick={nextSlide} role="button" aria-label="Next slide">
+                                        <SquareChevronRight />
+                                    </ArrowRight>
+                                </>
                             )}
                         </InputFileContainer>
                     </InputContainer>
