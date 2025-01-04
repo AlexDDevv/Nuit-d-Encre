@@ -5,8 +5,9 @@ import { useQuery } from "@apollo/client";
 import { queryAds } from "../api/ads";
 import styled from "styled-components";
 
-const RecentAdds = styled.h2`
+const RecentAdds = styled.h1`
     color: var(--foreground);
+    font-size: 1.75rem;
 `;
 
 const ShoppingCart = styled.h3`
@@ -18,9 +19,9 @@ const SectionAds = styled.section`
 `;
 
 const AdsContainer = styled.div`
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
     margin-top: 20px;
 `;
 

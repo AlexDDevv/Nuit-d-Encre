@@ -11,7 +11,14 @@ const AdCardContainer = styled.div`
     flex-direction: column;
     justify-content: space-between;
     gap: 15px;
+    width: 300px;
+    height: auto;
     padding: 20px;
+    transition: border-color 0.2s ease-in-out;
+
+    &:hover {
+        border-color: var(--primary);
+    }
 `;
 
 const AdCardLink = styled(Link)`
@@ -22,6 +29,7 @@ const AdCardLink = styled(Link)`
 
 const AdCardImg = styled.img`
     width: 100%;
+    height: 150px;
     border-radius: 6px;
     margin-bottom: 5px;
 `;
