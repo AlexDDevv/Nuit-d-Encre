@@ -13,6 +13,7 @@ import { queryAd } from "../api/ad";
 import { updateAd } from "../api/updateAd";
 import styled from "styled-components";
 import { Button } from "../components/StyledButton";
+import { ImageUp } from "lucide-react";
 
 const FormSection = styled.div`
     background-color: var(--card);
@@ -65,6 +66,66 @@ export const Input = styled.input`
     &:focus {
         outline: 2px solid var(--ring);
     }
+`;
+
+const InputFileContainer = styled.div`
+    position: relative;
+    background-color: var(--input);
+    border-radius: 8px;
+    width: 100%;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+
+    &:focus {
+        outline: 2px solid var(--ring);
+    }
+`;
+
+const InputFile = styled(Input)`
+    height: 100%;
+    width: 100%;
+    padding: 0;
+`;
+
+const ImagePreview = styled.div`
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    inset: 0;
+`;
+
+const ImageAction = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.2s ease-in-out;
+
+    svg {
+        color: var(--accent-foreground);
+        height: 75px;
+        width: 75px;
+    }
+
+    p {
+        color: var(--accent-foreground);
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
 `;
 
 const InputsFlex = styled.div`
@@ -138,6 +199,7 @@ export default function AdFormPage() {
     const [price, setPrice] = useState(0);
     const [location, setLocation] = useState("");
     const [picture, setPicture] = useState("");
+    const [picturePreview, setPicturePreview] = useState("");
     const [owner, setOwner] = useState("");
     const [categoryId, setCategoryId] = useState<number>();
     const [tagsIds, setTagsIds] = useState<number[]>([]);
@@ -204,6 +266,34 @@ export default function AdFormPage() {
 
     const loading = createLoading || updateLoading;
 
+    const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+
+        if (!file) return;
+
+        if (file.size > 2 * 1024 * 1024) {
+            alert("La taille de l'image ne doit pas dépasser 2 Mo.");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const base64String = reader.result;
+
+            if (typeof base64String === "string") {
+                setPicture(base64String);
+            } else {
+                console.error(
+                    "Erreur: La lecture du fichier a échoué ou ne retourne pas une chaîne"
+                );
+            }
+
+            setPicturePreview(URL.createObjectURL(file));
+        };
+
+        reader.readAsDataURL(file);
+    };
+
     const doSubmit = async () => {
         try {
             if (ad) {
@@ -263,18 +353,20 @@ export default function AdFormPage() {
                 }}
             >
                 <InputsContainer>
-                    <InputContainer>
-                        <Label htmlFor="title">Titre de l'annonce</Label>
-                        <Input
-                            id="title"
-                            type="text"
-                            placeholder="Ajouter un titre..."
-                            value={title}
-                            onChange={(e) => setTitle(e.target.value)}
-                        />
-                    </InputContainer>
                     <InputsFlex>
                         <InputFlex>
+                            <InputContainer>
+                                <Label htmlFor="title">
+                                    Titre de l'annonce
+                                </Label>
+                                <Input
+                                    id="title"
+                                    type="text"
+                                    placeholder="Ajouter un titre..."
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                />
+                            </InputContainer>
                             <InputContainer>
                                 <Label htmlFor="price">Prix de l'annonce</Label>
                                 <Input
@@ -285,16 +377,6 @@ export default function AdFormPage() {
                                     onChange={(e) =>
                                         setPrice(Number(e.target.value))
                                     }
-                                />
-                            </InputContainer>
-                            <InputContainer>
-                                <Label htmlFor="picture">URL de l'image</Label>
-                                <Input
-                                    id="picture"
-                                    type="text"
-                                    placeholder="Ajouter l'URL d'une image..."
-                                    value={picture}
-                                    onChange={(e) => setPicture(e.target.value)}
                                 />
                             </InputContainer>
                         </InputFlex>
@@ -337,6 +419,65 @@ export default function AdFormPage() {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                         ></TextArea>
+                    </InputContainer>
+                    <InputContainer>
+                        <Label htmlFor="picture">Déposer une image</Label>
+                        <InputFileContainer
+                            onClick={() => {
+                                const inputField = document.querySelector(
+                                    ".input-field"
+                                ) as HTMLInputElement;
+                                if (inputField) {
+                                    inputField.click();
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    const inputField = document.querySelector(
+                                        ".input-field"
+                                    ) as HTMLInputElement;
+                                    if (inputField) {
+                                        inputField.click();
+                                    }
+                                }
+                            }}
+                            onDragOver={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }}
+                            onDrop={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                const file = e.dataTransfer.files[0];
+                                if (file) {
+                                    handleImage({ target: { files: [file] } });
+                                }
+                            }}
+                            tabIndex={0}
+                        >
+                            <InputFile
+                                id="picture"
+                                type="file"
+                                accept="image/*"
+                                hidden
+                                className="input-field"
+                                onChange={handleImage}
+                            />
+                            {picturePreview ? (
+                                <ImagePreview>
+                                    <Image src={picturePreview} alt="Preview" />
+                                </ImagePreview>
+                            ) : (
+                                <ImageAction>
+                                    <ImageUp />
+                                    <p>
+                                        Déposez une image ou téléchargez en une
+                                    </p>
+                                </ImageAction>
+                            )}
+                        </InputFileContainer>
                     </InputContainer>
                     <InputContainer>
                         <Label htmlFor="categories">
