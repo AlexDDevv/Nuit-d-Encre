@@ -3,9 +3,9 @@ import Header from "./Header";
 import styled from "styled-components";
 
 const Main = styled.main`
-    max-width: 832px;
-    padding: 0 16px;
-    margin: 150px auto 50px;
+    max-width: 1024px;
+    padding: 0 25px;
+    margin: 175px auto 25px auto;
     position: relative;
 `;
 
