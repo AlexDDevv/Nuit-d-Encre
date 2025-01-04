@@ -6,15 +6,16 @@ import { queryCategory } from "../api/category";
 import styled from "styled-components";
 
 const SectionCategoryPage = styled.section`
-    padding-top: 50px;
-
     h1 {
         color: var(--foreground);
+        font-size: 1.75rem;
     }
 `;
 
 const AdsContainer = styled.div`
-    max-width: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
     margin-top: 50px;
 
     p {
