@@ -45,10 +45,10 @@ export class Ad extends BaseEntity {
     @Field(() => Float)
     price!: number;
 
-    @Column()
-    @IsUrl()
-    @Field()
-    picture!: string;
+    @Column("simple-array") // Stocke un tableau sous forme de chaîne séparée par des virgules
+    @IsUrl({}, { each: true }) // Valide que chaque élément est une URL valide
+    @Field(() => [String]) // GraphQL retourne un tableau de chaînes
+    picture!: string[];
 
     @CreateDateColumn()
     @Field()
@@ -85,9 +85,9 @@ export class createAdInput {
     @Field(() => Float)
     price!: number;
 
-    @IsUrl()
-    @Field()
-    picture!: string;
+    @IsUrl({}, { each: true }) // Valide que chaque élément du tableau est une URL valide
+    @Field(() => [String]) // Tableau de chaînes dans GraphQL
+    picture!: string[];
 
     @Field(() => IdInput, { nullable: true })
     category!: IdInput;
@@ -97,7 +97,7 @@ export class createAdInput {
 }
 
 @InputType()
-export class updtateAdInput {
+export class updateAdInput {
     @Field(() => IdInput, { nullable: true })
     category!: IdInput;
 
@@ -123,7 +123,7 @@ export class updtateAdInput {
     @Field(() => Float, { nullable: true })
     price!: number;
 
-    @IsUrl()
-    @Field({ nullable: true })
-    picture!: string;
+    @IsUrl({}, { each: true }) // Valide que chaque élément du tableau est une URL valide
+    @Field(() => [String], { nullable: true }) // Tableau de chaînes dans GraphQL
+    picture!: string[];
 }

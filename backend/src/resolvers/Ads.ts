@@ -1,5 +1,5 @@
 import { Arg, Mutation, Query, Resolver, ID } from "type-graphql";
-import { Ad, createAdInput, updtateAdInput } from "../entities/Ad";
+import { Ad, createAdInput, updateAdInput } from "../entities/Ad";
 
 @Resolver()
 export class AdsResolver {
@@ -45,7 +45,7 @@ export class AdsResolver {
     @Mutation(() => Ad, { nullable: true })
     async updateAd(
         @Arg("id", () => ID) id: number,
-        @Arg("data", () => updtateAdInput) data: updtateAdInput
+        @Arg("data", () => updateAdInput) data: updateAdInput
     ): Promise<Ad | null> {
         const ad = await Ad.findOneBy({ id });
         if (ad !== null) {
