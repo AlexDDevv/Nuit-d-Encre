@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createCategory } from "../api/createCategory";
 import { useMutation } from "@apollo/client";
 import { Button } from "./StyledButton";
-import { Input } from "../pages/AdForm";
+import { Input } from "../components/styled/Form.styles";
 import styled from "styled-components";
 
 export const ModalForm = styled.div`

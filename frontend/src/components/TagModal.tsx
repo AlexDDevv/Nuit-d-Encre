@@ -5,7 +5,7 @@ import { createTag } from "../api/createTag";
 import { queryTags } from "../api/tags";
 import { Button } from "./StyledButton";
 import { ModalForm, InputContainer, Label, Container } from "./CategoryModal";
-import { Input } from "../pages/AdForm";
+import { Input } from "../components/styled/Form.styles";
 
 export function TagModal(props: { onTagCreated: (newId: number) => void }) {
     const [name, setName] = useState("");
