@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createCategory } from "../api/createCategory";
 import { useMutation } from "@apollo/client";
+import { queryCategories } from "../api/categories";
 import { Button } from "./StyledButton";
 import { Input } from "../components/styled/Form.styles";
 import styled from "styled-components";
@@ -42,7 +43,7 @@ export default function CategoryModal(props: {
 
     const [doCreateCategory, { loading, error }] = useMutation<{
         createCategory: { id: number; name: string };
-    }>(createCategory);
+    }>(createCategory, { refetchQueries: [queryCategories] });
 
     const addCategory = async () => {
         const category = await doCreateCategory({
