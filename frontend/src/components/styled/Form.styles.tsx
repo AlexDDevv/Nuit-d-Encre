@@ -233,5 +233,11 @@ export const Tags = styled.div`
         gap: 5px;
         color: var(--card-foreground);
         font-size: 12px;
+
+        input {
+            &:focus {
+                outline: 2px solid var(--ring);
+            }
+        }
     }
 `;
