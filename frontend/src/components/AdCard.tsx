@@ -69,7 +69,7 @@ export default function AdCard(
     return (
         <AdCardContainer key={props.id}>
             <AdCardLink to={`/ads/${props.id}`}>
-                <AdCardImg src={props.picture} />
+                <AdCardImg src={props.picture[0]} />
                 <AdCardTextContainer>
                     <h4>{props.title}</h4>
                     <AdCardText>
