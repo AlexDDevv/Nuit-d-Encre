@@ -154,7 +154,9 @@ export default function AdFormPage() {
                         resolve(reader.result);
                     } else {
                         reject(
-                            `Erreur lors de la lecture du fichier ${file.name}`
+                            new Error(
+                                `Erreur lors de la lecture du fichier ${file.name}`
+                            )
                         );
                     }
                 };
@@ -168,7 +170,10 @@ export default function AdFormPage() {
                 setPicturePreview((prev) => [...prev, ...previews]);
             })
             .catch((error) => {
-                console.error("Erreur lors de la lecture des fichiers:", error);
+                console.error(
+                    "Erreur lors de la lecture des fichiers :",
+                    error
+                );
             });
     };
 
