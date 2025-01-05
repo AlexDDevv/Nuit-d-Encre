@@ -11,239 +11,33 @@ import { createAd } from "../api/createAd";
 import { queryAds } from "../api/ads";
 import { queryAd } from "../api/ad";
 import { updateAd } from "../api/updateAd";
-import styled from "styled-components";
+import {
+    FormSection,
+    TtitleForm,
+    Form,
+    InputsContainer,
+    InputContainer,
+    Label,
+    Input,
+    InputFileContainer,
+    InputFile,
+    CarrouselContainer,
+    Carrousel,
+    ImageAction,
+    Image,
+    ArrowLeft,
+    ArrowRight,
+    InputsFlex,
+    InputFlex,
+    TextArea,
+    CategoriesAndTags,
+    CategoryContainer,
+    Select,
+    TagsContainer,
+    Tags,
+} from "../components/styled/Form.styles";
 import { Button } from "../components/StyledButton";
 import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
-
-const FormSection = styled.div`
-    background-color: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 25px;
-`;
-
-const TtitleForm = styled.h1`
-    color: var(--card-foreground);
-    margin-bottom: 50px;
-    text-align: center;
-`;
-
-const Form = styled.form``;
-
-const InputsContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 20px;
-    width: 100%;
-    margin-bottom: 30px;
-`;
-
-const InputContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-`;
-
-const Label = styled.label`
-    color: var(--card-foreground);
-    font-size: 14px;
-`;
-
-export const Input = styled.input`
-    background-color: var(--input);
-    border: none;
-    border-radius: 8px;
-    color: var(--accent-foreground);
-    padding: 10px;
-    font-size: 12px;
-
-    &::placeholder {
-        opacity: 0.85;
-        font-style: italic;
-    }
-
-    &:focus {
-        outline: 2px solid var(--ring);
-    }
-`;
-
-const InputFileContainer = styled.div`
-    position: relative;
-    background-color: var(--input);
-    border-radius: 8px;
-    width: 100%;
-    height: 350px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    cursor: pointer;
-    z-index: 150;
-
-    &:focus {
-        outline: 2px solid var(--ring);
-    }
-`;
-
-const InputFile = styled(Input)`
-    height: 100%;
-    width: 100%;
-    padding: 0;
-`;
-
-const CarrouselContainer = styled.div`
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-`;
-
-const Carrousel = styled.div`
-    position: relative;
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto;
-    padding: 15px 0;
-    overflow: hidden;
-`
-
-const ImageAction = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    transition: transform 0.2s ease-in-out;
-
-    svg {
-        color: var(--accent-foreground);
-        height: 75px;
-        width: 75px;
-    }
-
-    p {
-        color: var(--accent-foreground);
-    }
-
-    &:hover {
-        transform: scale(1.05);
-    }
-`;
-
-const Image = styled.img<{
-    isVisible: boolean;
-    slideDirection: "left" | "right";
-    isExiting: boolean;
-}>`
-    position: absolute;
-    width: 320px;
-    height: 320px;
-    object-fit: cover;
-    border-radius: 8px;
-
-    opacity: ${({ isVisible }) => (isVisible ? 1 : 0)};
-    transform: ${({ isVisible, slideDirection, isExiting }) =>
-        isVisible
-            ? "translateX(0)"
-            : slideDirection === "right"
-                ? isExiting
-                    ? "translateX(-100%)"
-                    : "translateX(100%)"
-                : isExiting
-                    ? "translateX(100%)"
-                    : "translateX(-100%)"}; 
-
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-`;
-
-
-const ArrowBase = styled.div`
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 200;
-
-    svg {
-        color: var(--accent-foreground);
-        width: 100%;
-        height: 100%;
-        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
-
-        &:hover {
-            color: var(--primary);
-            transform: scale(1.05);
-        }
-    }
-`;
-
-const ArrowLeft = styled(ArrowBase)`
-    left: 80px;
-`;
-
-const ArrowRight = styled(ArrowBase)`
-    right: 80px;
-`;
-
-const InputsFlex = styled.div`
-    display: flex;
-    gap: 20px;
-    width: 100%;
-`;
-
-const InputFlex = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 50%;
-`;
-
-const TextArea = styled(Input).attrs({ as: "textarea" })`
-    font-family: Arial, sans-serif;
-    height: 100px;
-    resize: none;
-`;
-
-const CategoryContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-
-    select {
-        width: 75%;
-    }
-`;
-
-const Select = styled(Input).attrs({ as: "select" })`
-    width: 60%;
-    cursor: pointer;
-`;
-
-const TagsContainer = styled.div`
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 10px;
-
-    label {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        color: var(--card-foreground);
-        font-size: 12px;
-    }
-
-    button {
-        margin-top: 10px;
-    }
-`;
 
 export default function AdFormPage() {
     const navigate = useNavigate();
@@ -268,9 +62,11 @@ export default function AdFormPage() {
     const [tagsIds, setTagsIds] = useState<number[]>([]);
     const [showCategoryForm, setShowCategoryForm] = useState(false);
     const [showTagForm, setShowTagForm] = useState(false);
-    const [carrouselIndex, setCarrouselIndex] = useState(0)
+    const [carrouselIndex, setCarrouselIndex] = useState(0);
     const [prevIndex, setPrevIndex] = useState<number | null>(null);
-    const [slideDirection, setSlideDirection] = useState<"left" | "right">("right");
+    const [slideDirection, setSlideDirection] = useState<"left" | "right">(
+        "right"
+    );
 
     useEffect(() => {
         if (ad) {
@@ -379,7 +175,7 @@ export default function AdFormPage() {
     const prevSlide = (e: React.MouseEvent) => {
         e.stopPropagation();
         setSlideDirection("left");
-        setPrevIndex(carrouselIndex)
+        setPrevIndex(carrouselIndex);
         setCarrouselIndex((prevIndex) =>
             prevIndex === 0 ? picturePreview.length - 1 : prevIndex - 1
         );
@@ -388,12 +184,11 @@ export default function AdFormPage() {
     const nextSlide = (e: React.MouseEvent) => {
         e.stopPropagation();
         setSlideDirection("right");
-        setPrevIndex(carrouselIndex)
+        setPrevIndex(carrouselIndex);
         setCarrouselIndex((prevIndex) =>
             prevIndex === picturePreview.length - 1 ? 0 : prevIndex + 1
         );
     };
-
 
     const doSubmit = async () => {
         try {
@@ -570,149 +365,180 @@ export default function AdFormPage() {
                             {picturePreview.length > 0 ? (
                                 <CarrouselContainer>
                                     <Carrousel>
-                                        {picturePreview.map((preview, index) => {
-                                            const isVisible = index === carrouselIndex;
-                                            const isExiting = index === prevIndex;
+                                        {picturePreview.map(
+                                            (preview, index) => {
+                                                const isVisible =
+                                                    index === carrouselIndex;
+                                                const isExiting =
+                                                    index === prevIndex;
 
-                                            return (
-                                                <Image
-                                                    key={index}
-                                                    src={preview}
-                                                    alt={`Preview ${index + 1}`}
-                                                    isVisible={isVisible}
-                                                    isExiting={isExiting}
-                                                    slideDirection={slideDirection}
-                                                />
-                                            );
-                                        })}
+                                                return (
+                                                    <Image
+                                                        key={index}
+                                                        src={preview}
+                                                        alt={`Preview ${
+                                                            index + 1
+                                                        }`}
+                                                        isVisible={isVisible}
+                                                        isExiting={isExiting}
+                                                        slideDirection={
+                                                            slideDirection
+                                                        }
+                                                    />
+                                                );
+                                            }
+                                        )}
                                     </Carrousel>
                                 </CarrouselContainer>
                             ) : (
                                 <ImageAction>
                                     <ImageUp />
-                                    <p>Déposez une image ou téléchargez en une</p>
+                                    <p>
+                                        Déposez une image ou téléchargez en une
+                                    </p>
                                 </ImageAction>
                             )}
                             {picturePreview.length > 1 && (
                                 <>
-                                    <ArrowLeft onClick={prevSlide} role="button" aria-label="Previous slide">
+                                    <ArrowLeft
+                                        onClick={prevSlide}
+                                        role="button"
+                                        aria-label="Previous slide"
+                                    >
                                         <SquareChevronLeft />
                                     </ArrowLeft>
-                                    <ArrowRight onClick={nextSlide} role="button" aria-label="Next slide">
+                                    <ArrowRight
+                                        onClick={nextSlide}
+                                        role="button"
+                                        aria-label="Next slide"
+                                    >
                                         <SquareChevronRight />
                                     </ArrowRight>
                                 </>
                             )}
                         </InputFileContainer>
                     </InputContainer>
-                    <InputContainer>
-                        <Label htmlFor="categories">
-                            Sélectionnez une catégorie
-                        </Label>
-                        <CategoryContainer>
-                            <Select
-                                id="categories"
-                                value={categoryId}
-                                onChange={(e) =>
-                                    setCategoryId(Number(e.target.value))
-                                }
-                            >
-                                {categories?.map((category: CategoryType) => (
-                                    <option
-                                        key={category.id}
-                                        value={category.id}
-                                    >
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </Select>
-                            <Button
-                                minWidth="160px"
-                                width="25%"
-                                height="35px"
-                                transition="background-color 0.2s ease-in-out"
-                                backgroundHover="rgba(255, 204, 102, 0.9)"
-                                type="button"
-                                onClick={handleCategoryForm}
-                            >
-                                {showCategoryForm
-                                    ? "Fermer le formulaire"
-                                    : "Ajouter une catégorie"}
-                            </Button>
-                        </CategoryContainer>
+                    <InputsFlex>
+                        <CategoriesAndTags>
+                            <Label htmlFor="categories">
+                                Sélectionnez une catégorie
+                            </Label>
+                            <CategoryContainer>
+                                <Select
+                                    id="categories"
+                                    value={categoryId}
+                                    onChange={(e) =>
+                                        setCategoryId(Number(e.target.value))
+                                    }
+                                >
+                                    {categories?.map(
+                                        (category: CategoryType) => (
+                                            <option
+                                                key={category.id}
+                                                value={category.id}
+                                            >
+                                                {category.name}
+                                            </option>
+                                        )
+                                    )}
+                                </Select>
+                                <Button
+                                    minWidth="160px"
+                                    width="25%"
+                                    height="35px"
+                                    transition="background-color 0.2s ease-in-out"
+                                    backgroundHover="rgba(255, 204, 102, 0.9)"
+                                    type="button"
+                                    onClick={handleCategoryForm}
+                                >
+                                    {showCategoryForm
+                                        ? "Fermer le formulaire"
+                                        : "Ajouter une catégorie"}
+                                </Button>
+                            </CategoryContainer>
 
-                        {showCategoryForm && (
-                            <CategoryModal
-                                onCategoryCreated={async (id) => {
-                                    setShowCategoryForm(false);
-                                    setCategoryId(id);
-                                }}
-                            />
-                        )}
-                    </InputContainer>
-                    <InputContainer>
-                        <Label>Sélectionnez un ou plusieurs tags</Label>
-                        <TagsContainer>
-                            {tags?.map((tag) => (
-                                <Label key={tag.id}>
-                                    <input
-                                        type="checkbox"
-                                        checked={
-                                            tagsIds.includes(tag.id) === true
-                                        }
-                                        onClick={() => {
-                                            if (
-                                                tagsIds.includes(tag.id) ===
-                                                true
-                                            ) {
-                                                const newArray = [];
-                                                for (const entry of tagsIds) {
-                                                    if (entry !== tag.id) {
-                                                        newArray.push(entry);
+                            {showCategoryForm && (
+                                <CategoryModal
+                                    onCategoryCreated={async (id) => {
+                                        setShowCategoryForm(false);
+                                        setCategoryId(id);
+                                    }}
+                                />
+                            )}
+                        </CategoriesAndTags>
+                        <CategoriesAndTags>
+                            <Label>Sélectionnez un ou plusieurs tags</Label>
+                            <TagsContainer>
+                                <Tags>
+                                    {tags?.map((tag) => (
+                                        <Label key={tag.id}>
+                                            <input
+                                                type="checkbox"
+                                                checked={
+                                                    tagsIds.includes(tag.id) ===
+                                                    true
+                                                }
+                                                onClick={() => {
+                                                    if (
+                                                        tagsIds.includes(
+                                                            tag.id
+                                                        ) === true
+                                                    ) {
+                                                        const newArray = [];
+                                                        for (const entry of tagsIds) {
+                                                            if (
+                                                                entry !== tag.id
+                                                            ) {
+                                                                newArray.push(
+                                                                    entry
+                                                                );
+                                                            }
+                                                        }
+
+                                                        setTagsIds(newArray);
+                                                    } else {
+                                                        tagsIds.push(tag.id);
+
+                                                        const newArray = [];
+                                                        for (const entry of tagsIds) {
+                                                            newArray.push(
+                                                                entry
+                                                            );
+                                                        }
+
+                                                        setTagsIds(newArray);
                                                     }
-                                                }
-
-                                                setTagsIds(newArray);
-                                            } else {
-                                                tagsIds.push(tag.id);
-
-                                                const newArray = [];
-                                                for (const entry of tagsIds) {
-                                                    newArray.push(entry);
-                                                }
-
-                                                setTagsIds(newArray);
-                                            }
-                                        }}
-                                    />
-                                    {tag.name}
-                                </Label>
-                            ))}
-                        </TagsContainer>
-                        <Button
-                            minWidth="160px"
-                            width="25%"
-                            height="35px"
-                            margin="10px 0 0 auto"
-                            transition="background-color 0.2s ease-in-out"
-                            backgroundHover="rgba(255, 204, 102, 0.9)"
-                            type="button"
-                            onClick={handleTagForm}
-                        >
-                            {showTagForm
-                                ? "Fermer le formulaire"
-                                : "Ajouter un tag"}
-                        </Button>
-                        {showTagForm && (
-                            <TagModal
-                                onTagCreated={async (id) => {
-                                    setShowTagForm(false);
-                                    tagsIds.push(id);
-                                    setTagsIds([...tagsIds]);
-                                }}
-                            />
-                        )}
-                    </InputContainer>
+                                                }}
+                                            />
+                                            {tag.name}
+                                        </Label>
+                                    ))}
+                                </Tags>
+                                <Button
+                                    minWidth="160px"
+                                    width="25%"
+                                    height="35px"
+                                    transition="background-color 0.2s ease-in-out"
+                                    backgroundHover="rgba(255, 204, 102, 0.9)"
+                                    type="button"
+                                    onClick={handleTagForm}
+                                >
+                                    {showTagForm
+                                        ? "Fermer le formulaire"
+                                        : "Ajouter un tag"}
+                                </Button>
+                            </TagsContainer>
+                            {showTagForm && (
+                                <TagModal
+                                    onTagCreated={async (id) => {
+                                        setShowTagForm(false);
+                                        tagsIds.push(id);
+                                        setTagsIds([...tagsIds]);
+                                    }}
+                                />
+                            )}
+                        </CategoriesAndTags>
+                    </InputsFlex>
                 </InputsContainer>
                 <Button>
                     {ad ? "Modifier mon annonce" : "Créer mon annonce"}
