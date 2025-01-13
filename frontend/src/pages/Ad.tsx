@@ -79,10 +79,14 @@ export default function AdPage() {
                         <ImgAndSeller>
                             <AdInformations>
                                 <ImageContainer>
-                                    <img
-                                        src={ad.picture}
-                                        alt={`Produit vendu par ${ad.owner}`}
-                                    />
+                                    {ad.picture.length > 0 &&
+                                        ad.picture.map((item, i) => (
+                                            <img
+                                                key={i}
+                                                src={item}
+                                                alt={`Ce qui est vendu par ${ad.owner}`}
+                                            />
+                                        ))}
                                 </ImageContainer>
                                 <InformationsContainer>
                                     <h1>{ad.title}</h1>
