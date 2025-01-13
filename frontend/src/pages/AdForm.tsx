@@ -56,7 +56,6 @@ export default function AdFormPage() {
     const [price, setPrice] = useState(0);
     const [location, setLocation] = useState("");
     const [picture, setPicture] = useState<string[]>([]);
-    const [picturePreview, setPicturePreview] = useState<string[]>([]);
     const [owner, setOwner] = useState("");
     const [categoryId, setCategoryId] = useState<number>();
     const [tagsIds, setTagsIds] = useState<number[]>([]);
@@ -135,14 +134,12 @@ export default function AdFormPage() {
 
         const maxFileSize = 2 * 1024 * 1024;
         const validFiles: File[] = [];
-        const previews: string[] = [];
 
         Array.from(files).forEach((file) => {
             if (file.size > maxFileSize) {
                 alert(`La taille de l'image ${file.name} dépasse 2 Mo.`);
             } else {
                 validFiles.push(file);
-                previews.push(URL.createObjectURL(file));
             }
         });
 
@@ -167,7 +164,6 @@ export default function AdFormPage() {
         Promise.all(readers)
             .then((base64Strings) => {
                 setPicture((prev) => [...prev, ...base64Strings]);
-                setPicturePreview((prev) => [...prev, ...previews]);
             })
             .catch((error) => {
                 console.error(
@@ -182,7 +178,7 @@ export default function AdFormPage() {
         setSlideDirection("left");
         setPrevIndex(carrouselIndex);
         setCarrouselIndex((prevIndex) =>
-            prevIndex === 0 ? picturePreview.length - 1 : prevIndex - 1
+            prevIndex === 0 ? picture.length - 1 : prevIndex - 1
         );
     };
 
@@ -191,7 +187,7 @@ export default function AdFormPage() {
         setSlideDirection("right");
         setPrevIndex(carrouselIndex);
         setCarrouselIndex((prevIndex) =>
-            prevIndex === picturePreview.length - 1 ? 0 : prevIndex + 1
+            prevIndex === picture.length - 1 ? 0 : prevIndex + 1
         );
     };
 
@@ -367,32 +363,28 @@ export default function AdFormPage() {
                                 className="input-field"
                                 onChange={handleImages}
                             />
-                            {picturePreview.length > 0 ? (
+                            {picture.length > 0 ? (
                                 <CarrouselContainer>
                                     <Carrousel>
-                                        {picturePreview.map(
-                                            (preview, index) => {
-                                                const isVisible =
-                                                    index === carrouselIndex;
-                                                const isExiting =
-                                                    index === prevIndex;
+                                        {picture.map((preview, index) => {
+                                            const isVisible =
+                                                index === carrouselIndex;
+                                            const isExiting =
+                                                index === prevIndex;
 
-                                                return (
-                                                    <Image
-                                                        key={index}
-                                                        src={preview}
-                                                        alt={`Preview ${
-                                                            index + 1
-                                                        }`}
-                                                        isVisible={isVisible}
-                                                        isExiting={isExiting}
-                                                        slideDirection={
-                                                            slideDirection
-                                                        }
-                                                    />
-                                                );
-                                            }
-                                        )}
+                                            return (
+                                                <Image
+                                                    key={index}
+                                                    src={preview}
+                                                    alt={`Preview ${index + 1}`}
+                                                    isVisible={isVisible}
+                                                    isExiting={isExiting}
+                                                    slideDirection={
+                                                        slideDirection
+                                                    }
+                                                />
+                                            );
+                                        })}
                                     </Carrousel>
                                 </CarrouselContainer>
                             ) : (
@@ -403,7 +395,7 @@ export default function AdFormPage() {
                                     </p>
                                 </ImageAction>
                             )}
-                            {picturePreview.length > 1 && (
+                            {picture.length > 1 && (
                                 <>
                                     <ArrowLeft
                                         onClick={prevSlide}
