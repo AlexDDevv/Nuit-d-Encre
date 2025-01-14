@@ -14,6 +14,7 @@ services:
             - 5000:5000
         environment:    
             - CHOKIDAR_USEPOLLING=true
+            - JWT_SECRET_KEY=58252e5e-a7ea-4799-a207-87ab40136741
         env_file:
             - ./.env
         volumes:
