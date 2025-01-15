@@ -4,6 +4,7 @@ import { validate } from "class-validator";
 import { hash, verify } from "argon2";
 import { sign, verify as jwtVerify, decode } from "jsonwebtoken";
 import Cookies from "cookies";
+import { ContextType, getUserFromContext } from "../auth";
 
 @Resolver()
 export class UserResolver {
@@ -39,7 +40,7 @@ export class UserResolver {
     async signIn(
         @Arg("email") email: string,
         @Arg("password") password: string,
-        @Ctx() context: { req: any; res: any }
+        @Ctx() context: ContextType
     ): Promise<User> {
         try {
             const user = await User.findOneBy({
@@ -78,15 +79,16 @@ export class UserResolver {
         }
     }
 
-    @Authorized()
-    @Query(() => User, { nullable: true })
-    async whoami(@Ctx() context: { req: any; res: any }) {
+    @Mutation(() => Boolean)
+    async signOut(@Ctx() context: ContextType): Promise<boolean> {
         const cookies = new Cookies(context.req, context.res);
-        const token = cookies.get("token");
-        const payload = decode(token) as unknown as { id: number };
-        const user = await User.findOneBy({
-            id: payload.id,
-        });
-        return user;
+
+        cookies.set("token", "", { maxAge: -1 });
+        return true;
+    }
+
+    @Query(() => User, { nullable: true })
+    async whoami(@Ctx() context: ContextType) {
+        return await getUserFromContext(context);
     }
 }
