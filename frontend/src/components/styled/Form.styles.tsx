@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
-export const FormSection = styled.section`
+export const FormSection = styled.section<{ maxWidth: string; margin: string }>`
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
+    max-width: ${(props) => props.maxWidth || null};
+    margin: ${(props) => props.margin || null};
     padding: 20px 25px;
 `;
 
@@ -13,15 +15,23 @@ export const TtitleForm = styled.h1`
     text-align: center;
 `;
 
-export const Form = styled.form``;
+export const Form = styled.form<{
+    display: string;
+    direction: string;
+    gap: string;
+}>`
+    display: ${(props) => props.display || null};
+    flex-direction: ${(props) => props.direction || null};
+    gap: ${(props) => props.gap || null};
+`;
 
-export const InputsContainer = styled.div`
+export const InputsContainer = styled.div<{ marginBottom: string }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 20px;
     width: 100%;
-    margin-bottom: 40px;
+    margin-bottom: ${(props) => props.marginBottom || "40px"};
 `;
 
 export const InputContainer = styled.div`
@@ -238,6 +248,23 @@ export const Tags = styled.div`
             &:focus {
                 outline: 2px solid var(--ring);
             }
+        }
+    }
+`;
+
+export const AlreadyHaveAccount = styled.p`
+    color: var(--foreground);
+    margin-top: 30px;
+    text-align: center;
+
+    a {
+        color: var(--primary);
+        font-weight: 500;
+        cursor: pointer;
+        transition: opacity 0.2s ease-in-out;
+
+        &:hover {
+            opacity: 0.9;
         }
     }
 `;
