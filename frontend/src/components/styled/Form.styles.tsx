@@ -9,9 +9,9 @@ export const FormSection = styled.section<{ maxWidth: string; margin: string }>`
     padding: 20px 25px;
 `;
 
-export const TtitleForm = styled.h1`
+export const TtitleForm = styled.h1<{ marginBottom: string }>`
     color: var(--card-foreground);
-    margin-bottom: 50px;
+    margin-bottom: ${(props) => props.marginBottom || "50px"};
     text-align: center;
 `;
 
