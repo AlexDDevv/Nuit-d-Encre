@@ -1,8 +1,8 @@
-import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { createUserInput, User } from "../entities/User";
 import { validate } from "class-validator";
 import { hash, verify } from "argon2";
-import { sign, verify as jwtVerify, decode } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 import Cookies from "cookies";
 import { ContextType, getUserFromContext } from "../auth";
 
