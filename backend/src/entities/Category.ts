@@ -1,13 +1,16 @@
 import {
     BaseEntity,
     Column,
+    CreateDateColumn,
     Entity,
+    ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
 import { Length } from "class-validator";
 import { Ad } from "./Ad";
 import { Field, ID, InputType, ObjectType } from "type-graphql";
+import { User } from "./User";
 
 @Entity()
 @ObjectType()
@@ -27,6 +30,14 @@ export class Category extends BaseEntity {
     @OneToMany(() => Ad, (ad) => ad.category)
     @Field(() => [Ad])
     ads!: Ad[];
+
+    @CreateDateColumn()
+    @Field()
+    createdAt!: Date;
+
+    @ManyToOne(() => User)
+    @Field(() => User)
+    createdBy: User;
 }
 
 @InputType()
