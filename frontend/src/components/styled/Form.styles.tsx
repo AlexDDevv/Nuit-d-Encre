@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const FormSection = styled.div`
+export const FormSection = styled.section`
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
