@@ -5,6 +5,8 @@ import HomePage from "./pages/Home";
 import AdPage from "./pages/Ad";
 import CategoryPage from "./pages/Category";
 import AdFormPage from "./pages/AdForm";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -26,6 +28,8 @@ function App() {
                         />
                         <Route path="/ads/:id/edit" element={<AdFormPage />} />
                         <Route path="ads/newAd" element={<AdFormPage />} />
+                        <Route path="/signup" element={<SignUp />} />
+                        <Route path="/signin" element={<SignIn />} />
                         <Route path="*" element={<Navigate to="/" />} />
                     </Route>
                 </Routes>
