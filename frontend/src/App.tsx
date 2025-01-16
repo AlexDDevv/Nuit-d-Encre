@@ -10,8 +10,9 @@ import SignUp from "./pages/SignUp";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
-    uri: "http://localhost:5000/",
+    uri: "/api",
     cache: new InMemoryCache(),
+    credentials: "same-origin",
 });
 
 function App() {
