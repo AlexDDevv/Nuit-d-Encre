@@ -7,6 +7,8 @@ import CategoryPage from "./pages/Category";
 import AdFormPage from "./pages/AdForm";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import AuthChecker from "./AuthChecker";
+import { AuthState } from "./AuthChecker";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -27,10 +29,50 @@ function App() {
                             path="categories/:id"
                             element={<CategoryPage />}
                         />
-                        <Route path="/ads/:id/edit" element={<AdFormPage />} />
-                        <Route path="ads/newAd" element={<AdFormPage />} />
-                        <Route path="/signup" element={<SignUp />} />
-                        <Route path="/signin" element={<SignIn />} />
+                        <Route
+                            path="/ads/:id/edit"
+                            element={
+                                <AuthChecker
+                                    authState={[AuthState.authenticated]}
+                                    redirectTo="/signin"
+                                >
+                                    <AdFormPage />
+                                </AuthChecker>
+                            }
+                        />
+                        <Route
+                            path="ads/newAd"
+                            element={
+                                <AuthChecker
+                                    authState={[AuthState.authenticated]}
+                                    redirectTo="/signin"
+                                >
+                                    <AdFormPage />
+                                </AuthChecker>
+                            }
+                        />
+                        <Route
+                            path="/signup"
+                            element={
+                                <AuthChecker
+                                    authState={[AuthState.unauthenticated]}
+                                    redirectTo="/"
+                                >
+                                    <SignUp />
+                                </AuthChecker>
+                            }
+                        />
+                        <Route
+                            path="/signin"
+                            element={
+                                <AuthChecker
+                                    authState={[AuthState.unauthenticated]}
+                                    redirectTo="/"
+                                >
+                                    <SignIn />
+                                </AuthChecker>
+                            }
+                        />
                         <Route path="*" element={<Navigate to="/" />} />
                     </Route>
                 </Routes>
