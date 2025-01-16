@@ -14,6 +14,7 @@ import ErrorForm from "../components/ErrorForm";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../api/signIn";
 import { useMutation } from "@apollo/client";
+import { whoami } from "../api/whoami";
 
 export default function SignIn() {
     const [email, setEmail] = useState("alex@gmail.com");
@@ -21,7 +22,7 @@ export default function SignIn() {
     const [error, setError] = useState("");
     const navigate = useNavigate();
 
-    const [doSignIn] = useMutation(signIn);
+    const [doSignIn] = useMutation(signIn, { refetchQueries: [whoami] });
 
     const doSubmit = async () => {
         try {
