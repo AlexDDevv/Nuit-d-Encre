@@ -1,9 +1,18 @@
-import { Arg, Mutation, Query, Resolver, ID } from "type-graphql";
+import {
+    Arg,
+    Mutation,
+    Query,
+    Resolver,
+    ID,
+    Authorized,
+    Ctx,
+} from "type-graphql";
 import {
     Category,
     createCategoryInput,
     updateCategoryInput,
 } from "../entities/Category";
+import { AuthContextType } from "../auth";
 
 @Resolver()
 export class CategoriesResolver {
@@ -34,38 +43,52 @@ export class CategoriesResolver {
         }
     }
 
+    @Authorized()
     @Mutation(() => Category)
     async createCategory(
-        @Arg("data", () => createCategoryInput) data: createCategoryInput
+        @Arg("data", () => createCategoryInput) data: createCategoryInput,
+        @Ctx() context: AuthContextType
     ): Promise<Category> {
         const newCategory = new Category();
-        Object.assign(newCategory, data);
+        const user = context.user;
+        Object.assign(newCategory, data, { createdBy: user });
         await newCategory.save();
         return newCategory;
     }
 
+    @Authorized()
     @Mutation(() => Category, { nullable: true })
-    async deleteCategory(
-        @Arg("id", () => ID) id: number
+    async updateCategory(
+        @Arg("id", () => ID) id: number,
+        @Arg("data", () => updateCategoryInput) data: updateCategoryInput,
+        @Ctx() context: AuthContextType
     ): Promise<Category | null> {
-        const category = await Category.findOneBy({ id });
+        const category = await Category.findOneBy({
+            id,
+            createdBy: { id: context.user.id },
+        });
         if (category !== null) {
-            await category.remove();
+            Object.assign(category, data);
+            await category.save();
             return category;
         } else {
             return null;
         }
     }
 
+    @Authorized()
     @Mutation(() => Category, { nullable: true })
-    async updateCategory(
+    async deleteCategory(
         @Arg("id", () => ID) id: number,
-        @Arg("data", () => updateCategoryInput) data: updateCategoryInput
+        @Ctx() context: AuthContextType
     ): Promise<Category | null> {
-        const category = await Category.findOneBy({ id });
+        const category = await Category.findOneBy({
+            id,
+            createdBy: { id: context.user.id },
+        });
         if (category !== null) {
-            Object.assign(category, data);
-            await category.save();
+            await category.remove();
+            category.id = id;
             return category;
         } else {
             return null;

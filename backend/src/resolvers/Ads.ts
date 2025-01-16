@@ -75,6 +75,7 @@ export class AdsResolver {
         }
     }
 
+    @Authorized()
     @Mutation(() => Ad, { nullable: true })
     async deleteAd(
         @Arg("id", () => ID) id: number,

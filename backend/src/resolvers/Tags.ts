@@ -1,5 +1,14 @@
-import { Arg, Mutation, Query, Resolver, ID } from "type-graphql";
+import {
+    Arg,
+    Mutation,
+    Query,
+    Resolver,
+    ID,
+    Authorized,
+    Ctx,
+} from "type-graphql";
 import { Tag, createTagInput, updateTagInput } from "../entities/Tag";
+import { AuthContextType } from "../auth";
 
 @Resolver()
 export class TagsResolver {
@@ -25,22 +34,31 @@ export class TagsResolver {
         }
     }
 
+    @Authorized()
     @Mutation(() => Tag)
     async createTag(
-        @Arg("data", () => createTagInput) data: createTagInput
+        @Arg("data", () => createTagInput) data: createTagInput,
+        @Ctx() context: AuthContextType
     ): Promise<Tag> {
         const newTag = new Tag();
-        Object.assign(newTag, data);
+        const user = context.user;
+
+        Object.assign(newTag, data, { createdBy: user });
         await newTag.save();
         return newTag;
     }
 
+    @Authorized()
     @Mutation(() => Tag)
     async updateTag(
         @Arg("id", () => ID) id: number,
-        @Arg("data", () => updateTagInput) data: updateTagInput
+        @Arg("data", () => updateTagInput) data: updateTagInput,
+        @Ctx() context: AuthContextType
     ): Promise<Tag> {
-        const tag = await Tag.findOneBy({ id });
+        const tag = await Tag.findOneBy({
+            id,
+            createdBy: { id: context.user.id },
+        });
         if (tag !== null) {
             Object.assign(tag, data);
             await tag.save();
@@ -50,11 +68,19 @@ export class TagsResolver {
         }
     }
 
+    @Authorized()
     @Mutation(() => Tag)
-    async deleteTag(@Arg("id", () => ID) id: number): Promise<Tag> {
-        const tag = await Tag.findOneBy({ id });
+    async deleteTag(
+        @Arg("id", () => ID) id: number,
+        @Ctx() context: AuthContextType
+    ): Promise<Tag> {
+        const tag = await Tag.findOneBy({
+            id,
+            createdBy: { id: context.user.id },
+        });
         if (tag !== null) {
             await tag.remove();
+            tag.id = id;
             return tag;
         } else {
             return null;
