@@ -3,6 +3,9 @@ import Form from "./Form";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { styledButton, ButtonProps } from "./StyledButton";
+import { useMutation, useQuery } from "@apollo/client";
+import { whoami } from "../api/whoami";
+import { signOut } from "../api/signout";
 
 const HeaderApp = styled.header`
     position: fixed;
@@ -24,6 +27,17 @@ const StyledLogo = styled(Link)<ButtonProps>`
 const StyledLink = styled(StyledLogo)`
     ${styledButton}
     text-decoration: none;
+`;
+
+const SignOutButton = styled.button<ButtonProps>`
+    ${styledButton}
+`;
+
+const ButtonsContainer = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 `;
 
 const MainMenu = styled.div`
@@ -48,6 +62,15 @@ const DesktopLogo = styled.span`
 `;
 
 export default function Header() {
+    const { data: whoamiData } = useQuery(whoami);
+    const me = whoamiData?.whoami;
+
+    const [doSignOut] = useMutation(signOut, { refetchQueries: [whoami] });
+
+    const onSignOut = () => {
+        doSignOut();
+    };
+
     return (
         <HeaderApp id="header">
             <MainMenu>
@@ -62,14 +85,30 @@ export default function Header() {
                     </StyledLogo>
                 </h1>
                 <Form />
-                <StyledLink
-                    to="ads/newAd"
-                    transition="background-color 0.2s ease-in-out,
+                {me ? (
+                    <ButtonsContainer>
+                        <StyledLink
+                            to="ads/newAd"
+                            transition="background-color 0.2s ease-in-out,
                     color 0.2s ease-in-out"
-                >
-                    <MobileLogo>Publier</MobileLogo>
-                    <DesktopLogo>Publier une annonce</DesktopLogo>
-                </StyledLink>
+                        >
+                            <MobileLogo>Publier</MobileLogo>
+                            <DesktopLogo>Publier une annonce</DesktopLogo>
+                        </StyledLink>
+                        <SignOutButton
+                            onClick={onSignOut}
+                            background="var(--destructive)"
+                            color="var(--destructive-foreground)"
+                        >
+                            Déconnexion
+                        </SignOutButton>
+                    </ButtonsContainer>
+                ) : me === null ? (
+                    <ButtonsContainer>
+                        <StyledLink to="/signup">Inscription</StyledLink>
+                        <StyledLink to="/signin">Connexion</StyledLink>
+                    </ButtonsContainer>
+                ) : null}
             </MainMenu>
             <NavBar />
         </HeaderApp>
