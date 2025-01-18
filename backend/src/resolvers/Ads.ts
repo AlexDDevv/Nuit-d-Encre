@@ -41,29 +41,33 @@ export class AdsResolver {
         }
     }
 
-    @Authorized()
+    @Authorized("user", "admin")
     @Mutation(() => Ad)
     async createAd(
         @Arg("data", () => createAdInput) data: createAdInput,
         @Ctx() context: AuthContextType
     ): Promise<Ad> {
-        const newCategory = new Ad();
+        const newAd = new Ad();
         const user = context.user;
-        Object.assign(newCategory, data, { createdBy: user });
-        await newCategory.save();
-        return newCategory;
+
+        Object.assign(newAd, data, { createdBy: user });
+        await newAd.save();
+        return newAd;
     }
 
-    @Authorized()
+    @Authorized("user", "admin")
     @Mutation(() => Ad, { nullable: true })
     async updateAd(
         @Arg("id", () => ID) id: number,
         @Arg("data", () => updateAdInput) data: updateAdInput,
         @Ctx() context: AuthContextType
     ): Promise<Ad | null> {
+        const whereCreatedBy =
+            context.user.role === "admin" ? undefined : { id: context.user.id };
+
         const ad = await Ad.findOneBy({
             id,
-            createdBy: { id: context.user.id },
+            createdBy: whereCreatedBy,
         });
 
         if (ad !== null) {
@@ -75,16 +79,20 @@ export class AdsResolver {
         }
     }
 
-    @Authorized()
+    @Authorized("user", "admin")
     @Mutation(() => Ad, { nullable: true })
     async deleteAd(
         @Arg("id", () => ID) id: number,
         @Ctx() context: AuthContextType
     ): Promise<Ad | null> {
+        const whereCreatedBy =
+            context.user.role === "admin" ? undefined : { id: context.user.id };
+
         const ad = await Ad.findOneBy({
             id,
-            createdBy: { id: context.user.id },
+            createdBy: whereCreatedBy,
         });
+
         if (ad !== null) {
             await ad.remove();
             Object.assign(ad, { id });
