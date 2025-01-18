@@ -89,6 +89,6 @@ export class UserResolver {
 
     @Query(() => User, { nullable: true })
     async whoami(@Ctx() context: ContextType) {
-        return await getUserFromContext(context);
+        return context.user;
     }
 }
