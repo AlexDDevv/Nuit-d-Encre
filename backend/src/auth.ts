@@ -7,6 +7,7 @@ export type ContextType = {
     req: any;
     res: any;
     user: User | null | undefined;
+    role: string;
 };
 
 export type AuthContextType = ContextType & { user: User };
@@ -45,10 +46,14 @@ export const authChecker: AuthChecker<ContextType> = async (
     { root, args, context, info },
     roles
 ) => {
+    if (roles.length === 0) {
+        roles = ["admin"];
+    }
+
     const user = await getUserFromContext(context);
     context.user = user;
 
-    if (user) {
+    if (user && roles.includes(user.role)) {
         return true;
     } else {
         return false;
