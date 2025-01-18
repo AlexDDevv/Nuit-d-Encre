@@ -7,7 +7,6 @@ export type ContextType = {
     req: any;
     res: any;
     user: User | null | undefined;
-    role: string;
 };
 
 export type AuthContextType = ContextType & { user: User };
