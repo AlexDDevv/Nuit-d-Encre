@@ -36,6 +36,7 @@ export class CategoriesResolver {
                 },
             },
         });
+
         if (category) {
             return category;
         } else {
@@ -43,7 +44,7 @@ export class CategoriesResolver {
         }
     }
 
-    @Authorized()
+    @Authorized("admin")
     @Mutation(() => Category)
     async createCategory(
         @Arg("data", () => createCategoryInput) data: createCategoryInput,
@@ -51,12 +52,13 @@ export class CategoriesResolver {
     ): Promise<Category> {
         const newCategory = new Category();
         const user = context.user;
+
         Object.assign(newCategory, data, { createdBy: user });
         await newCategory.save();
         return newCategory;
     }
 
-    @Authorized()
+    @Authorized("admin")
     @Mutation(() => Category, { nullable: true })
     async updateCategory(
         @Arg("id", () => ID) id: number,
@@ -67,6 +69,7 @@ export class CategoriesResolver {
             id,
             createdBy: { id: context.user.id },
         });
+
         if (category !== null) {
             Object.assign(category, data);
             await category.save();
@@ -76,7 +79,7 @@ export class CategoriesResolver {
         }
     }
 
-    @Authorized()
+    @Authorized("admin")
     @Mutation(() => Category, { nullable: true })
     async deleteCategory(
         @Arg("id", () => ID) id: number,
@@ -86,6 +89,7 @@ export class CategoriesResolver {
             id,
             createdBy: { id: context.user.id },
         });
+
         if (category !== null) {
             await category.remove();
             category.id = id;

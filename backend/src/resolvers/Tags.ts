@@ -34,7 +34,7 @@ export class TagsResolver {
         }
     }
 
-    @Authorized()
+    @Authorized("admin")
     @Mutation(() => Tag)
     async createTag(
         @Arg("data", () => createTagInput) data: createTagInput,
@@ -48,7 +48,7 @@ export class TagsResolver {
         return newTag;
     }
 
-    @Authorized()
+    @Authorized("admin")
     @Mutation(() => Tag)
     async updateTag(
         @Arg("id", () => ID) id: number,
@@ -59,6 +59,7 @@ export class TagsResolver {
             id,
             createdBy: { id: context.user.id },
         });
+
         if (tag !== null) {
             Object.assign(tag, data);
             await tag.save();
@@ -68,7 +69,7 @@ export class TagsResolver {
         }
     }
 
-    @Authorized()
+    @Authorized("admin")
     @Mutation(() => Tag)
     async deleteTag(
         @Arg("id", () => ID) id: number,
@@ -78,6 +79,7 @@ export class TagsResolver {
             id,
             createdBy: { id: context.user.id },
         });
+
         if (tag !== null) {
             await tag.remove();
             tag.id = id;
