@@ -7,7 +7,7 @@ import { AdsResolver } from "./resolvers/Ads";
 import { CategoriesResolver } from "./resolvers/Categories";
 import { TagsResolver } from "./resolvers/Tags";
 import { UserResolver } from "./resolvers/User";
-import { authChecker } from "./auth";
+import { authChecker, ContextType, getUserFromContext } from "./auth";
 
 const initialize = async () => {
     await dataSource.initialize();
@@ -29,10 +29,14 @@ const initialize = async () => {
         listen: { port: 5000 },
 
         context: async ({ req, res }) => {
-            return {
+            const context: ContextType = {
                 req,
                 res,
+                user: undefined,
             };
+            const user = await getUserFromContext(context);
+            context.user = user;
+            return context;
         },
     });
 
