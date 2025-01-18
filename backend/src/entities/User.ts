@@ -6,7 +6,26 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { Field, ID, ObjectType, InputType } from "type-graphql";
+import {
+    Field,
+    ID,
+    ObjectType,
+    InputType,
+    MiddlewareFn,
+    UseMiddleware,
+} from "type-graphql";
+import { AuthContextType } from "../auth";
+
+export const IsUser: MiddlewareFn<AuthContextType> = async (
+    { context, root },
+    next
+) => {
+    if (context.user.role === "admin" || context.user.id === root.id) {
+        return await next();
+    } else {
+        return null;
+    }
+};
 
 @Entity()
 @ObjectType()
@@ -18,6 +37,7 @@ export class User extends BaseEntity {
     @Column({ unique: true })
     @IsEmail()
     @Field()
+    @UseMiddleware(IsUser)
     email: string;
 
     @Column()
