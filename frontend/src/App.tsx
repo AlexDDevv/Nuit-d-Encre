@@ -33,7 +33,10 @@ function App() {
                             path="/ads/:id/edit"
                             element={
                                 <AuthChecker
-                                    authState={[AuthState.authenticated]}
+                                    authState={[
+                                        AuthState.user,
+                                        AuthState.admin,
+                                    ]}
                                     redirectTo="/signin"
                                 >
                                     <AdFormPage />
@@ -44,7 +47,10 @@ function App() {
                             path="ads/newAd"
                             element={
                                 <AuthChecker
-                                    authState={[AuthState.authenticated]}
+                                    authState={[
+                                        AuthState.user,
+                                        AuthState.admin,
+                                    ]}
                                     redirectTo="/signin"
                                 >
                                     <AdFormPage />
