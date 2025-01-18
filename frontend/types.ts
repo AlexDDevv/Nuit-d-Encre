@@ -12,6 +12,7 @@ export type AdType = {
     owner: string;
     location: string;
     category: CategoryType;
+    createdBy: string;
     createdAt: string;
     tags: TagType[];
 };
