@@ -23,6 +23,10 @@ export class User extends BaseEntity {
     @Column()
     hashedPassword: string;
 
+    @Column({ enum: ["user", "admin"], default: "user" })
+    @Field()
+    role: string;
+
     @CreateDateColumn()
     @Field()
     createdAt: Date;
