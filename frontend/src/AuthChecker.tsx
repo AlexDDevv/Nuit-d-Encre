@@ -3,8 +3,9 @@ import { Navigate } from "react-router-dom";
 import { whoami } from "./api/whoami";
 
 export enum AuthState {
-    authenticated,
-    unauthenticated,
+    user = "user",
+    admin = "admin",
+    unauthenticated = "unauthenticated",
 }
 
 type AuthCheckerType = {
@@ -27,7 +28,7 @@ export default function AuthChecker({
 
     if (
         (me === null && authState.includes(AuthState.unauthenticated)) ||
-        (me && authState.includes(AuthState.authenticated))
+        (me && authState.includes(me.role))
     ) {
         return children;
     }
