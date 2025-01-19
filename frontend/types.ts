@@ -12,7 +12,7 @@ export type AdType = {
     owner: string;
     location: string;
     category: CategoryType;
-    createdBy: string;
+    createdBy: UserType;
     createdAt: string;
     tags: TagType[];
 };
@@ -29,4 +29,9 @@ export type CategoryType = {
     id: number;
     name: string;
     ads?: AdType[];
+};
+
+export type UserType = {
+    id: number;
+    email: string;
 };
