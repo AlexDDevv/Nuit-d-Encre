@@ -29,20 +29,22 @@ import {
     MoreInformations,
     UserBtnsContainer,
 } from "../components/styled/Ad.styles";
+import { whoami } from "../api/whoami";
 
 export default function AdPage() {
     const param = useParams<{ id: string }>();
     const id = Number(param.id);
     const navigate = useNavigate();
 
-    const {
-        loading: adLoading,
-        error: adError,
-        data: adData,
-    } = useQuery<{ ad: AdType }>(queryAd, {
+    const { data: whoamiData } = useQuery(whoami);
+    const me = whoamiData?.whoami;
+    console.log("🚀 ~ AdPage ~ me:", me);
+
+    const { data: adData } = useQuery<{ ad: AdType }>(queryAd, {
         variables: { adId: id },
     });
     const ad = adData?.ad;
+    console.log("🚀 ~ AdPage ~ ad:", ad);
 
     const [doDelete] = useMutation(deleteAd, {
         refetchQueries: [queryAds],
@@ -63,9 +65,6 @@ export default function AdPage() {
     const onUpdate = () => {
         navigate(`/ads/${id}/edit`);
     };
-
-    if (adLoading) return <p>Loading...</p>;
-    if (adError) return <p>Error : {adError.message}</p>;
 
     const date = ad?.createdAt;
     const newDate = date ? new Date(date) : null;
@@ -166,31 +165,34 @@ export default function AdPage() {
                                     <p>{ad?.tags[0].name}</p>
                                 </div>
                             )}
-                            <UserBtnsContainer>
-                                <Button
-                                    bgColor="var(--destructive)"
-                                    radius="6px"
-                                    size="14px"
-                                    weight="500"
-                                    width="175px"
-                                    padding="8px 20px"
-                                    onClick={onDelete}
-                                >
-                                    Supprimer l'annonce
-                                </Button>
-                                <Button
-                                    bgColor="var(--primary)"
-                                    color="var(--primary-foreground)"
-                                    radius="6px"
-                                    size="14px"
-                                    weight="500"
-                                    width="175px"
-                                    padding="8px 20px"
-                                    onClick={onUpdate}
-                                >
-                                    Modifier l'annonce
-                                </Button>
-                            </UserBtnsContainer>
+                            {(me?.role === "admin" ||
+                                me?.id === ad.createdBy.id) && (
+                                <UserBtnsContainer>
+                                    <Button
+                                        bgColor="var(--destructive)"
+                                        radius="6px"
+                                        size="14px"
+                                        weight="500"
+                                        width="175px"
+                                        padding="8px 20px"
+                                        onClick={onDelete}
+                                    >
+                                        Supprimer l'annonce
+                                    </Button>
+                                    <Button
+                                        bgColor="var(--primary)"
+                                        color="var(--primary-foreground)"
+                                        radius="6px"
+                                        size="14px"
+                                        weight="500"
+                                        width="175px"
+                                        padding="8px 20px"
+                                        onClick={onUpdate}
+                                    >
+                                        Modifier l'annonce
+                                    </Button>
+                                </UserBtnsContainer>
+                            )}
                         </MoreInformations>
                     </ContainerSelectedAd>
                 </>
