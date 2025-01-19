@@ -35,7 +35,7 @@ export class Tag extends BaseEntity {
     createdAt!: Date;
 
     @ManyToOne(() => User)
-    @Field(() => User)
+    @Field(() => User, { nullable: true })
     createdBy: User;
 }
 

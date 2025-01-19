@@ -5,6 +5,23 @@ export const queryCategories = gql`
         categories {
             id
             name
+            ads {
+                id
+                title
+                picture
+                title
+                price
+                description
+                createdBy {
+                    id
+                    email
+                }
+                location
+                tags {
+                    id
+                    name
+                }
+            }
         }
     }
 `;
