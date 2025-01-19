@@ -213,14 +213,12 @@ export const CategoryContainer = styled.div`
     align-items: center;
     justify-content: center;
     gap: 10px;
-
-    select {
-        width: 75%;
-    }
 `;
 
-export const Select = styled(Input).attrs({ as: "select" })`
-    width: 60%;
+export const Select = styled(Input).attrs({ as: "select" })<{
+    isAdmin: boolean;
+}>`
+    width: ${(props) => (props.isAdmin ? "60%" : "100%")};
     cursor: pointer;
 `;
 
