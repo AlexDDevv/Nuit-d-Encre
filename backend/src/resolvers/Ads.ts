@@ -18,6 +18,7 @@ export class AdsResolver {
             relations: {
                 category: true,
                 tags: true,
+                createdBy: true,
             },
         });
 
@@ -31,6 +32,7 @@ export class AdsResolver {
             relations: {
                 category: true,
                 tags: true,
+                createdBy: true,
             },
         });
 
