@@ -38,6 +38,7 @@ import {
 } from "../components/styled/Form.styles";
 import { Button } from "../components/StyledButton";
 import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
+import { whoami } from "../api/whoami";
 
 export default function AdFormPage() {
     const navigate = useNavigate();
@@ -93,11 +94,9 @@ export default function AdFormPage() {
         setShowTagForm(!showTagForm);
     };
 
-    const {
-        data: categoriesData,
-        loading: categoriesLoading,
-        error: categoriesError,
-    } = useQuery<{ categories: CategoryType[] }>(queryCategories);
+    const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
+        queryCategories
+    );
     const categories = categoriesData?.categories;
 
     useEffect(() => {
@@ -106,11 +105,7 @@ export default function AdFormPage() {
         }
     }, [categories]);
 
-    const {
-        data: tagsData,
-        loading: tagsLoading,
-        error: tagsError,
-    } = useQuery<{ tags: TagType[] }>(queryTags);
+    const { data: tagsData } = useQuery<{ tags: TagType[] }>(queryTags);
     const tags = tagsData?.tags;
 
     const [doCreateAd, { loading: createLoading }] = useMutation<{
@@ -232,11 +227,8 @@ export default function AdFormPage() {
         }
     };
 
-    if (categoriesLoading) return <p>Loading...</p>;
-    if (categoriesError) return <p>Error : {categoriesError.message}</p>;
-
-    if (tagsLoading) return <p>Loading...</p>;
-    if (tagsError) return <p>Error : {tagsError.message}</p>;
+    const { data: whoamiData } = useQuery(whoami);
+    const me = whoamiData?.whoami;
 
     return (
         <FormSection>
@@ -427,6 +419,9 @@ export default function AdFormPage() {
                                     onChange={(e) =>
                                         setCategoryId(Number(e.target.value))
                                     }
+                                    isAdmin={
+                                        me?.role === "admin" ? true : false
+                                    }
                                 >
                                     {categories?.map(
                                         (category: CategoryType) => (
@@ -439,19 +434,21 @@ export default function AdFormPage() {
                                         )
                                     )}
                                 </Select>
-                                <Button
-                                    minWidth="160px"
-                                    width="25%"
-                                    height="35px"
-                                    transition="background-color 0.2s ease-in-out"
-                                    backgroundHover="rgba(255, 204, 102, 0.9)"
-                                    type="button"
-                                    onClick={handleCategoryForm}
-                                >
-                                    {showCategoryForm
-                                        ? "Fermer le formulaire"
-                                        : "Ajouter une catégorie"}
-                                </Button>
+                                {me?.role === "admin" && (
+                                    <Button
+                                        minWidth="160px"
+                                        width="25%"
+                                        height="35px"
+                                        transition="background-color 0.2s ease-in-out"
+                                        backgroundHover="rgba(255, 204, 102, 0.9)"
+                                        type="button"
+                                        onClick={handleCategoryForm}
+                                    >
+                                        {showCategoryForm
+                                            ? "Fermer le formulaire"
+                                            : "Ajouter une catégorie"}
+                                    </Button>
+                                )}
                             </CategoryContainer>
 
                             {showCategoryForm && (
@@ -511,19 +508,21 @@ export default function AdFormPage() {
                                         </Label>
                                     ))}
                                 </Tags>
-                                <Button
-                                    minWidth="160px"
-                                    width="25%"
-                                    height="35px"
-                                    transition="background-color 0.2s ease-in-out"
-                                    backgroundHover="rgba(255, 204, 102, 0.9)"
-                                    type="button"
-                                    onClick={handleTagForm}
-                                >
-                                    {showTagForm
-                                        ? "Fermer le formulaire"
-                                        : "Ajouter un tag"}
-                                </Button>
+                                {me?.role === "admin" && (
+                                    <Button
+                                        minWidth="160px"
+                                        width="25%"
+                                        height="35px"
+                                        transition="background-color 0.2s ease-in-out"
+                                        backgroundHover="rgba(255, 204, 102, 0.9)"
+                                        type="button"
+                                        onClick={handleTagForm}
+                                    >
+                                        {showTagForm
+                                            ? "Fermer le formulaire"
+                                            : "Ajouter un tag"}
+                                    </Button>
+                                )}
                             </TagsContainer>
                             {showTagForm && (
                                 <TagModal
