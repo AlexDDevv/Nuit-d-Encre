@@ -23,7 +23,7 @@ export const IsUser: MiddlewareFn<AuthContextType> = async (
     if (context.user.role === "admin" || context.user.id === root.id) {
         return await next();
     } else {
-        return null;
+        return "●●●●●@●●●●●.com";
     }
 };
 
@@ -37,7 +37,6 @@ export class User extends BaseEntity {
     @Column({ unique: true })
     @IsEmail()
     @Field()
-    @UseMiddleware(IsUser)
     email: string;
 
     @Column()
