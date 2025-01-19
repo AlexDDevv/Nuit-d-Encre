@@ -10,7 +10,10 @@ export const queryAds = gql`
             price
             picture
             location
-            createdBy
+            createdBy {
+                id
+                email
+            }
             createdAt
             category {
                 id

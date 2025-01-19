@@ -10,7 +10,10 @@ export const queryAd = gql`
             owner
             location
             description
-            createdBy
+            createdBy {
+                id
+                email
+            }
             createdAt
             category {
                 id

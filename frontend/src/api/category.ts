@@ -12,7 +12,10 @@ export const queryCategory = gql`
                 title
                 price
                 description
-                createdBy
+                createdBy {
+                    id
+                    email
+                }
                 location
                 tags {
                     id
