@@ -1,6 +1,6 @@
 import NavBar from "./NavBar";
 import Form from "./Form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { styledButton, ButtonProps } from "./StyledButton";
 import { useMutation, useQuery } from "@apollo/client";
@@ -64,11 +64,13 @@ const DesktopLogo = styled.span`
 export default function Header() {
     const { data: whoamiData } = useQuery(whoami);
     const me = whoamiData?.whoami;
+    const navigate = useNavigate();
 
     const [doSignOut] = useMutation(signOut, { refetchQueries: [whoami] });
 
     const onSignOut = () => {
         doSignOut();
+        navigate("/");
     };
 
     return (
