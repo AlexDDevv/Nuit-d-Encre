@@ -3,8 +3,7 @@ import Header from "./Header";
 import styled from "styled-components";
 
 const Main = styled.main`
-    max-width: 1024px;
-    padding: 0 25px;
+    max-width: 1440px;
     margin: 175px auto 25px auto;
 `;
 
