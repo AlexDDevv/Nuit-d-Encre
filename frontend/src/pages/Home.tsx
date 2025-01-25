@@ -1,4 +1,3 @@
-import { useState } from "react";
 import AdCard from "../components/AdCard";
 import { AdTypeCard } from "../../types";
 import { useQuery } from "@apollo/client";
@@ -8,15 +7,11 @@ import styled from "styled-components";
 const Container = styled.div`
     max-width: 1024px;
     margin: 0 auto;
-`
+`;
 
 const RecentAdds = styled.h1`
     color: var(--foreground);
     font-size: 1.75rem;
-`;
-
-const ShoppingCart = styled.h3`
-    color: var(--foreground);
 `;
 
 const SectionAds = styled.section`
@@ -31,7 +26,6 @@ const AdsContainer = styled.div`
 `;
 
 export default function HomePage() {
-    const [totalPrice, setTotalPrice] = useState(0);
     const { data: dataAds } = useQuery<{ ads: AdTypeCard[] }>(queryAds, {
         fetchPolicy: "cache-and-network",
     });
@@ -41,7 +35,6 @@ export default function HomePage() {
         <Container>
             <RecentAdds>Annonces récentes</RecentAdds>
             <SectionAds>
-                <ShoppingCart>Montant du panier : {totalPrice}</ShoppingCart>
                 <AdsContainer>
                     {ads?.map((ad) => (
                         <AdCard
@@ -50,9 +43,7 @@ export default function HomePage() {
                             picture={ad.picture}
                             title={ad.title}
                             price={ad.price}
-                            onAddToPanier={() =>
-                                setTotalPrice(totalPrice + ad.price)
-                            }
+                            category={ad.category}
                             tags={ad.tags}
                         />
                     ))}
