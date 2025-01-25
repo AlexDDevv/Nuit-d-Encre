@@ -4,8 +4,8 @@ export const FormSection = styled.section<{ maxWidth: string; margin: string }>`
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
-    max-width: ${(props) => props.maxWidth || null};
-    margin: ${(props) => props.margin || null};
+    max-width: ${(props) => props.maxWidth || "1024px"};
+    margin: ${(props) => props.margin || "0 auto"};
     padding: 20px 25px;
 `;
 
@@ -145,12 +145,12 @@ export const Image = styled.img<{
         isVisible
             ? "translateX(0)"
             : slideDirection === "right"
-            ? isExiting
-                ? "translateX(-100%)"
-                : "translateX(100%)"
-            : isExiting
-            ? "translateX(100%)"
-            : "translateX(-100%)"};
+                ? isExiting
+                    ? "translateX(-100%)"
+                    : "translateX(100%)"
+                : isExiting
+                    ? "translateX(100%)"
+                    : "translateX(-100%)"};
 
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 `;
@@ -215,7 +215,7 @@ export const CategoryContainer = styled.div`
     gap: 10px;
 `;
 
-export const Select = styled(Input).attrs({ as: "select" })<{
+export const Select = styled(Input).attrs({ as: "select" }) <{
     isAdmin: boolean;
 }>`
     width: ${(props) => (props.isAdmin ? "60%" : "100%")};
