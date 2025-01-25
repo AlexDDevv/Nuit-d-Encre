@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AdTypeCard } from "../../types";
 import styled from "styled-components";
 import { Button } from "./StyledButton";
@@ -10,7 +10,7 @@ const AdCardContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 15px;
+    gap: 20px;
     width: 300px;
     height: auto;
     padding: 20px;
@@ -31,13 +31,17 @@ const AdCardImg = styled.img`
     width: 100%;
     height: 150px;
     border-radius: 6px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 `;
 
 const AdCardTextContainer = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+`;
+
+const AdCardTitle = styled.h2`
+    font-size: 16px;
 `;
 
 const AdCardText = styled.div`
@@ -47,6 +51,20 @@ const AdCardText = styled.div`
     gap: 20px;
 `;
 
+const Price = styled.p``;
+
+const CategoryAndTags = styled(AdCardText)``;
+
+const Category = styled.span`
+    background-color: var(--muted);
+    border-radius: 5px;
+    color: var(--muted-foreground);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    padding: 3px 8px;
+`;
+
 const AdTagsContainer = styled.div`
     display: flex;
     align-items: center;
@@ -54,32 +72,31 @@ const AdTagsContainer = styled.div`
     gap: 5px;
 `;
 
-const AdTag = styled.span`
+const AdTag = styled(Category)`
     background-color: var(--accent);
-    border-radius: 5px;
     color: var(--accent-foreground);
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 8px;
 `;
 
-export default function AdCard(
-    props: AdTypeCard & { onAddToPanier: () => void }
-) {
+export default function AdCard(props: AdTypeCard) {
+    const navigate = useNavigate();
+
     return (
         <AdCardContainer key={props.id}>
             <AdCardLink to={`/ads/${props.id}`}>
                 <AdCardImg src={props.picture[0]} />
                 <AdCardTextContainer>
-                    <h4>{props.title}</h4>
                     <AdCardText>
-                        <p>{props.price}€</p>
+                        <AdCardTitle>{props.title}</AdCardTitle>
+                        <Price>{props.price}€</Price>
+                    </AdCardText>
+                    <CategoryAndTags>
+                        <Category>{props.category.name}</Category>
                         <AdTagsContainer>
                             {props.tags?.map((tag) => (
                                 <AdTag key={tag.name}>{tag.name}</AdTag>
                             ))}
                         </AdTagsContainer>
-                    </AdCardText>
+                    </CategoryAndTags>
                 </AdCardTextContainer>
             </AdCardLink>
             <Button
@@ -87,9 +104,9 @@ export default function AdCard(
                 transition="background-color 0.2s ease-in-out,
                 color 0.2s ease-in-out"
                 backgroundHover="rgba(255, 204, 102, 0.9)"
-                onClick={props.onAddToPanier}
+                onClick={() => navigate(`/ads/${props.id}`)}
             >
-                Ajouter au panier
+                Voir l'annonce
             </Button>
         </AdCardContainer>
     );
