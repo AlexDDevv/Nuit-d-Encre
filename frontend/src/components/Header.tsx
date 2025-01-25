@@ -1,6 +1,6 @@
 import NavBar from "./NavBar";
 import Form from "./Form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { styledButton, ButtonProps } from "./StyledButton";
 import { useMutation, useQuery } from "@apollo/client";
@@ -18,7 +18,7 @@ const HeaderApp = styled.header`
     z-index: 500;
 `;
 
-const StyledLogo = styled(Link)<ButtonProps>`
+const StyledLogo = styled(Link) <ButtonProps>`
     ${styledButton}
     border: none;
     text-decoration: none;
@@ -65,6 +65,7 @@ export default function Header() {
     const { data: whoamiData } = useQuery(whoami);
     const me = whoamiData?.whoami;
     const navigate = useNavigate();
+    const location = useLocation()
 
     const [doSignOut] = useMutation(signOut, { refetchQueries: [whoami] });
 
@@ -88,23 +89,65 @@ export default function Header() {
                 </h1>
                 <Form />
                 {me ? (
-                    <ButtonsContainer>
-                        <StyledLink
-                            to="ads/newAd"
-                            transition="background-color 0.2s ease-in-out,
-                    color 0.2s ease-in-out"
-                        >
-                            <MobileLogo>Publier</MobileLogo>
-                            <DesktopLogo>Publier une annonce</DesktopLogo>
-                        </StyledLink>
-                        <SignOutButton
-                            onClick={onSignOut}
-                            background="var(--destructive)"
-                            color="var(--destructive-foreground)"
-                        >
-                            Déconnexion
-                        </SignOutButton>
-                    </ButtonsContainer>
+                    me.role === "admin" ? (
+                        location.pathname === "/admin" ? (
+                            <ButtonsContainer>
+                                <StyledLink
+                                    to="ads/newAd"
+                                    transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
+                                >
+                                    <MobileLogo>Publier</MobileLogo>
+                                    <DesktopLogo>Publier une annonce</DesktopLogo>
+                                </StyledLink>
+                                <SignOutButton
+                                    onClick={onSignOut}
+                                    background="var(--destructive)"
+                                    color="var(--destructive-foreground)"
+                                >
+                                    Déconnexion
+                                </SignOutButton>
+                            </ButtonsContainer>
+                        ) : (
+                            <ButtonsContainer>
+                                <StyledLink
+                                    to="ads/newAd"
+                                    transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
+                                >
+                                    <MobileLogo>Publier</MobileLogo>
+                                    <DesktopLogo>Publier une annonce</DesktopLogo>
+                                </StyledLink>
+                                <StyledLink to="/admin">Admin</StyledLink>
+                            </ButtonsContainer>
+                        )
+                    ) : location.pathname === "/profil" ? (
+                        <ButtonsContainer>
+                            <StyledLink
+                                to="ads/newAd"
+                                transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
+                            >
+                                <MobileLogo>Publier</MobileLogo>
+                                <DesktopLogo>Publier une annonce</DesktopLogo>
+                            </StyledLink>
+                            <SignOutButton
+                                onClick={onSignOut}
+                                background="var(--destructive)"
+                                color="var(--destructive-foreground)"
+                            >
+                                Déconnexion
+                            </SignOutButton>
+                        </ButtonsContainer>
+                    ) : (
+                        <ButtonsContainer>
+                            <StyledLink
+                                to="ads/newAd"
+                                transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
+                            >
+                                <MobileLogo>Publier</MobileLogo>
+                                <DesktopLogo>Publier une annonce</DesktopLogo>
+                            </StyledLink>
+                            <StyledLink to="/profil">Profil</StyledLink>
+                        </ButtonsContainer>
+                    )
                 ) : me === null ? (
                     <ButtonsContainer>
                         <StyledLink to="/signup">Inscription</StyledLink>
