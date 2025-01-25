@@ -7,6 +7,8 @@ import CategoryPage from "./pages/Category";
 import AdFormPage from "./pages/AdForm";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
+import Admin from "./pages/Admin";
+import Profil from "./pages/Profil";
 import AuthChecker from "./AuthChecker";
 import { AuthState } from "./AuthChecker";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -76,6 +78,32 @@ function App() {
                                     redirectTo="/"
                                 >
                                     <SignIn />
+                                </AuthChecker>
+                            }
+                        />
+                        <Route
+                            path="/admin"
+                            element={
+                                <AuthChecker
+                                    authState={[
+                                        AuthState.admin,
+                                    ]}
+                                    redirectTo="/"
+                                >
+                                    <Admin />
+                                </AuthChecker>
+                            }
+                        />
+                        <Route
+                            path="/profil"
+                            element={
+                                <AuthChecker
+                                    authState={[
+                                        AuthState.user,
+                                    ]}
+                                    redirectTo="/"
+                                >
+                                    <Profil />
                                 </AuthChecker>
                             }
                         />
