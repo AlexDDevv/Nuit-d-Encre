@@ -6,6 +6,9 @@ import { queryCategory } from "../api/category";
 import styled from "styled-components";
 
 const SectionCategoryPage = styled.section`
+    max-width: 1024px;
+    margin: 0 auto;
+
     h1 {
         color: var(--foreground);
         font-size: 1.75rem;
@@ -47,7 +50,7 @@ export default function CategoryPage() {
                             title={ad.title}
                             picture={ad.picture}
                             price={ad.price}
-                            onAddToPanier={() => {}}
+                            onAddToPanier={() => { }}
                         />
                     ))
                 ) : (
