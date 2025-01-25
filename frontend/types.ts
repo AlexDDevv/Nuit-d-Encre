@@ -19,9 +19,11 @@ export type AdType = {
 
 export type AdTypeCard = {
     id: number;
+    owner?: string;
     title: string;
     price: number;
     picture: string;
+    category: CategoryType;
     tags?: TagType[];
 };
 
