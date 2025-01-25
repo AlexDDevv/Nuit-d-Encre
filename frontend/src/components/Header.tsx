@@ -18,7 +18,7 @@ const HeaderApp = styled.header`
     z-index: 500;
 `;
 
-const StyledLogo = styled(Link) <ButtonProps>`
+const StyledLogo = styled(Link)<ButtonProps>`
     ${styledButton}
     border: none;
     text-decoration: none;
@@ -65,7 +65,7 @@ export default function Header() {
     const { data: whoamiData } = useQuery(whoami);
     const me = whoamiData?.whoami;
     const navigate = useNavigate();
-    const location = useLocation()
+    const location = useLocation();
 
     const [doSignOut] = useMutation(signOut, { refetchQueries: [whoami] });
 
@@ -77,16 +77,15 @@ export default function Header() {
     return (
         <HeaderApp id="header">
             <MainMenu>
-                <h1>
-                    <StyledLogo
-                        to="/"
-                        background="transparent"
-                        color="var(--primary)"
-                    >
-                        <MobileLogo>TGC</MobileLogo>
-                        <DesktopLogo>THE GOOD CORNER</DesktopLogo>
-                    </StyledLogo>
-                </h1>
+                <StyledLogo
+                    to="/"
+                    background="transparent"
+                    color="var(--primary)"
+                    padding="0"
+                >
+                    <MobileLogo>TGC</MobileLogo>
+                    <DesktopLogo>THE GOOD CORNER</DesktopLogo>
+                </StyledLogo>
                 <Form />
                 {me ? (
                     me.role === "admin" ? (
@@ -97,7 +96,9 @@ export default function Header() {
                                     transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
                                 >
                                     <MobileLogo>Publier</MobileLogo>
-                                    <DesktopLogo>Publier une annonce</DesktopLogo>
+                                    <DesktopLogo>
+                                        Publier une annonce
+                                    </DesktopLogo>
                                 </StyledLink>
                                 <SignOutButton
                                     onClick={onSignOut}
@@ -114,7 +115,9 @@ export default function Header() {
                                     transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
                                 >
                                     <MobileLogo>Publier</MobileLogo>
-                                    <DesktopLogo>Publier une annonce</DesktopLogo>
+                                    <DesktopLogo>
+                                        Publier une annonce
+                                    </DesktopLogo>
                                 </StyledLink>
                                 <StyledLink to="/admin">Admin</StyledLink>
                             </ButtonsContainer>
