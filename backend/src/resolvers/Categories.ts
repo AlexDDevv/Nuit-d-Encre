@@ -32,6 +32,7 @@ export class CategoriesResolver {
             where: { id },
             relations: {
                 ads: {
+                    category: true,
                     tags: true,
                 },
             },
