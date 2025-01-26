@@ -12,6 +12,10 @@ export const queryCategories = gql`
                 title
                 price
                 description
+                category {
+                    id
+                    name
+                }
                 createdBy {
                     id
                     email
