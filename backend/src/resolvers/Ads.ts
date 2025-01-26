@@ -9,6 +9,7 @@ import {
 } from "type-graphql";
 import { Ad, createAdInput, updateAdInput } from "../entities/Ad";
 import { AuthContextType } from "../auth";
+import { merge } from "../utils/merge";
 
 @Resolver()
 export class AdsResolver {
@@ -67,13 +68,13 @@ export class AdsResolver {
         const whereCreatedBy =
             context.user.role === "admin" ? undefined : { id: context.user.id };
 
-        const ad = await Ad.findOneBy({
-            id,
-            createdBy: whereCreatedBy,
+        const ad = await Ad.findOne({
+            where: { id, createdBy: whereCreatedBy },
+            relations: { tags: true },
         });
 
         if (ad !== null) {
-            Object.assign(ad, data);
+            merge(ad, data);
             await ad.save();
             return ad;
         } else {
