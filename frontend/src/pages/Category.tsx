@@ -48,9 +48,10 @@ export default function CategoryPage() {
                             key={ad.id}
                             id={ad.id}
                             title={ad.title}
+                            category={ad.category}
                             picture={ad.picture}
                             price={ad.price}
-                            onAddToPanier={() => { }}
+                            onAddToPanier={() => {}}
                         />
                     ))
                 ) : (
