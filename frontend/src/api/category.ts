@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const queryCategory = gql`
-    query category($id: ID!) {
-        category(id: $id) {
+    query category($categoryId: ID!) {
+        category(id: $categoryId) {
             id
             name
             ads {
