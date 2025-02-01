@@ -1,4 +1,4 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
 import { createUserInput, User } from "../entities/User";
 import { validate } from "class-validator";
 import { hash, verify } from "argon2";
@@ -8,6 +8,30 @@ import { ContextType, getUserFromContext } from "../auth";
 
 @Resolver()
 export class UserResolver {
+    @Query(() => User, { nullable: true })
+    async user(@Arg("id", () => ID) id: number): Promise<User | null> {
+        const user = await User.findOne({
+            where: { id }
+        })
+
+        if (user) {
+            return user
+        } else {
+            return null
+        }
+    }
+
+    @Query(() => [User])
+        async users(): Promise<User[]> {
+            const users = await User.find();
+
+            if (users) {
+                return users;
+            } else {
+                return null;
+            }
+        }
+
     @Mutation(() => User)
     async createUser(
         @Arg("data", () => createUserInput) data: createUserInput
