@@ -10,6 +10,7 @@ import {
 import { Ad, createAdInput, updateAdInput } from "../entities/Ad";
 import { AuthContextType } from "../auth";
 import { merge } from "../utils/merge";
+import { validate } from "class-validator";
 
 @Resolver()
 export class AdsResolver {
@@ -51,11 +52,16 @@ export class AdsResolver {
         @Ctx() context: AuthContextType
     ): Promise<Ad> {
         const newAd = new Ad();
-        const user = context.user;
-
+            const user = context.user;
         Object.assign(newAd, data, { createdBy: user });
-        await newAd.save();
-        return newAd;
+
+        const errors = await validate(data);
+        if (errors.length > 0) {
+            throw new Error(`Validation error: ${JSON.stringify(errors)}`);
+        } else {
+            await newAd.save();
+            return newAd;
+        }
     }
 
     @Authorized("user", "admin")
