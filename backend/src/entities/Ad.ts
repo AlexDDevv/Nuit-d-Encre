@@ -28,26 +28,28 @@ export class Ad extends BaseEntity {
     title!: string;
 
     @Column()
+    @Length(20, 5000, { message: "Description must be between 20 and 1800 chars" })
     @Field()
     description!: string;
 
     @Column()
+    @Length(3, 255, { message: "Location must be between 3 and 255 chars" })
     @Field()
     location!: string;
 
     @Column()
-    @IsEmail()
+    @IsEmail({}, { message: "Invalid email format" })
     @Field()
     owner!: string;
 
     @Column()
     @Min(0, { message: "Price must be positive" })
-    @Max(1000000, { message: "Price must be lower than 1000000 cents" })
+    @Max(1000000, { message: "Price must be lower than 1000000 euros" })
     @Field(() => Float)
     price!: number;
 
     @Column("json")
-    @IsUrl({}, { each: true })
+    @IsUrl({}, { each: true, message: "Each picture must be a valid URL" })
     @Field(() => [String])
     picture!: string[];
 
@@ -75,13 +77,15 @@ export class createAdInput {
     @Field()
     title!: string;
 
+    @Length(20, 5000, { message: "Description must be between 20 and 1800 chars" })
     @Field()
     description!: string;
 
+    @Length(3, 255, { message: "Location must be between 3 and 255 chars" })
     @Field()
     location!: string;
 
-    @IsEmail()
+    @IsEmail({}, { message: "Invalid email format" })
     @Field()
     owner!: string;
 
@@ -90,7 +94,7 @@ export class createAdInput {
     @Field(() => Float)
     price!: number;
 
-    @IsUrl({}, { each: true })
+    @IsUrl({}, { each: true, message: "Each picture must be a valid URL" })
     @Field(() => [String])
     picture!: string[];
 
@@ -113,13 +117,15 @@ export class updateAdInput {
     @Field({ nullable: true })
     title!: string;
 
+    @Length(20, 5000, { message: "Description must be between 20 and 1800 chars" })
     @Field({ nullable: true })
     description!: string;
 
+    @Length(3, 255, { message: "Location must be between 3 and 255 chars" })
     @Field({ nullable: true })
     location!: string;
 
-    @IsEmail()
+    @IsEmail({}, { message: "Invalid email format" })
     @Field({ nullable: true })
     owner!: string;
 
@@ -128,7 +134,7 @@ export class updateAdInput {
     @Field(() => Float, { nullable: true })
     price!: number;
 
-    @IsUrl({}, { each: true })
+    @IsUrl({}, { each: true, message: "Each picture must be a valid URL" })
     @Field(() => [String], { nullable: true })
     picture!: string[];
 }
