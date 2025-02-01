@@ -110,3 +110,15 @@ export const NoAd = styled.p`
     color: var(--foreground);
     font-weight: 500;
 `;
+
+export const Form = styled.form`
+    background-color: var(--card);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    width: 300px;
+`;
+
+export const FormTitle = styled(TabName).attrs({ as: "h6" })``;
