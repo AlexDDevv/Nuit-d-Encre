@@ -1,18 +1,4 @@
 {
-    "stats": [
-        {
-            "numberOf": "Nombre de visiteurs",
-            "number": 300
-        },
-        {
-            "numberOf": "Nombre d'utilisateurs",
-            "number": 50
-        },
-        {
-            "numberOf": "Nombre d'annonces",
-            "number": 52
-        }
-    ],
     "tabs": [
         {
             "tab": "Annonces"
