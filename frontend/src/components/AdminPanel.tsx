@@ -18,7 +18,7 @@ import CategoryForm from "./ManageContent/CategoryForm";
 import TagForm from "./ManageContent/TagForm";
 
 export default function AdminPanel() {
-    const [selectedTab, setSelectedTab] = useState(0);
+    const [selectedTab, setSelectedTab] = useState<number>(0);
     const [previewAdId, setPreviewAdId] = useState<number | null>(null);
     const [previewAdsId, setPreviewAdsId] = useState<number[] | null>(null);
     const [showCategoryForm, setShowCategoryForm] = useState(false);
@@ -74,7 +74,7 @@ export default function AdminPanel() {
     return (
         <AdminPanelContainer>
             <PanelContainer>
-                <Tabs handleChangeTab={handleChangeTab} />
+                <Tabs handleChangeTab={handleChangeTab} isSelected={selectedTab} />
                 <ManageContainer>
                     {selectedTab === 0 && (
                         <>
