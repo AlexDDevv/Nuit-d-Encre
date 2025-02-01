@@ -1,10 +1,6 @@
 import styled from "styled-components";
 
 export const AdminPanelContainer = styled.div`
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 50px;
     width: 100%;
 `;
 
@@ -40,6 +36,13 @@ export const TabName = styled.h4`
     color: var(--card-foreground);
     font-size: 16px;
     font-weight: 700;
+`;
+
+export const ManageContainer = styled.div`
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 50px;
 `;
 
 export const ContentToManage = styled.div`
@@ -94,4 +97,16 @@ export const ActionsIcons = styled.div`
             transform: scale(1.1);
         }
     }
+`;
+
+export const AdsContainer = styled.div`
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 20px;
+`;
+
+export const NoAd = styled.p`
+    color: var(--foreground);
+    font-weight: 500;
 `;
