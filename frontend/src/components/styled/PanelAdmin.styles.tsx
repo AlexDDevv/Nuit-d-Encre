@@ -20,11 +20,16 @@ export const TabsContainer = styled.div`
     max-width: 480px;
 `;
 
-export const Tab = styled.div`
-    background-color: var(--card);
+export const Tab = styled.div<{ background: string }>`
+    background-color: ${props => props.background || "var(--card)"};
     width: 160px;
     padding: 15px 0 15px 25px;
     cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+
+    &:hover {
+        background-color: var(--border);
+    }
 
     &:nth-child(2) {
         border-left: 1px solid var(--border);
