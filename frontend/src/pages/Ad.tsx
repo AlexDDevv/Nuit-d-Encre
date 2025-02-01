@@ -114,7 +114,12 @@ export default function AdPage() {
                                             <Avatar>
                                                 <User />
                                             </Avatar>
-                                            <Link to="#">{ad.owner}</Link>
+                                            <Link to="#">{(me?.role === "admin" ||
+                                                me?.id === ad.createdBy.id) ? (
+                                                ad.owner
+                                            ) : (
+                                                "●●●●●@●●●●●.com"
+                                            )}</Link>
                                         </AvatarContainer>
                                         <ChevronRight />
                                     </Seller>
@@ -167,32 +172,32 @@ export default function AdPage() {
                             )}
                             {(me?.role === "admin" ||
                                 me?.id === ad.createdBy.id) && (
-                                <UserBtnsContainer>
-                                    <Button
-                                        bgColor="var(--destructive)"
-                                        radius="6px"
-                                        size="14px"
-                                        weight="500"
-                                        width="175px"
-                                        padding="8px 20px"
-                                        onClick={onDelete}
-                                    >
-                                        Supprimer l'annonce
-                                    </Button>
-                                    <Button
-                                        bgColor="var(--primary)"
-                                        color="var(--primary-foreground)"
-                                        radius="6px"
-                                        size="14px"
-                                        weight="500"
-                                        width="175px"
-                                        padding="8px 20px"
-                                        onClick={onUpdate}
-                                    >
-                                        Modifier l'annonce
-                                    </Button>
-                                </UserBtnsContainer>
-                            )}
+                                    <UserBtnsContainer>
+                                        <Button
+                                            bgColor="var(--destructive)"
+                                            radius="6px"
+                                            size="14px"
+                                            weight="500"
+                                            width="175px"
+                                            padding="8px 20px"
+                                            onClick={onDelete}
+                                        >
+                                            Supprimer l'annonce
+                                        </Button>
+                                        <Button
+                                            bgColor="var(--primary)"
+                                            color="var(--primary-foreground)"
+                                            radius="6px"
+                                            size="14px"
+                                            weight="500"
+                                            width="175px"
+                                            padding="8px 20px"
+                                            onClick={onUpdate}
+                                        >
+                                            Modifier l'annonce
+                                        </Button>
+                                    </UserBtnsContainer>
+                                )}
                         </MoreInformations>
                     </ContainerSelectedAd>
                 </>
