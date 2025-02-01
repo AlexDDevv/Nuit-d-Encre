@@ -50,13 +50,18 @@ export default function AdminPanel() {
     };
 
     const handleTagForm = (id?: number) => {
-        setEditingTagId(id);
-        setShowTagForm(!showTagForm);
+        if (id !== editingTagId) {
+            setEditingTagId(id);
+        }
+        setShowTagForm(true);
     };
 
     const handleCategoryForm = (id?: number) => {
-        setEditingCategoryId(id);
-        setShowCategoryForm(!showCategoryForm);
+        if (id !== editingCategoryId) {
+            setEditingCategoryId(id);
+        }
+        setPreviewAdsId(null);
+        setShowCategoryForm(true);
     };
 
     const onCloseForm = () => {
