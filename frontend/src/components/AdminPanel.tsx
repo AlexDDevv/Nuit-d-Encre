@@ -13,21 +13,31 @@ import { AdTypeCard } from "../../types";
 import { queryAds } from "../api/ads";
 import Tabs from "./Tabs";
 import ManageCategories from "./ManageContent/ManageCategories";
+import ManageTags from "./ManageContent/ManageTags";
 import CategoryForm from "./ManageContent/CategoryForm";
+import TagForm from "./ManageContent/TagForm";
 
 export default function AdminPanel() {
     const [selectedTab, setSelectedTab] = useState(0);
     const [previewAdId, setPreviewAdId] = useState<number | null>(null);
     const [previewAdsId, setPreviewAdsId] = useState<number[] | null>(null);
     const [showCategoryForm, setShowCategoryForm] = useState(false);
+    const [showTagForm, setShowTagForm] = useState(false);
     const [editingCategoryId, setEditingCategoryId] = useState<
         number | undefined
     >();
+    const [editingTagId, setEditingTagId] = useState<number | undefined>();
 
     const { data: dataAds } = useQuery<{ ads: AdTypeCard[] }>(queryAds, {
         fetchPolicy: "cache-and-network",
     });
     const ads = dataAds?.ads;
+
+    const handleChangeTab = (index: number) => {
+        setSelectedTab(index);
+        setShowCategoryForm(false);
+        setShowTagForm(false);
+    };
 
     const handlePreviewAdChange = (id: number | null) => {
         setPreviewAdId(id);
@@ -36,16 +46,24 @@ export default function AdminPanel() {
     const handlePreviewAdsChange = (ids: number[] | null) => {
         setPreviewAdsId(ids);
         setShowCategoryForm(false);
+        setShowTagForm(false);
     };
 
-    const handleCategoryForm = (categoryId?: number) => {
+    const handleTagForm = (id?: number) => {
+        setEditingTagId(id);
+        setShowTagForm(!showTagForm);
+    };
+
+    const handleCategoryForm = (id?: number) => {
+        setEditingCategoryId(id);
         setShowCategoryForm(!showCategoryForm);
-        setEditingCategoryId(categoryId);
-        setPreviewAdsId(null);
     };
 
-    const handleChangeTab = (index: number) => {
-        setSelectedTab(index);
+    const onCloseForm = () => {
+        setShowCategoryForm(false);
+        setShowTagForm(false);
+        setEditingCategoryId(undefined);
+        setEditingTagId(undefined);
     };
 
     return (
@@ -71,7 +89,9 @@ export default function AdminPanel() {
                         <>
                             <ManageCategories
                                 onPreviewAdChange={handlePreviewAdsChange}
-                                showCategoryForm={handleCategoryForm}
+                                showCategoryForm={(id) =>
+                                    handleCategoryForm(id)
+                                }
                             />
                             {previewAdsId &&
                                 ads &&
@@ -94,18 +114,28 @@ export default function AdminPanel() {
                                         catégorie.
                                     </NoAd>
                                 ))}
+                            {showCategoryForm && (
+                                <CategoryForm
+                                    onCategoryCreated={onCloseForm}
+                                    onCategoryUpdated={onCloseForm}
+                                    editingCategoryId={editingCategoryId}
+                                />
+                            )}
                         </>
                     )}
-                    {showCategoryForm && (
-                        <CategoryForm
-                            onCategoryCreated={async () => {
-                                setShowCategoryForm(false);
-                            }}
-                            onCategoryUpdated={async () => {
-                                setShowCategoryForm(false);
-                            }}
-                            editingId={editingCategoryId}
-                        />
+                    {selectedTab === 2 && (
+                        <>
+                            <ManageTags
+                                showTagForm={(id) => handleTagForm(id)}
+                            />
+                            {showTagForm && (
+                                <TagForm
+                                    onTagCreated={onCloseForm}
+                                    onTagUpdated={onCloseForm}
+                                    editingTagId={editingTagId}
+                                />
+                            )}
+                        </>
                     )}
                 </ManageContainer>
             </PanelContainer>
