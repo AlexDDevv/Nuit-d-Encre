@@ -13,7 +13,7 @@ import { queryCategories } from "../../api/categories";
 import { Button } from "../StyledButton";
 import { deleteCategory } from "../../api/deleteCategory";
 
-interface ManageAdsProps {
+interface ManageCategoriesProps {
     onPreviewAdChange: (ids: number[] | null) => void;
     showCategoryForm: (categoryId?: number) => void;
 }
@@ -21,7 +21,7 @@ interface ManageAdsProps {
 export default function ManageCategories({
     onPreviewAdChange,
     showCategoryForm,
-}: ManageAdsProps) {
+}: ManageCategoriesProps) {
     const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
         queryCategories
     );
