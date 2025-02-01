@@ -3,39 +3,29 @@ import { createCategory } from "../../api/createCategory";
 import { useMutation, useQuery } from "@apollo/client";
 import { queryCategories } from "../../api/categories";
 import { Button } from "../StyledButton";
-import styled from "styled-components";
+import { Form, FormTitle } from "../styled/PanelAdmin.styles";
 import { InputContainer, Label, Input } from "../styled/Form.styles";
-import { TabName } from "../styled/PanelAdmin.styles";
 import { updateCategory } from "../../api/updateCategory";
 import { queryCategory } from "../../api/category";
 import { CategoryType } from "../../../types";
 
-const Form = styled.form`
-    background-color: var(--card);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    width: 300px;
-`;
-
-const FormTitle = styled(TabName).attrs({ as: "h6" })``;
-
 export default function CategoryForm(props: {
     onCategoryCreated: (newId: number) => void;
     onCategoryUpdated: (updatedId: number) => void;
-    editingId?: number;
+    editingCategoryId?: number;
 }) {
     const [name, setName] = useState<string>("");
-    const editingId = props.editingId;
-    console.log("🚀 ~ editingId:", editingId);
+    const editingCategoryId = props.editingCategoryId;
 
     const { data: categoryData } = useQuery<{ category: CategoryType }>(
         queryCategory,
-        { variables: { categoryId: editingId ?? null }, skip: !editingId }
+        {
+            variables: { categoryId: editingCategoryId ?? null },
+            skip: !editingCategoryId,
+        }
     );
     const category = categoryData?.category;
+    console.log("🚀 ~ category:", category);
 
     const [doUpdateCategory] = useMutation<{
         updateCategory: { id: number; name: string };
@@ -45,22 +35,22 @@ export default function CategoryForm(props: {
         createCategory: { id: number; name: string };
     }>(createCategory, { refetchQueries: [queryCategories] });
 
+    console.log("editingCategoryId:", editingCategoryId);
+
     useEffect(() => {
-        if (category) {
+        if (editingCategoryId !== undefined && category?.name) {
             setName(category.name);
         }
-    }, [category]);
+    }, [category, editingCategoryId]);
 
     const doSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (editingId !== undefined) {
+        if (editingCategoryId !== undefined) {
             const category = await doUpdateCategory({
                 variables: {
-                    id: editingId,
-                    data: {
-                        name,
-                    },
+                    id: editingCategoryId,
+                    data: { name },
                 },
             });
             setName("");
@@ -68,13 +58,10 @@ export default function CategoryForm(props: {
             if (updatedCategoryId !== undefined) {
                 props.onCategoryUpdated(updatedCategoryId);
             }
-            return;
         } else {
             const category = await doCreateCategory({
                 variables: {
-                    data: {
-                        name,
-                    },
+                    data: { name },
                 },
             });
             setName("");
@@ -88,7 +75,7 @@ export default function CategoryForm(props: {
     return (
         <Form onSubmit={doSubmit}>
             <FormTitle>
-                {editingId !== undefined
+                {editingCategoryId !== undefined
                     ? "Modifier une catégorie"
                     : "Créer une nouvelle catégorie"}
             </FormTitle>
@@ -102,7 +89,7 @@ export default function CategoryForm(props: {
                 />
             </InputContainer>
             <Button width="150px" height="35px">
-                {editingId !== undefined
+                {editingCategoryId !== undefined
                     ? "Modifier la catégorie"
                     : "Créer la catégorie"}
             </Button>
