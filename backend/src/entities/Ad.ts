@@ -1,4 +1,12 @@
-import { IsEmail, IsUrl, Length, Max, Min } from "class-validator";
+import {
+    IsBase64,
+    IsEmail,
+    Length,
+    Max,
+    Min,
+    ValidateBy,
+    ValidationOptions,
+} from "class-validator";
 import {
     BaseEntity,
     Column,
@@ -15,6 +23,32 @@ import { Field, ID, Float, ObjectType, InputType } from "type-graphql";
 import { IdInput } from "./Id";
 import { User } from "./User";
 
+const isValidUrl = (str: string) => {
+    try {
+        new URL(str);
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+const isValidDataUri = (str: string) => {
+    return str.startsWith("data:image/") && str.includes(";base64,");
+};
+
+const IsUrlOrBase64 = (validationOptions?: ValidationOptions) => {
+    return ValidateBy({
+        name: "isUrlOrBase64",
+        validator: {
+            validate: (value: string) =>
+                isValidUrl(value) || isValidDataUri(value),
+            defaultMessage: () =>
+                "Each picture must be either a valid URL or a valid base64 image",
+        },
+        ...validationOptions,
+    });
+};
+
 @Entity()
 @ObjectType()
 export class Ad extends BaseEntity {
@@ -28,7 +62,9 @@ export class Ad extends BaseEntity {
     title!: string;
 
     @Column()
-    @Length(20, 5000, { message: "Description must be between 20 and 1800 chars" })
+    @Length(20, 5000, {
+        message: "Description must be between 20 and 1800 chars",
+    })
     @Field()
     description!: string;
 
@@ -49,7 +85,7 @@ export class Ad extends BaseEntity {
     price!: number;
 
     @Column("json")
-    @IsUrl({}, { each: true, message: "Each picture must be a valid URL" })
+    @IsUrlOrBase64({ each: true, message: "Each picture must be a valid URL" })
     @Field(() => [String])
     picture!: string[];
 
@@ -77,7 +113,9 @@ export class createAdInput {
     @Field()
     title!: string;
 
-    @Length(20, 5000, { message: "Description must be between 20 and 1800 chars" })
+    @Length(20, 5000, {
+        message: "Description must be between 20 and 1800 chars",
+    })
     @Field()
     description!: string;
 
@@ -94,7 +132,8 @@ export class createAdInput {
     @Field(() => Float)
     price!: number;
 
-    @IsUrl({}, { each: true, message: "Each picture must be a valid URL" })
+    @Column("json")
+    @IsUrlOrBase64({ each: true, message: "Each picture must be a valid URL" })
     @Field(() => [String])
     picture!: string[];
 
@@ -117,7 +156,9 @@ export class updateAdInput {
     @Field({ nullable: true })
     title!: string;
 
-    @Length(20, 5000, { message: "Description must be between 20 and 1800 chars" })
+    @Length(20, 5000, {
+        message: "Description must be between 20 and 1800 chars",
+    })
     @Field({ nullable: true })
     description!: string;
 
@@ -134,7 +175,8 @@ export class updateAdInput {
     @Field(() => Float, { nullable: true })
     price!: number;
 
-    @IsUrl({}, { each: true, message: "Each picture must be a valid URL" })
-    @Field(() => [String], { nullable: true })
+    @Column("json")
+    @IsUrlOrBase64({ each: true, message: "Each picture must be a valid URL" })
+    @Field(() => [String])
     picture!: string[];
 }
