@@ -12,6 +12,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { queryAds } from "../../api/ads";
 import { deleteAd } from "../../api/deleteAd";
+import { useToast } from "../Toaster/ToasterHook";
 
 interface ManageAdsProps {
     onPreviewAdChange: (id: number | null) => void;
@@ -22,6 +23,7 @@ export default function ManageAds({ onPreviewAdChange }: ManageAdsProps) {
     const id = Number(param.id);
     console.log("🚀 ~ AdminPanel ~ id:", id);
     const navigate = useNavigate();
+    const { addToast } = useToast();
 
     const { data: dataAds } = useQuery<{ ads: AdTypeCard[] }>(queryAds, {
         fetchPolicy: "cache-and-network",
@@ -45,10 +47,11 @@ export default function ManageAds({ onPreviewAdChange }: ManageAdsProps) {
             await doDelete({
                 variables: { id },
             });
-
+            addToast("Annonce supprimée avec succès !", "success");
             navigate("/admin", { replace: true });
         } catch (err) {
             console.error("Erreur lors de la suppression :", err);
+            addToast("L'annonce n'a pas pu être supprimée.", "error");
         }
     };
 
