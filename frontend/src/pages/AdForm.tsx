@@ -13,7 +13,7 @@ import { queryAd } from "../api/ad";
 import { updateAd } from "../api/updateAd";
 import {
     FormSection,
-    TtitleForm,
+    TitleForm,
     Form,
     InputsContainer,
     InputContainer,
@@ -39,6 +39,7 @@ import {
 import { Button } from "../components/StyledButton";
 import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
 import { whoami } from "../api/whoami";
+import { useToast } from "../components/Toaster/ToasterHook";
 
 export default function AdFormPage() {
     const navigate = useNavigate();
@@ -60,6 +61,8 @@ export default function AdFormPage() {
     const [owner, setOwner] = useState("");
     const [categoryId, setCategoryId] = useState<number>();
     const [tagsIds, setTagsIds] = useState<number[]>([]);
+    const [error, setError] = useState<boolean>(false);
+
     const [showCategoryForm, setShowCategoryForm] = useState(false);
     const [showTagForm, setShowTagForm] = useState(false);
     const [carrouselIndex, setCarrouselIndex] = useState(0);
@@ -67,6 +70,7 @@ export default function AdFormPage() {
     const [slideDirection, setSlideDirection] = useState<"left" | "right">(
         "right"
     );
+    const { addToast } = useToast();
 
     useEffect(() => {
         if (ad) {
@@ -108,19 +112,17 @@ export default function AdFormPage() {
     const { data: tagsData } = useQuery<{ tags: TagType[] }>(queryTags);
     const tags = tagsData?.tags;
 
-    const [doCreateAd, { loading: createLoading }] = useMutation<{
+    const [doCreateAd] = useMutation<{
         createAd: AdType;
     }>(createAd, {
         refetchQueries: [queryAds],
     });
 
-    const [doUpdateAd, { loading: updateLoading }] = useMutation<{
+    const [doUpdateAd] = useMutation<{
         updateAd: AdType;
     }>(updateAd, {
         refetchQueries: [queryAds, queryAd],
     });
-
-    const loading = createLoading || updateLoading;
 
     const handleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -132,7 +134,10 @@ export default function AdFormPage() {
 
         Array.from(files).forEach((file) => {
             if (file.size > maxFileSize) {
-                alert(`La taille de l'image ${file.name} dépasse 2 Mo.`);
+                addToast(
+                    `La taille de l'image ${file.name} dépasse 2 Mo.`,
+                    "warning"
+                );
             } else {
                 validFiles.push(file);
             }
@@ -150,6 +155,10 @@ export default function AdFormPage() {
                                 `Erreur lors de la lecture du fichier ${file.name}`
                             )
                         );
+                        addToast(
+                            `Erreur lors de la lecture du fichier ${file.name}`,
+                            "error"
+                        );
                     }
                 };
                 reader.readAsDataURL(file);
@@ -165,6 +174,7 @@ export default function AdFormPage() {
                     "Erreur lors de la lecture des fichiers :",
                     error
                 );
+                addToast("Erreur lors de la lecture des fichiers.", "error");
             });
     };
 
@@ -187,6 +197,28 @@ export default function AdFormPage() {
     };
 
     const doSubmit = async () => {
+        const requiredFields = [
+            title,
+            description,
+            price,
+            location,
+            picture,
+            owner,
+        ];
+
+        const isFormValid = requiredFields.every(
+            (field) => field && (Array.isArray(field) ? field.length > 0 : true)
+        );
+
+        if (!isFormValid) {
+            addToast(
+                "Veuillez remplir tous les champs nécessaires.",
+                "warning"
+            );
+            setError(true);
+            return;
+        }
+
         try {
             if (ad) {
                 const { data } = await doUpdateAd({
@@ -204,6 +236,7 @@ export default function AdFormPage() {
                         },
                     },
                 });
+                addToast("Annonce modifiée avec succès.", "success");
                 navigate(`/ads/${data?.updateAd.id}`, { replace: true });
             } else {
                 const { data } = await doCreateAd({
@@ -220,10 +253,14 @@ export default function AdFormPage() {
                         },
                     },
                 });
+                addToast("Annonce créée avec succès.", "success");
                 navigate(`/ads/${data?.createAd.id}`, { replace: true });
             }
         } catch (err) {
-            console.error(err);
+            addToast(
+                "Une erreur est survenue lors de la création de l'annonce.",
+                "error"
+            );
         }
     };
 
@@ -232,9 +269,9 @@ export default function AdFormPage() {
 
     return (
         <FormSection>
-            <TtitleForm>
+            <TitleForm>
                 {ad ? "Modifier une annonce" : "Poster une annonce"}
-            </TtitleForm>
+            </TitleForm>
             <Form
                 onSubmit={(e) => {
                     e.preventDefault();
@@ -246,7 +283,7 @@ export default function AdFormPage() {
                         <InputFlex>
                             <InputContainer>
                                 <Label htmlFor="title">
-                                    Titre de l'annonce
+                                    Titre de l'annonce *
                                 </Label>
                                 <Input
                                     id="title"
@@ -254,10 +291,13 @@ export default function AdFormPage() {
                                     placeholder="Ajouter un titre..."
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
+                                    error={title === "" ? error : false}
                                 />
                             </InputContainer>
                             <InputContainer>
-                                <Label htmlFor="price">Prix de l'annonce</Label>
+                                <Label htmlFor="price">
+                                    Prix de l'annonce *
+                                </Label>
                                 <Input
                                     id="price"
                                     type="number"
@@ -266,13 +306,14 @@ export default function AdFormPage() {
                                     onChange={(e) =>
                                         setPrice(Number(e.target.value))
                                     }
+                                    error={price === 0 ? error : false}
                                 />
                             </InputContainer>
                         </InputFlex>
                         <InputFlex>
                             <InputContainer>
                                 <Label htmlFor="owner">
-                                    Propriétaire de l'annonce
+                                    Propriétaire de l'annonce *
                                 </Label>
                                 <Input
                                     id="owner"
@@ -280,11 +321,12 @@ export default function AdFormPage() {
                                     placeholder="Ajouter une adresse mail..."
                                     value={owner}
                                     onChange={(e) => setOwner(e.target.value)}
+                                    error={owner === "" ? error : false}
                                 />
                             </InputContainer>
                             <InputContainer>
                                 <Label htmlFor="location">
-                                    Localisation de l'annonce
+                                    Localisation de l'annonce *
                                 </Label>
                                 <Input
                                     id="location"
@@ -294,23 +336,25 @@ export default function AdFormPage() {
                                     onChange={(e) =>
                                         setLocation(e.target.value)
                                     }
+                                    error={location === "" ? error : false}
                                 />
                             </InputContainer>
                         </InputFlex>
                     </InputsFlex>
                     <InputContainer>
                         <Label htmlFor="description">
-                            Description de l'annonce
+                            Description de l'annonce *
                         </Label>
                         <TextArea
                             id="description"
                             placeholder="Ajouter une description..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
+                            error={description === "" ? error : false}
                         ></TextArea>
                     </InputContainer>
                     <InputContainer>
-                        <Label htmlFor="picture">Déposer une image</Label>
+                        <Label htmlFor="picture">Déposer une image *</Label>
                         <InputFileContainer
                             onClick={() => {
                                 const inputField = document.querySelector(
@@ -345,6 +389,7 @@ export default function AdFormPage() {
                                 }
                             }}
                             tabIndex={0}
+                            error={picture.length === 0 ? error : false}
                         >
                             <InputFile
                                 id="picture"
@@ -539,7 +584,6 @@ export default function AdFormPage() {
                 <Button>
                     {ad ? "Modifier mon annonce" : "Créer mon annonce"}
                 </Button>
-                {loading === true && <p>Envoi...</p>}
             </Form>
         </FormSection>
     );
