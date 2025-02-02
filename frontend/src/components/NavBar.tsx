@@ -42,13 +42,8 @@ const DotLink = styled.span`
 `;
 
 export default function NavBar() {
-    const { loading, error, data } = useQuery<{ categories: CategoryType[] }>(
-        queryCategories
-    );
+    const { data } = useQuery<{ categories: CategoryType[] }>(queryCategories);
     const categories = data?.categories;
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error : {error.message}</p>;
 
     return (
         <Navbar>
