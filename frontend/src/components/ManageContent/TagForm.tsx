@@ -8,6 +8,7 @@ import { queryTag } from "../../api/tag";
 import { updateTag } from "../../api/updateTag";
 import { queryTags } from "../../api/tags";
 import { createTag } from "../../api/createTag";
+import { useToast } from "../Toaster/ToasterHook";
 
 export default function TagForm(props: {
     onTagCreated: (newId: number) => void;
@@ -16,6 +17,7 @@ export default function TagForm(props: {
 }) {
     const [name, setName] = useState<string>("");
     const editingTagId = props.editingTagId;
+    const { addToast } = useToast();
 
     const { data: tagData } = useQuery<{ tag: TagType }>(queryTag, {
         variables: { tagId: editingTagId ?? null },
@@ -40,29 +42,36 @@ export default function TagForm(props: {
     const doSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (editingTagId !== undefined) {
-            const tag = await doUpdateTag({
-                variables: {
-                    id: editingTagId,
-                    data: { name },
-                },
-            });
-            setName("");
-            const updatedTagId = tag.data?.updateTag.id;
-            if (updatedTagId !== undefined) {
-                props.onTagUpdated(updatedTagId);
+        try {
+            if (editingTagId !== undefined) {
+                const tag = await doUpdateTag({
+                    variables: {
+                        id: editingTagId,
+                        data: { name },
+                    },
+                });
+                setName("");
+                addToast("Tag modifié avec succès !", "success");
+                const updatedTagId = tag.data?.updateTag.id;
+                if (updatedTagId !== undefined) {
+                    props.onTagUpdated(updatedTagId);
+                }
+            } else {
+                const tag = await doCreateTag({
+                    variables: {
+                        data: { name },
+                    },
+                });
+                setName("");
+                addToast("Tag créé avec succès !", "success");
+                const newTagId = tag.data?.createTag.id;
+                if (newTagId) {
+                    props.onTagCreated(newTagId);
+                }
             }
-        } else {
-            const tag = await doCreateTag({
-                variables: {
-                    data: { name },
-                },
-            });
-            setName("");
-            const newTagId = tag.data?.createTag.id;
-            if (newTagId) {
-                props.onTagCreated(newTagId);
-            }
+        } catch (error) {
+            console.error("Une erreur est survenue :", error);
+            addToast("Une erreur est survenue.", "error");
         }
     };
 
