@@ -90,7 +90,7 @@ export default function AdCard(props: AdTypeCard) {
                         <Price>{props.price}€</Price>
                     </AdCardText>
                     <CategoryAndTags>
-                        <Category>{props.category.name}</Category>
+                        <Category>{props.category?.name}</Category>
                         <AdTagsContainer>
                             {props.tags?.map((tag) => (
                                 <AdTag key={tag.name}>{tag.name}</AdTag>
