@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
     FormSection,
-    TtitleForm,
+    TitleForm,
     Form,
     InputsContainer,
     InputContainer,
@@ -46,7 +46,7 @@ export default function SignIn() {
     return (
         <>
             <FormSection maxWidth="500px" margin="0 auto">
-                <TtitleForm marginBottom="30px">Se connecter</TtitleForm>
+                <TitleForm marginBottom="30px">Se connecter</TitleForm>
                 <Form
                     display="flex"
                     direction="column"

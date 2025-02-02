@@ -1,7 +1,7 @@
 import { useState } from "react";
 import {
     FormSection,
-    TtitleForm,
+    TitleForm,
     Form,
     InputsContainer,
     InputContainer,
@@ -57,7 +57,7 @@ export default function SignUp() {
     return (
         <>
             <FormSection maxWidth="500px" margin="0 auto">
-                <TtitleForm marginBottom="30px">Créer un compte</TtitleForm>
+                <TitleForm marginBottom="30px">Créer un compte</TitleForm>
                 <Form
                     display="flex"
                     direction="column"
