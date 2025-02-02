@@ -8,6 +8,7 @@ import { InputContainer, Label, Input } from "../styled/Form.styles";
 import { updateCategory } from "../../api/updateCategory";
 import { queryCategory } from "../../api/category";
 import { CategoryType } from "../../../types";
+import { useToast } from "../Toaster/ToasterHook";
 
 export default function CategoryForm(props: {
     onCategoryCreated: (newId: number) => void;
@@ -16,6 +17,7 @@ export default function CategoryForm(props: {
 }) {
     const [name, setName] = useState<string>("");
     const editingCategoryId = props.editingCategoryId;
+    const { addToast } = useToast();
 
     const { data: categoryData } = useQuery<{ category: CategoryType }>(
         queryCategory,
@@ -45,30 +47,36 @@ export default function CategoryForm(props: {
 
     const doSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        if (editingCategoryId !== undefined) {
-            const category = await doUpdateCategory({
-                variables: {
-                    id: editingCategoryId,
-                    data: { name },
-                },
-            });
-            setName("");
-            const updatedCategoryId = category.data?.updateCategory.id;
-            if (updatedCategoryId !== undefined) {
-                props.onCategoryUpdated(updatedCategoryId);
+        try {
+            if (editingCategoryId !== undefined) {
+                const category = await doUpdateCategory({
+                    variables: {
+                        id: editingCategoryId,
+                        data: { name },
+                    },
+                });
+                setName("");
+                addToast("Catégorie modifiée avec succès !", "success");
+                const updatedCategoryId = category.data?.updateCategory.id;
+                if (updatedCategoryId !== undefined) {
+                    props.onCategoryUpdated(updatedCategoryId);
+                }
+            } else {
+                const category = await doCreateCategory({
+                    variables: {
+                        data: { name },
+                    },
+                });
+                setName("");
+                addToast("Catégorie créée avec succès !", "success");
+                const newCategoryId = category.data?.createCategory.id;
+                if (newCategoryId) {
+                    props.onCategoryCreated(newCategoryId);
+                }
             }
-        } else {
-            const category = await doCreateCategory({
-                variables: {
-                    data: { name },
-                },
-            });
-            setName("");
-            const newCategoryId = category.data?.createCategory.id;
-            if (newCategoryId) {
-                props.onCategoryCreated(newCategoryId);
-            }
+        } catch (error) {
+            console.error("Une erreur est survenue :", error);
+            addToast("Une erreur est survenue.", "error");
         }
     };
 
