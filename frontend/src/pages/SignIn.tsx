@@ -10,21 +10,37 @@ import {
     AlreadyHaveAccount,
 } from "../components/styled/Form.styles";
 import { Button } from "../components/StyledButton";
-import ErrorForm from "../components/ErrorForm";
 import { Link, useNavigate } from "react-router-dom";
 import { signIn } from "../api/signIn";
 import { useMutation } from "@apollo/client";
 import { whoami } from "../api/whoami";
+import { useToast } from "../components/Toaster/ToasterHook";
 
 export default function SignIn() {
     const [email, setEmail] = useState("alex@gmail.com");
     const [password, setPassword] = useState("Supersecret!1");
-    const [error, setError] = useState("");
+    const [error, setError] = useState<boolean>(false);
+    const { addToast } = useToast();
     const navigate = useNavigate();
 
     const [doSignIn] = useMutation(signIn, { refetchQueries: [whoami] });
 
     const doSubmit = async () => {
+        const requiredFields = [email, password];
+
+        const isFormValid = requiredFields.every(
+            (field) => field && (Array.isArray(field) ? field.length > 0 : true)
+        );
+
+        if (!isFormValid) {
+            addToast(
+                "Veuillez indiquer votre adresse email et votre mot de passe.",
+                "warning"
+            );
+            setError(true);
+            return;
+        }
+
         try {
             const { data } = await doSignIn({
                 variables: {
@@ -33,13 +49,20 @@ export default function SignIn() {
                 },
             });
             if (data.signIn) {
+                setError(false);
+                addToast("Connexion réussie, bienvenue !", "success");
                 navigate(`/`, { replace: true });
             } else {
-                setError("Impossible de vous connecter");
+                addToast(
+                    "Identification échouée, mauvaise adresse email ou mot de passe.",
+                    "error"
+                );
+                setError(true);
             }
         } catch (e: any) {
             console.error(e);
-            setError("Identification échouée");
+            addToast("Impossible de vous connecter", "error");
+            setError(true);
         }
     };
 
@@ -65,6 +88,7 @@ export default function SignIn() {
                                 placeholder="Ajouter une adresse mail..."
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
+                                error={error}
                             />
                         </InputContainer>
                         <InputContainer>
@@ -75,6 +99,7 @@ export default function SignIn() {
                                 placeholder="Ajouter un mot de passe..."
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                error={error}
                             />
                         </InputContainer>
                     </InputsContainer>
@@ -85,7 +110,6 @@ export default function SignIn() {
                 Vous n'avez pas encore de compte?{" "}
                 <Link to={"/signup"}>Inscrivez vous!</Link>
             </AlreadyHaveAccount>
-            {error && <ErrorForm error={error} />}
         </>
     );
 }
