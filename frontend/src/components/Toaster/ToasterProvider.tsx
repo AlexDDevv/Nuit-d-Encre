@@ -3,7 +3,7 @@ import { Toaster, toast } from "sonner";
 import { Toast, ToastContext } from "./ToasterContext";
 import { BadgeCheck, BadgeInfo, BadgeAlert, BadgeX } from "lucide-react";
 
-export const NotificationProvider = ({ children }: { children: ReactNode }) => {
+export const ToasterProvider = ({ children }: { children: ReactNode }) => {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
     const addToast = (message: string, type: Toast["type"] = "info") => {
