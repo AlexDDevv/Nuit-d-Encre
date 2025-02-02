@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-export const FormSection = styled.section<{ maxWidth: string; margin: string }>`
+export const FormSection = styled.section<{
+    maxWidth?: string;
+    margin?: string;
+}>`
     background-color: var(--card);
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -9,23 +12,23 @@ export const FormSection = styled.section<{ maxWidth: string; margin: string }>`
     padding: 20px 25px;
 `;
 
-export const TtitleForm = styled.h1<{ marginBottom: string }>`
+export const TitleForm = styled.h1<{ marginBottom?: string }>`
     color: var(--card-foreground);
     margin-bottom: ${(props) => props.marginBottom || "50px"};
     text-align: center;
 `;
 
 export const Form = styled.form<{
-    display: string;
-    direction: string;
-    gap: string;
+    display?: string;
+    direction?: string;
+    gap?: string;
 }>`
     display: ${(props) => props.display || null};
     flex-direction: ${(props) => props.direction || null};
     gap: ${(props) => props.gap || null};
 `;
 
-export const InputsContainer = styled.div<{ marginBottom: string }>`
+export const InputsContainer = styled.div<{ marginBottom?: string }>`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -45,9 +48,10 @@ export const Label = styled.label`
     font-size: 14px;
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ error?: boolean }>`
     background-color: var(--input);
-    border: none;
+    border: ${(props) =>
+        props.error ? "1px solid var(--destructive)" : "none"};
     border-radius: 8px;
     color: var(--accent-foreground);
     padding: 10px;
@@ -59,13 +63,18 @@ export const Input = styled.input`
     }
 
     &:focus {
-        outline: 2px solid var(--ring);
+        outline: ${(props) =>
+            props.error
+                ? "2px solid var(--destructive)"
+                : "2px solid var(--ring)"};
     }
 `;
 
-export const InputFileContainer = styled.div`
+export const InputFileContainer = styled.div<{ error?: boolean }>`
     position: relative;
     background-color: var(--input);
+    border: ${(props) =>
+        props.error ? "1px solid var(--destructive)" : "none"};
     border-radius: 8px;
     width: 100%;
     height: 350px;
@@ -77,7 +86,10 @@ export const InputFileContainer = styled.div`
     z-index: 150;
 
     &:focus {
-        outline: 2px solid var(--ring);
+        outline: ${(props) =>
+            props.error
+                ? "2px solid var(--destructive)"
+                : "2px solid var(--ring)"};
     }
 `;
 
@@ -145,12 +157,12 @@ export const Image = styled.img<{
         isVisible
             ? "translateX(0)"
             : slideDirection === "right"
-                ? isExiting
-                    ? "translateX(-100%)"
-                    : "translateX(100%)"
-                : isExiting
-                    ? "translateX(100%)"
-                    : "translateX(-100%)"};
+            ? isExiting
+                ? "translateX(-100%)"
+                : "translateX(100%)"
+            : isExiting
+            ? "translateX(100%)"
+            : "translateX(-100%)"};
 
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 `;
@@ -215,7 +227,7 @@ export const CategoryContainer = styled.div`
     gap: 10px;
 `;
 
-export const Select = styled(Input).attrs({ as: "select" }) <{
+export const Select = styled(Input).attrs({ as: "select" })<{
     isAdmin: boolean;
 }>`
     width: ${(props) => (props.isAdmin ? "60%" : "100%")};
