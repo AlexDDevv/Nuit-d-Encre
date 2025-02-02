@@ -11,12 +11,15 @@ import { Button } from "../StyledButton";
 import { deleteTag } from "../../api/deleteTag";
 import { queryTags } from "../../api/tags";
 import { TagType } from "../../../types";
+import { useToast } from "../Toaster/ToasterHook";
 
 interface ManageTagsProps {
     showTagForm: (tagId?: number) => void;
 }
 
 export default function ManageTags({ showTagForm }: ManageTagsProps) {
+    const { addToast } = useToast();
+
     const { data: tagsData } = useQuery<{ tags: TagType[] }>(queryTags);
     const tags = tagsData?.tags;
     console.log("🚀 ~ tags:", tags);
@@ -30,8 +33,10 @@ export default function ManageTags({ showTagForm }: ManageTagsProps) {
             await doDelete({
                 variables: { id },
             });
+            addToast("Tag supprimé avec succès !", "success");
         } catch (err) {
             console.error("Erreur lors de la suppression :", err);
+            addToast("Le tag n'a pas pu être supprimé.", "error");
         }
     };
 
