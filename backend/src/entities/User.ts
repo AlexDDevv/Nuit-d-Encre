@@ -35,7 +35,7 @@ export class User extends BaseEntity {
     id: number;
 
     @Column({ unique: true })
-    @IsEmail()
+    @IsEmail({}, { message: "Email must be an email" })
     @Field()
     email: string;
 
@@ -53,7 +53,7 @@ export class User extends BaseEntity {
 
 @InputType()
 export class createUserInput {
-    @IsEmail()
+    @IsEmail({}, { message: "Email must be an email" })
     @Field()
     email!: string;
 
