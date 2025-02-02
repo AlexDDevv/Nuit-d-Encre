@@ -12,6 +12,7 @@ import {
 import { queryCategories } from "../../api/categories";
 import { Button } from "../StyledButton";
 import { deleteCategory } from "../../api/deleteCategory";
+import { useToast } from "../Toaster/ToasterHook";
 
 interface ManageCategoriesProps {
     onPreviewAdChange: (ids: number[] | null) => void;
@@ -22,6 +23,8 @@ export default function ManageCategories({
     onPreviewAdChange,
     showCategoryForm,
 }: ManageCategoriesProps) {
+    const { addToast } = useToast();
+
     const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
         queryCategories
     );
@@ -42,8 +45,10 @@ export default function ManageCategories({
             await doDelete({
                 variables: { id },
             });
+            addToast("Catégorie supprimée avec succès !", "success");
         } catch (err) {
             console.error("Erreur lors de la suppression :", err);
+            addToast("La catégorie n'a pas pu être supprimée.", "error");
         }
     };
 
