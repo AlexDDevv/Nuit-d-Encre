@@ -8,5 +8,5 @@ createRoot(document.getElementById("root")!).render(
         <ToasterProvider>
             <App />
         </ToasterProvider>
-    </StrictMode>
+    </StrictMode>,
 );
