@@ -57,3 +57,19 @@ body {
     background: var(--color-accent-foreground);
     border-radius: 8px;
 }
+
+.footerLinkAfter::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--color-card-foreground);
+    transition: width 0.2s ease-in-out;
+    z-index: 500;
+}
+
+.footerLinkAfter:hover::after {
+    width: 100%;
+}
