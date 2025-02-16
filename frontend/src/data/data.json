@@ -9,5 +9,23 @@
         {
             "tab": "Tags"
         }
+    ],
+    "footerLi": [
+        {
+            "content": "Contact",
+            "link": "/"
+        },
+        {
+            "content": "À propos",
+            "link": "/"
+        },
+        {
+            "content": "Support",
+            "link": "/"
+        },
+        {
+            "content": "Mentions légales",
+            "link": "/"
+        }
     ]
 }
