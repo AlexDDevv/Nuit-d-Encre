@@ -1,6 +1,7 @@
 import NavBar from "./NavBar";
 import Form from "./Form";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import logo from "../assets/logo.svg";
 import styled from "styled-components";
 import { styledButton, ButtonProps } from "./StyledButton";
 import { useMutation, useQuery } from "@apollo/client";
@@ -8,14 +9,13 @@ import { whoami } from "../api/whoami";
 import { signOut } from "../api/signout";
 
 const HeaderApp = styled.header`
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    border-bottom: 1px solid var(--border);
-    padding: 20px;
     background-color: var(--card);
-    z-index: 500;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
 `;
 
 const StyledLogo = styled(Link)<ButtonProps>`
@@ -25,7 +25,6 @@ const StyledLogo = styled(Link)<ButtonProps>`
 `;
 
 const StyledLink = styled(StyledLogo)`
-    ${styledButton}
     text-decoration: none;
 `;
 
@@ -44,21 +43,7 @@ const MainMenu = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-`;
-
-const MobileLogo = styled.span`
-    @media screen and (min-width: 720px) {
-        display: none;
-    }
-`;
-
-const DesktopLogo = styled.span`
-    display: none;
-
-    @media screen and (min-width: 720px) {
-        display: initial;
-    }
+    gap: 20px;
 `;
 
 export default function Header() {
@@ -74,6 +59,83 @@ export default function Header() {
         navigate("/");
     };
 
+    const renderButtons = () => {
+        if (!me) {
+            return (
+                <ButtonsContainer>
+                    <StyledLink to="/signup">Inscription</StyledLink>
+                    <StyledLink to="/signin">Connexion</StyledLink>
+                </ButtonsContainer>
+            );
+        }
+
+        const commonButtons = [
+            <StyledLink
+                key="newAd"
+                to="ads/newAd"
+                transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
+            >
+                Publier une annonce
+            </StyledLink>,
+        ];
+
+        const signOutButton = (
+            <SignOutButton
+                key="signOut"
+                onClick={onSignOut}
+                background="var(--destructive)"
+                color="var(--destructive-foreground)"
+            >
+                Se déconnecter
+            </SignOutButton>
+        );
+
+        if (me.role === "admin") {
+            if (location.pathname === "/admin") {
+                return (
+                    <ButtonsContainer>
+                        {commonButtons}
+                        {signOutButton}
+                    </ButtonsContainer>
+                );
+            }
+            return (
+                <ButtonsContainer>
+                    {commonButtons}
+                    <StyledLink
+                        to="/admin"
+                        background="var(--secondary)"
+                        color="var(--secondary-foreground)"
+                    >
+                        Admin
+                    </StyledLink>
+                </ButtonsContainer>
+            );
+        }
+
+        if (location.pathname === "/profil") {
+            return (
+                <ButtonsContainer>
+                    {commonButtons}
+                    {signOutButton}
+                </ButtonsContainer>
+            );
+        }
+
+        return (
+            <ButtonsContainer>
+                {commonButtons}
+                <StyledLink
+                    to="/profil"
+                    background="var(--secondary)"
+                    color="var(--secondary-foreground)"
+                >
+                    Profil
+                </StyledLink>
+            </ButtonsContainer>
+        );
+    };
+
     return (
         <HeaderApp id="header">
             <MainMenu>
@@ -81,82 +143,13 @@ export default function Header() {
                     to="/"
                     background="transparent"
                     color="var(--primary)"
+                    height="auto"
                     padding="0"
                 >
-                    <MobileLogo>TGC</MobileLogo>
-                    <DesktopLogo>THE GOOD CORNER</DesktopLogo>
+                    <img src={logo} alt="The good corner" />
                 </StyledLogo>
                 <Form />
-                {me ? (
-                    me.role === "admin" ? (
-                        location.pathname === "/admin" ? (
-                            <ButtonsContainer>
-                                <StyledLink
-                                    to="ads/newAd"
-                                    transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
-                                >
-                                    <MobileLogo>Publier</MobileLogo>
-                                    <DesktopLogo>
-                                        Publier une annonce
-                                    </DesktopLogo>
-                                </StyledLink>
-                                <SignOutButton
-                                    onClick={onSignOut}
-                                    background="var(--destructive)"
-                                    color="var(--destructive-foreground)"
-                                >
-                                    Déconnexion
-                                </SignOutButton>
-                            </ButtonsContainer>
-                        ) : (
-                            <ButtonsContainer>
-                                <StyledLink
-                                    to="ads/newAd"
-                                    transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
-                                >
-                                    <MobileLogo>Publier</MobileLogo>
-                                    <DesktopLogo>
-                                        Publier une annonce
-                                    </DesktopLogo>
-                                </StyledLink>
-                                <StyledLink to="/admin">Admin</StyledLink>
-                            </ButtonsContainer>
-                        )
-                    ) : location.pathname === "/profil" ? (
-                        <ButtonsContainer>
-                            <StyledLink
-                                to="ads/newAd"
-                                transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
-                            >
-                                <MobileLogo>Publier</MobileLogo>
-                                <DesktopLogo>Publier une annonce</DesktopLogo>
-                            </StyledLink>
-                            <SignOutButton
-                                onClick={onSignOut}
-                                background="var(--destructive)"
-                                color="var(--destructive-foreground)"
-                            >
-                                Déconnexion
-                            </SignOutButton>
-                        </ButtonsContainer>
-                    ) : (
-                        <ButtonsContainer>
-                            <StyledLink
-                                to="ads/newAd"
-                                transition="background-color 0.2s ease-in-out, color 0.2s ease-in-out"
-                            >
-                                <MobileLogo>Publier</MobileLogo>
-                                <DesktopLogo>Publier une annonce</DesktopLogo>
-                            </StyledLink>
-                            <StyledLink to="/profil">Profil</StyledLink>
-                        </ButtonsContainer>
-                    )
-                ) : me === null ? (
-                    <ButtonsContainer>
-                        <StyledLink to="/signup">Inscription</StyledLink>
-                        <StyledLink to="/signin">Connexion</StyledLink>
-                    </ButtonsContainer>
-                ) : null}
+                {renderButtons()}
             </MainMenu>
             <NavBar />
         </HeaderApp>
