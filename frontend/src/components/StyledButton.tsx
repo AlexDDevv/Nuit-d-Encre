@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 
 export type ButtonProps = {
     background?: string;
+    rounded?: string;
     color?: string;
     minWidth?: string;
     width?: string;
@@ -15,16 +16,17 @@ export type ButtonProps = {
 
 export const styledButton = css<ButtonProps>`
     background-color: ${(props) => props.background || "var(--primary)"};
-    border-radius: 8px;
+    border-radius: ${(props) => props.rounded || "8px"};
     border: none;
     color: ${(props) => props.color || "var(--primary-foreground)"};
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 3px;
-    font-size: 12px;
-    font-weight: bold;
-    min-width: ${(props) => props.minWidth || "40px"};
+    font-family: "Lato", serif;
+    font-size: 16px;
+    font-weight: 600;
+    min-width: ${(props) => props.minWidth || "30px"};
     width: ${(props) => props.width || null};
     height: ${(props) => props.height || "40px"};
     margin: ${(props) => props.margin || null};
