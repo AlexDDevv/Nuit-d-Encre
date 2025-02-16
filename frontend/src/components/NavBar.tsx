@@ -1,43 +1,44 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { CategoryType } from "../../types";
 import { useQuery } from "@apollo/client";
 import { queryCategories } from "../api/categories";
-import { Dot } from "lucide-react";
 import styled from "styled-components";
 
-const Navbar = styled.nav`
-    color: var(--card-foreground);
-    font-size: 12px;
-    font-weight: bold;
+const Navbar = styled.nav``;
+
+const CategoryList = styled.ul`
     display: flex;
-    gap: 15px;
-    padding: 16px 0;
-    white-space: nowrap;
-    overflow-x: scroll;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;
 `;
 
-const StyledLink = styled(Link)`
-    color: var(--card-foreground);
-    font-size: 12px;
-    font-weight: 600;
-    text-decoration: none;
-`;
-
-const DotLink = styled.span`
+const CategoryLi = styled.li`
+    background-color: var(--muted);
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.2s ease-in-out;
 
-    &:last-child {
-        svg {
-            display: none;
-        }
+    &:hover {
+        background-color: var(--muted-foreground);
     }
+`;
 
-    svg {
-        height: 16px;
-        width: 16px;
+const StyledLink = styled(Link)`
+    color: var(--muted-foreground);
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 12px;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+
+    &:hover {
+        color: var(--muted);
     }
 `;
 
@@ -47,16 +48,15 @@ export default function NavBar() {
 
     return (
         <Navbar>
-            {categories?.map((category: CategoryType) => (
-                <React.Fragment key={category.name}>
-                    <StyledLink to={`/categories/${category.id}`}>
-                        {category.name}
-                    </StyledLink>
-                    <DotLink>
-                        <Dot />
-                    </DotLink>
-                </React.Fragment>
-            ))}
+            <CategoryList>
+                {categories?.map((category: CategoryType) => (
+                    <CategoryLi key={category.name}>
+                        <StyledLink to={`/categories/${category.id}`}>
+                            {category.name}
+                        </StyledLink>
+                    </CategoryLi>
+                ))}
+            </CategoryList>
         </Navbar>
     );
 }
