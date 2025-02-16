@@ -2,61 +2,28 @@ import { Link } from "react-router-dom";
 import { CategoryType } from "../../types";
 import { useQuery } from "@apollo/client";
 import { queryCategories } from "../api/categories";
-import styled from "styled-components";
-
-const Navbar = styled.nav``;
-
-const CategoryList = styled.ul`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 16px;
-`;
-
-const CategoryLi = styled.li`
-    background-color: var(--muted);
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.2s ease-in-out;
-
-    &:hover {
-        background-color: var(--muted-foreground);
-    }
-`;
-
-const StyledLink = styled(Link)`
-    color: var(--muted-foreground);
-    font-size: 16px;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 12px;
-    text-decoration: none;
-    transition: color 0.2s ease-in-out;
-
-    &:hover {
-        color: var(--muted);
-    }
-`;
 
 export default function NavBar() {
     const { data } = useQuery<{ categories: CategoryType[] }>(queryCategories);
     const categories = data?.categories;
 
     return (
-        <Navbar>
-            <CategoryList>
+        <nav>
+            <ul className="flex items-center justify-start gap-4">
                 {categories?.map((category: CategoryType) => (
-                    <CategoryLi key={category.name}>
-                        <StyledLink to={`/categories/${category.id}`}>
+                    <li
+                        key={category.name}
+                        className="bg-muted hover:bg-muted-foreground flex items-center justify-center rounded-sm transition-colors duration-200 ease-in-out"
+                    >
+                        <Link
+                            to={`/categories/${category.id}`}
+                            className="text-muted-foreground hover:text-muted flex items-center justify-center px-3 py-2 font-semibold transition-colors duration-200 ease-in-out"
+                        >
                             {category.name}
-                        </StyledLink>
-                    </CategoryLi>
+                        </Link>
+                    </li>
                 ))}
-            </CategoryList>
-        </Navbar>
+            </ul>
+        </nav>
     );
 }
