@@ -1,4 +1,5 @@
-import "./assets/App.css";
+import "./assets/styles/App.css";
+import "./assets/styles/globals.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import HomePage from "./pages/Home";
@@ -85,9 +86,7 @@ function App() {
                             path="/admin"
                             element={
                                 <AuthChecker
-                                    authState={[
-                                        AuthState.admin,
-                                    ]}
+                                    authState={[AuthState.admin]}
                                     redirectTo="/"
                                 >
                                     <Admin />
@@ -98,9 +97,7 @@ function App() {
                             path="/profil"
                             element={
                                 <AuthChecker
-                                    authState={[
-                                        AuthState.user,
-                                    ]}
+                                    authState={[AuthState.user]}
                                     redirectTo="/"
                                 >
                                     <Profil />
