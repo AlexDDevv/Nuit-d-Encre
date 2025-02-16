@@ -1,0 +1,59 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+    --color-background: hsl(222, 22%, 15%);
+    --color-foreground: hsl(48, 9%, 78%);
+
+    --color-muted: hsl(224, 11%, 19%);
+    --color-muted-foreground: hsl(221, 12%, 69%);
+
+    --color-popover: hsl(222, 21%, 12%);
+    --color-popover-foreground: hsl(48, 8%, 88%);
+
+    --color-card: hsl(223, 21%, 13%);
+    --color-card-foreground: hsl(45, 9%, 83%);
+
+    --color-border: hsl(220, 12%, 20%);
+    --color-input: hsl(223, 12%, 23%);
+
+    --color-primary: hsl(40, 100%, 70%);
+    --color-primary-foreground: hsl(40, 100%, 10%);
+
+    --color-secondary: hsl(39, 30%, 25%);
+    --color-secondary-foreground: hsl(42, 30%, 85%);
+
+    --color-accent: hsl(222, 22%, 30%);
+    --color-accent-foreground: hsl(224, 22%, 90%);
+
+    --color-destructive: hsl(9, 86%, 58%);
+    --color-destructive-foreground: hsl(0, 0%, 100%);
+
+    --color-ring: hsl(40, 100%, 70%);
+
+    --font-title: "Roboto", sans-serif;
+    --font-body: "Lato", sans-serif;
+}
+
+body {
+    background-color: var(--color-background);
+    font-family: var(--font-body);
+    padding: 24px;
+    position: relative;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-accent);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-accent-foreground);
+    border-radius: 8px;
+}
