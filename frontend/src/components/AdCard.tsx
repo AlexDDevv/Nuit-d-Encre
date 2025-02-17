@@ -1,113 +1,50 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AdTypeCard } from "../../types";
-import styled from "styled-components";
-import { Button } from "./StyledButton";
-
-const AdCardContainer = styled.div`
-    background-color: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 20px;
-    width: 300px;
-    height: auto;
-    padding: 20px;
-    transition: border-color 0.2s ease-in-out;
-
-    &:hover {
-        border-color: var(--primary);
-    }
-`;
-
-const AdCardLink = styled(Link)`
-    color: var(--card-foreground);
-    text-decoration: none;
-    display: block;
-`;
-
-const AdCardImg = styled.img`
-    width: 100%;
-    height: 150px;
-    border-radius: 6px;
-    margin-bottom: 10px;
-`;
-
-const AdCardTextContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-`;
-
-const AdCardTitle = styled.h2`
-    font-size: 16px;
-`;
-
-const AdCardText = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-`;
-
-const Price = styled.p``;
-
-const CategoryAndTags = styled(AdCardText)``;
-
-const Category = styled.span`
-    background-color: var(--muted);
-    border-radius: 5px;
-    color: var(--muted-foreground);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 18px;
-    padding: 3px 8px;
-`;
-
-const AdTagsContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-`;
-
-const AdTag = styled(Category)`
-    background-color: var(--accent);
-    color: var(--accent-foreground);
-`;
+import ActionButton from "./UI/ActionButton";
 
 export default function AdCard(props: AdTypeCard) {
-    const navigate = useNavigate();
-
     return (
-        <AdCardContainer key={props.id}>
-            <AdCardLink to={`/ads/${props.id}`}>
-                <AdCardImg src={props.picture[0]} />
-                <AdCardTextContainer>
-                    <AdCardText>
-                        <AdCardTitle>{props.title}</AdCardTitle>
-                        <Price>{props.price}€</Price>
-                    </AdCardText>
-                    <CategoryAndTags>
-                        <Category>{props.category?.name}</Category>
-                        <AdTagsContainer>
-                            {props.tags?.map((tag) => (
-                                <AdTag key={tag.name}>{tag.name}</AdTag>
-                            ))}
-                        </AdTagsContainer>
-                    </CategoryAndTags>
-                </AdCardTextContainer>
-            </AdCardLink>
-            <Button
-                width="100%"
-                transition="background-color 0.2s ease-in-out,
-                color 0.2s ease-in-out"
-                backgroundHover="rgba(255, 204, 102, 0.9)"
-                onClick={() => navigate(`/ads/${props.id}`)}
+        <div
+            key={props.id}
+            className="bg-card border-border hover:border-primary flex h-auto w-80 flex-col justify-between gap-5 rounded-lg border p-5 transition-colors duration-200 ease-in-out"
+        >
+            <Link
+                to={`/ads/${props.id}`}
+                className="text-card-foreground block"
             >
-                Voir l'annonce
-            </Button>
-        </AdCardContainer>
+                <img
+                    src={props.picture[0]}
+                    alt="Image de l'annonce"
+                    className="mb-2.5 h-40 w-full rounded-md"
+                />
+                <div className="flex flex-col gap-4">
+                    <div className="flex items-center justify-between gap-5">
+                        <h2 className="text-card-foreground">{props.title}</h2>
+                        <p className="text-card-foreground">{props.price}€</p>
+                    </div>
+                    <div className="flex items-center justify-between gap-5">
+                        <span className="bg-muted text-muted-foreground rounded-sm px-2 py-1 text-sm font-semibold">
+                            {props.category?.name}
+                        </span>
+                        <div className="flex items-center justify-center gap-1.5">
+                            {props.tags?.map((tag) => (
+                                <span
+                                    key={tag.name}
+                                    className="bg-accent text-accent-foreground rounded-sm px-2 py-1 text-sm font-semibold"
+                                >
+                                    {tag.name}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </Link>
+            <ActionButton
+                bgColor="bg-primary"
+                color="text-primary-foreground"
+                path={`/ads/${props.id}`}
+                content="Voir l'annonce"
+            />
+        </div>
     );
 }
