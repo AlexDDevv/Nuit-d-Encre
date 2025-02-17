@@ -2,28 +2,6 @@ import AdCard from "../components/AdCard";
 import { AdTypeCard } from "../../types";
 import { useQuery } from "@apollo/client";
 import { queryAds } from "../api/ads";
-import styled from "styled-components";
-
-const Container = styled.div`
-    max-width: 1024px;
-    margin: 0 auto;
-`;
-
-const RecentAdds = styled.h1`
-    color: var(--foreground);
-    font-size: 1.75rem;
-`;
-
-const SectionAds = styled.section`
-    margin-top: 50px;
-`;
-
-const AdsContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin-top: 20px;
-`;
 
 export default function HomePage() {
     const { data: dataAds } = useQuery<{ ads: AdTypeCard[] }>(queryAds, {
@@ -32,10 +10,10 @@ export default function HomePage() {
     const ads = dataAds?.ads;
 
     return (
-        <Container>
-            <RecentAdds>Annonces récentes</RecentAdds>
-            <SectionAds>
-                <AdsContainer>
+        <div className="mx-auto max-w-5xl">
+            <h1 className="text-foreground text-lg">Annonces récentes</h1>
+            <section className="mt-12">
+                <div className="mt-5 flex flex-wrap gap-8">
                     {ads?.map((ad) => (
                         <AdCard
                             key={ad.id}
@@ -47,8 +25,8 @@ export default function HomePage() {
                             tags={ad.tags}
                         />
                     ))}
-                </AdsContainer>
-            </SectionAds>
-        </Container>
+                </div>
+            </section>
+        </div>
     );
 }
