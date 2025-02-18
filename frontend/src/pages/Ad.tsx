@@ -5,32 +5,9 @@ import { useQuery, useMutation } from "@apollo/client";
 import { queryAd } from "../api/ad";
 import { deleteAd } from "../api/deleteAd";
 import { queryAds } from "../api/ads";
-import {
-    ContainerSelectedAd,
-    ImgAndSeller,
-    AdInformations,
-    ImageContainer,
-    InformationsContainer,
-    PriceContainer,
-    SpanDelivery,
-    WithoutCharge,
-    Triple,
-    AdDate,
-    ActionsContainer,
-    SellerContainer,
-    Seller,
-    AvatarContainer,
-    Avatar,
-    TimeResponse,
-    UserActions,
-    BtnsContainer,
-    Button,
-    Paiement,
-    MoreInformations,
-    UserBtnsContainer,
-} from "../components/styled/Ad.styles";
 import { whoami } from "../api/whoami";
 import { useToast } from "../components/Toaster/ToasterHook";
+import ActionButton from "../components/UI/ActionButton";
 
 export default function AdPage() {
     const param = useParams<{ id: string }>();
@@ -77,132 +54,153 @@ export default function AdPage() {
         <>
             {ad && (
                 <>
-                    <ContainerSelectedAd>
-                        <ImgAndSeller>
-                            <AdInformations>
-                                <ImageContainer>
+                    <div className="mx-auto max-w-5xl">
+                        <div className="mb-12 flex justify-between gap-8">
+                            <div className="flex flex-col gap-4">
+                                <div className="flex h-[450px] w-[450px] overflow-hidden rounded-xl">
                                     {ad.picture.length > 0 &&
                                         ad.picture.map((item, i) => (
                                             <img
                                                 key={i}
                                                 src={item}
                                                 alt={`Ce qui est vendu par ${ad.owner}`}
+                                                className="h-full w-full object-cover"
                                             />
                                         ))}
-                                </ImageContainer>
-                                <InformationsContainer>
-                                    <h1>{ad.title}</h1>
-                                    <PriceContainer>
-                                        <h2>{ad.price} €</h2>
-                                        <SpanDelivery>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <h1 className="text-foreground text-2xl">
+                                        {ad.title}
+                                    </h1>
+                                    <div className="flex items-center gap-2.5">
+                                        <h2 className="text-foreground text-lg">
+                                            {ad.price} €
+                                        </h2>
+                                        <span className="bg-accent text-accent-foreground rounded-2xl px-2.5 py-0.5 text-xs font-semibold">
                                             Livraison : à partir de 4,99 €
-                                        </SpanDelivery>
-                                    </PriceContainer>
-                                    <WithoutCharge>
-                                        <p>Payez en</p>
-                                        <Triple>
-                                            <span>3x</span>
-                                        </Triple>
-                                        <span>à partir de 56,66 €/mois</span>
-                                    </WithoutCharge>
-                                    <AdDate>
+                                        </span>
+                                    </div>
+                                    <div className="flex gap-1.5">
+                                        <p className="text-foreground text-sm">
+                                            Payez en
+                                        </p>
+                                        <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#84b92b]">
+                                            <span className="text-xs font-bold text-white">
+                                                3x
+                                            </span>
+                                        </div>
+                                        <p className="text-foreground text-sm">
+                                            à partir de 56,66 €/mois
+                                        </p>
+                                    </div>
+                                    <p className="text-foreground text-xs">
                                         Annonce créée le {frenchDate}
-                                    </AdDate>
-                                </InformationsContainer>
-                            </AdInformations>
-                            <ActionsContainer>
-                                <SellerContainer>
-                                    <Seller>
-                                        <AvatarContainer>
-                                            <Avatar>
-                                                <User />
-                                            </Avatar>
-                                            <Link to="#">
+                                    </p>
+                                </div>
+                            </div>
+                            <div className="bg-card border-border h-full min-w-96 rounded-xl border px-4 py-5">
+                                <div className="border-border border-b pb-5">
+                                    <div className="mb-7 flex items-center justify-between gap-5">
+                                        <div className="flex items-center justify-center gap-2.5">
+                                            <div className="bg-primary border-border flex h-16 w-16 cursor-pointer items-center justify-center rounded-full border">
+                                                <User className="text-primary-foreground h-5 w-5" />
+                                            </div>
+                                            <Link
+                                                to="#"
+                                                className="text-card-foreground"
+                                            >
                                                 {me?.role === "admin" ||
                                                 me?.id === ad.createdBy.id
                                                     ? ad.owner
                                                     : "●●●●●@●●●●●.com"}
                                             </Link>
-                                        </AvatarContainer>
-                                        <ChevronRight />
-                                    </Seller>
-                                    <TimeResponse>
-                                        <Clock />
-                                        <p>Répond en moyenne en 1j</p>
-                                    </TimeResponse>
-                                </SellerContainer>
-                                <UserActions>
-                                    <BtnsContainer>
-                                        <Button
-                                            bgColor="var(--primary)"
-                                            color="var(--primary-foreground)"
-                                        >
-                                            Acheter
-                                        </Button>
-                                        <Button
-                                            bgColor="var(--secondary)"
-                                            color="var(--secondary-foreground)"
-                                        >
-                                            Message
-                                        </Button>
-                                    </BtnsContainer>
-                                    <Paiement>
-                                        <LockKeyhole />
-                                        <p>Paiement sécurisé</p>
-                                    </Paiement>
-                                </UserActions>
-                            </ActionsContainer>
-                        </ImgAndSeller>
-                        <MoreInformations>
+                                        </div>
+                                        <ChevronRight className="text-card-foreground cursor-pointer" />
+                                    </div>
+                                    <div className="text-card-foreground flex items-center gap-1.5">
+                                        <Clock className="h-4 w-4" />
+                                        <p className="text-sm">
+                                            Répond en moyenne en 1j
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="text-center">
+                                    <div className="mb-5 flex flex-col items-center justify-center gap-2.5">
+                                        <ActionButton
+                                            bgColor="bg-primary"
+                                            color="text-primary-foreground"
+                                            width="w-full"
+                                            content="Acheter"
+                                        />
+                                        <ActionButton
+                                            bgColor="bg-secondary"
+                                            color="text-secondary-foreground"
+                                            width="w-full"
+                                            content="Message"
+                                        />
+                                    </div>
+                                    <div className="flex items-center justify-center gap-2.5">
+                                        <LockKeyhole className="text-foreground h-5 w-5" />
+                                        <p className="text-foreground">
+                                            Paiement sécurisé
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-5">
                             <div>
-                                <h3>Description de l'annonce :</h3>
-                                <p>{ad.description}</p>
+                                <h3 className="text-foreground mb-1.5">
+                                    Description de l'annonce :
+                                </h3>
+                                <p className="text-foreground">
+                                    {ad.description}
+                                </p>
                             </div>
                             <div>
-                                <h3>Localisation de l'annonce :</h3>
-                                <p>{ad.location}</p>
+                                <h3 className="text-foreground mb-1.5">
+                                    Localisation de l'annonce :
+                                </h3>
+                                <p className="text-foreground">{ad.location}</p>
                             </div>
 
                             <div>
-                                <h3>Category de l'annonce :</h3>
-                                <p>{ad.category?.name}</p>
+                                <h3 className="text-foreground mb-1.5">
+                                    Category de l'annonce :
+                                </h3>
+                                <p className="text-foreground">
+                                    {ad.category?.name}
+                                </p>
                             </div>
                             {ad.tags && ad.tags.length > 0 && (
                                 <div>
-                                    <h3>Tag</h3>
-                                    <p>{ad?.tags[0].name}</p>
+                                    <h3 className="text-foreground mb-1.5">
+                                        Tag
+                                    </h3>
+                                    <p className="text-foreground">
+                                        {ad?.tags[0].name}
+                                    </p>
                                 </div>
                             )}
                             {(me?.role === "admin" ||
                                 me?.id === ad.createdBy.id) && (
-                                <UserBtnsContainer>
-                                    <Button
-                                        bgColor="var(--destructive)"
-                                        radius="6px"
-                                        size="14px"
-                                        weight="500"
-                                        width="175px"
-                                        padding="8px 20px"
+                                <div className="flex items-center gap-5">
+                                    <ActionButton
+                                        bgColor="bg-destructive"
+                                        color="text-destructive-foreground"
+                                        content="Supprimer l'annonce"
                                         onClick={onDelete}
-                                    >
-                                        Supprimer l'annonce
-                                    </Button>
-                                    <Button
-                                        bgColor="var(--primary)"
-                                        color="var(--primary-foreground)"
-                                        radius="6px"
-                                        size="14px"
-                                        weight="500"
-                                        width="175px"
-                                        padding="8px 20px"
+                                    />
+                                    <ActionButton
+                                        bgColor="bg-primary"
+                                        color="text-primary-foreground"
+                                        content="Modifier l'annonce"
                                         onClick={onUpdate}
-                                    >
-                                        Modifier l'annonce
-                                    </Button>
-                                </UserBtnsContainer>
+                                    />
+                                </div>
                             )}
-                        </MoreInformations>
-                    </ContainerSelectedAd>
+                        </div>
+                    </div>
                 </>
             )}
         </>
