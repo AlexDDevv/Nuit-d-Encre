@@ -6,18 +6,21 @@ import { useMutation, useQuery } from "@apollo/client";
 import { whoami } from "../api/whoami";
 import { signOut } from "../api/signout";
 import ActionButton from "./UI/ActionButton";
+import { useToast } from "./UI/Toaster/ToasterHook";
 
 export default function Header() {
     const { data: whoamiData } = useQuery(whoami);
     const me = whoamiData?.whoami;
     const navigate = useNavigate();
     const location = useLocation();
+    const { addToast } = useToast();
 
     const [doSignOut] = useMutation(signOut, { refetchQueries: [whoami] });
 
     const onSignOut = () => {
         doSignOut();
         navigate("/");
+        addToast("Déconnexion réussie, à bientôt !", "success");
     };
 
     return (
