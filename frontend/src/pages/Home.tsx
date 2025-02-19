@@ -11,7 +11,9 @@ export default function HomePage() {
 
     return (
         <div className="mx-auto max-w-5xl">
-            <h1 className="text-foreground text-lg">Annonces récentes</h1>
+            <h1 className="text-foreground text-2xl font-bold">
+                Annonces récentes
+            </h1>
             <section className="mt-12">
                 <div className="mt-5 flex flex-wrap gap-8">
                     {ads?.map((ad) => (
