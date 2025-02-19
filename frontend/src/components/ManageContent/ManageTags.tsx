@@ -11,7 +11,7 @@ import { Button } from "../StyledButton";
 import { deleteTag } from "../../api/deleteTag";
 import { queryTags } from "../../api/tags";
 import { TagType } from "../../../types";
-import { useToast } from "../Toaster/ToasterHook";
+import { useToast } from "../UI/Toaster/ToasterHook";
 
 interface ManageTagsProps {
     showTagForm: (tagId?: number) => void;

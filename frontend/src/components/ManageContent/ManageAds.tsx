@@ -12,7 +12,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useNavigate, useParams } from "react-router-dom";
 import { queryAds } from "../../api/ads";
 import { deleteAd } from "../../api/deleteAd";
-import { useToast } from "../Toaster/ToasterHook";
+import { useToast } from "../UI/Toaster/ToasterHook";
 
 interface ManageAdsProps {
     onPreviewAdChange: (id: number | null) => void;

@@ -8,7 +8,7 @@ import { queryTag } from "../../api/tag";
 import { updateTag } from "../../api/updateTag";
 import { queryTags } from "../../api/tags";
 import { createTag } from "../../api/createTag";
-import { useToast } from "../Toaster/ToasterHook";
+import { useToast } from "../UI/Toaster/ToasterHook";
 
 export default function TagForm(props: {
     onTagCreated: (newId: number) => void;

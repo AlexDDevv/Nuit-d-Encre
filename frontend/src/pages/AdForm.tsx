@@ -39,7 +39,7 @@ import {
 import { Button } from "../components/StyledButton";
 import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
 import { whoami } from "../api/whoami";
-import { useToast } from "../components/Toaster/ToasterHook";
+import { useToast } from "../components/UI/Toaster/ToasterHook";
 
 export default function AdFormPage() {
     const navigate = useNavigate();
@@ -68,7 +68,7 @@ export default function AdFormPage() {
     const [carrouselIndex, setCarrouselIndex] = useState(0);
     const [prevIndex, setPrevIndex] = useState<number | null>(null);
     const [slideDirection, setSlideDirection] = useState<"left" | "right">(
-        "right"
+        "right",
     );
     const { addToast } = useToast();
 
@@ -99,7 +99,7 @@ export default function AdFormPage() {
     };
 
     const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
-        queryCategories
+        queryCategories,
     );
     const categories = categoriesData?.categories;
 
@@ -136,7 +136,7 @@ export default function AdFormPage() {
             if (file.size > maxFileSize) {
                 addToast(
                     `La taille de l'image ${file.name} dépasse 2 Mo.`,
-                    "warning"
+                    "warning",
                 );
             } else {
                 validFiles.push(file);
@@ -152,12 +152,12 @@ export default function AdFormPage() {
                     } else {
                         reject(
                             new Error(
-                                `Erreur lors de la lecture du fichier ${file.name}`
-                            )
+                                `Erreur lors de la lecture du fichier ${file.name}`,
+                            ),
                         );
                         addToast(
                             `Erreur lors de la lecture du fichier ${file.name}`,
-                            "error"
+                            "error",
                         );
                     }
                 };
@@ -172,7 +172,7 @@ export default function AdFormPage() {
             .catch((error) => {
                 console.error(
                     "Erreur lors de la lecture des fichiers :",
-                    error
+                    error,
                 );
                 addToast("Erreur lors de la lecture des fichiers.", "error");
             });
@@ -183,7 +183,7 @@ export default function AdFormPage() {
         setSlideDirection("left");
         setPrevIndex(carrouselIndex);
         setCarrouselIndex((prevIndex) =>
-            prevIndex === 0 ? picture.length - 1 : prevIndex - 1
+            prevIndex === 0 ? picture.length - 1 : prevIndex - 1,
         );
     };
 
@@ -192,7 +192,7 @@ export default function AdFormPage() {
         setSlideDirection("right");
         setPrevIndex(carrouselIndex);
         setCarrouselIndex((prevIndex) =>
-            prevIndex === picture.length - 1 ? 0 : prevIndex + 1
+            prevIndex === picture.length - 1 ? 0 : prevIndex + 1,
         );
     };
 
@@ -207,13 +207,14 @@ export default function AdFormPage() {
         ];
 
         const isFormValid = requiredFields.every(
-            (field) => field && (Array.isArray(field) ? field.length > 0 : true)
+            (field) =>
+                field && (Array.isArray(field) ? field.length > 0 : true),
         );
 
         if (!isFormValid) {
             addToast(
                 "Veuillez remplir tous les champs nécessaires.",
-                "warning"
+                "warning",
             );
             setError(true);
             return;
@@ -259,7 +260,7 @@ export default function AdFormPage() {
         } catch (err) {
             addToast(
                 "Une erreur est survenue lors de la création de l'annonce.",
-                "error"
+                "error",
             );
         }
     };
@@ -358,7 +359,7 @@ export default function AdFormPage() {
                         <InputFileContainer
                             onClick={() => {
                                 const inputField = document.querySelector(
-                                    ".input-field"
+                                    ".input-field",
                                 ) as HTMLInputElement;
                                 if (inputField) {
                                     inputField.click();
@@ -368,7 +369,7 @@ export default function AdFormPage() {
                                 if (e.key === "Enter" || e.key === " ") {
                                     e.preventDefault();
                                     const inputField = document.querySelector(
-                                        ".input-field"
+                                        ".input-field",
                                     ) as HTMLInputElement;
                                     if (inputField) {
                                         inputField.click();
@@ -476,7 +477,7 @@ export default function AdFormPage() {
                                             >
                                                 {category.name}
                                             </option>
-                                        )
+                                        ),
                                     )}
                                 </Select>
                                 {me?.role === "admin" && (
@@ -520,7 +521,7 @@ export default function AdFormPage() {
                                                 onClick={() => {
                                                     if (
                                                         tagsIds.includes(
-                                                            tag.id
+                                                            tag.id,
                                                         ) === true
                                                     ) {
                                                         const newArray = [];
@@ -529,7 +530,7 @@ export default function AdFormPage() {
                                                                 entry !== tag.id
                                                             ) {
                                                                 newArray.push(
-                                                                    entry
+                                                                    entry,
                                                                 );
                                                             }
                                                         }
@@ -541,7 +542,7 @@ export default function AdFormPage() {
                                                         const newArray = [];
                                                         for (const entry of tagsIds) {
                                                             newArray.push(
-                                                                entry
+                                                                entry,
                                                             );
                                                         }
 

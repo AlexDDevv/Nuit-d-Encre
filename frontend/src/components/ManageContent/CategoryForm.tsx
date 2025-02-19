@@ -8,7 +8,7 @@ import { InputContainer, Label, Input } from "../styled/Form.styles";
 import { updateCategory } from "../../api/updateCategory";
 import { queryCategory } from "../../api/category";
 import { CategoryType } from "../../../types";
-import { useToast } from "../Toaster/ToasterHook";
+import { useToast } from "../UI/Toaster/ToasterHook";
 
 export default function CategoryForm(props: {
     onCategoryCreated: (newId: number) => void;
@@ -24,7 +24,7 @@ export default function CategoryForm(props: {
         {
             variables: { categoryId: editingCategoryId ?? null },
             skip: !editingCategoryId,
-        }
+        },
     );
     const category = categoryData?.category;
     console.log("🚀 ~ category:", category);

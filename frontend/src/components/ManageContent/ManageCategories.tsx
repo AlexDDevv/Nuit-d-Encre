@@ -12,7 +12,7 @@ import {
 import { queryCategories } from "../../api/categories";
 import { Button } from "../StyledButton";
 import { deleteCategory } from "../../api/deleteCategory";
-import { useToast } from "../Toaster/ToasterHook";
+import { useToast } from "../UI/Toaster/ToasterHook";
 
 interface ManageCategoriesProps {
     onPreviewAdChange: (ids: number[] | null) => void;
@@ -26,7 +26,7 @@ export default function ManageCategories({
     const { addToast } = useToast();
 
     const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
-        queryCategories
+        queryCategories,
     );
     const categories = categoriesData?.categories;
 
@@ -65,7 +65,7 @@ export default function ManageCategories({
                                 onPreviewAdChange(
                                     category.ads
                                         ? category.ads.map((ad) => ad.id)
-                                        : null
+                                        : null,
                                 )
                             }
                         />

@@ -6,7 +6,7 @@ import { queryAd } from "../api/ad";
 import { deleteAd } from "../api/deleteAd";
 import { queryAds } from "../api/ads";
 import { whoami } from "../api/whoami";
-import { useToast } from "../components/Toaster/ToasterHook";
+import { useToast } from "../components/UI/Toaster/ToasterHook";
 import ActionButton from "../components/UI/ActionButton";
 
 export default function AdPage() {
