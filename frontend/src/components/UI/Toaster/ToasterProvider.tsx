@@ -34,18 +34,20 @@ export const ToasterProvider = ({ children }: { children: ReactNode }) => {
             <Toaster
                 toastOptions={{
                     style: {
-                        backgroundColor: "var(--popover)",
-                        borderColor: "var(--border)",
-                        color: "var(--popover-foreground)",
+                        backgroundColor: "var(--color-popover)",
+                        borderColor: "var(--color-border)",
+                        color: "var(--color-popover-foreground)",
                         cursor: "pointer",
-                        gap: "15px",
+                        gap: "16px",
                     },
                 }}
                 icons={{
-                    success: <BadgeCheck color="var(--popover-foreground)" />,
-                    info: <BadgeInfo color="var(--primary)" />,
-                    warning: <BadgeAlert color="var(--primary)" />,
-                    error: <BadgeX color="var(--destructive)" />,
+                    success: (
+                        <BadgeCheck color="var(--color-popover-foreground)" />
+                    ),
+                    info: <BadgeInfo color="var(--color-primary)" />,
+                    warning: <BadgeAlert color="var(--color-primary)" />,
+                    error: <BadgeX color="var(--color-destructive)" />,
                 }}
             />
         </ToastContext.Provider>
