@@ -11,35 +11,12 @@ import { createAd } from "../api/createAd";
 import { queryAds } from "../api/ads";
 import { queryAd } from "../api/ad";
 import { updateAd } from "../api/updateAd";
-import {
-    FormSection,
-    TitleForm,
-    Form,
-    InputsContainer,
-    InputContainer,
-    Label,
-    Input,
-    InputFileContainer,
-    InputFile,
-    CarrouselContainer,
-    Carrousel,
-    ImageAction,
-    Image,
-    ArrowLeft,
-    ArrowRight,
-    InputsFlex,
-    InputFlex,
-    TextArea,
-    CategoriesAndTags,
-    CategoryContainer,
-    Select,
-    TagsContainer,
-    Tags,
-} from "../components/styled/Form.styles";
-import { Button } from "../components/StyledButton";
 import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
 import { whoami } from "../api/whoami";
 import { useToast } from "../components/UI/Toaster/ToasterHook";
+import clsx from "clsx";
+import CarrouselArrow from "../components/UI/CarrouselArrow";
+import ActionButton from "../components/UI/ActionButton";
 
 export default function AdFormPage() {
     const navigate = useNavigate();
@@ -269,37 +246,48 @@ export default function AdFormPage() {
     const me = whoamiData?.whoami;
 
     return (
-        <FormSection>
-            <TitleForm>
+        <section className="bg-card border-border mx-auto max-w-5xl rounded-lg border px-6 py-5">
+            <h1 className="text-card-foreground mb-12 text-center">
                 {ad ? "Modifier une annonce" : "Poster une annonce"}
-            </TitleForm>
-            <Form
+            </h1>
+            <form
+                className="flex flex-col"
                 onSubmit={(e) => {
                     e.preventDefault();
                     doSubmit();
                 }}
             >
-                <InputsContainer>
-                    <InputsFlex>
-                        <InputFlex>
-                            <InputContainer>
-                                <Label htmlFor="title">
+                <div className="mb-10 flex w-full flex-col justify-center gap-5">
+                    <div className="flex w-full gap-5">
+                        <div className="flex w-1/2 flex-col gap-5">
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    className="text-card-foreground text-sm"
+                                    htmlFor="title"
+                                >
                                     Titre de l'annonce *
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     id="title"
                                     type="text"
                                     placeholder="Ajouter un titre..."
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
-                                    error={title === "" ? error : false}
+                                    className={clsx(
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        error &&
+                                            "border-destructive outline-destructive border",
+                                    )}
                                 />
-                            </InputContainer>
-                            <InputContainer>
-                                <Label htmlFor="price">
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    className="text-card-foreground text-sm"
+                                    htmlFor="price"
+                                >
                                     Prix de l'annonce *
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     id="price"
                                     type="number"
                                     placeholder="Ajouter un prix..."
@@ -307,29 +295,43 @@ export default function AdFormPage() {
                                     onChange={(e) =>
                                         setPrice(Number(e.target.value))
                                     }
-                                    error={price === 0 ? error : false}
+                                    className={clsx(
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        error &&
+                                            "border-destructive outline-destructive border",
+                                    )}
                                 />
-                            </InputContainer>
-                        </InputFlex>
-                        <InputFlex>
-                            <InputContainer>
-                                <Label htmlFor="owner">
+                            </div>
+                        </div>
+                        <div className="flex w-1/2 flex-col gap-5">
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    className="text-card-foreground text-sm"
+                                    htmlFor="owner"
+                                >
                                     Propriétaire de l'annonce *
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     id="owner"
                                     type="text"
                                     placeholder="Ajouter une adresse mail..."
                                     value={owner}
                                     onChange={(e) => setOwner(e.target.value)}
-                                    error={owner === "" ? error : false}
+                                    className={clsx(
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        error &&
+                                            "border-destructive outline-destructive border",
+                                    )}
                                 />
-                            </InputContainer>
-                            <InputContainer>
-                                <Label htmlFor="location">
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <label
+                                    className="text-card-foreground text-sm"
+                                    htmlFor="location"
+                                >
                                     Localisation de l'annonce *
-                                </Label>
-                                <Input
+                                </label>
+                                <input
                                     id="location"
                                     type="text"
                                     placeholder="Ajouter une localisation..."
@@ -337,26 +339,47 @@ export default function AdFormPage() {
                                     onChange={(e) =>
                                         setLocation(e.target.value)
                                     }
-                                    error={location === "" ? error : false}
+                                    className={clsx(
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        error &&
+                                            "border-destructive outline-destructive border",
+                                    )}
                                 />
-                            </InputContainer>
-                        </InputFlex>
-                    </InputsFlex>
-                    <InputContainer>
-                        <Label htmlFor="description">
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label
+                            className="text-card-foreground text-sm"
+                            htmlFor="description"
+                        >
                             Description de l'annonce *
-                        </Label>
-                        <TextArea
+                        </label>
+                        <textarea
                             id="description"
                             placeholder="Ajouter une description..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            error={description === "" ? error : false}
-                        ></TextArea>
-                    </InputContainer>
-                    <InputContainer>
-                        <Label htmlFor="picture">Déposer une image *</Label>
-                        <InputFileContainer
+                            className={clsx(
+                                "bg-input text-accent-foreground focus:outline-ring font-body h-24 resize-none rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                error &&
+                                    "border-destructive outline-destructive border",
+                            )}
+                        ></textarea>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <label
+                            className="text-card-foreground text-sm"
+                            htmlFor="picture"
+                        >
+                            Déposer une image *
+                        </label>
+                        <div
+                            className={clsx(
+                                "bg-input focus:outline-ring relative z-50 flex h-96 w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg focus:outline-2",
+                                error &&
+                                    "border-destructive outline-destructive border",
+                            )}
                             onClick={() => {
                                 const inputField = document.querySelector(
                                     ".input-field",
@@ -390,20 +413,19 @@ export default function AdFormPage() {
                                 }
                             }}
                             tabIndex={0}
-                            error={picture.length === 0 ? error : false}
                         >
-                            <InputFile
+                            <input
                                 id="picture"
                                 type="file"
                                 accept="image/*"
                                 hidden
                                 multiple
-                                className="input-field"
+                                className="input-field bg-input text-accent-foreground focus:outline-ring h-full w-full rounded-lg text-xs placeholder:italic placeholder:opacity-85 focus:outline-2"
                                 onChange={handleImages}
                             />
                             {picture.length > 0 ? (
-                                <CarrouselContainer>
-                                    <Carrousel>
+                                <div className="absolute inset-0 h-full w-full">
+                                    <div className="relative mx-auto flex h-full w-full items-center justify-center overflow-hidden py-4">
                                         {picture.map((preview, index) => {
                                             const isVisible =
                                                 index === carrouselIndex;
@@ -411,63 +433,79 @@ export default function AdFormPage() {
                                                 index === prevIndex;
 
                                             return (
-                                                <Image
+                                                <img
                                                     key={index}
                                                     src={preview}
                                                     alt={`Preview ${index + 1}`}
-                                                    isVisible={isVisible}
-                                                    isExiting={isExiting}
-                                                    slideDirection={
-                                                        slideDirection
-                                                    }
+                                                    className={clsx(
+                                                        "absolute h-80 w-80 rounded-lg object-cover transition-all duration-500 ease-in-out",
+                                                        isVisible
+                                                            ? "translate-x-0 opacity-100"
+                                                            : "opacity-0",
+                                                        !isVisible &&
+                                                            (slideDirection ===
+                                                            "right"
+                                                                ? isExiting
+                                                                    ? "-translate-x-full"
+                                                                    : "translate-x-full"
+                                                                : isExiting
+                                                                  ? "translate-x-full"
+                                                                  : "-translate-x-full"),
+                                                    )}
                                                 />
                                             );
                                         })}
-                                    </Carrousel>
-                                </CarrouselContainer>
+                                    </div>
+                                </div>
                             ) : (
-                                <ImageAction>
-                                    <ImageUp />
-                                    <p>
+                                <div className="flex flex-col items-center justify-center gap-2.5 transition-transform duration-200 ease-in-out hover:scale-105">
+                                    <ImageUp className="text-accent-foreground h-20 w-20" />
+                                    <p className="text-accent-foreground">
                                         Déposez une image ou téléchargez en une
                                     </p>
-                                </ImageAction>
+                                </div>
                             )}
                             {picture.length > 1 && (
                                 <>
-                                    <ArrowLeft
+                                    <CarrouselArrow
                                         onClick={prevSlide}
-                                        role="button"
-                                        aria-label="Previous slide"
+                                        direction="left"
+                                        label="Previous slide"
                                     >
-                                        <SquareChevronLeft />
-                                    </ArrowLeft>
-                                    <ArrowRight
+                                        <SquareChevronLeft className="text-accent-foreground hover:text-primary h-full w-full transition-all duration-200 ease-in-out hover:scale-105" />
+                                    </CarrouselArrow>
+                                    <CarrouselArrow
                                         onClick={nextSlide}
-                                        role="button"
-                                        aria-label="Next slide"
+                                        direction="right"
+                                        label="Next slide"
                                     >
-                                        <SquareChevronRight />
-                                    </ArrowRight>
+                                        <SquareChevronRight className="text-accent-foreground hover:text-primary h-full w-full transition-all duration-200 ease-in-out hover:scale-105" />
+                                    </CarrouselArrow>
                                 </>
                             )}
-                        </InputFileContainer>
-                    </InputContainer>
-                    <InputsFlex>
-                        <CategoriesAndTags>
-                            <Label htmlFor="categories">
+                        </div>
+                    </div>
+                    <div className="flex w-full gap-5">
+                        <div className="flex w-1/2 flex-col gap-1">
+                            <label
+                                className="text-card-foreground text-sm"
+                                htmlFor="categories"
+                            >
                                 Sélectionnez une catégorie
-                            </Label>
-                            <CategoryContainer>
-                                <Select
+                            </label>
+                            <div className="flex items-center justify-center gap-2.5">
+                                <select
                                     id="categories"
                                     value={categoryId}
                                     onChange={(e) =>
                                         setCategoryId(Number(e.target.value))
                                     }
-                                    isAdmin={
-                                        me?.role === "admin" ? true : false
-                                    }
+                                    className={clsx(
+                                        "bg-input text-accent-foreground focus:outline-ring cursor-pointer rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        me?.role === "admin"
+                                            ? "w-[55%]"
+                                            : "w-full",
+                                    )}
                                 >
                                     {categories?.map(
                                         (category: CategoryType) => (
@@ -479,23 +517,21 @@ export default function AdFormPage() {
                                             </option>
                                         ),
                                     )}
-                                </Select>
+                                </select>
                                 {me?.role === "admin" && (
-                                    <Button
-                                        minWidth="160px"
-                                        width="25%"
-                                        height="35px"
-                                        transition="background-color 0.2s ease-in-out"
-                                        backgroundHover="rgba(255, 204, 102, 0.9)"
-                                        type="button"
+                                    <ActionButton
+                                        bgColor="bg-primary"
+                                        color="text-primary-foreground"
+                                        width="w-[45%]"
+                                        content={
+                                            showCategoryForm
+                                                ? "Fermer le formulaire"
+                                                : "Ajouter une catégorie"
+                                        }
                                         onClick={handleCategoryForm}
-                                    >
-                                        {showCategoryForm
-                                            ? "Fermer le formulaire"
-                                            : "Ajouter une catégorie"}
-                                    </Button>
+                                    />
                                 )}
-                            </CategoryContainer>
+                            </div>
 
                             {showCategoryForm && (
                                 <CategoryModal
@@ -505,13 +541,18 @@ export default function AdFormPage() {
                                     }}
                                 />
                             )}
-                        </CategoriesAndTags>
-                        <CategoriesAndTags>
-                            <Label>Sélectionnez un ou plusieurs tags</Label>
-                            <TagsContainer>
-                                <Tags>
+                        </div>
+                        <div className="flex w-1/2 flex-col gap-1">
+                            <label className="text-card-foreground text-sm">
+                                Sélectionnez un ou plusieurs tags
+                            </label>
+                            <div className="flex items-center justify-between gap-2.5">
+                                <div className="flex flex-wrap items-center gap-x-1.5 gap-y-2.5">
                                     {tags?.map((tag) => (
-                                        <Label key={tag.id}>
+                                        <label
+                                            key={tag.id}
+                                            className="text-card-foreground flex items-center gap-1.5 text-xs"
+                                        >
                                             <input
                                                 type="checkbox"
                                                 checked={
@@ -549,27 +590,25 @@ export default function AdFormPage() {
                                                         setTagsIds(newArray);
                                                     }
                                                 }}
+                                                className="focus:outline-ring focus:outline-2"
                                             />
                                             {tag.name}
-                                        </Label>
+                                        </label>
                                     ))}
-                                </Tags>
+                                </div>
                                 {me?.role === "admin" && (
-                                    <Button
-                                        minWidth="160px"
-                                        width="25%"
-                                        height="35px"
-                                        transition="background-color 0.2s ease-in-out"
-                                        backgroundHover="rgba(255, 204, 102, 0.9)"
-                                        type="button"
+                                    <ActionButton
+                                        bgColor="bg-primary"
+                                        color="text-primary-foreground"
+                                        content={
+                                            showTagForm
+                                                ? "Fermer le formulaire"
+                                                : "Ajouter un tag"
+                                        }
                                         onClick={handleTagForm}
-                                    >
-                                        {showTagForm
-                                            ? "Fermer le formulaire"
-                                            : "Ajouter un tag"}
-                                    </Button>
+                                    />
                                 )}
-                            </TagsContainer>
+                            </div>
                             {showTagForm && (
                                 <TagModal
                                     onTagCreated={async (id) => {
@@ -579,13 +618,18 @@ export default function AdFormPage() {
                                     }}
                                 />
                             )}
-                        </CategoriesAndTags>
-                    </InputsFlex>
-                </InputsContainer>
-                <Button>
-                    {ad ? "Modifier mon annonce" : "Créer mon annonce"}
-                </Button>
-            </Form>
-        </FormSection>
+                        </div>
+                    </div>
+                </div>
+                <ActionButton
+                    type="submit"
+                    bgColor="bg-primary"
+                    color="text-primary-foreground"
+                    width="w-44"
+                    margin="mx-auto"
+                    content={ad ? "Modifier mon annonce" : "Créer mon annonce"}
+                />
+            </form>
+        </section>
     );
 }

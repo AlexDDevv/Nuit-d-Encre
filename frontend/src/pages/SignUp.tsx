@@ -1,19 +1,10 @@
 import { useState } from "react";
-import {
-    FormSection,
-    TitleForm,
-    Form,
-    InputsContainer,
-    InputContainer,
-    Label,
-    Input,
-    AlreadyHaveAccount,
-} from "../components/styled/Form.styles";
-import { Button } from "../components/StyledButton";
 import { Link, useNavigate } from "react-router-dom";
 import { createUser } from "../api/createUser";
 import { useMutation } from "@apollo/client";
-import { useToast } from "../components/Toaster/ToasterHook";
+import { useToast } from "../components/UI/Toaster/ToasterHook";
+import clsx from "clsx";
+import ActionButton from "../components/UI/ActionButton";
 
 export default function SignUp() {
     const [email, setEmail] = useState("alex@gmail.com");
@@ -29,13 +20,14 @@ export default function SignUp() {
         const requiredFields = [email, password, confirmPassword];
 
         const isFormValid = requiredFields.every(
-            (field) => field && (Array.isArray(field) ? field.length > 0 : true)
+            (field) =>
+                field && (Array.isArray(field) ? field.length > 0 : true),
         );
 
         if (!isFormValid) {
             addToast(
                 "Veuillez remplir tous les champs du formulaire.",
-                "warning"
+                "warning",
             );
             setError(true);
             return;
@@ -58,7 +50,7 @@ export default function SignUp() {
             setError(true);
             if (
                 e.message.includes(
-                    "Password must be at least 10 characters long and include 1 number, 1 uppercase letter, and 1 symbol"
+                    "Password must be at least 10 characters long and include 1 number, 1 uppercase letter, and 1 symbol",
                 )
             ) {
                 addToast("Le mot de passe n'est pas assez fort", "warning");
@@ -69,7 +61,7 @@ export default function SignUp() {
             } else {
                 addToast(
                     "Un compte avec cette adresse email existe déjà",
-                    "error"
+                    "error",
                 );
             }
         }
@@ -77,45 +69,66 @@ export default function SignUp() {
 
     return (
         <>
-            <FormSection maxWidth="500px" margin="0 auto">
-                <TitleForm marginBottom="30px">Créer un compte</TitleForm>
-                <Form
-                    display="flex"
-                    direction="column"
-                    gap="20px"
+            <section className="bg-card border-border mx-auto max-w-lg rounded-xl border px-6 py-5">
+                <h1 className="text-card-foreground mb-7 text-center font-bold">
+                    Créer un compte
+                </h1>
+                <form
+                    className="flex flex-col gap-5"
                     onSubmit={(e) => {
                         e.preventDefault();
                         doSubmit();
                     }}
                 >
-                    <InputsContainer marginBottom="30px">
-                        <InputContainer>
-                            <Label htmlFor="email">Adresse email</Label>
-                            <Input
+                    <div className="mb-7 flex w-full flex-col justify-center gap-5">
+                        <div className="flex flex-col gap-1">
+                            <label
+                                htmlFor="email"
+                                className="text-card-foreground text-sm"
+                            >
+                                Adresse email
+                            </label>
+                            <input
                                 id="email"
                                 type="text"
                                 placeholder="Ajouter une adresse mail..."
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                error={error}
+                                className={clsx(
+                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                    error &&
+                                        "border-destructive outline-destructive border",
+                                )}
                             />
-                        </InputContainer>
-                        <InputContainer>
-                            <Label htmlFor="password">Mot de passe</Label>
-                            <Input
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label
+                                htmlFor="password"
+                                className="text-card-foreground text-sm"
+                            >
+                                Mot de passe
+                            </label>
+                            <input
                                 id="password"
                                 type="password"
                                 placeholder="Ajouter un mot de passe..."
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                error={error}
+                                className={clsx(
+                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                    error &&
+                                        "border-destructive outline-destructive border",
+                                )}
                             />
-                        </InputContainer>
-                        <InputContainer>
-                            <Label htmlFor="confirmPassword">
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label
+                                htmlFor="confirmPassword"
+                                className="text-card-foreground text-sm"
+                            >
                                 Mot de passe
-                            </Label>
-                            <Input
+                            </label>
+                            <input
                                 id="confirmPassword"
                                 type="password"
                                 placeholder="Ajouter un mot de passe..."
@@ -123,17 +136,31 @@ export default function SignUp() {
                                 onChange={(e) =>
                                     setConfirmPassword(e.target.value)
                                 }
-                                error={error}
+                                className={clsx(
+                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                    error &&
+                                        "border-destructive outline-destructive border",
+                                )}
                             />
-                        </InputContainer>
-                    </InputsContainer>
-                    <Button type="submit">Inscription</Button>
-                </Form>
-            </FormSection>
-            <AlreadyHaveAccount>
+                        </div>
+                    </div>
+                    <ActionButton
+                        type="submit"
+                        bgColor="bg-primary"
+                        color="text-primary-foreground"
+                        content="Inscription"
+                    />
+                </form>
+            </section>
+            <p className="text-foreground mt-7 text-center">
                 Vous avez déjà un compte?{" "}
-                <Link to={"/signin"}>Connectez vous!</Link>
-            </AlreadyHaveAccount>
+                <Link
+                    to={"/signin"}
+                    className="text-primary cursor-pointer font-semibold transition-opacity duration-200 ease-in-out hover:opacity-90"
+                >
+                    Connectez vous!
+                </Link>
+            </p>
         </>
     );
 }
