@@ -3,45 +3,23 @@ import AdCard from "../components/AdCard";
 import { CategoryType } from "../../types";
 import { useQuery } from "@apollo/client";
 import { queryCategory } from "../api/category";
-import styled from "styled-components";
-
-const SectionCategoryPage = styled.section`
-    max-width: 1024px;
-    margin: 0 auto;
-
-    h1 {
-        color: var(--foreground);
-        font-size: 1.75rem;
-    }
-`;
-
-const AdsContainer = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    margin-top: 50px;
-
-    p {
-        color: var(--foreground);
-    }
-`;
 
 export default function CategoryPage() {
     const param = useParams<{ id: string }>();
     const id = Number(param.id);
 
     const { data } = useQuery<{ category: CategoryType }>(queryCategory, {
-        variables: {
-            id,
-        },
+        variables: { categoryId: id },
     });
     const category = data?.category;
     console.log(category);
 
     return (
-        <SectionCategoryPage>
-            <h1>Annonces de la catégorie {category?.name}</h1>
-            <AdsContainer className="ads-container">
+        <section className="mx-auto max-w-5xl">
+            <h1 className="text-foreground text-2xl font-bold">
+                Annonces de la catégorie {category?.name}
+            </h1>
+            <div className="mt-12 flex flex-wrap gap-7">
                 {category?.ads?.length ? (
                     category?.ads?.map((ad) => (
                         <AdCard
@@ -51,13 +29,14 @@ export default function CategoryPage() {
                             category={ad.category}
                             picture={ad.picture}
                             price={ad.price}
-                            onAddToPanier={() => {}}
                         />
                     ))
                 ) : (
-                    <p>Aucune annonce trouvée pour cette catégorie.</p>
+                    <p className="text-popover-foreground">
+                        Aucune annonce trouvée pour cette catégorie.
+                    </p>
                 )}
-            </AdsContainer>
-        </SectionCategoryPage>
+            </div>
+        </section>
     );
 }
