@@ -22,7 +22,7 @@ export type AdTypeCard = {
     owner?: string;
     title: string;
     price: number;
-    picture: string;
+    picture: string[];
     category: CategoryType;
     tags?: TagType[];
 };
