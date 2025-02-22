@@ -1,11 +1,4 @@
 import { useState } from "react";
-import {
-    AdminPanelContainer,
-    PanelContainer,
-    ManageContainer,
-    AdsContainer,
-    NoAd,
-} from "../components/styled/PanelAdmin.styles";
 import ManageAds from "./ManageContent/ManageAds";
 import AdCard from "./AdCard";
 import { useQuery } from "@apollo/client";
@@ -72,10 +65,13 @@ export default function AdminPanel() {
     };
 
     return (
-        <AdminPanelContainer>
-            <PanelContainer>
-                <Tabs handleChangeTab={handleChangeTab} isSelected={selectedTab} />
-                <ManageContainer>
+        <div className="w-full">
+            <div className="flex flex-col gap-7">
+                <Tabs
+                    handleChangeTab={handleChangeTab}
+                    isSelected={selectedTab}
+                />
+                <div className="flex items-start justify-between gap-12">
                     {selectedTab === 0 && (
                         <>
                             <ManageAds
@@ -84,7 +80,7 @@ export default function AdminPanel() {
                             {previewAdId && ads && (
                                 <AdCard
                                     {...ads.find(
-                                        (ad) => ad.id === previewAdId
+                                        (ad) => ad.id === previewAdId,
                                     )!}
                                 />
                             )}
@@ -101,23 +97,23 @@ export default function AdminPanel() {
                             {previewAdsId &&
                                 ads &&
                                 (ads.filter((ad) =>
-                                    previewAdsId.includes(ad.id)
+                                    previewAdsId.includes(ad.id),
                                 ).length > 0 ? (
-                                    <AdsContainer>
+                                    <div className="flex items-start justify-center gap-5">
                                         {previewAdsId.map((id) => {
                                             const ad = ads.find(
-                                                (ad) => ad.id === id
+                                                (ad) => ad.id === id,
                                             );
                                             return ad ? (
                                                 <AdCard {...ad} key={id} />
                                             ) : null;
                                         })}
-                                    </AdsContainer>
+                                    </div>
                                 ) : (
-                                    <NoAd>
+                                    <p className="text-foreground font-medium">
                                         Il n'y a pas encore d'annonce pour cette
                                         catégorie.
-                                    </NoAd>
+                                    </p>
                                 ))}
                             {showCategoryForm && (
                                 <CategoryForm
@@ -142,8 +138,8 @@ export default function AdminPanel() {
                             )}
                         </>
                     )}
-                </ManageContainer>
-            </PanelContainer>
-        </AdminPanelContainer>
+                </div>
+            </div>
+        </div>
     );
 }

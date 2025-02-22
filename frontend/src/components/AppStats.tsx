@@ -1,68 +1,24 @@
-import styled from "styled-components"
-
-const Stats = styled.div`
-    background-color: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 20px;
-    min-width: 430px;
-    transition: border-color 0.2s ease-in-out;
-
-    &:hover {
-        border-color: var(--card-foreground);
-
-        svg {
-            transform: rotate(-30deg);
-        }
-    }
-`
-
-const Stat = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`
-
-const StatOf = styled.h2`
-    color: var(--card-foreground);
-    font-size: 16px;
-    font-weight: 500;
-`
-
-const Number = styled(StatOf).attrs({ as: 'h3' })`
-    font-weight: 700;
-`;
-
-const IconContainer = styled.div`
-    width: 40px;
-    height: 40px;
-
-    svg {
-        color: var(--card-foreground);
-        width: 100%;
-        height: 100%;
-        transition: transform 0.2s ease-in-out;
-    }
-`
-
-export default function AppStats({ number, numberOf, Icon }: { number: number, numberOf: string, Icon: React.ElementType }) {
+export default function AppStats({
+    number,
+    numberOf,
+    Icon,
+}: {
+    number: number;
+    numberOf: string;
+    Icon: React.ElementType;
+}) {
     return (
-        <Stats key={number}>
-            <Stat>
-                <StatOf>
-                    {numberOf}
-                </StatOf>
-                <Number>
-                    {number}
-                </Number>
-            </Stat>
-            <IconContainer>
-                <Icon />
-            </IconContainer>
-        </Stats>
-    )
+        <div
+            key={number}
+            className="bg-card border-border group hover:border-card-foreground flex min-w-md items-center justify-between gap-5 rounded-lg border p-5 transition-colors duration-200 ease-in-out"
+        >
+            <div className="flex flex-col gap-2">
+                <h2 className="text-card-foreground font-medium">{numberOf}</h2>
+                <h3 className="text-card-foreground font-bold">{number}</h3>
+            </div>
+            <div className="h-10 w-10">
+                <Icon className="text-border group-hover:text-card-foreground h-full w-full transition-all duration-200 ease-in-out group-hover:-rotate-45" />
+            </div>
+        </div>
+    );
 }

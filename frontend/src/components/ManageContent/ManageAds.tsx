@@ -1,11 +1,3 @@
-import {
-    ContentToManage,
-    Content,
-    Infos,
-    Title,
-    Owner,
-    ActionsIcons,
-} from "../styled/PanelAdmin.styles";
 import { Eye, SquarePen, Trash2 } from "lucide-react";
 import { AdTypeCard } from "../../../types";
 import { useMutation, useQuery } from "@apollo/client";
@@ -56,20 +48,36 @@ export default function ManageAds({ onPreviewAdChange }: ManageAdsProps) {
     };
 
     return (
-        <ContentToManage>
+        <div className="flex flex-col gap-5">
             {ads?.map((ad) => (
-                <Content key={ad.id}>
-                    <Infos>
-                        <Title>{ad.title}</Title>
-                        <Owner>{ad.owner}</Owner>
-                    </Infos>
-                    <ActionsIcons>
-                        <Eye onClick={() => onPreviewAdChange(ad.id)} />
-                        <SquarePen onClick={() => onUpdate(ad.id)} />
-                        <Trash2 onClick={() => onDelete(ad.id)} />
-                    </ActionsIcons>
-                </Content>
+                <div
+                    key={ad.id}
+                    className="bg-card border-border flex w-2xl items-center justify-between gap-5 rounded-lg border p-4"
+                >
+                    <div>
+                        <h5 className="text-card-foreground mb-1.5 font-medium">
+                            {ad.title}
+                        </h5>
+                        <h6 className="text-card-foreground mb-1.5">
+                            {ad.owner}
+                        </h6>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
+                        <Eye
+                            onClick={() => onPreviewAdChange(ad.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                        />
+                        <SquarePen
+                            onClick={() => onUpdate(ad.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                        />
+                        <Trash2
+                            onClick={() => onDelete(ad.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                        />
+                    </div>
+                </div>
             ))}
-        </ContentToManage>
+        </div>
     );
 }

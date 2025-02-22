@@ -2,17 +2,10 @@ import { Eye, SquarePen, Trash2 } from "lucide-react";
 import { AdTypeCard, CategoryType } from "../../../types";
 import { useMutation, useQuery } from "@apollo/client";
 import { queryAds } from "../../api/ads";
-import {
-    ActionsIcons,
-    Content,
-    ContentToManage,
-    Infos,
-    Title,
-} from "../styled/PanelAdmin.styles";
 import { queryCategories } from "../../api/categories";
-import { Button } from "../StyledButton";
 import { deleteCategory } from "../../api/deleteCategory";
 import { useToast } from "../UI/Toaster/ToasterHook";
+import ActionButton from "../UI/ActionButton";
 
 interface ManageCategoriesProps {
     onPreviewAdChange: (ids: number[] | null) => void;
@@ -53,13 +46,18 @@ export default function ManageCategories({
     };
 
     return (
-        <ContentToManage>
+        <div className="flex flex-col gap-5">
             {categories?.map((category) => (
-                <Content key={category.id}>
-                    <Infos>
-                        <Title>{category.name}</Title>
-                    </Infos>
-                    <ActionsIcons>
+                <div
+                    key={category.id}
+                    className="bg-card border-border flex w-2xl items-center justify-between gap-5 rounded-lg border p-4"
+                >
+                    <div>
+                        <h5 className="text-card-foreground mb-1.5 font-medium">
+                            {category.name}
+                        </h5>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
                         <Eye
                             onClick={() =>
                                 onPreviewAdChange(
@@ -68,17 +66,26 @@ export default function ManageCategories({
                                         : null,
                                 )
                             }
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
                         />
                         <SquarePen
                             onClick={() => showCategoryForm(category.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
                         />
-                        <Trash2 onClick={() => onDelete(category.id)} />
-                    </ActionsIcons>
-                </Content>
+                        <Trash2
+                            onClick={() => onDelete(category.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                        />
+                    </div>
+                </div>
             ))}
-            <Button width="150px" onClick={() => showCategoryForm()}>
-                Créer une catégorie
-            </Button>
-        </ContentToManage>
+            <ActionButton
+                bgColor="bg-primary"
+                color="text-primary-foreground"
+                width="w-44"
+                content="Créer une catégorie"
+                onClick={() => showCategoryForm()}
+            />
+        </div>
     );
 }

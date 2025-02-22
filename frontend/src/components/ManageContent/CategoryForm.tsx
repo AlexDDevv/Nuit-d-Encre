@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { createCategory } from "../../api/createCategory";
 import { useMutation, useQuery } from "@apollo/client";
 import { queryCategories } from "../../api/categories";
-import { Button } from "../StyledButton";
-import { Form, FormTitle } from "../styled/PanelAdmin.styles";
-import { InputContainer, Label, Input } from "../styled/Form.styles";
 import { updateCategory } from "../../api/updateCategory";
 import { queryCategory } from "../../api/category";
 import { CategoryType } from "../../../types";
 import { useToast } from "../UI/Toaster/ToasterHook";
+import clsx from "clsx";
+import ActionButton from "../UI/ActionButton";
 
 export default function CategoryForm(props: {
     onCategoryCreated: (newId: number) => void;
@@ -16,6 +15,7 @@ export default function CategoryForm(props: {
     editingCategoryId?: number;
 }) {
     const [name, setName] = useState<string>("");
+    const [error, setError] = useState<boolean>(false);
     const editingCategoryId = props.editingCategoryId;
     const { addToast } = useToast();
 
@@ -47,6 +47,7 @@ export default function CategoryForm(props: {
 
     const doSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         try {
             if (editingCategoryId !== undefined) {
                 const category = await doUpdateCategory({
@@ -55,11 +56,18 @@ export default function CategoryForm(props: {
                         data: { name },
                     },
                 });
-                setName("");
-                addToast("Catégorie modifiée avec succès !", "success");
-                const updatedCategoryId = category.data?.updateCategory.id;
-                if (updatedCategoryId !== undefined) {
-                    props.onCategoryUpdated(updatedCategoryId);
+
+                if (name === "") {
+                    setError(true);
+                    addToast("Le champ ne peut pas être vide", "error");
+                } else {
+                    setName("");
+                    setError(false);
+                    addToast("Catégorie modifiée avec succès !", "success");
+                    const updatedCategoryId = category.data?.updateCategory.id;
+                    if (updatedCategoryId !== undefined) {
+                        props.onCategoryUpdated(updatedCategoryId);
+                    }
                 }
             } else {
                 const category = await doCreateCategory({
@@ -67,11 +75,18 @@ export default function CategoryForm(props: {
                         data: { name },
                     },
                 });
-                setName("");
-                addToast("Catégorie créée avec succès !", "success");
-                const newCategoryId = category.data?.createCategory.id;
-                if (newCategoryId) {
-                    props.onCategoryCreated(newCategoryId);
+
+                if (name === "") {
+                    setError(true);
+                    addToast("Le champ ne peut pas être vide", "error");
+                } else {
+                    setName("");
+                    setError(false);
+                    addToast("Catégorie créée avec succès !", "success");
+                    const newCategoryId = category.data?.createCategory.id;
+                    if (newCategoryId) {
+                        props.onCategoryCreated(newCategoryId);
+                    }
                 }
             }
         } catch (error) {
@@ -81,26 +96,44 @@ export default function CategoryForm(props: {
     };
 
     return (
-        <Form onSubmit={doSubmit}>
-            <FormTitle>
+        <form
+            onSubmit={doSubmit}
+            className="bg-card border-border flex w-80 flex-col gap-5 rounded-lg border p-5"
+        >
+            <h6 className="text-card-foreground font-bold">
                 {editingCategoryId !== undefined
                     ? "Modifier une catégorie"
                     : "Créer une nouvelle catégorie"}
-            </FormTitle>
-            <InputContainer>
-                <Label>Nom de la catégorie</Label>
-                <Input
+            </h6>
+            <div className="flex flex-col gap-1">
+                <label className="text-card-foreground text-sm">
+                    Nom de la catégorie
+                </label>
+                <input
                     type="text"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => {
+                        setName(e.target.value);
+                        setError(false);
+                    }}
                     placeholder="Entrer un nom pour la catégorie"
+                    className={clsx(
+                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                        error &&
+                            "border-destructive outline-destructive border",
+                    )}
                 />
-            </InputContainer>
-            <Button width="150px" height="35px">
-                {editingCategoryId !== undefined
-                    ? "Modifier la catégorie"
-                    : "Créer la catégorie"}
-            </Button>
-        </Form>
+            </div>
+            <ActionButton
+                type="submit"
+                bgColor="bg-primary"
+                color="text-primary-foreground"
+                content={
+                    editingCategoryId !== undefined
+                        ? "Modifier la catégorie"
+                        : "Créer la catégorie"
+                }
+            />
+        </form>
     );
 }

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import AppStats from "../components/AppStats";
 import AdminPanel from "../components/AdminPanel";
 import { IdCard, User, Tag } from "lucide-react";
@@ -7,19 +6,6 @@ import { CategoryType, UserType } from "../../types";
 import { queryUsers } from "../api/users";
 import { queryCategories } from "../api/categories";
 
-const SectionAdmin = styled.section`
-    display: flex;
-    flex-direction: column;
-    gap: 75px;
-`;
-
-const StatsContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-`;
-
 export default function Admin() {
     const { data: usersData } = useQuery<{ users: UserType[] }>(queryUsers, {
         fetchPolicy: "cache-and-network",
@@ -27,19 +13,31 @@ export default function Admin() {
     const users = usersData?.users ?? [];
 
     const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
-        queryCategories
+        queryCategories,
     );
     const categories = categoriesData?.categories ?? [];
 
     const stats = [
-        { numberOf: "Nombre de visiteurs", number: 300, Icon: IdCard },
-        { numberOf: "Nombre d'utilisateurs", number: users.length, Icon: User },
-        { numberOf: "Nombre d'annonces", number: categories.length, Icon: Tag },
+        {
+            numberOf: "Nombre de visiteurs",
+            number: 300,
+            Icon: IdCard,
+        },
+        {
+            numberOf: "Nombre d'utilisateurs",
+            number: users.length,
+            Icon: User,
+        },
+        {
+            numberOf: "Nombre d'annonces",
+            number: categories.length,
+            Icon: Tag,
+        },
     ];
 
     return (
-        <SectionAdmin>
-            <StatsContainer>
+        <section className="flex flex-col gap-20">
+            <div className="flex items-center justify-between gap-5">
                 {stats.map(({ number, numberOf, Icon }) => (
                     <AppStats
                         key={numberOf}
@@ -48,8 +46,8 @@ export default function Admin() {
                         Icon={Icon}
                     />
                 ))}
-            </StatsContainer>
+            </div>
             <AdminPanel />
-        </SectionAdmin>
+        </section>
     );
 }

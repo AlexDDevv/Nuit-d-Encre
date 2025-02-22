@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { Button } from "../StyledButton";
-import { Form, FormTitle } from "../styled/PanelAdmin.styles";
-import { InputContainer, Label, Input } from "../styled/Form.styles";
 import { TagType } from "../../../types";
 import { queryTag } from "../../api/tag";
 import { updateTag } from "../../api/updateTag";
 import { queryTags } from "../../api/tags";
 import { createTag } from "../../api/createTag";
 import { useToast } from "../UI/Toaster/ToasterHook";
+import clsx from "clsx";
+import ActionButton from "../UI/ActionButton";
 
 export default function TagForm(props: {
     onTagCreated: (newId: number) => void;
@@ -16,6 +15,7 @@ export default function TagForm(props: {
     editingTagId?: number;
 }) {
     const [name, setName] = useState<string>("");
+    const [error, setError] = useState<boolean>(false);
     const editingTagId = props.editingTagId;
     const { addToast } = useToast();
 
@@ -50,11 +50,17 @@ export default function TagForm(props: {
                         data: { name },
                     },
                 });
-                setName("");
-                addToast("Tag modifié avec succès !", "success");
-                const updatedTagId = tag.data?.updateTag.id;
-                if (updatedTagId !== undefined) {
-                    props.onTagUpdated(updatedTagId);
+
+                if (name === "") {
+                    setError(true);
+                    addToast("Le champ ne peut pas être vide", "error");
+                } else {
+                    setName("");
+                    addToast("Tag modifié avec succès !", "success");
+                    const updatedTagId = tag.data?.updateTag.id;
+                    if (updatedTagId !== undefined) {
+                        props.onTagUpdated(updatedTagId);
+                    }
                 }
             } else {
                 const tag = await doCreateTag({
@@ -62,40 +68,65 @@ export default function TagForm(props: {
                         data: { name },
                     },
                 });
-                setName("");
-                addToast("Tag créé avec succès !", "success");
-                const newTagId = tag.data?.createTag.id;
-                if (newTagId) {
-                    props.onTagCreated(newTagId);
+
+                if (name === "") {
+                    setError(true);
+                    addToast("Le champ ne peut pas être vide", "error");
+                } else {
+                    setName("");
+                    addToast("Tag créé avec succès !", "success");
+                    const newTagId = tag.data?.createTag.id;
+                    if (newTagId) {
+                        props.onTagCreated(newTagId);
+                    }
                 }
             }
         } catch (error) {
+            setError(true);
             console.error("Une erreur est survenue :", error);
             addToast("Une erreur est survenue.", "error");
         }
     };
 
     return (
-        <Form onSubmit={doSubmit}>
-            <FormTitle>
+        <form
+            onSubmit={doSubmit}
+            className="bg-card border-border flex w-80 flex-col gap-5 rounded-lg border p-5"
+        >
+            <h6 className="text-card-foreground font-bold">
                 {editingTagId !== undefined
                     ? "Modifier un tag"
                     : "Créer un nouveau tag"}
-            </FormTitle>
-            <InputContainer>
-                <Label>Nom du tag</Label>
-                <Input
+            </h6>
+            <div className="flex flex-col gap-1">
+                <label className="text-card-foreground text-sm">
+                    Nom du tag
+                </label>
+                <input
                     type="text"
                     value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => {
+                        setName(e.target.value);
+                        setError(false);
+                    }}
                     placeholder="Entrer un nom pour le tag"
+                    className={clsx(
+                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                        error &&
+                            "border-destructive outline-destructive border",
+                    )}
                 />
-            </InputContainer>
-            <Button width="150px" height="35px">
-                {editingTagId !== undefined
-                    ? "Modifier le tag"
-                    : "Créer le tag"}
-            </Button>
-        </Form>
+            </div>
+            <ActionButton
+                type="submit"
+                bgColor="bg-primary"
+                color="text-primary-foreground"
+                content={
+                    editingTagId !== undefined
+                        ? "Modifier le tag"
+                        : "Créer le tag"
+                }
+            />
+        </form>
     );
 }

@@ -1,17 +1,10 @@
 import { SquarePen, Trash2 } from "lucide-react";
 import { useMutation, useQuery } from "@apollo/client";
-import {
-    ActionsIcons,
-    Content,
-    ContentToManage,
-    Infos,
-    Title,
-} from "../styled/PanelAdmin.styles";
-import { Button } from "../StyledButton";
 import { deleteTag } from "../../api/deleteTag";
 import { queryTags } from "../../api/tags";
 import { TagType } from "../../../types";
 import { useToast } from "../UI/Toaster/ToasterHook";
+import ActionButton from "../UI/ActionButton";
 
 interface ManageTagsProps {
     showTagForm: (tagId?: number) => void;
@@ -41,21 +34,36 @@ export default function ManageTags({ showTagForm }: ManageTagsProps) {
     };
 
     return (
-        <ContentToManage>
+        <div className="flex flex-col gap-5">
             {tags?.map((tag) => (
-                <Content key={tag.id}>
-                    <Infos>
-                        <Title>{tag.name}</Title>
-                    </Infos>
-                    <ActionsIcons>
-                        <SquarePen onClick={() => showTagForm(tag.id)} />
-                        <Trash2 onClick={() => onDelete(tag.id)} />
-                    </ActionsIcons>
-                </Content>
+                <div
+                    key={tag.id}
+                    className="bg-card border-border flex w-2xl items-center justify-between gap-5 rounded-lg border p-4"
+                >
+                    <div>
+                        <h5 className="text-card-foreground mb-1.5 font-medium">
+                            {tag.name}
+                        </h5>
+                    </div>
+                    <div className="flex items-center justify-center gap-4">
+                        <SquarePen
+                            onClick={() => showTagForm(tag.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                        />
+                        <Trash2
+                            onClick={() => onDelete(tag.id)}
+                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                        />
+                    </div>
+                </div>
             ))}
-            <Button width="150px" onClick={() => showTagForm()}>
-                Créer un tag
-            </Button>
-        </ContentToManage>
+            <ActionButton
+                bgColor="bg-primary"
+                color="text-primary-foreground"
+                width="w-44"
+                content="Créer un tag"
+                onClick={() => showTagForm()}
+            />
+        </div>
     );
 }
