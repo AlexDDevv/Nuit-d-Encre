@@ -6,6 +6,7 @@ export const queryUser = gql`
             email
             id
             role
+            createdAt
         }
     }
 `;
