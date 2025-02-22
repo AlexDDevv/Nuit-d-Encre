@@ -95,7 +95,7 @@ export default function SignUp() {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 className={clsx(
-                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                     error &&
                                         "border-destructive outline-destructive border",
                                 )}
@@ -115,7 +115,7 @@ export default function SignUp() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className={clsx(
-                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                     error &&
                                         "border-destructive outline-destructive border",
                                 )}
@@ -137,7 +137,7 @@ export default function SignUp() {
                                     setConfirmPassword(e.target.value)
                                 }
                                 className={clsx(
-                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                    "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                     error &&
                                         "border-destructive outline-destructive border",
                                 )}
