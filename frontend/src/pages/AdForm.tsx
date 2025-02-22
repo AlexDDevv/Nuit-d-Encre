@@ -57,13 +57,17 @@ export default function AdFormPage() {
             setLocation(ad.location);
             setPicture(ad.picture);
             setOwner(ad.owner);
-            setCategoryId(ad.category?.id);
-
-            const tagsIds: number[] = [];
-            for (const tag of ad.tags) {
-                tagsIds.push(tag.id);
-            }
-            setTagsIds(tagsIds);
+            setCategoryId(ad.category?.id ?? 0);
+            setTagsIds(ad.tags.map((tag) => tag.id) ?? []);
+        } else {
+            setTitle("");
+            setDescription("");
+            setPrice(0);
+            setLocation("");
+            setPicture([]);
+            setOwner("");
+            setCategoryId(0);
+            setTagsIds([]);
         }
     }, [ad]);
 
@@ -274,7 +278,7 @@ export default function AdFormPage() {
                                     value={title}
                                     onChange={(e) => setTitle(e.target.value)}
                                     className={clsx(
-                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
                                             "border-destructive outline-destructive border",
                                     )}
@@ -296,7 +300,7 @@ export default function AdFormPage() {
                                         setPrice(Number(e.target.value))
                                     }
                                     className={clsx(
-                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
                                             "border-destructive outline-destructive border",
                                     )}
@@ -318,7 +322,7 @@ export default function AdFormPage() {
                                     value={owner}
                                     onChange={(e) => setOwner(e.target.value)}
                                     className={clsx(
-                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
                                             "border-destructive outline-destructive border",
                                     )}
@@ -340,7 +344,7 @@ export default function AdFormPage() {
                                         setLocation(e.target.value)
                                     }
                                     className={clsx(
-                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
                                             "border-destructive outline-destructive border",
                                     )}
@@ -361,7 +365,7 @@ export default function AdFormPage() {
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             className={clsx(
-                                "bg-input text-accent-foreground focus:outline-ring font-body h-24 resize-none rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                "bg-input text-accent-foreground focus:outline-ring font-body h-24 resize-none rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                 error &&
                                     "border-destructive outline-destructive border",
                             )}
@@ -501,7 +505,7 @@ export default function AdFormPage() {
                                         setCategoryId(Number(e.target.value))
                                     }
                                     className={clsx(
-                                        "bg-input text-accent-foreground focus:outline-ring cursor-pointer rounded-lg p-2.5 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
+                                        "bg-input text-accent-foreground focus:outline-ring cursor-pointer rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         me?.role === "admin"
                                             ? "w-[55%]"
                                             : "w-full",
@@ -520,8 +524,8 @@ export default function AdFormPage() {
                                 </select>
                                 {me?.role === "admin" && (
                                     <ActionButton
-                                        bgColor="bg-primary"
-                                        color="text-primary-foreground"
+                                        bgColor="bg-secondary"
+                                        color="text-secondary-foreground"
                                         width="w-[45%]"
                                         content={
                                             showCategoryForm
@@ -598,8 +602,8 @@ export default function AdFormPage() {
                                 </div>
                                 {me?.role === "admin" && (
                                     <ActionButton
-                                        bgColor="bg-primary"
-                                        color="text-primary-foreground"
+                                        bgColor="bg-secondary"
+                                        color="text-secondary-foreground"
                                         content={
                                             showTagForm
                                                 ? "Fermer le formulaire"
@@ -625,7 +629,7 @@ export default function AdFormPage() {
                     type="submit"
                     bgColor="bg-primary"
                     color="text-primary-foreground"
-                    width="w-44"
+                    width="w-auto"
                     margin="mx-auto"
                     content={ad ? "Modifier mon annonce" : "Créer mon annonce"}
                 />
