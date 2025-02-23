@@ -27,5 +27,22 @@
             "content": "Mentions légales",
             "link": "/"
         }
+    ],
+    "redirectionsInProfil": [
+        {
+            "title": "Mes annonces",
+            "text": "Gérer mes annonces déposées",
+            "link": "/"
+        },
+        {
+            "title": "Mes transactions",
+            "text": "Suivre mes achats et mes ventes",
+            "link": "/"
+        },
+        {
+            "title": "Paramètres",
+            "text": "Compléter et modifier mes informations et mes préférences",
+            "link": "/"
+        }
     ]
 }
