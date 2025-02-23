@@ -19,7 +19,7 @@ export class Tag extends BaseEntity {
     @Field(() => ID)
     id!: number;
 
-    @Column()
+    @Column({ unique: true })
     @Length(2, 50, {
         message: "Le nom du tag doit être compris en 2 et 50 caractères.",
     })
