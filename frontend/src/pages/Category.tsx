@@ -16,7 +16,7 @@ export default function CategoryPage() {
 
     return (
         <section className="mx-auto max-w-5xl">
-            <h1 className="text-foreground text-2xl font-bold">
+            <h1 className="text-foreground font-title text-2xl font-bold">
                 Annonces de la catégorie {category?.name}
             </h1>
             <div className="mt-12 flex flex-wrap gap-7">

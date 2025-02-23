@@ -11,7 +11,7 @@ export default function HomePage() {
 
     return (
         <div className="mx-auto max-w-5xl">
-            <h1 className="text-foreground text-2xl font-bold">
+            <h1 className="text-foreground font-title text-2xl font-bold">
                 Annonces récentes
             </h1>
             <section className="mt-12">

@@ -251,7 +251,7 @@ export default function AdFormPage() {
 
     return (
         <section className="bg-card border-border mx-auto max-w-5xl rounded-lg border px-6 py-5">
-            <h1 className="text-card-foreground mb-12 text-center">
+            <h1 className="text-card-foreground font-title mb-12 text-center text-2xl font-bold">
                 {ad ? "Modifier une annonce" : "Poster une annonce"}
             </h1>
             <form

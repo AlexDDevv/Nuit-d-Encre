@@ -69,7 +69,7 @@ export default function AdPage() {
                                         ))}
                                 </div>
                                 <div className="flex flex-col gap-4">
-                                    <h1 className="text-foreground text-2xl">
+                                    <h1 className="text-foreground font-title text-2xl font-bold">
                                         {ad.title}
                                     </h1>
                                     <div className="flex items-center gap-2.5">

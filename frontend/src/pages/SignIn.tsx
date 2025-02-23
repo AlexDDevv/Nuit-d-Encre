@@ -61,7 +61,7 @@ export default function SignIn() {
     return (
         <>
             <section className="bg-card border-border mx-auto max-w-lg rounded-xl border px-6 py-5">
-                <h1 className="text-card-foreground mb-7 text-center font-bold">
+                <h1 className="text-card-foreground font-title mb-7 text-center text-2xl font-bold">
                     Se connecter
                 </h1>
                 <form
