@@ -73,7 +73,7 @@ export default function AdPage() {
                                         {ad.title}
                                     </h1>
                                     <div className="flex items-center gap-2.5">
-                                        <h2 className="text-foreground text-lg">
+                                        <h2 className="text-foreground font-title text-lg font-semibold">
                                             {ad.price} €
                                         </h2>
                                         <span className="bg-accent text-accent-foreground rounded-2xl px-2.5 py-0.5 text-xs font-semibold">
@@ -150,7 +150,7 @@ export default function AdPage() {
                         </div>
                         <div className="flex flex-col gap-5">
                             <div>
-                                <h3 className="text-foreground mb-1.5">
+                                <h3 className="text-foreground font-title mb-1.5 text-lg font-medium">
                                     Description de l'annonce :
                                 </h3>
                                 <p className="text-foreground">
@@ -158,14 +158,14 @@ export default function AdPage() {
                                 </p>
                             </div>
                             <div>
-                                <h3 className="text-foreground mb-1.5">
+                                <h3 className="text-foreground font-title mb-1.5 text-lg font-medium">
                                     Localisation de l'annonce :
                                 </h3>
                                 <p className="text-foreground">{ad.location}</p>
                             </div>
 
                             <div>
-                                <h3 className="text-foreground mb-1.5">
+                                <h3 className="text-foreground font-title mb-1.5 text-lg font-medium">
                                     Category de l'annonce :
                                 </h3>
                                 <p className="text-foreground">
@@ -174,7 +174,7 @@ export default function AdPage() {
                             </div>
                             {ad.tags && ad.tags.length > 0 && (
                                 <div>
-                                    <h3 className="text-foreground mb-1.5">
+                                    <h3 className="text-foreground font-title mb-1.5 text-lg font-medium">
                                         Tag
                                     </h3>
                                     <p className="text-foreground">
