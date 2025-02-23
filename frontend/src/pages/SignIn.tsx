@@ -84,7 +84,9 @@ export default function SignIn() {
                                 type="text"
                                 placeholder="Ajouter une adresse mail..."
                                 value={email}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) => {
+                                    setEmail(e.target.value), setError(false);
+                                }}
                                 className={clsx(
                                     "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                     error &&
@@ -104,7 +106,10 @@ export default function SignIn() {
                                 type="password"
                                 placeholder="Ajouter un mot de passe..."
                                 value={password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    setError(false);
+                                }}
                                 className={clsx(
                                     "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                     error &&
