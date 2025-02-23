@@ -9,6 +9,7 @@ import {
 } from "type-graphql";
 import { Tag, createTagInput, updateTagInput } from "../entities/Tag";
 import { AuthContextType } from "../auth";
+import { validate } from "class-validator";
 
 @Resolver()
 export class TagsResolver {
@@ -40,6 +41,12 @@ export class TagsResolver {
         @Arg("data", () => createTagInput) data: createTagInput,
         @Ctx() context: AuthContextType
     ): Promise<Tag> {
+        const errors = await validate(data);
+
+        if (errors.length > 0) {
+            throw new Error(`Validation error: ${JSON.stringify(errors)}`);
+        }
+
         const newTag = new Tag();
         const user = context.user;
 
@@ -55,6 +62,12 @@ export class TagsResolver {
         @Arg("data", () => updateTagInput) data: updateTagInput,
         @Ctx() context: AuthContextType
     ): Promise<Tag> {
+        const errors = await validate(data);
+
+        if (errors.length > 0) {
+            throw new Error(`Validation error: ${JSON.stringify(errors)}`);
+        }
+
         const tag = await Tag.findOneBy({
             id,
             createdBy: { id: context.user.id },

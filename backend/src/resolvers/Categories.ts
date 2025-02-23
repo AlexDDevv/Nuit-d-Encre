@@ -13,6 +13,7 @@ import {
     updateCategoryInput,
 } from "../entities/Category";
 import { AuthContextType } from "../auth";
+import { validate } from "class-validator";
 
 @Resolver()
 export class CategoriesResolver {
@@ -51,6 +52,12 @@ export class CategoriesResolver {
         @Arg("data", () => createCategoryInput) data: createCategoryInput,
         @Ctx() context: AuthContextType
     ): Promise<Category> {
+        const errors = await validate(data);
+
+        if (errors.length > 0) {
+            throw new Error(`Validation error: ${JSON.stringify(errors)}`);
+        }
+
         const newCategory = new Category();
         const user = context.user;
 
@@ -66,6 +73,12 @@ export class CategoriesResolver {
         @Arg("data", () => updateCategoryInput) data: updateCategoryInput,
         @Ctx() context: AuthContextType
     ): Promise<Category | null> {
+        const errors = await validate(data);
+
+        if (errors.length > 0) {
+            throw new Error(`Validation error: ${JSON.stringify(errors)}`);
+        }
+
         const category = await Category.findOneBy({
             id,
             createdBy: { id: context.user.id },
