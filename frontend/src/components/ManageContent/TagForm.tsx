@@ -33,17 +33,54 @@ export default function TagForm(props: {
         createTag: { id: number; name: string };
     }>(createTag, { refetchQueries: [queryTags] });
 
+    const { data: tagsData } = useQuery<{ tags: TagType[] }>(queryTags);
+    const tags = tagsData?.tags;
+    console.log("🚀 ~ tags:", tags);
+
     useEffect(() => {
         if (editingTagId !== undefined && tag) {
             setName(tag.name);
+        } else {
+            setName("");
         }
     }, [tag, editingTagId]);
+
+    const checkExistingTag = (name: string) => {
+        return tags?.find(
+            (tag: TagType) => tag.name.toLowerCase() === name.toLowerCase(),
+        );
+    };
 
     const doSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const trimmedName = name.trim();
+
+        if (trimmedName === "") {
+            setError(true);
+            addToast("Le champ ne peut pas être vide", "error");
+            return;
+        }
+
+        if (trimmedName.length < 2) {
+            setError(true);
+            addToast(
+                "Le nom du tag doit contenir au moins 2 caractères",
+                "error",
+            );
+            return;
+        }
+
         try {
             if (editingTagId !== undefined) {
+                const existingTag = checkExistingTag(trimmedName);
+
+                if (existingTag) {
+                    setError(true);
+                    addToast("Veuillez saisir un nom différent", "error");
+                    return;
+                }
+
                 const tag = await doUpdateTag({
                     variables: {
                         id: editingTagId,
@@ -51,34 +88,38 @@ export default function TagForm(props: {
                     },
                 });
 
-                if (name === "") {
-                    setError(true);
-                    addToast("Le champ ne peut pas être vide", "error");
-                } else {
-                    setName("");
-                    addToast("Tag modifié avec succès !", "success");
-                    const updatedTagId = tag.data?.updateTag.id;
-                    if (updatedTagId !== undefined) {
-                        props.onTagUpdated(updatedTagId);
-                    }
+                setName("");
+                setError(false);
+                addToast("Tag modifié avec succès !", "success");
+
+                const updatedTagId = tag.data?.updateTag.id;
+
+                if (updatedTagId !== undefined) {
+                    props.onTagUpdated(updatedTagId);
                 }
             } else {
+                const existingTag = checkExistingTag(trimmedName);
+
+                if (existingTag) {
+                    setError(true);
+                    addToast("Le tag existe déjà", "error");
+                    return;
+                }
+
                 const tag = await doCreateTag({
                     variables: {
                         data: { name },
                     },
                 });
 
-                if (name === "") {
-                    setError(true);
-                    addToast("Le champ ne peut pas être vide", "error");
-                } else {
-                    setName("");
-                    addToast("Tag créé avec succès !", "success");
-                    const newTagId = tag.data?.createTag.id;
-                    if (newTagId) {
-                        props.onTagCreated(newTagId);
-                    }
+                setName("");
+                setError(false);
+                addToast("Tag créé avec succès !", "success");
+
+                const newTagId = tag.data?.createTag.id;
+
+                if (newTagId) {
+                    props.onTagCreated(newTagId);
                 }
             }
         } catch (error) {
