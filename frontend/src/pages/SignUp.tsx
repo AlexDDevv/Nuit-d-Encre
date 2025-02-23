@@ -33,6 +33,12 @@ export default function SignUp() {
             return;
         }
 
+        if (password !== confirmPassword) {
+            addToast("Les mots de passe ne sont pas identiques", "error");
+            setError(true);
+            return;
+        }
+
         try {
             await doCreateUser({
                 variables: {
@@ -56,8 +62,6 @@ export default function SignUp() {
                 addToast("Le mot de passe n'est pas assez fort", "warning");
             } else if (e.message.includes("Email must be an email")) {
                 addToast("L'email est invalide", "warning");
-            } else if (password !== confirmPassword) {
-                addToast("Les mots de passe ne sont pas identiques", "error");
             } else {
                 addToast(
                     "Un compte avec cette adresse email existe déjà",
