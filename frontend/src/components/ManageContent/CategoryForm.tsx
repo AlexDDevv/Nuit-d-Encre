@@ -100,7 +100,7 @@ export default function CategoryForm(props: {
             onSubmit={doSubmit}
             className="bg-card border-border flex w-80 flex-col gap-5 rounded-lg border p-5"
         >
-            <h6 className="text-card-foreground font-bold">
+            <h6 className="text-card-foreground font-title text-lg font-bold">
                 {editingCategoryId !== undefined
                     ? "Modifier une catégorie"
                     : "Créer une nouvelle catégorie"}
