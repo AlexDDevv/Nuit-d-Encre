@@ -37,19 +37,56 @@ export default function CategoryForm(props: {
         createCategory: { id: number; name: string };
     }>(createCategory, { refetchQueries: [queryCategories] });
 
-    console.log("editingCategoryId:", editingCategoryId);
+    const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
+        queryCategories,
+    );
+    const categories = categoriesData?.categories;
 
     useEffect(() => {
         if (editingCategoryId !== undefined && category?.name) {
             setName(category.name);
+        } else {
+            setName("");
         }
     }, [category, editingCategoryId]);
+
+    const checkExistingCategory = (name: string) => {
+        return categories?.find(
+            (category: CategoryType) =>
+                category.name.toLowerCase() === name.toLowerCase(),
+        );
+    };
 
     const doSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        const trimmedName = name.trim();
+
+        if (trimmedName === "") {
+            setError(true);
+            addToast("Le champ ne peut pas être vide", "error");
+            return;
+        }
+
+        if (trimmedName.length < 2) {
+            setError(true);
+            addToast(
+                "Le nom de la catégorie doit contenir au moins 2 caractères",
+                "error",
+            );
+            return;
+        }
+
         try {
             if (editingCategoryId !== undefined) {
+                const existingCategory = checkExistingCategory(trimmedName);
+
+                if (existingCategory) {
+                    setError(true);
+                    addToast("Veuillez saisir un nom différent", "error");
+                    return;
+                }
+
                 const category = await doUpdateCategory({
                     variables: {
                         id: editingCategoryId,
@@ -57,39 +94,42 @@ export default function CategoryForm(props: {
                     },
                 });
 
-                if (name === "") {
-                    setError(true);
-                    addToast("Le champ ne peut pas être vide", "error");
-                } else {
-                    setName("");
-                    setError(false);
-                    addToast("Catégorie modifiée avec succès !", "success");
-                    const updatedCategoryId = category.data?.updateCategory.id;
-                    if (updatedCategoryId !== undefined) {
-                        props.onCategoryUpdated(updatedCategoryId);
-                    }
+                setName("");
+                setError(false);
+                addToast("Catégorie modifiée avec succès !", "success");
+
+                const updatedCategoryId = category.data?.updateCategory.id;
+
+                if (updatedCategoryId !== undefined) {
+                    props.onCategoryUpdated(updatedCategoryId);
                 }
             } else {
+                const existingCategory = checkExistingCategory(trimmedName);
+
+                if (existingCategory) {
+                    setError(true);
+                    addToast("La catégorie existe déjà", "error");
+                    return;
+                }
+
                 const category = await doCreateCategory({
                     variables: {
                         data: { name },
                     },
                 });
 
-                if (name === "") {
-                    setError(true);
-                    addToast("Le champ ne peut pas être vide", "error");
-                } else {
-                    setName("");
-                    setError(false);
-                    addToast("Catégorie créée avec succès !", "success");
-                    const newCategoryId = category.data?.createCategory.id;
-                    if (newCategoryId) {
-                        props.onCategoryCreated(newCategoryId);
-                    }
+                setName("");
+                setError(false);
+                addToast("Catégorie créée avec succès !", "success");
+
+                const newCategoryId = category.data?.createCategory.id;
+
+                if (newCategoryId) {
+                    props.onCategoryCreated(newCategoryId);
                 }
             }
         } catch (error) {
+            setError(true);
             console.error("Une erreur est survenue :", error);
             addToast("Une erreur est survenue.", "error");
         }
