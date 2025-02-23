@@ -19,7 +19,9 @@ export default function AdCard(props: AdTypeCard) {
                 />
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between gap-5">
-                        <h2 className="text-card-foreground">{props.title}</h2>
+                        <h2 className="text-card-foreground font-title font-semibold">
+                            {props.title}
+                        </h2>
                         <p className="text-card-foreground">{props.price}€</p>
                     </div>
                     <div className="flex items-center justify-between gap-5">
