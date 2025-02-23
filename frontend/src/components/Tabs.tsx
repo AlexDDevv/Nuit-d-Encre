@@ -18,7 +18,7 @@ export default function Tabs({ handleChangeTab, isSelected }: TabsProps) {
                         "hover:bg-border border-border w-40 cursor-pointer border-r py-4 pl-6 transition-colors duration-200 ease-in-out nth-[2]:border-l",
                     )}
                 >
-                    <h4 className="text-card-foreground font-bold">
+                    <h4 className="text-card-foreground font-title text-lg font-medium">
                         {tab.tab}
                     </h4>
                 </div>
