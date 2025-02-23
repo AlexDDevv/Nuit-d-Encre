@@ -53,7 +53,7 @@ export default function ManageCategories({
                     className="bg-card border-border flex w-2xl items-center justify-between gap-5 rounded-lg border p-4"
                 >
                     <div>
-                        <h5 className="text-card-foreground mb-1.5 font-medium">
+                        <h5 className="text-card-foreground font-title text-lg font-semibold">
                             {category.name}
                         </h5>
                     </div>

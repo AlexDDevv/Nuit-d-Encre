@@ -41,7 +41,7 @@ export default function ManageTags({ showTagForm }: ManageTagsProps) {
                     className="bg-card border-border flex w-2xl items-center justify-between gap-5 rounded-lg border p-4"
                 >
                     <div>
-                        <h5 className="text-card-foreground mb-1.5 font-medium">
+                        <h5 className="text-card-foreground font-title text-lg font-medium">
                             {tag.name}
                         </h5>
                     </div>
@@ -52,7 +52,7 @@ export default function ManageTags({ showTagForm }: ManageTagsProps) {
                         />
                         <Trash2
                             onClick={() => onDelete(tag.id)}
-                            className="text-card-foreground hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
+                            className="text-card-foreground w- hover:text-primary h-5 w-5 cursor-pointer transition-all duration-200 ease-in-out hover:scale-110"
                         />
                     </div>
                 </div>
@@ -60,7 +60,7 @@ export default function ManageTags({ showTagForm }: ManageTagsProps) {
             <ActionButton
                 bgColor="bg-primary"
                 color="text-primary-foreground"
-                width="w-44"
+                width="w-32"
                 content="Créer un tag"
                 onClick={() => showTagForm()}
             />

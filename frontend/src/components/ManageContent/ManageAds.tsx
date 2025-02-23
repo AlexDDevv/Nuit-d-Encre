@@ -55,10 +55,10 @@ export default function ManageAds({ onPreviewAdChange }: ManageAdsProps) {
                     className="bg-card border-border flex w-2xl items-center justify-between gap-5 rounded-lg border p-4"
                 >
                     <div>
-                        <h5 className="text-card-foreground mb-1.5 font-medium">
+                        <h5 className="text-card-foreground font-title mb-1.5 text-lg font-semibold">
                             {ad.title}
                         </h5>
-                        <h6 className="text-card-foreground mb-1.5">
+                        <h6 className="text-card-foreground font-title mb-1.5">
                             {ad.owner}
                         </h6>
                     </div>
