@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { CategoryType, TagType, AdType } from "../../types";
 import { useNavigate } from "react-router-dom";
-import CategoryModal from "../components/CategoryModal";
-import { TagModal } from "../components/TagModal";
 import { useMutation, useQuery } from "@apollo/client";
 import { queryCategories } from "../api/categories";
 import { queryTags } from "../api/tags";
@@ -39,9 +37,6 @@ export default function AdFormPage() {
     const [categoryId, setCategoryId] = useState<number>();
     const [tagsIds, setTagsIds] = useState<number[]>([]);
     const [error, setError] = useState<boolean>(false);
-
-    const [showCategoryForm, setShowCategoryForm] = useState(false);
-    const [showTagForm, setShowTagForm] = useState(false);
     const [carrouselIndex, setCarrouselIndex] = useState(0);
     const [prevIndex, setPrevIndex] = useState<number | null>(null);
     const [slideDirection, setSlideDirection] = useState<"left" | "right">(
@@ -70,14 +65,6 @@ export default function AdFormPage() {
             setTagsIds([]);
         }
     }, [ad]);
-
-    const handleCategoryForm = () => {
-        setShowCategoryForm(!showCategoryForm);
-    };
-
-    const handleTagForm = () => {
-        setShowTagForm(!showTagForm);
-    };
 
     const { data: categoriesData } = useQuery<{ categories: CategoryType[] }>(
         queryCategories,
@@ -522,29 +509,7 @@ export default function AdFormPage() {
                                         ),
                                     )}
                                 </select>
-                                {me?.role === "admin" && (
-                                    <ActionButton
-                                        bgColor="bg-secondary"
-                                        color="text-secondary-foreground"
-                                        width="w-[45%]"
-                                        content={
-                                            showCategoryForm
-                                                ? "Fermer le formulaire"
-                                                : "Ajouter une catégorie"
-                                        }
-                                        onClick={handleCategoryForm}
-                                    />
-                                )}
                             </div>
-
-                            {showCategoryForm && (
-                                <CategoryModal
-                                    onCategoryCreated={async (id) => {
-                                        setShowCategoryForm(false);
-                                        setCategoryId(id);
-                                    }}
-                                />
-                            )}
                         </div>
                         <div className="flex w-1/2 flex-col gap-1">
                             <label className="text-card-foreground text-sm">
@@ -600,28 +565,7 @@ export default function AdFormPage() {
                                         </label>
                                     ))}
                                 </div>
-                                {me?.role === "admin" && (
-                                    <ActionButton
-                                        bgColor="bg-secondary"
-                                        color="text-secondary-foreground"
-                                        content={
-                                            showTagForm
-                                                ? "Fermer le formulaire"
-                                                : "Ajouter un tag"
-                                        }
-                                        onClick={handleTagForm}
-                                    />
-                                )}
                             </div>
-                            {showTagForm && (
-                                <TagModal
-                                    onTagCreated={async (id) => {
-                                        setShowTagForm(false);
-                                        tagsIds.push(id);
-                                        setTagsIds([...tagsIds]);
-                                    }}
-                                />
-                            )}
                         </div>
                     </div>
                 </div>
