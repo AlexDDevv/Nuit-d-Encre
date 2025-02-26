@@ -10,7 +10,6 @@ import { queryAds } from "../api/ads";
 import { queryAd } from "../api/ad";
 import { updateAd } from "../api/updateAd";
 import { ImageUp, SquareChevronRight, SquareChevronLeft } from "lucide-react";
-import { whoami } from "../api/whoami";
 import { useToast } from "../components/UI/Toaster/ToasterHook";
 import clsx from "clsx";
 import CarrouselArrow from "../components/UI/CarrouselArrow";
@@ -30,6 +29,7 @@ export default function AdFormPage() {
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [count, setCount] = useState<number>(0);
     const [price, setPrice] = useState(0);
     const [location, setLocation] = useState("");
     const [picture, setPicture] = useState<string[]>([]);
@@ -225,16 +225,51 @@ export default function AdFormPage() {
                 addToast("Annonce créée avec succès.", "success");
                 navigate(`/ads/${data?.createAd.id}`, { replace: true });
             }
-        } catch (err) {
-            addToast(
-                "Une erreur est survenue lors de la création de l'annonce.",
-                "error",
-            );
+        } catch (err: any) {
+            console.error(err.message);
+            setError(true);
+
+            if (
+                err.message.includes("Title must be between 10 and 100 chars")
+            ) {
+                addToast(
+                    "Le titre de l'annonce n'est pas assez long",
+                    "warning",
+                );
+            } else if (
+                err.message.includes(
+                    "Description must be between 20 and 1800 chars",
+                )
+            ) {
+                addToast(
+                    "La description doit contenir entre 20 et 1800 caractères",
+                    "warning",
+                );
+            } else if (
+                err.message.includes("Location must be between 3 and 255 chars")
+            ) {
+                addToast("Saisissez une localisation valide", "warning");
+            } else if (err.message.includes("Invalid email format")) {
+                addToast("Veuillez saisir une adresse email valide", "warning");
+            } else if (
+                err.message.includes("Price must be lower than 1000000 cents")
+            ) {
+                addToast(
+                    "Il est impossible de vendre quelque chose à plus de 100k€",
+                    "error",
+                );
+            } else if (
+                err.message.includes("Each picture must be a valid URL")
+            ) {
+                addToast("L'image n'est pas au bon format", "error");
+            } else {
+                addToast(
+                    "Une erreur est survenue lors de la création de l'annonce.",
+                    "error",
+                );
+            }
         }
     };
-
-    const { data: whoamiData } = useQuery(whoami);
-    const me = whoamiData?.whoami;
 
     return (
         <section className="bg-card border-border mx-auto max-w-5xl rounded-lg border px-6 py-5">
@@ -263,7 +298,10 @@ export default function AdFormPage() {
                                     type="text"
                                     placeholder="Ajouter un titre..."
                                     value={title}
-                                    onChange={(e) => setTitle(e.target.value)}
+                                    onChange={(e) => {
+                                        setTitle(e.target.value);
+                                        setError(false);
+                                    }}
                                     className={clsx(
                                         "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
@@ -283,9 +321,10 @@ export default function AdFormPage() {
                                     type="number"
                                     placeholder="Ajouter un prix..."
                                     value={price}
-                                    onChange={(e) =>
-                                        setPrice(Number(e.target.value))
-                                    }
+                                    onChange={(e) => {
+                                        setPrice(Number(e.target.value));
+                                        setError(false);
+                                    }}
                                     className={clsx(
                                         "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
@@ -307,7 +346,10 @@ export default function AdFormPage() {
                                     type="text"
                                     placeholder="Ajouter une adresse mail..."
                                     value={owner}
-                                    onChange={(e) => setOwner(e.target.value)}
+                                    onChange={(e) => {
+                                        setOwner(e.target.value);
+                                        setError(false);
+                                    }}
                                     className={clsx(
                                         "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
@@ -327,9 +369,10 @@ export default function AdFormPage() {
                                     type="text"
                                     placeholder="Ajouter une localisation..."
                                     value={location}
-                                    onChange={(e) =>
-                                        setLocation(e.target.value)
-                                    }
+                                    onChange={(e) => {
+                                        setLocation(e.target.value);
+                                        setError(false);
+                                    }}
                                     className={clsx(
                                         "bg-input text-accent-foreground focus:outline-ring rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                         error &&
@@ -350,13 +393,25 @@ export default function AdFormPage() {
                             id="description"
                             placeholder="Ajouter une description..."
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
+                            onChange={(e) => {
+                                setDescription(e.target.value);
+                                setCount(e.target.value.length);
+                                setError(false);
+                                console.log(count);
+                            }}
                             className={clsx(
                                 "bg-input text-accent-foreground focus:outline-ring font-body h-24 resize-none rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                 error &&
                                     "border-destructive outline-destructive border",
+                                count > 1800 &&
+                                    "border-destructive outline-destructive border",
                             )}
                         ></textarea>
+                        <div className="text-right">
+                            <p className="text-card-foreground text-xs font-semibold">
+                                {count}/1800
+                            </p>
+                        </div>
                     </div>
                     <div className="flex flex-col gap-1">
                         <label
@@ -492,10 +547,7 @@ export default function AdFormPage() {
                                         setCategoryId(Number(e.target.value))
                                     }
                                     className={clsx(
-                                        "bg-input text-accent-foreground focus:outline-ring cursor-pointer rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
-                                        me?.role === "admin"
-                                            ? "w-[55%]"
-                                            : "w-full",
+                                        "bg-input text-accent-foreground focus:outline-ring w-full cursor-pointer rounded-lg p-3 text-xs placeholder:italic placeholder:opacity-85 focus:outline-2",
                                     )}
                                 >
                                     {categories?.map(
@@ -528,7 +580,7 @@ export default function AdFormPage() {
                                                     tagsIds.includes(tag.id) ===
                                                     true
                                                 }
-                                                onClick={() => {
+                                                onChange={() => {
                                                     if (
                                                         tagsIds.includes(
                                                             tag.id,
@@ -558,8 +610,13 @@ export default function AdFormPage() {
 
                                                         setTagsIds(newArray);
                                                     }
+                                                    setError(false);
                                                 }}
-                                                className="focus:outline-ring focus:outline-2"
+                                                className={clsx(
+                                                    "focus:outline-ring focus:outline-2",
+                                                    error &&
+                                                        "outline-destructive outline-2",
+                                                )}
                                             />
                                             {tag.name}
                                         </label>
