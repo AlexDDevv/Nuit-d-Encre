@@ -156,7 +156,7 @@ export class updateAdInput {
     @Field({ nullable: true })
     title!: string;
 
-    @Length(20, 5000, {
+    @Length(20, 1800, {
         message: "Description must be between 20 and 1800 chars",
     })
     @Field({ nullable: true })
