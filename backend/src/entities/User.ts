@@ -6,14 +6,7 @@ import {
     Entity,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import {
-    Field,
-    ID,
-    ObjectType,
-    InputType,
-    MiddlewareFn,
-    UseMiddleware,
-} from "type-graphql";
+import { Field, ID, ObjectType, InputType, MiddlewareFn } from "type-graphql";
 import { AuthContextType } from "../auth";
 
 export const IsUser: MiddlewareFn<AuthContextType> = async (

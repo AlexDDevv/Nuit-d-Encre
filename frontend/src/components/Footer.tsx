@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import logo from "../assets/logo.svg";
 import data from "../data/data.json";
 import { Copyright, Github, Twitter, Linkedin } from "lucide-react";
 import ActionButton from "./UI/ActionButton";
+import { useQuery } from "@apollo/client";
+import { whoami } from "../api/whoami";
+import Logo from "./UI/Logo";
 
 const socialLinks = [
     { Icon: Github, url: "https://github.com/AlexDDevv", alt: "GitHub" },
@@ -15,12 +17,13 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+    const { data: whoamiData } = useQuery(whoami);
+    const me = whoamiData?.whoami;
+
     return (
         <footer className="bg-card border-border flex flex-col gap-10 rounded-xl border p-6">
             <div className="flex items-center justify-between gap-5">
-                <Link to="/">
-                    <img src={logo} alt="The good corner" />
-                </Link>
+                <Logo />
                 <nav>
                     <ul className="flex items-center justify-center gap-10">
                         {data.footerLi.map((li) => (
@@ -35,12 +38,30 @@ export default function Footer() {
                         ))}
                     </ul>
                 </nav>
-                <ActionButton
-                    bgColor="bg-primary"
-                    color="text-primary-foreground"
-                    path="ads/newAd"
-                    content="Publier une annonce"
-                />
+                {me ? (
+                    me.role === "admin" ? (
+                        <ActionButton
+                            bgColor="bg-secondary"
+                            color="text-secondary-foreground"
+                            path="/admin"
+                            content="Admin"
+                        />
+                    ) : (
+                        <ActionButton
+                            bgColor="bg-secondary"
+                            color="text-secondary-foreground"
+                            path="/profil"
+                            content="Profil"
+                        />
+                    )
+                ) : me === null ? (
+                    <ActionButton
+                        bgColor="bg-secondary"
+                        color="text-secondary-foreground"
+                        path="/signin"
+                        content="Se connecter"
+                    />
+                ) : null}
             </div>
             <div className="flex items-center justify-between gap-12">
                 <div className="flex items-center justify-center gap-3">

@@ -1,39 +1,36 @@
-export type TagType = {
-    id: number;
-    name: string;
-};
-
-export type AdType = {
-    id: number;
+export type BookCardProps = {
     title: string;
-    price: number;
-    picture: string[];
-    description: string;
-    owner: string;
-    location: string;
-    category: CategoryType;
-    createdBy: UserType;
-    createdAt: string;
-    tags: TagType[];
+    isbn: string[];
+    cover_i: string;
+    author_name: string;
 };
 
-export type AdTypeCard = {
-    id: number;
-    owner?: string;
-    title: string;
-    price: number;
-    picture: string[];
-    category: CategoryType;
-    tags?: TagType[];
+export type OpenLibraryBook = {
+    covers?: number[];
+    title?: string;
+    publishers?: string[];
+    publish_country?: string;
+    publish_date?: string;
+    number_of_pages?: number;
+    isbn_10?: string[];
+    isbn_13?: string[];
+    authors?: { key: string }[];
 };
 
-export type CategoryType = {
-    id: number;
-    name: string;
-    ads?: AdType[];
+export type GoogleBooksVolume = {
+    volumeInfo?: {
+        description?: string;
+        categories?: string[];
+    };
+    saleInfo?: {
+        isEbook?: boolean;
+    };
 };
 
-export type UserType = {
-    id: number;
-    email: string;
+export type BookProps = {
+    book: OpenLibraryBook;
+    googleBook: GoogleBooksVolume;
+    author: {
+        name?: string;
+    };
 };

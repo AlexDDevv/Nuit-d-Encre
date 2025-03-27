@@ -1,14 +1,13 @@
 import "./assets/App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
-import HomePage from "./pages/Home";
-import AdPage from "./pages/Ad";
-import CategoryPage from "./pages/Category";
-import AdFormPage from "./pages/AdForm";
+import LandingPage from "./pages/LandingPage";
+import Books from "./pages/SearchBooks";
+import Legal from "./pages/Legal";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
-import Admin from "./pages/Admin";
 import Profil from "./pages/Profil";
+import BookPage from "./pages/BookPage";
 import AuthChecker from "./AuthChecker";
 import { AuthState } from "./AuthChecker";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -25,40 +24,10 @@ function App() {
             <BrowserRouter basename="/">
                 <Routes>
                     <Route path="/" element={<Layout />}>
-                        <Route path="/" element={<HomePage />} />
-                        <Route path="ads/:id" element={<AdPage />} />
-                        <Route
-                            path="categories/:id"
-                            element={<CategoryPage />}
-                        />
-                        <Route
-                            path="/ads/:id/edit"
-                            element={
-                                <AuthChecker
-                                    authState={[
-                                        AuthState.user,
-                                        AuthState.admin,
-                                    ]}
-                                    redirectTo="/signin"
-                                >
-                                    <AdFormPage />
-                                </AuthChecker>
-                            }
-                        />
-                        <Route
-                            path="ads/newAd"
-                            element={
-                                <AuthChecker
-                                    authState={[
-                                        AuthState.user,
-                                        AuthState.admin,
-                                    ]}
-                                    redirectTo="/signin"
-                                >
-                                    <AdFormPage />
-                                </AuthChecker>
-                            }
-                        />
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/legal" element={<Legal />} />
+                        <Route path="/livres" element={<Books />} />
+                        <Route path="/livres/:slug" element={<BookPage />} />
                         <Route
                             path="/signup"
                             element={
@@ -78,17 +47,6 @@ function App() {
                                     redirectTo="/"
                                 >
                                     <SignIn />
-                                </AuthChecker>
-                            }
-                        />
-                        <Route
-                            path="/admin"
-                            element={
-                                <AuthChecker
-                                    authState={[AuthState.admin]}
-                                    redirectTo="/"
-                                >
-                                    <Admin />
                                 </AuthChecker>
                             }
                         />

@@ -3,34 +3,34 @@
 @import "tailwindcss";
 
 @theme {
-    --color-background: hsl(222, 22%, 15%);
-    --color-foreground: hsl(48, 9%, 78%);
+    --color-background: hsl(20 3% 19%);
+    --color-foreground: hsl(43 59% 81%);
 
-    --color-muted: hsl(224, 11%, 19%);
-    --color-muted-foreground: hsl(221, 12%, 69%);
+    --color-muted: hsl(20 12% 23%);
+    --color-muted-foreground: hsl(20 12% 73%);
 
-    --color-popover: hsl(222, 21%, 12%);
-    --color-popover-foreground: hsl(48, 8%, 88%);
+    --color-popover: hsl(20 3% 16%);
+    --color-popover-foreground: hsl(43 59% 91%);
 
-    --color-card: hsl(223, 21%, 13%);
-    --color-card-foreground: hsl(45, 9%, 83%);
+    --color-card: hsl(20 3% 17%);
+    --color-card-foreground: hsl(43 59% 86%);
 
-    --color-border: hsl(220, 12%, 20%);
-    --color-input: hsl(223, 12%, 23%);
+    --color-border: hsl(0 0% 24%);
+    --color-input: hsl(0 0% 27%);
 
-    --color-primary: hsl(40, 100%, 70%);
-    --color-primary-foreground: hsl(40, 100%, 10%);
+    --color-primary: hsl(43 59% 81%);
+    --color-primary-foreground: hsl(43 59% 21%);
 
-    --color-secondary: hsl(39, 30%, 25%);
-    --color-secondary-foreground: hsl(42, 30%, 85%);
+    --color-secondary: hsl(43 30% 25%);
+    --color-secondary-foreground: hsl(43 30% 85%);
 
-    --color-accent: hsl(222, 22%, 30%);
-    --color-accent-foreground: hsl(224, 22%, 90%);
+    --color-accent: hsl(20 3% 34%);
+    --color-accent-foreground: hsl(20 3% 94%);
 
-    --color-destructive: hsl(9, 86%, 58%);
-    --color-destructive-foreground: hsl(0, 0%, 100%);
+    --color-destructive: hsl(3 84% 51%);
+    --color-destructive-foreground: hsl(0 0% 100%);
 
-    --color-ring: hsl(40, 100%, 70%);
+    --color-ring: hsl(43 59% 81%);
 
     --font-title: "Roboto", sans-serif;
     --font-body: "Lato", sans-serif;
@@ -72,4 +72,14 @@ body {
 
 .footerLinkAfter:hover::after {
     width: 100%;
+}
+
+.bg-custom {
+    background: linear-gradient(
+        to top,
+        var(--color-foreground),
+        var(--color-secondary)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

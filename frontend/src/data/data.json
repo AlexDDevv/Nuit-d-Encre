@@ -1,13 +1,16 @@
 {
-    "tabs": [
+    "navLink": [
         {
-            "tab": "Annonces"
+            "link": "/livres",
+            "content": "Livres"
         },
         {
-            "tab": "Catégories"
+            "link": "/auteurs",
+            "content": "Auteurs"
         },
         {
-            "tab": "Tags"
+            "link": "/bibliotheque",
+            "content": "Bibliothèque"
         }
     ],
     "footerLi": [
@@ -25,24 +28,78 @@
         },
         {
             "content": "Mentions légales",
-            "link": "/"
+            "link": "/legal"
         }
     ],
-    "redirectionsInProfil": [
+    "mentionsLegales": [
         {
-            "title": "Mes annonces",
-            "text": "Gérer mes annonces déposées",
-            "link": "/"
+            "title": "Données personnelles",
+            "paragraph": [
+                "Nous collectons et traitons vos données personnelles conformément à la réglementation en vigueur. Pour plus d'informations, veuillez consulter notre",
+                "Conformément à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Pour exercer ce droit, veuillez nous contacter à l'adresse suivante : pas encore créée"
+            ],
+            "span": [
+                "Politique de confidentialité : ",
+                "Droit d'accès, de rectification et de suppression des données personnelles : "
+            ],
+            "link": " politique de confidentialité"
         },
         {
-            "title": "Mes transactions",
-            "text": "Suivre mes achats et mes ventes",
-            "link": "/"
+            "title": "Cookies",
+            "paragraph": [
+                "Read Soul n'utilise pas encore de cookies.",
+                "Vous pouvez désactiver les cookies en suivant les instructions fournies par votre navigateur. Pour plus d'informations, consultez la section Aide de votre navigateur."
+            ],
+            "span": [
+                "Informations sur l'utilisation des cookies : ",
+                "Instructions pour désactiver les cookies : "
+            ]
         },
         {
-            "title": "Paramètres",
-            "text": "Compléter et modifier mes informations et mes préférences",
-            "link": "/"
+            "title": "Conditions générales d'utilisation (CGU)",
+            "paragraph": [
+                "L'accès et l'utilisation du site READ SOUL sont soumis aux conditions générales d'utilisation. En accédant et en utilisant notre site, vous acceptez sans réserve les présentes conditions.",
+                "Tout le contenu présent sur ce site, incluant, de façon non limitative, les graphismes, images, textes, vidéos, animations, sons, logos, gifs et icônes ainsi que leur mise en forme sont la propriété exclusive de Spikes, à l'exception des marques, logos ou contenus appartenant à d'autres sociétés partenaires ou auteurs."
+            ],
+            "span": [
+                "Conditions d'accès et d'utilisation du site : ",
+                "Propriété intellectuelle : "
+            ]
+        },
+        {
+            "title": "Informations spécifiques aux services proposés",
+            "paragraph": [
+                "Read Soul propose de se créer une bibliothèque personnelle en ligne en se créant un compte. Vous pourrez enregistrer vos livres et vos auteurs favoris, émettre des critiques sur ces derniers, partager des recommandations de lecture, échanger avec d'autres passionnés etc."
+            ],
+            "span": [
+                "Description des services : "
+            ]
+        },
+        {
+            "title": "Identité de l'éditeur du site",
+            "paragraph": [
+                "DELPORTE Alexis",
+                "alexddevs@gmail.com",
+                "92825974600016",
+                "FR42928259746"
+            ],
+            "span": [
+                "Nom : ",
+                "Adresse email : ",
+                "Numéro SIRET/SIREN : ",
+                "Numéro de TVA intracommunautaire : "
+            ]
+        },
+        {
+            "title": "Hébergeur du site",
+            "paragraph": [
+                "Vercel",
+                "https://vercel.com/"
+            ],
+            "span": [
+                "Nom de l'hébergeur : ",
+                "Site web : "
+            ]
         }
     ]
 }

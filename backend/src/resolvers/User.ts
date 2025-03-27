@@ -4,33 +4,33 @@ import { validate } from "class-validator";
 import { hash, verify } from "argon2";
 import { sign } from "jsonwebtoken";
 import Cookies from "cookies";
-import { ContextType, getUserFromContext } from "../auth";
+import { ContextType } from "../auth";
 
 @Resolver()
 export class UserResolver {
     @Query(() => User, { nullable: true })
     async user(@Arg("id", () => ID) id: number): Promise<User | null> {
         const user = await User.findOne({
-            where: { id }
-        })
+            where: { id },
+        });
 
         if (user) {
-            return user
+            return user;
         } else {
-            return null
+            return null;
         }
     }
 
     @Query(() => [User])
-        async users(): Promise<User[]> {
-            const users = await User.find();
+    async users(): Promise<User[]> {
+        const users = await User.find();
 
-            if (users) {
-                return users;
-            } else {
-                return null;
-            }
+        if (users) {
+            return users;
+        } else {
+            return null;
         }
+    }
 
     @Mutation(() => User)
     async createUser(
