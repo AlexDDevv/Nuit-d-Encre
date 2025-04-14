@@ -1,4 +1,4 @@
-import { IdInput } from "../entities/Id";
+import { IdInput } from "../database/entities/id";
 
 /**
  * Merge some data on an existing database entity, it takes care of keeping existing many-to-many relations to avoid unicity constraints
