@@ -1,13 +1,33 @@
 import { Arg, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
-import { createUserInput, User } from "../entities/User";
 import { validate } from "class-validator";
 import { hash, verify } from "argon2";
 import { sign } from "jsonwebtoken";
 import Cookies from "cookies";
-import { ContextType } from "../auth";
+import { ContextType } from "../../types/types";
+import { User } from "../../database/entities/user";
+import { createUserInput } from "../inputs/create/createUserInput";
+
+/**
+ * Resolver for user-related operations. This includes querying users, creating new users,
+ * signing in and signing out, and fetching the currently authenticated user.
+ * The resolver works with the `User` entity and provides functionality like:
+ * - `user`: Fetch a user by their unique ID.
+ * - `users`: Fetch all users.
+ * - `createUser`: Create a new user and hash their password.
+ * - `signIn`: Authenticate a user with their email and password, issue a JWT token, and set it in cookies.
+ * - `signOut`: Remove the JWT token from cookies to sign the user out.
+ * - `whoami`: Retrieve the currently authenticated user based on the request context.
+ */
 
 @Resolver()
 export class UserResolver {
+    /**
+     * Retrieves a user by their unique ID.
+     *
+     * @param id - The unique identifier of the user to retrieve.
+     * @returns The user with the provided ID or `null` if no user is found.
+     */
+
     @Query(() => User, { nullable: true })
     async user(@Arg("id", () => ID) id: number): Promise<User | null> {
         const user = await User.findOne({
@@ -21,6 +41,12 @@ export class UserResolver {
         }
     }
 
+    /**
+     * Retrieves all users from the database.
+     *
+     * @returns A list of all users in the system.
+     */
+
     @Query(() => [User])
     async users(): Promise<User[]> {
         const users = await User.find();
@@ -28,9 +54,17 @@ export class UserResolver {
         if (users) {
             return users;
         } else {
-            return null;
+            return [];
         }
     }
+
+    /**
+     * Creates a new user and hashes their password.
+     *
+     * @param data - The input data for creating the user (email and password).
+     * @returns The newly created user.
+     * @throws An error if validation fails or user creation encounters an issue.
+     */
 
     @Mutation(() => User)
     async createUser(
@@ -60,6 +94,17 @@ export class UserResolver {
         }
     }
 
+    /**
+     * Signs in a user by verifying their email and password, and then issuing a JWT token.
+     * The JWT token is then set in cookies to maintain the user's session.
+     *
+     * @param email - The email of the user attempting to sign in.
+     * @param password - The password of the user attempting to sign in.
+     * @param context - The context object containing request and response details.
+     * @returns The signed-in user if authentication is successful, `null` otherwise.
+     * @throws An error if there is an issue signing in the user.
+     */
+
     @Mutation(() => User, { nullable: true })
     async signIn(
         @Arg("email") email: string,
@@ -80,14 +125,12 @@ export class UserResolver {
                     );
                     console.log("🚀 ~ UserResolver ~ token:", token);
 
-                    // jwtVerify(token, process.env.JWT_SECRET_KEY)
-
                     const cookies = new Cookies(context.req, context.res);
 
                     cookies.set("token", token, {
                         secure: false,
                         httpOnly: true,
-                        maxAge: 1000 * 60 * 60 * 48,
+                        maxAge: 1000 * 60 * 60 * 48, // 48 hours
                     });
 
                     return user;
@@ -103,6 +146,13 @@ export class UserResolver {
         }
     }
 
+    /**
+     * Signs out the current user by removing the JWT token from cookies.
+     *
+     * @param context - The context object containing request and response details.
+     * @returns `true` if the sign-out operation was successful.
+     */
+
     @Mutation(() => Boolean)
     async signOut(@Ctx() context: ContextType): Promise<boolean> {
         const cookies = new Cookies(context.req, context.res);
@@ -110,6 +160,13 @@ export class UserResolver {
         cookies.set("token", "", { maxAge: -1 });
         return true;
     }
+
+    /**
+     * Retrieves the currently authenticated user based on the JWT token in the request context.
+     *
+     * @param context - The context object containing the authenticated user.
+     * @returns The current authenticated user or `null` if the user is not authenticated.
+     */
 
     @Query(() => User, { nullable: true })
     async whoami(@Ctx() context: ContextType) {
