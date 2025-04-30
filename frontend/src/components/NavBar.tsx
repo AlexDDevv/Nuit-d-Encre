@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { signOut } from "../api/signout";
 import { whoami } from "../api/whoami";
 import { useToast } from "./UI/Toaster/ToasterHook";
+import { Button } from "./UI/Button";
 
 export default function NavBar() {
     const { data: whoamiData } = useQuery(whoami);
@@ -76,17 +77,16 @@ export default function NavBar() {
                 )
             ) : me === null ? (
                 <div className="flex items-center justify-center gap-5">
-                    <ActionButton
-                        bgColor="bg-primary"
-                        color="text-primary-foreground"
-                        path="/signup"
-                        content="S'inscrire"
+                    <Button
+                        ariaLabel="S'inscrire à Nuit d'Encre"
+                        children="S'inscrire"
+                        to="/signup"
                     />
-                    <ActionButton
-                        bgColor="bg-secondary"
-                        color="text-secondary-foreground"
-                        path="/signin"
-                        content="Se connecter"
+                    <Button
+                        ariaLabel="Se connecter à Nuit d'Encre"
+                        children="Se connecter"
+                        variant="secondary"
+                        to="/signin"
                     />
                 </div>
             ) : null}
