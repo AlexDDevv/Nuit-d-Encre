@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import data from "../data/data.json";
 import { Copyright, Github, Twitter, Linkedin } from "lucide-react";
-import ActionButton from "./UI/ActionButton";
 import { useQuery } from "@apollo/client";
 import { whoami } from "../api/whoami";
 import Logo from "./UI/Logo";
+import { Button } from "./UI/Button";
 
 const socialLinks = [
     { Icon: Github, url: "https://github.com/AlexDDevv", alt: "GitHub" },
@@ -40,26 +40,24 @@ export default function Footer() {
                 </nav>
                 {me ? (
                     me.role === "admin" ? (
-                        <ActionButton
-                            bgColor="bg-secondary"
-                            color="text-secondary-foreground"
-                            path="/admin"
-                            content="Admin"
+                        <Button
+                            ariaLabel="Accéder au panel admin"
+                            children="Admin"
+                            to="/admin"
                         />
                     ) : (
-                        <ActionButton
-                            bgColor="bg-secondary"
-                            color="text-secondary-foreground"
-                            path="/profil"
-                            content="Profil"
+                        <Button
+                            ariaLabel="Accéder à sa page profil utilisateur"
+                            children="Profil"
+                            to="/profil"
                         />
                     )
                 ) : me === null ? (
-                    <ActionButton
-                        bgColor="bg-secondary"
-                        color="text-secondary-foreground"
-                        path="/signin"
-                        content="Se connecter"
+                    <Button
+                        ariaLabel="Se connecter à Nuit d'Encre"
+                        children="Se connecter"
+                        variant="secondary"
+                        to="/signin"
                     />
                 ) : null}
             </div>

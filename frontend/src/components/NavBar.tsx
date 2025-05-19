@@ -1,7 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import data from "../data/data.json";
 import ResearchForm from "./UI/ResearchForm";
-import ActionButton from "./UI/ActionButton";
 import { useMutation, useQuery } from "@apollo/client";
 import { signOut } from "../api/signout";
 import { whoami } from "../api/whoami";
@@ -46,33 +45,29 @@ export default function NavBar() {
             {me ? (
                 me.role === "admin" ? (
                     location.pathname === "/admin" ? (
-                        <ActionButton
-                            bgColor="bg-destructive"
-                            color="text-destructive-foreground"
-                            content="Se déconnecter"
+                        <Button
+                            ariaLabel="Se déconnecter de Nuit d'Encre"
+                            children="Se déconnecter"
                             onClick={onSignOut}
                         />
                     ) : (
-                        <ActionButton
-                            bgColor="bg-secondary"
-                            color="text-secondary-foreground"
-                            path="/admin"
-                            content="Admin"
+                        <Button
+                            ariaLabel="Accéder au panel admin"
+                            children="Admin"
+                            to="/admin"
                         />
                     )
                 ) : location.pathname === "/profil" ? (
-                    <ActionButton
-                        bgColor="bg-destructive"
-                        color="text-destructive-foreground"
-                        content="Se déconnecter"
+                    <Button
+                        ariaLabel="Se déconnecter de Nuit d'Encre"
+                        children="Se déconnecter"
                         onClick={onSignOut}
                     />
                 ) : (
-                    <ActionButton
-                        bgColor="bg-secondary"
-                        color="text-secondary-foreground"
-                        path="/profil"
-                        content="Profil"
+                    <Button
+                        ariaLabel="Accéder à sa page profil utilisateur"
+                        children="Profil"
+                        to="/profil"
                     />
                 )
             ) : me === null ? (
