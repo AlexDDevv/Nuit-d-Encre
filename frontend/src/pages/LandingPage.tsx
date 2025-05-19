@@ -1,4 +1,4 @@
-import banner from "../../public/images/banner.webp";
+import banner from "/images/banner.webp";
 import ShinyButton from "../components/UI/ShinyButton";
 import { Helmet } from "react-helmet";
 

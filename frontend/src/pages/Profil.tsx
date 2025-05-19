@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { whoami } from "../api/whoami";
-import avatar from "../../public/images/avatar.jfif";
+import avatar from "/images/avatar.jfif";
 
 export default function Profil() {
     const { data: whoamiData } = useQuery(whoami);
