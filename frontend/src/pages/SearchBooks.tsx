@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import BookCard from "../components/UI/BookCard";
 import { BookCardProps } from "../../types";
+import { Helmet } from "react-helmet";
 
 export default function SearchBooks() {
     const [research, setReSearch] = useState("");
@@ -54,6 +55,36 @@ export default function SearchBooks() {
 
     return (
         <>
+            <Helmet>
+                <title>Recherche de Livres - Nuit d'Encre</title>
+                <meta
+                    name="description"
+                    content="Utilisez la recherche intelligente de Nuit d'Encre pour découvrir votre prochaine lecture."
+                />
+                <meta name="robots" content="index, follow" />
+
+                {/* Open Graph */}
+                <meta
+                    property="og:title"
+                    content="Recherche de Livres - Nuit d'Encre"
+                />
+                <meta
+                    property="og:description"
+                    content="Utilisez la recherche intelligente de Nuit d'Encre pour découvrir votre prochaine lecture."
+                />
+                <meta property="og:type" content="website" />
+
+                {/* Twitter Card */}
+                <meta name="twitter:card" content="summary" />
+                <meta
+                    name="twitter:title"
+                    content="Recherche de Livres - Nuit d'Encre"
+                />
+                <meta
+                    name="twitter:description"
+                    content="Utilisez la recherche intelligente de Nuit d'Encre pour découvrir votre prochaine lecture."
+                />
+            </Helmet>
             <section className="mb-36">
                 <h1 className="font-titleFont text-foreground mb-12 text-center text-xl font-bold tracking-widest uppercase">
                     Rechercher un livre

@@ -5,8 +5,8 @@ import { useMutation } from "@apollo/client";
 import { signIn } from "../../api/signIn";
 import { whoami } from "../../api/whoami";
 import clsx from "clsx";
-import ActionButton from "../UI/ActionButton";
 import GoogleButton from "../UI/GoogleButton";
+import { Button } from "../UI/Button";
 
 export default function SignInForm() {
     const [email, setEmail] = useState("alex@gmail.com");
@@ -118,11 +118,11 @@ export default function SignInForm() {
                     Mot de passe oublié?
                 </p>
             </div>
-            <ActionButton
+            <Button
                 type="submit"
-                bgColor="bg-primary"
-                color="text-primary-foreground"
-                content="Connexion"
+                ariaLabel="Se connecter à Nuit d'Encre"
+                children="Se connecter"
+                fullWidth
             />
             <GoogleButton />
         </form>

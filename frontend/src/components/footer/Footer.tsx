@@ -1,10 +1,35 @@
 import { Link } from "react-router-dom";
-import data from "../data/data.json";
 import { Copyright, Github, Twitter, Linkedin } from "lucide-react";
-import ActionButton from "./UI/ActionButton";
-import { useQuery } from "@apollo/client";
-import { whoami } from "../api/whoami";
-import Logo from "./UI/Logo";
+import Logo from "../UI/Logo";
+import { LinksType } from "../../../types";
+import FooterNavbar from "./FooterNavbar";
+
+const FOOTER_LINKS: readonly LinksType[] = [
+    {
+        href: "/contact",
+        label: "Contact",
+        category: "Contact",
+        ariaLabel: "Nous contacter",
+    },
+    {
+        href: "/about",
+        label: "About",
+        category: "About",
+        ariaLabel: "À propos de Nuit d'Encre",
+    },
+    {
+        href: "/support",
+        label: "Support",
+        category: "Support",
+        ariaLabel: "Contacter le support si vous avez besoin d'aide",
+    },
+    {
+        href: "/legal",
+        label: "Mentions légales",
+        category: "Mentions légales",
+        ariaLabel: "Prenez connaissance des mentions légales de Nuit d'Encre",
+    },
+] as const;
 
 const socialLinks = [
     { Icon: Github, url: "https://github.com/AlexDDevv", alt: "GitHub" },
@@ -17,51 +42,11 @@ const socialLinks = [
 ];
 
 export default function Footer() {
-    const { data: whoamiData } = useQuery(whoami);
-    const me = whoamiData?.whoami;
-
     return (
         <footer className="bg-card border-border flex flex-col gap-10 rounded-xl border p-6">
             <div className="flex items-center justify-between gap-5">
                 <Logo />
-                <nav>
-                    <ul className="flex items-center justify-center gap-10">
-                        {data.footerLi.map((li) => (
-                            <li key={li.content}>
-                                <Link
-                                    to={li.link}
-                                    className="text-card-foreground footerLinkAfter relative font-semibold"
-                                >
-                                    {li.content}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
-                {me ? (
-                    me.role === "admin" ? (
-                        <ActionButton
-                            bgColor="bg-secondary"
-                            color="text-secondary-foreground"
-                            path="/admin"
-                            content="Admin"
-                        />
-                    ) : (
-                        <ActionButton
-                            bgColor="bg-secondary"
-                            color="text-secondary-foreground"
-                            path="/profil"
-                            content="Profil"
-                        />
-                    )
-                ) : me === null ? (
-                    <ActionButton
-                        bgColor="bg-secondary"
-                        color="text-secondary-foreground"
-                        path="/signin"
-                        content="Se connecter"
-                    />
-                ) : null}
+                <FooterNavbar links={FOOTER_LINKS} />
             </div>
             <div className="flex items-center justify-between gap-12">
                 <div className="flex items-center justify-center gap-3">

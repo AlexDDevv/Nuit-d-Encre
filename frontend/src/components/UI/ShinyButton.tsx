@@ -1,6 +1,6 @@
+import { forwardRef } from "react";
 import clsx from "clsx";
-import { motion, MotionProps, type AnimationProps } from "framer-motion";
-import React from "react";
+import { motion, MotionProps, type AnimationProps } from "motion/react";
 import { useNavigate } from "react-router-dom";
 
 const animationProps = {
@@ -31,7 +31,7 @@ interface ShinyButtonProps
     className?: string;
 }
 
-const ShinyButton = React.forwardRef<HTMLButtonElement, ShinyButtonProps>(
+const ShinyButton = forwardRef<HTMLButtonElement, ShinyButtonProps>(
     ({ children, className, ...props }, ref) => {
         const navigate = useNavigate();
 

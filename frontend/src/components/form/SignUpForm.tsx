@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { createUser } from "../../api/createUser";
 import clsx from "clsx";
-import ActionButton from "../UI/ActionButton";
 import GoogleButton from "../UI/GoogleButton";
+import { Button } from "../UI/Button";
 
 export default function SignUpForm() {
     const [email, setEmail] = useState("alex@gmail.com");
@@ -150,11 +150,11 @@ export default function SignUpForm() {
                     />
                 </div>
             </div>
-            <ActionButton
+            <Button
                 type="submit"
-                bgColor="bg-primary"
-                color="text-primary-foreground"
-                content="Inscription"
+                ariaLabel="S'inscrire à Nuit d'Encre"
+                children="S'inscrire"
+                fullWidth
             />
             <GoogleButton />
         </form>

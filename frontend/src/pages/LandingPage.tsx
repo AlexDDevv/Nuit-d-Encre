@@ -1,9 +1,39 @@
-import banner from "../../public/images/banner.webp";
+import banner from "/images/banner.webp";
 import ShinyButton from "../components/UI/ShinyButton";
+import { Helmet } from "react-helmet";
 
 export default function LandingPage() {
     return (
         <>
+            {/* Update of the metadata */}
+            <Helmet>
+                <title>Page d'accueil de Nuit d'Encre</title>
+                <meta
+                    name="description"
+                    content="Page d'accueil du site Nuit d'Encre."
+                />
+                <meta name="robots" content="noindex, nofollow" />
+                {/* Open Graph */}
+                <meta
+                    property="og:title"
+                    content="Page d'accueil de Nuit d'Encre"
+                />
+                <meta
+                    property="og:description"
+                    content="Page d'accueil du site Nuit d'Encre."
+                />
+                <meta property="og:type" content="website" />
+                {/* Twitter Card */}
+                <meta name="twitter:card" content="summary" />
+                <meta
+                    name="twitter:title"
+                    content="Page d'accueil de Nuit d'Encre"
+                />
+                <meta
+                    name="twitter:description"
+                    content="Page d'accueil du site Nuit d'Encre."
+                />
+            </Helmet>
             <section className="mx-auto max-w-7xl text-center">
                 <div className="mb-24 flex flex-col items-center justify-center gap-5">
                     <h1 className="font-title text-accent-foreground flex flex-col gap-5 text-7xl font-bold">
@@ -29,7 +59,7 @@ export default function LandingPage() {
             </section>
             <section className="mx-auto max-w-7xl text-center">
                 <article className="mb-8">
-                    <h2 className="font-quoteFont text-foreground mx-auto mb-2 max-w-2xl text-3xl leading-10">
+                    <h2 className="font-quote text-foreground mx-auto mb-2 max-w-2xl text-3xl leading-10 italic">
                         <q>
                             La lecture est un voyage de l'esprit, une agréable
                             absence de la vie et de soi-même.

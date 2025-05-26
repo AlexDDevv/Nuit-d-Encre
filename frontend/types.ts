@@ -1,3 +1,13 @@
+import { LucideIcon } from "lucide-react";
+
+export interface LinksType {
+    href: string;
+    label: string;
+    category: string;
+    ariaLabel: string;
+    Icon?: LucideIcon;
+}
+
 export type BookCardProps = {
     title: string;
     isbn: string[];

@@ -1,36 +1,4 @@
 {
-    "navLink": [
-        {
-            "link": "/livres",
-            "content": "Livres"
-        },
-        {
-            "link": "/auteurs",
-            "content": "Auteurs"
-        },
-        {
-            "link": "/bibliotheque",
-            "content": "Bibliothèque"
-        }
-    ],
-    "footerLi": [
-        {
-            "content": "Contact",
-            "link": "/"
-        },
-        {
-            "content": "À propos",
-            "link": "/"
-        },
-        {
-            "content": "Support",
-            "link": "/"
-        },
-        {
-            "content": "Mentions légales",
-            "link": "/legal"
-        }
-    ],
     "mentionsLegales": [
         {
             "title": "Données personnelles",
