@@ -1,18 +1,4 @@
 {
-    "navLink": [
-        {
-            "link": "/livres",
-            "content": "Livres"
-        },
-        {
-            "link": "/auteurs",
-            "content": "Auteurs"
-        },
-        {
-            "link": "/bibliotheque",
-            "content": "Bibliothèque"
-        }
-    ],
     "footerLi": [
         {
             "content": "Contact",
