@@ -122,6 +122,7 @@ export default function SignInForm() {
                 type="submit"
                 ariaLabel="Se connecter à Nuit d'Encre"
                 children="Se connecter"
+                fullWidth
             />
             <GoogleButton />
         </form>

@@ -1,17 +1,17 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import ResearchForm from "./UI/ResearchForm";
+import ResearchForm from "../UI/ResearchForm";
 import { useMutation, useQuery } from "@apollo/client";
-import { signOut } from "../api/signout";
-import { whoami } from "../api/whoami";
-import { useToast } from "./UI/Toaster/ToasterHook";
-import { Button } from "./UI/Button";
-import { LinksType } from "../../types";
-import { HeaderLink } from "./Header";
+import { signOut } from "../../api/signout";
+import { whoami } from "../../api/whoami";
+import { useToast } from "../UI/Toaster/ToasterHook";
+import { Button } from "../UI/Button";
+import { LinksType } from "../../../types";
+import Links from "../Links";
 
 export default function HeaderNavbar({
-    headerLinks,
+    links,
 }: {
-    headerLinks: readonly LinksType[];
+    links: readonly LinksType[];
 }) {
     const { data: whoamiData } = useQuery(whoami);
     const me = whoamiData?.whoami;
@@ -28,15 +28,15 @@ export default function HeaderNavbar({
     };
 
     return (
-        <nav className="flex flex-1 items-center gap-12">
+        <nav className="flex flex-1 items-center justify-between gap-12">
             <div className="flex flex-1 items-center justify-center gap-12">
                 <ul className="flex items-center justify-center gap-12">
-                    {headerLinks.map((link) => (
+                    {links.map((link) => (
                         <li
                             className="transition-transform hover:scale-110"
                             key={link.href}
                         >
-                            <HeaderLink {...link} />
+                            <Links {...link} />
                         </li>
                     ))}
                 </ul>

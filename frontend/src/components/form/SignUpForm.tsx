@@ -154,6 +154,7 @@ export default function SignUpForm() {
                 type="submit"
                 ariaLabel="S'inscrire à Nuit d'Encre"
                 children="S'inscrire"
+                fullWidth
             />
             <GoogleButton />
         </form>

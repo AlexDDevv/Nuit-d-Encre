@@ -59,7 +59,7 @@ export default function LandingPage() {
             </section>
             <section className="mx-auto max-w-7xl text-center">
                 <article className="mb-8">
-                    <h2 className="font-quoteFont text-foreground mx-auto mb-2 max-w-2xl text-3xl leading-10">
+                    <h2 className="font-quote text-foreground mx-auto mb-2 max-w-2xl text-3xl leading-10 italic">
                         <q>
                             La lecture est un voyage de l'esprit, une agréable
                             absence de la vie et de soi-même.

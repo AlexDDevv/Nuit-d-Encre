@@ -1,41 +1,9 @@
 import { Link } from "react-router-dom";
-import HeaderNavbar from "./HeaderNavbar";
-import Logo from "./UI/Logo";
 import { LinksType } from "../../types";
 import { JSX } from "react";
 
-const HEADER_LINKS: readonly LinksType[] = [
-    {
-        href: "/livres",
-        label: "Livres",
-        category: "Livres",
-        ariaLabel: "Rechercher un livre",
-    },
-    {
-        href: "/auteurs",
-        label: "Auteurs",
-        category: "Auteurs",
-        ariaLabel: "Rechercher un auteur en particulier",
-    },
-    {
-        href: "/bibliotheque",
-        label: "Bibliothèque",
-        category: "Bibliothèque",
-        ariaLabel: "Accéder à sa bibliothèque personnelle",
-    },
-] as const;
-
-export default function Header() {
-    return (
-        <header className="bg-card border-border flex items-center justify-between gap-5 rounded-xl border p-6">
-            <Logo />
-            <HeaderNavbar headerLinks={HEADER_LINKS} />
-        </header>
-    );
-}
-
 /**
- * Header link component with external link management and accessibility
+ * Links component with external link management and accessibility
  *
  * @param {object} props - Component properties
  * @param {string} props.href - Link destination URL
@@ -44,7 +12,7 @@ export default function Header() {
  * @param {string} props.ariaLabel - The personalized ARIA label for accessibility
  * @returns {JSX.Element} A Link component with appropriate safety and accessibility attributes
  */
-function HeaderLink({
+export default function Links({
     href,
     label,
     category,
@@ -84,5 +52,3 @@ function HeaderLink({
         </Link>
     );
 }
-
-export { HeaderLink };
