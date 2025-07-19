@@ -1,0 +1,50 @@
+@import "tailwindcss";
+@import "@/styles/theme.css";
+
+body {
+    background-color: var(--color-background);
+    font-family: var(--font-body);
+    padding: 24px;
+    position: relative;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-accent);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-accent-foreground);
+    border-radius: 8px;
+}
+
+.footerLinkAfter::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--color-card-foreground);
+    transition: width 0.2s ease-in-out;
+    z-index: 500;
+}
+
+.footerLinkAfter:hover::after {
+    width: 100%;
+}
+
+.bg-custom {
+    background: linear-gradient(
+        to top,
+        var(--color-foreground),
+        var(--color-secondary)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

@@ -1,7 +1,62 @@
-node_modules
+# Fichiers de sauvegarde
+*.bak
+*.tmp
+*.swp
 
-# local env files
-.env*.local
+# Dossiers OS
+.DS_Store
+Thumbs.db
 
-# env files
+# Répertoires de dépendances
+node_modules/
+vendor/
+
+# Dossiers de construction
+dist/
+build/
+bin/
+
+# Fichiers de configuration spécifiques à l'IDE
+.idea/
+*.sublime-workspace
+*.sublime-project
+.vscode/
+*.code-workspace
+*.xcworkspace
+*.swiftpm/
+*.user
+*.userprefs
+*.suo
+*.sln.docstates
+
+# Fichiers de package et de verrouillage (dépend du gestionnaire de package utilisé)
+yarn.lock
+composer.lock
+Gemfile.lock
+Pipfile.lock
+
+# Fichiers de log
+*.log
+npm-debug.log*
+yarn-error.log*
+
+# Fichiers de certificat
+*.pem
+*.cert
+*.key
+
+# Dossiers et fichiers de configuration d'environnement
 .env
+.env.local
+.env.*.local
+*.env
+
+# Fichiers de base de données
+*.sqlite
+*.sqlite3
+*.db
+
+# Dossiers et fichiers de cache
+.cache/
+*.pyc
+__pycache__/

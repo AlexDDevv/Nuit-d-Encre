@@ -1,0 +1,51 @@
+@import url("https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+    --font-title: "Roboto", sans-serif;
+    --font-body: "Lato", sans-serif;
+    --font-quote: "EB Garamond", serif;
+
+    /* colors */
+    --color-background: hsl(20 3% 19%);
+    --color-foreground: hsl(43 59% 81%);
+    --color-muted: hsl(20 12% 23%);
+    --color-muted-foreground: hsl(20 12% 73%);
+    --color-popover: hsl(20 3% 16%);
+    --color-popover-foreground: hsl(43 59% 91%);
+    --color-card: hsl(20 3% 17%);
+    --color-card-foreground: hsl(43 59% 86%);
+    --color-border: hsl(0 0% 24%);
+    --color-input: hsl(0 0% 27%);
+    --color-primary: hsl(43 59% 81%);
+    --color-primary-foreground: hsl(43 59% 21%);
+    --color-secondary: hsl(43 30% 25%);
+    --color-secondary-foreground: hsl(43 30% 85%);
+    --color-accent: hsl(20 3% 34%);
+    --color-accent-foreground: hsl(20 3% 94%);
+    --color-destructive: hsl(3 84% 51%);
+    --color-destructive-foreground: hsl(0 0% 100%);
+    --color-ring: hsl(43 59% 81%);
+    --color-white: #fafafa;
+    --color-primary-700: #00067d;
+    --color-destructive-light: #ffd7d7;
+    --color-destructive-medium: #d84241;
+    --color-destructive-dark: #6d0a09;
+    --color-warning-light: #ffddc5;
+    --color-warning-medium: #e37323;
+    --color-warning-dark: #90430b;
+    --color-validate-light: #bbecc1;
+    --color-validate-medium: #3f7a50;
+    --color-validate-dark: #1a3823;
+
+    /* components colors */
+    --color-button-destructive-bg: var(--color-destructive-medium);
+    --color-button-destructive-fg: var(--color-white);
+    --color-button-validate-bg: var(--color-validate-medium);
+    --color-button-validate-fg: var(--color-white);
+    --color-button-warning-bg: var(--color-warning-medium);
+    --color-button-warning-fg: var(--color-white);
+    --color-button-secondary-bg: var(--color-primary-700);
+    --color-button-secondary-fg: var(--color-white);
+}

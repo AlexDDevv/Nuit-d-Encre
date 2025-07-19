@@ -1,34 +1,75 @@
 services:
+    # Frontend service (React + Vite)
     front: 
-        build: ./frontend
+        build:
+            context: ./app/frontend # Directory where the Dockerfile is located
+            dockerfile: Dockerfile # Name of the Dockerfile to use 
         ports: 
-            - 5173:5173
+            - 5173:5173 # Exposes port 5173 to access Vite from the host    
         volumes:
-            - ./frontend/index.html:/app/index.html
-            - ./frontend/src:/app/src
-            - ./frontend/public:/app/public
-            - ./frontend/vite.config.ts:/app/vite.config.ts
+            - ./app/frontend/index.html:/app/index.html
+            - ./app/frontend/src:/app/src
+            - ./app/frontend/public:/app/public
+            - ./app/frontend/vite.config.ts:/app/vite.config.ts
+        command: ["npm", "run", "dev", "--host"]   
+        networks:
+            - frontend_network # To be configured if a specific network is required 
+
+    # Backend service (Express.js)        
     back: 
-        build: ./backend
+        build:
+            context: ./app/backend # Directory where the Dockerfile is located
+            dockerfile: Dockerfile # Name of the Dockerfile to use
         ports: 
-            - 5000:5000
+            - 3310:3310
         environment:    
             - CHOKIDAR_USEPOLLING=true
-            - JWT_SECRET_KEY=58252e5e-a7ea-4799-a207-87ab40136741
+            - DB_HOST=db
+        # - JWT_SECRET_KEY=58252e5e-a7ea-4799-a207-87ab40136741
         env_file:
-            - ./.env
+            - ./app/backend/.env # Loads environment variables from a file
         volumes:
-            - ./backend/src:/app/src
+            - ./app/backend/src:/app/src
+        command: ["npm", "start"] # Start the Express.js server (hot reload enabled with nodemon if configured)
+        depends_on:
+            db:
+                condition: service_healthy
+        networks:
+            - frontend_network
+            - backend_network
+
     db:
-        image: postgres
+        image: postgres:15
+        restart: always # Recreate the container in case of failure
         ports: 
             - 5433:5432
         env_file:
-            - ./.env
+            - ./app/backend/.env
         volumes:
-            - dbdata:/var/lib/postgresql/data
+            - db_data:/var/lib/postgresql/data
+        networks:
+            - backend_network
+        healthcheck: # To ensure that PostgreSQL is ready before starting the backend.
+            test:
+                [
+                    "CMD-SHELL",
+                    "pg_isready -U nuit_d_encre -d nuit_d_encre -h localhost",
+                ]
+            interval: 10s
+            timeout: 5s
+            retries: 5
+            start_period: 5s
+
+# Networks (useful for isolating services)
+networks:
+    backend_network:
+        driver: bridge
+    frontend_network:
+        driver: bridge
+
+# Volumes (to persist data like databases)
 volumes:
-  dbdata:
-    driver: local
+    db_data: # Volume for the database
+        driver: local
             
     
