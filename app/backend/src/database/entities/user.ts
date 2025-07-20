@@ -7,7 +7,7 @@ import {
     PrimaryGeneratedColumn,
 } from "typeorm";
 import { Roles, UserRole } from "../../types/types";
-import { Book } from "./book";
+import { Book } from "./book/book";
 
 /**
  * Represents a user entity in the database.
