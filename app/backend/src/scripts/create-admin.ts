@@ -5,8 +5,7 @@ import { Roles, UserRole } from "../types/types"
 async function createAdmin() {
 	const email = process.env.ADMIN_EMAIL
 	const password = process.env.ADMIN_PASSWORD
-	const firstname = process.env.ADMIN_FIRSTNAME
-	const lastname = process.env.ADMIN_LASTNAME
+	const userName = process.env.ADMIN_USERNAME
 		? (process.env.ADMIN_ROLE as UserRole)
 		: Roles.User
 
@@ -19,12 +18,8 @@ async function createAdmin() {
 		console.error("❌ ADMIN_PASSWORD is not defined.")
 		return
 	}
-	if (!firstname) {
-		console.error("❌ ADMIN_FIRSTNAME is not defined.")
-		return
-	}
-	if (!lastname) {
-		console.error("❌ ADMIN_LASTNAME is not defined.")
+	if (!userName) {
+		console.error("❌ ADMIN_NAME is not defined.")
 		return
 	}
 
@@ -45,8 +40,7 @@ async function createAdmin() {
 		const user = await register(
 			email,
 			password,
-			firstname,
-			lastname,
+			userName,
 			Roles.Admin
 		)
 

@@ -9,8 +9,7 @@ import { Field, InputType } from "type-graphql";
  * - `password`: the user's password, with specific requirements:
  *   - Must be between 6 and 255 characters.
  *   - Must contain at least one uppercase letter, one lowercase letter, one number, and one symbol.
- * - `firstname`: the user's first name, must be between 2 and 100 characters.
- * - `lastname`: the user's last name, must be between 2 and 100 characters.
+ * - `userName`: the user's name, must be between 2 and 100 characters.
  * - `role`: the user's role, must be one of the valid roles defined in the `Roles` enum.
  *
  * The class uses the following decorators:
@@ -47,15 +46,9 @@ export class CreateUserInput {
 
     @Field()
     @Length(2, 100, {
-        message: "The firstname must contain between 2 and 100 characters.",
+        message: "The user name must contain between 2 and 100 characters.",
     })
-    firstname!: string;
-
-    @Field()
-    @Length(2, 100, {
-        message: "The lastname must contain between 2 and 100 characters.",
-    })
-    lastname!: string;
+    userName!: string;
 }
 
 /**

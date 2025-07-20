@@ -1,5 +1,5 @@
 import banner from "/images/banner.webp";
-import ShinyButton from "../components/UI/ShinyButton";
+import ShinyButton from "@/components/UI/ShinyButton";
 import { Helmet } from "react-helmet";
 
 export default function LandingPage() {
@@ -59,7 +59,7 @@ export default function LandingPage() {
             </section>
             <section className="mx-auto max-w-7xl text-center">
                 <article className="mb-8">
-                    <h2 className="font-quote text-foreground mx-auto mb-2 max-w-2xl text-3xl leading-10 italic">
+                    <h2 className="font-quote text-foreground mx-auto mb-2 max-w-2xl text-3xl italic leading-10">
                         <q>
                             La lecture est un voyage de l'esprit, une agréable
                             absence de la vie et de soi-même.

@@ -1,21 +1,21 @@
 type FormWrapperProps = {
-	onSubmit: React.FormEventHandler<HTMLFormElement>
-	children: React.ReactNode
-	className?: string
-}
+    onSubmit: React.FormEventHandler<HTMLFormElement>;
+    children: React.ReactNode;
+    className?: string;
+};
 
 export default function FormWrapper({
-	onSubmit,
-	children,
-	className,
+    onSubmit,
+    children,
+    className,
 }: FormWrapperProps) {
-	return (
-		<form
-			onSubmit={onSubmit}
-			role="form"
-			className={`border-black-50 shadow-component flex w-full flex-col gap-4 rounded-xl border-1 bg-white p-4 md:max-w-[60vh] ${className}`}
-		>
-			{children}
-		</form>
-	)
+    return (
+        <form
+            onSubmit={onSubmit}
+            role="form"
+            className={`border-border bg-card flex w-full flex-col gap-6 rounded-lg border p-8 ${className}`}
+        >
+            {children}
+        </form>
+    );
 }

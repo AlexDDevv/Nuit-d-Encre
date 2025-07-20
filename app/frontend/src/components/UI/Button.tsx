@@ -10,26 +10,24 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 primary:
-                    "bg-primary-700 border-primary-700 text-white hover:bg-white hover:text-primary-700 focus:ring-primary-700",
+                    "bg-primary border-primary text-primary-foreground focus:ring-primary",
                 secondary:
-                    "bg-primary-default border-primary-default text-white hover:bg-white hover:text-primary-default focus:ring-primary-default",
+                    "bg-secondary border-secondary text-secondary-foreground focus:ring-secondary",
                 tertiary:
-                    "bg-white border-white text-primary-700 hover:bg-primary-700 hover:border-primary-700 hover:text-white focus:ring-primary-700",
-                navbar_btn:
-                    "bg-primary-default text-white hover:bg-white font-semibold hover:text-primary-700 focus:ring-primary-700 border-none rounded-md",
+                    "bg-white border-white text-primary hover:bg-primary hover:border-primary hover:text-white focus:ring-primary",
                 pagination_btn:
-                    "bg-transparent text-fg border-none hover:bg-fg hover:text-white focus:ring-primary-700 rounded-md",
+                    "bg-transparent text-foreground border-none hover:bg-foreground hover:text-background focus:ring-primary rounded-md",
                 outline:
-                    "border-primary-700 text-primary-700 hover:bg-primary-700 hover:text-white focus:ring-primary-700",
+                    "border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary",
                 transparent:
-                    "bg-transparent border-white text-white hover:bg-primary-700 hover:text-white focus:ring-primary-700 hover:border-transparent",
+                    "bg-transparent border-white text-white hover:bg-primary hover:text-white focus:ring-primary hover:border-transparent",
                 destructive:
-                    "bg-destructive-medium border-destructive-medium text-white hover:bg-white hover:text-destructive-medium focus:ring-destructive-medium",
+                    "bg-destructive border-destructive text-destructive-foreground hover:bg-destructive-foreground hover:text-destructive focus:ring-destructive",
                 disabled:
                     "bg-black-400 border-black-400 text-white focus:ring-black-400 pointer-events-none cursor-not-allowed",
-                ghost: "bg-transparent border-none text-primary-700 hover:underline focus:ring-primary-700",
+                ghost: "bg-transparent border-none text-primary hover:underline focus:ring-primary",
                 ghost_destructive:
-                    "bg-transparent border-none text-destructive-medium hover:underline focus:ring-primary-700 active:outline-none hover:bg-destructive-medium hover:text-white active:bg-transparent",
+                    "bg-transparent border-none text-destructive-medium hover:underline focus:ring-primary active:outline-none hover:bg-destructive-medium hover:text-white active:bg-transparent",
             },
             size: {
                 sm: "px-3 py-1 text-sm",
@@ -37,9 +35,6 @@ const buttonVariants = cva(
                 lg: "px-6 py-3 text-lg",
                 square: "w-12 h-12",
                 square_sm: "w-10 h-10",
-            },
-            nav: {
-                selected: "bg-white text-primary-700",
             },
             pagination: {
                 selected: "bg-fg text-white",
@@ -90,7 +85,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                 size,
             }),
             isNavBtnSelected &&
-                "text-primary-700 hover:bg-primary-default bg-white hover:text-white",
+                "text-primary hover:bg-primary-default bg-white hover:text-white",
             fullWidth && "w-full",
             className,
         );

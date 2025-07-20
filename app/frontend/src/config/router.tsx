@@ -6,7 +6,7 @@
 import App from "@/App";
 import PublicRoute from "@/components/sections/hoc/PublicRoute";
 import ErrorElement from "@/components/UI/ErrorElement";
-import Loader from "@/components/ui/Loader";
+import Loader from "@/components/UI/Loader";
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -18,6 +18,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
  */
 const Landing = lazy(() => import("@/pages/Landing"));
 const Auth = lazy(() => import("@/pages/Auth"));
+const Books = lazy(() => import("@/pages/Books"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
 
 /**
@@ -60,6 +61,14 @@ const router = createBrowserRouter([
                         <PublicRoute>
                             <Auth />
                         </PublicRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "books",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <Books />
                     </Suspense>
                 ),
             },

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Copyright, Github, Twitter, Linkedin } from "lucide-react";
 import Logo from "@/components/UI/Logo";
 import { LinksType } from "@/types/types";
-import FooterNavbar from "./FooterNavbar";
+import NavAndAuthButtons from "@/components/sections/auth/NavAndAuthButtons";
 
 const FOOTER_LINKS: readonly LinksType[] = [
     {
@@ -13,8 +13,8 @@ const FOOTER_LINKS: readonly LinksType[] = [
     },
     {
         href: "/about",
-        label: "About",
-        category: "About",
+        label: "À propos",
+        category: "À propos",
         ariaLabel: "À propos de Nuit d'Encre",
     },
     {
@@ -24,7 +24,7 @@ const FOOTER_LINKS: readonly LinksType[] = [
         ariaLabel: "Contacter le support si vous avez besoin d'aide",
     },
     {
-        href: "/legal",
+        href: "/terms-of-use",
         label: "Mentions légales",
         category: "Mentions légales",
         ariaLabel: "Prenez connaissance des mentions légales de Nuit d'Encre",
@@ -46,7 +46,7 @@ export default function Footer() {
         <footer className="bg-card border-border flex flex-col gap-10 rounded-xl border p-6">
             <div className="flex items-center justify-between gap-5">
                 <Logo />
-                <FooterNavbar links={FOOTER_LINKS} />
+                <NavAndAuthButtons links={FOOTER_LINKS} />
             </div>
             <div className="flex items-center justify-between gap-12">
                 <div className="flex items-center justify-center gap-3">

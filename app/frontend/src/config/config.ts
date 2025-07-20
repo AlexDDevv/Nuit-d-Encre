@@ -11,6 +11,6 @@ export const VITE_GRAPHQL_ENDPOINT = (() => {
     switch (env) {
         case "development":
         default:
-            return "http://localhost:8080/api/v1";
+            return "/api";
     }
 })();

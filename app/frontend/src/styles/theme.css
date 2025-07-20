@@ -27,6 +27,7 @@
     --color-destructive: hsl(3 84% 51%);
     --color-destructive-foreground: hsl(0 0% 100%);
     --color-ring: hsl(43 59% 81%);
+    --color-black-default: #0d0d0e;
     --color-white: #fafafa;
     --color-primary-700: #00067d;
     --color-destructive-light: #ffd7d7;

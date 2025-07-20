@@ -9,8 +9,7 @@ import { UserRole } from "../types/types";
 export const register = async (
     email: string,
     password: string,
-    firstname: string,
-    lastname: string,
+    userName: string,
     role: UserRole
 ): Promise<User> => {
     const userRepository = dataSource.getRepository(User);
@@ -35,8 +34,7 @@ export const register = async (
         const user = User.create({
             email,
             hashedPassword,
-            firstname,
-            lastname,
+            userName,
             role,
         });
 

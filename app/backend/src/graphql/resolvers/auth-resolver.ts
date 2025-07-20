@@ -15,7 +15,7 @@ export class AuthResolver {
     /**
      * Mutation for user registration.
      *
-     * @param data - The input data containing the user's email, password, firstname, lastname, and role.
+     * @param data - The input data containing the user's email, password, userName and role.
      * @param context - The context object that contains cookies for session management.
      *
      * @returns A Promise that resolves to the newly created User object.
@@ -30,13 +30,12 @@ export class AuthResolver {
             // NB : for now, data is checked automatically in buildSchema() in server.ts
             // with the option "validate:true"
 
-            const { email, password, firstname, lastname } = data;
+            const { email, password, userName } = data;
 
             return await register(
                 email,
                 password,
-                firstname,
-                lastname,
+                userName,
                 Roles.User // Always create a user with the role "user"
             ); // Call register method from AuthService
         } catch (error) {

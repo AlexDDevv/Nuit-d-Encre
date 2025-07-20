@@ -1,89 +1,107 @@
-import { LOGIN, WHOAMI } from "@/graphql/auth"
-import { useToast } from "@/hooks/useToast"
-import { UserSignIn } from "@/types/types"
-import { ApolloError, useMutation } from "@apollo/client"
-import { SubmitHandler, useForm } from "react-hook-form"
-import { useNavigate } from "react-router-dom"
-import FormButtonSubmit from "./form/FormButtonSubmit"
-import FormTitle from "./form/FormTitle"
-import FormWrapper from "./form/FormWrapper"
-import InputEmail from "./form/InputEmail"
-import InputPassword from "./form/InputPassword"
+import { useToast } from "@/hooks/useToast";
+import { UserSignIn } from "@/types/types";
+import { ApolloError } from "@apollo/client";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
+import FormTitle from "@/components/sections/auth/form/FormTitle";
+import FormWrapper from "@/components/sections/auth/form/FormWrapper";
+import InputEmail from "@/components/sections/auth/form/InputEmail";
+import InputPassword from "@/components/sections/auth/form/InputPassword";
+import { Checkbox } from "@/components/UI/Checkbox";
+import { Label } from "@/components/UI/Label";
+import ContinueWithGoogle from "@/components/UI/ContinueWithGoogle";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Signin() {
-	const {
-		register,
-		handleSubmit,
-		reset,
-		formState: { errors },
-	} = useForm<UserSignIn>({
-		mode: "onBlur",
-		defaultValues: {
-			email: "",
-			password: "",
-		},
-	})
-	const navigate = useNavigate()
-	const [Login] = useMutation(LOGIN, {
-		refetchQueries: [WHOAMI],
-	})
-	const { showToast } = useToast()
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<UserSignIn>({
+        mode: "onBlur",
+        defaultValues: {
+            email: "admin@example.com",
+            password: "SuperPassword!2025",
+        },
+    });
 
-	const onSubmit: SubmitHandler<UserSignIn> = async formData => {
-		try {
-			const { data } = await Login({
-				variables: {
-					data: {
-						email: formData.email,
-						password: formData.password,
-					},
-				},
-			})
+    const { Login } = useAuth();
+    const navigate = useNavigate();
+    const { showToast } = useToast();
 
-			// If registration ok, navigate to surveys page and toastify
-			if (data) {
-				reset()
-				navigate("/surveys")
-				showToast({
-					type: "success",
-					title: "Connexion réussie !",
-					description: "A vous de jouer !",
-				})
-			}
-		} catch (err) {
-			// Handle ApolloError
-			if (err instanceof ApolloError) {
-				const invalidCredentialsError = err.graphQLErrors.find(e =>
-					e.message.includes("Login failed")
-				)
+    const onSubmit: SubmitHandler<UserSignIn> = async (formData) => {
+        try {
+            const { data } = await Login({
+                variables: {
+                    data: {
+                        email: formData.email,
+                        password: formData.password,
+                    },
+                },
+            });
 
-				showToast({
-					type: "error",
-					title: invalidCredentialsError
-						? "Identifiants incorrects"
-						: "La connexion a échoué",
-					description: invalidCredentialsError
-						? "L'email et/ou le mot de passe est incorrect."
-						: "Veuillez réessayer",
-				})
-				return
-			}
-			// Handle other errors
-			showToast({
-				type: "error",
-				title: "La connexion a échoué.",
-				description: "Veuillez réessayer",
-			})
-			console.error("Error:", err)
-		}
-	}
+            // If registration ok, navigate to surveys page and toastify
+            if (data) {
+                reset();
+                navigate("/books");
+                showToast({
+                    type: "success",
+                    title: "Connexion réussie, bienvenue !",
+                    description:
+                        "Vous pouvez dès à présent créer votre bibliothèque !",
+                });
+            }
+        } catch (err) {
+            // Handle ApolloError
+            if (err instanceof ApolloError) {
+                const invalidCredentialsError = err.graphQLErrors.find((e) =>
+                    e.message.includes("Login failed"),
+                );
 
-	return (
-		<FormWrapper onSubmit={handleSubmit(onSubmit)}>
-			<FormTitle isSignUp={false} />
-			<InputEmail<UserSignIn> register={register} errors={errors} />
-			<InputPassword<UserSignIn> register={register} errors={errors} />
-			<FormButtonSubmit type="sign-in" />
-		</FormWrapper>
-	)
+                showToast({
+                    type: "error",
+                    title: invalidCredentialsError
+                        ? "Identifiants incorrects"
+                        : "La connexion a échoué",
+                    description: invalidCredentialsError
+                        ? "L'email et/ou le mot de passe est incorrect."
+                        : "Veuillez réessayer",
+                });
+                return;
+            }
+            // Handle other errors
+            showToast({
+                type: "error",
+                title: "La connexion a échoué.",
+                description: "Veuillez réessayer",
+            });
+            console.error("Error:", err);
+        }
+    };
+
+    return (
+        <div className="flex w-full flex-col items-center gap-10">
+            <FormTitle isSignUp={false} />
+            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+                <InputEmail<UserSignIn> register={register} errors={errors} />
+                <InputPassword<UserSignIn>
+                    register={register}
+                    errors={errors}
+                />
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        <Checkbox />
+                        <Label htmlFor="rememberMe">Se souvenir de moi</Label>
+                    </div>
+                    <p className="text-card-foreground text-sm font-medium">
+                        Mot de passe oublié?
+                    </p>
+                </div>
+                <FormButtonSubmit type="sign-in" />
+                <ContinueWithGoogle />
+            </FormWrapper>
+        </div>
+    );
 }

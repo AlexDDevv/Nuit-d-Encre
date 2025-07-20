@@ -37,6 +37,12 @@ export type UserSignUp = UserAuth;
 export type UserSignIn = Pick<UserAuth, "email" | "password">;
 export type UserSignForm = UserSignUp | UserSignIn;
 
+export type AuthButtonsProps = {
+    user: any;
+    pathname: string;
+    logout: () => void;
+};
+
 export interface ErrorLayoutProps {
     children: React.ReactNode;
 }

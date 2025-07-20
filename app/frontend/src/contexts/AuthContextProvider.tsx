@@ -6,11 +6,10 @@
  * available throughout the application.
  */
 
-import React, { useEffect, useState, useCallback } from "react"
-import { useMutation, useQuery } from "@apollo/client"
-import { LOGOUT, WHOAMI } from "@/graphql/auth"
-import { User } from "@/types/types"
-import { AuthContext, AuthContextType } from "./AuthContext"
+import React, { useEffect, useState, useCallback } from "react";
+import { User } from "@/types/types";
+import { AuthContext, AuthContextType } from "@/contexts/AuthContext";
+import { useAuth } from "@/hooks/useAuth";
 
 /**
  * Props for the AuthContextProvider component
@@ -19,56 +18,53 @@ import { AuthContext, AuthContextType } from "./AuthContext"
  * Defines the required properties for the AuthContextProvider component.
  */
 interface AuthContextProviderProps {
-	/** The children components that will have access to the auth context */
-	children: React.ReactNode
+    /** The children components that will have access to the auth context */
+    children: React.ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthContextProviderProps> = ({
-	children,
+    children,
 }) => {
-	const [user, setUser] = useState<User | null>(null)
-	const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	// Query whoami to fetch the user
-	const { data, loading, error, refetch } = useQuery<{ whoami: User }>(
-		WHOAMI,
-		{
-			fetchPolicy: "network-only", // Ensure fresh data on each load
-		}
-	)
+    // Query whoami to fetch the user
+    const { data, loading, error, refetch } = useAuth();
 
-	// Mutation to logout
-	const [logoutMutation] = useMutation(LOGOUT)
+    // Mutation to logout
+    const { Logout } = useAuth();
 
-	// Update user state based on query result
-	useEffect(() => {
-		if (!loading && !error) {
-			setUser(data?.whoami || null)
-		}
-		setIsLoading(loading)
-	}, [data, loading, error])
+    // Update user state based on query result
+    useEffect(() => {
+        if (!loading && !error) {
+            setUser(data?.whoami || null);
+        }
+        setIsLoading(loading);
+    }, [data, loading, error]);
 
-	const logout = useCallback(async () => {
-		try {
-			await logoutMutation() // Call the logout mutation
-			setUser(null) // Clear the user state
-			refetch() // Optionally refetch to reset WHOAMI query state
-		} catch (error) {
-			console.error("Logout failed", error)
-		}
-	}, [logoutMutation, refetch])
+    const logout = useCallback(async () => {
+        try {
+            await Logout(); // Call the logout mutation
+            setUser(null); // Clear the user state
+            refetch(); // Optionally refetch to reset WHOAMI query state
+        } catch (error) {
+            console.error("Logout failed", error);
+        }
+    }, [Logout, refetch]);
 
-	/**
-	 * The context value that will be provided to all child components
-	 * @description
-	 * Contains the authentication state and methods.
-	 */
-	const value: AuthContextType = {
-		user,
-		isLoading,
-		refetchUser: refetch,
-		logout,
-	}
+    /**
+     * The context value that will be provided to all child components
+     * @description
+     * Contains the authentication state and methods.
+     */
+    const value: AuthContextType = {
+        user,
+        isLoading,
+        refetchUser: refetch,
+        logout,
+    };
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
-}
+    return (
+        <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+    );
+};

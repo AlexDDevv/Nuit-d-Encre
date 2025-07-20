@@ -22,7 +22,7 @@ export default function InputPassword<T extends UserSignForm>({
     const passwordKey: keyof T = "password";
 
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             <Label htmlFor="password" required>
                 Mot de passe
             </Label>

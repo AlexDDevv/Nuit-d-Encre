@@ -36,7 +36,7 @@ const ShinyButton = forwardRef<HTMLButtonElement, ShinyButtonProps>(
         const navigate = useNavigate();
 
         const redirectToSignUp = () => {
-            navigate("/signup");
+            navigate("/register");
         };
 
         return (

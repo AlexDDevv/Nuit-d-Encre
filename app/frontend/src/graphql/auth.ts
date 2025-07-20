@@ -23,8 +23,7 @@ export const WHOAMI = gql`
         whoami {
             id
             email
-            firstname
-            lastname
+            userName
             role
         }
     }

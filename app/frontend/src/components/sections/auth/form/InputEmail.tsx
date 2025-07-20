@@ -22,7 +22,7 @@ export default function InputEmail<T extends UserSignForm>({
     const emailKey: keyof T = "email";
 
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             <Label htmlFor="email" required>
                 Adresse e-mail
             </Label>

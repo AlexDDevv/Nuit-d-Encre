@@ -1,22 +1,22 @@
 import { LinksType } from "@/types/types";
-import HeaderNavbar from "./HeaderNavbar";
+import NavAndAuthButtons from "@/components/sections/auth/NavAndAuthButtons";
 import Logo from "@/components/UI/Logo";
 
 const HEADER_LINKS: readonly LinksType[] = [
     {
-        href: "/livres",
+        href: "/books",
         label: "Livres",
         category: "Livres",
         ariaLabel: "Rechercher un livre",
     },
     {
-        href: "/auteurs",
+        href: "/autors",
         label: "Auteurs",
         category: "Auteurs",
         ariaLabel: "Rechercher un auteur en particulier",
     },
     {
-        href: "/bibliotheque",
+        href: "/library",
         label: "Bibliothèque",
         category: "Bibliothèque",
         ariaLabel: "Accéder à sa bibliothèque personnelle",
@@ -27,7 +27,7 @@ export default function Header() {
     return (
         <header className="bg-card border-border flex items-center justify-between gap-5 rounded-xl border p-6">
             <Logo />
-            <HeaderNavbar links={HEADER_LINKS} />
+            <NavAndAuthButtons links={HEADER_LINKS} />
         </header>
     );
 }

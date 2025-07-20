@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import data from "../data/data.json";
+import data from "@/data/data.json";
 
 export default function page() {
     return (

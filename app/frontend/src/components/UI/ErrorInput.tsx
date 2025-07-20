@@ -1,14 +1,11 @@
 type ErrorInputProps = {
-	message: string
-}
+    message: string;
+};
 
 export default function ErrorInput({ message }: ErrorInputProps) {
-	return (
-		<p
-			className="text-destructive-medium-dark text-sm font-medium"
-			role="alert"
-		>
-			{message}
-		</p>
-	)
+    return (
+        <p className="text-destructive text-xs font-medium" role="alert">
+            {message}
+        </p>
+    );
 }

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { LinksType } from "../../types/types";
+import { LinksType } from "@/types/types";
 import { JSX } from "react";
 
 /**

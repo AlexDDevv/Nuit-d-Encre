@@ -1,11 +1,11 @@
 type FormTitleProps = {
-	isSignUp: boolean
-}
+    isSignUp: boolean;
+};
 
 export default function FormTitle({ isSignUp = false }: FormTitleProps) {
-	return (
-		<h1 className="text-center text-2xl font-bold">
-			{isSignUp ? "Je m'inscris" : "Je me connecte"}
-		</h1>
-	)
+    return (
+        <h1 className="text-foreground text-center text-2xl font-bold">
+            {isSignUp ? "Je m'inscris" : "Je me connecte"}
+        </h1>
+    );
 }

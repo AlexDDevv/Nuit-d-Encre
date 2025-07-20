@@ -3,31 +3,31 @@ import { Label } from "@/components/UI/Label";
 import { UserSignUp } from "@/types/types";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
-type InputFirstnameProps = {
+type InputUserNameProps = {
     register: UseFormRegister<UserSignUp>;
     errors: FieldErrors<UserSignUp>;
 };
 
-export default function InputFirstname({
+export default function InputUserName({
     register,
     errors,
-}: InputFirstnameProps) {
+}: InputUserNameProps) {
     return (
-        <div>
+        <div className="flex flex-col gap-2">
             <Label htmlFor="userName" required>
-                Prénom
+                Nom d'utilistateur
             </Label>
             <Input
                 id="userName"
                 type="text"
-                placeholder="Ex: Alma"
+                placeholder="Ex: Le libraire"
                 aria-required
                 {...register("userName", {
-                    required: "Le prénom est requis",
+                    required: "Le nom d'utilisateur est requis",
                     minLength: {
                         value: 2,
                         message:
-                            "Le prénom doit contenir au moins 2 caractères.",
+                            "Le nom d'utilisateur doit contenir au moins 2 caractères.",
                     },
                 })}
                 aria-invalid={errors?.userName ? "true" : "false"}

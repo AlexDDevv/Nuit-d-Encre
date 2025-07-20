@@ -16,8 +16,7 @@ import { Book } from "./book";
  * - `id`: unique identifier for the user.
  * - `email`: user's email address (unique).
  * - `hashedPassword`: the user's password stored in a hashed format (not exposed via GraphQL).
- * - `firstname`: the user's first name.
- * - `lastname`: the user's last name.
+ * - `userName`: the user's name.
  * - `role`: the user's role (defaults to `Roles.User`).
  * - `surveys`: list of surveys created by the user (relation to the `Survey` entity).
  * - `createdAt`: timestamp of when the user was created.
@@ -45,11 +44,7 @@ export class User extends BaseEntity {
 
     @Field()
     @Column({ length: 100 })
-    firstname!: string;
-
-    @Field()
-    @Column({ length: 100 })
-    lastname!: string;
+    userName!: string;
 
     @Field()
     @Column({

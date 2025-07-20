@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
  * A Higher Order Component that restricts access to routes intended for unauthenticated users.
  * It checks if the user is authenticated and:
  * - Shows a loader while checking authentication status
- * - Redirects to surveys page if the user is authenticated
+ * - Redirects to books page if the user is authenticated
  * - Renders the public content if the user is not authenticated
  *
  * @component
@@ -30,9 +30,9 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         return <Loader />;
     }
 
-    // Redirect authenticated users to surveys page
+    // Redirect authenticated users to books page
     if (user) {
-        navigate("/surveys", { replace: true });
+        navigate("/books", { replace: true });
         return null;
     }
 

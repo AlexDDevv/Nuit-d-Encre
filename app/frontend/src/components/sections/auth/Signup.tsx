@@ -1,14 +1,15 @@
-import { REGISTER, WHOAMI } from "@/graphql/auth";
 import { useToast } from "@/hooks/useToast";
 import { UserSignUp } from "@/types/types";
-import { ApolloError, useMutation } from "@apollo/client";
+import { ApolloError } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
-import FormButtonSubmit from "./form/FormButtonSubmit";
-import FormTitle from "./form/FormTitle";
-import FormWrapper from "./form/FormWrapper";
-import InputEmail from "./form/InputEmail";
-import InputUserName from "./form/InputUserName";
-import InputPassword from "./form/InputPassword";
+import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
+import FormTitle from "@/components/sections/auth/form/FormTitle";
+import FormWrapper from "@/components/sections/auth/form/FormWrapper";
+import InputEmail from "@/components/sections/auth/form/InputEmail";
+import InputUserName from "@/components/sections/auth/form/InputUserName";
+import InputPassword from "@/components/sections/auth/form/InputPassword";
+import ContinueWithGoogle from "@/components/UI/ContinueWithGoogle";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Signup() {
     const {
@@ -25,9 +26,7 @@ export default function Signup() {
         },
     });
 
-    const [Register] = useMutation(REGISTER, {
-        refetchQueries: [WHOAMI],
-    });
+    const { Register } = useAuth();
     const { showToast } = useToast();
 
     const onSubmit: SubmitHandler<UserSignUp> = async (formData) => {
@@ -47,7 +46,7 @@ export default function Signup() {
                 showToast({
                     type: "success",
                     title: "Inscription réussie !",
-                    description: "Bienvenue chez Ask and Trust",
+                    description: "Bienvenue dans Nuit d'Encre",
                     actionLabel: "Me connecter",
                     redirectTo: "/connexion",
                 });
@@ -83,12 +82,18 @@ export default function Signup() {
     };
 
     return (
-        <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex w-full flex-col items-center gap-10">
             <FormTitle isSignUp />
-            <InputUserName register={register} errors={errors} />
-            <InputEmail<UserSignUp> register={register} errors={errors} />
-            <InputPassword<UserSignUp> register={register} errors={errors} />
-            <FormButtonSubmit type="sign-up" />
-        </FormWrapper>
+            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+                <InputUserName register={register} errors={errors} />
+                <InputEmail<UserSignUp> register={register} errors={errors} />
+                <InputPassword<UserSignUp>
+                    register={register}
+                    errors={errors}
+                />
+                <FormButtonSubmit type="sign-up" />
+                <ContinueWithGoogle />
+            </FormWrapper>
+        </div>
     );
 }
