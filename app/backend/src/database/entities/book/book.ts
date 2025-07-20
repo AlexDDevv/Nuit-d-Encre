@@ -95,13 +95,89 @@ export class Book extends BaseEntity {
     author!: string;
 
     /**
-     * Availability status
+     * Category of the book
      * @description
-     * Indicates whether the book is available or not.
+     * Many-to-one relationship with the Category entity.
+     */
+    @ManyToOne(() => Category, category => category.books)
+    @Field(() => Category)
+    category!: Category
+
+    /**
+     * ISBN-10 code
+     * @description
+     * The 10-digit International Standard Book Number (optional).
+     */
+    @Field({ nullable: true })
+    @Column({ length: 10, unique: true, nullable: true })
+    isbn10?: string;
+
+    /**
+     * ISBN-13 code
+     * @description
+     * The 13-digit International Standard Book Number (required).
      */
     @Field()
-    @Column({ default: true })
-    isAvailable!: boolean;
+    @Column({ length: 13, unique: true })
+    isbn13!: string;
+
+    /**
+     * Number of pages
+     * @description
+     * Total number of pages in the book.  
+     * Optional field.
+     */
+    @Field({ nullable: true })
+    @Column({ type: "int", nullable: true })
+    pageCount!: number;
+
+    /**
+     * Publication date
+     * @description
+     * The date when the book was published.  
+     * Optional field.
+     */
+    @Field({ nullable: true })
+    @Column({ type: "date", nullable: true })
+    publishedDate!: Date;
+
+    /**
+     * Language of the book
+     * @description
+     * The language in which the book is written (e.g., "en", "fr", "English", "French").  
+     * Optional field.
+     */
+    @Field({ nullable: true })
+    @Column({ length: 100, nullable: true })
+    language!: string;
+
+    /**
+     * Publisher
+     * @description
+     * The name of the publishing house for the book.  
+     * Optional field.
+     */
+    @Field({ nullable: true })
+    @Column({ length: 255, nullable: true })
+    publisher!: string;
+
+    /**
+     * Book format
+     * @description
+     * The physical format of the book.  
+     * For example:  
+     * - "hardcover"  
+     * - "paperback"  
+     * - "softcover"  
+     *  
+     * This field is required and limited to these values.
+     */
+    @Field()
+    @Column({
+        type: "enum",
+        enum: ["hardcover", "paperback", "softcover"],
+    })
+    format!: string;
 
     /**
      * The user who added the book
@@ -111,15 +187,6 @@ export class Book extends BaseEntity {
     @ManyToOne(() => User, (user) => user.books)
     @Field(() => User)
     user!: User;
-
-    /**
-	 * Category of the book
-	 * @description
-	 * Many-to-one relationship with the Category entity.
-	 */
-	@ManyToOne(() => Category, category => category.books)
-	@Field(() => Category)
-	category!: Category
 
     /**
      * Timestamp when the book was created
