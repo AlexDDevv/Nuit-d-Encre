@@ -15,7 +15,8 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "./user";
+import { User } from "../user";
+import { Category } from "./category";
 
 /**
  * Book Entity
@@ -110,6 +111,15 @@ export class Book extends BaseEntity {
     @ManyToOne(() => User, (user) => user.books)
     @Field(() => User)
     user!: User;
+
+    /**
+	 * Category of the book
+	 * @description
+	 * Many-to-one relationship with the Category entity.
+	 */
+	@ManyToOne(() => Category, category => category.books)
+	@Field(() => Category)
+	category!: Category
 
     /**
      * Timestamp when the book was created

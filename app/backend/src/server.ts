@@ -9,6 +9,7 @@ import { AuthResolver } from "./graphql/resolvers/auth-resolver";
 import { customAuthChecker } from "./middlewares/auth-checker";
 import { AppError } from "./middlewares/error-handler";
 import { createAdmin } from "./scripts/create-admin";
+import { CategoryResolver } from "./graphql/resolvers/book/category-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -35,6 +36,7 @@ if (!process.env.APP_PORT) {
         const schema = await buildSchema({
             resolvers: [
                 AuthResolver,
+                CategoryResolver
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields
@@ -92,7 +94,7 @@ if (!process.env.APP_PORT) {
         });
 
         console.log(
-            `🚀  Server ready at: ${url} \n 🚀 Backend : http://localhost:3310/api/v1/ \n 🚀 Frontend : http://localhost:5173`
+            `🚀  Server ready at: ${url} \n 🚀 Backend : http://localhost:5173/api \n 🚀 Frontend : http://localhost:5173`
         );
     } catch (error) {
         console.error("🚨 Error during initialization:", error);
