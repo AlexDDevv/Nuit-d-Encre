@@ -3,8 +3,9 @@
  * @category Entities
  * @description
  * This module defines the Book entity for the database.
- * It represents a book added by a user, with a title, description,
- * author, availability status, and associated user.
+ * It represents a book added by a user, including details like title,
+ * description, author, ISBN codes, format, publication data, and its 
+ * availability. It maintains relationships with the User and Category entities.
  */
 
 import { Field, ID, ObjectType } from "type-graphql";
@@ -28,32 +29,39 @@ import { Category } from "./category";
  * This class defines the structure of the book entity in the database:
  * - `id`: unique identifier for the book.
  * - `title`: title of the book (must be unique).
- * - `description`: brief summary or context about the book.
- * - `author`: the author of the book.
- * - `isAvailable`: indicates whether the book is currently available (default is `true`).
- * - `user`: the user who added the book (relation to the `User` entity).
- * - `createdAt`: timestamp of when the book was created.
- * - `updatedAt`: timestamp of when the book was last updated.
+ * - `description`: summary or context about the book.
+ * - `author`: author of the book.
+ * - `category`: category or genre the book belongs to.
+ * - `isbn10`: optional 10-digit ISBN.
+ * - `isbn13`: required 13-digit ISBN (must be unique).
+ * - `pageCount`: required total number of pages.
+ * - `publishedYear`: required publication date.
+ * - `language`: required language of the book.
+ * - `publisher`: required name of the publisher.
+ * - `format`: book format (required, one of: "hardcover", "paperback", "softcover").
+ * - `user`: user who added the book (foreign key).
+ * - `createdAt`: timestamp when the book was created.
+ * - `updatedAt`: timestamp when the book was last updated.
  *
  * @example
  * ```typescript
- * // Create a new book
- * const book = new Book()
- * book.title = "The Little Prince"
- * book.description = "A poetic and philosophical tale"
- * book.author = "Antoine de Saint-Exupéry"
- * book.isAvailable = true
- * book.user = userInstance
- * await book.save()
+ * const book = new Book();
+ * book.title = "The Little Prince";
+ * book.description = "A poetic and philosophical tale";
+ * book.author = "Antoine de Saint-Exupéry";
+ * book.isbn13 = "9780156012195";
+ * book.format = "paperback";
+ * book.user = userInstance;
+ * book.category = categoryInstance;
+ * await book.save();
  * ```
  *
  * Decorators used:
  * - `@Entity()`: Declares the class as a database entity.
- * - `@PrimaryGeneratedColumn()`: Marks the primary key column with auto-increment.
- * - `@Column()`: Maps a class property to a database column.
- * - `@ManyToOne()`: Defines a many-to-one relationship between entities.
- * - `@Field()`: Exposes a class property to the GraphQL schema.
- *
+ * - `@PrimaryGeneratedColumn()`: Auto-generates a primary key.
+ * - `@Column()`: Maps properties to database columns.
+ * - `@ManyToOne()`: Defines many-to-one relationships.
+ * - `@Field()`: Exposes fields to the GraphQL schema.
  */
 @ObjectType()
 @Entity({ name: "book" })
@@ -127,38 +135,36 @@ export class Book extends BaseEntity {
      * Total number of pages in the book.  
      * Optional field.
      */
-    @Field({ nullable: true })
-    @Column({ type: "int", nullable: true })
+    @Field()
+    @Column({ type: "int" })
     pageCount!: number;
 
     /**
-     * Publication date
+     * Publication year
      * @description
-     * The date when the book was published.  
+     * The year when the book was published.  
      * Optional field.
      */
-    @Field({ nullable: true })
-    @Column({ type: "date", nullable: true })
-    publishedDate!: Date;
+    @Field()
+    @Column({ type: "int" })
+    publishedYear!: number;
 
     /**
      * Language of the book
      * @description
-     * The language in which the book is written (e.g., "en", "fr", "English", "French").  
-     * Optional field.
+     * The language in which the book is written (e.g., "en", "fr").  
      */
-    @Field({ nullable: true })
-    @Column({ length: 100, nullable: true })
+    @Field()
+    @Column({ length: 5 })
     language!: string;
 
     /**
      * Publisher
      * @description
      * The name of the publishing house for the book.  
-     * Optional field.
      */
-    @Field({ nullable: true })
-    @Column({ length: 255, nullable: true })
+    @Field()
+    @Column({ length: 255 })
     publisher!: string;
 
     /**

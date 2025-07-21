@@ -12,9 +12,9 @@ import { Field, ID, InputType } from "type-graphql"
  * - `isbn10`: optional 10-character ISBN code.
  * - `isbn13`: required 13-character ISBN code.
  * - `pageCount`: optional number of pages, must be a positive integer if provided.
- * - `publishedDate`: optional publication date in ISO format.
- * - `language`: optional language of the book (e.g., "en", "fr"), max 100 characters.
- * - `publisher`: optional name of the publishing house, max 255 characters.
+ * - `publishedYear`: required publication year.
+ * - `language`: required language of the book (e.g., "en", "fr"), max 100 characters.
+ * - `publisher`: required name of the publishing house, max 255 characters.
  * - `format`: required physical format of the book (must be one of: hardcover, paperback, softcover).
  * - `category`: category ID the book belongs to.
  * 
@@ -61,7 +61,7 @@ export class CreateBookInput {
     publishedYear!: number;
 
     @Field()
-    @Length(1, 100, { message: "Language must be between 1 and 100 characters" })
+    @Length(1, 5, { message: "Language must be between 1 and 5 characters" })
     language!: string
 
     @Field()
