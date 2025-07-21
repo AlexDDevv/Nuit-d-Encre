@@ -18,7 +18,7 @@ import {
 import { AppError } from "../../../middlewares/error-handler"
 import { Context, Roles } from "../../../types/types"
 import { Book } from "../../../database/entities/book/book"
-import { CreateBookInput } from "../../inputs/create/book/create-book-inpt"
+import { CreateBookInput } from "../../inputs/create/book/create-book-input"
 import { Category } from "../../../database/entities/book/category"
 import { UpdateBookInput } from "../../inputs/update/book/update-book-input"
 import { AllBooksResult } from "../../../database/filteredBooks/allBooksResult"

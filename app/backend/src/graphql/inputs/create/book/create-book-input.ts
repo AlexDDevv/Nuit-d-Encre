@@ -1,4 +1,4 @@
-import { Length, IsIn, IsOptional, IsDateString, IsInt, Min } from "class-validator"
+import { Length, IsIn, IsOptional, IsInt, Min, Max } from "class-validator"
 import { Field, ID, InputType } from "type-graphql"
 
 /**
@@ -55,8 +55,10 @@ export class CreateBookInput {
     pageCount!: number
 
     @Field()
-    @IsDateString({}, { message: "Published date must be a valid date string (ISO format)" })
-    publishedDate!: string
+    @IsInt({ message: "Published year must be a number" })
+    @Min(1000)
+    @Max(9999)
+    publishedYear!: number;
 
     @Field()
     @Length(1, 100, { message: "Language must be between 1 and 100 characters" })
