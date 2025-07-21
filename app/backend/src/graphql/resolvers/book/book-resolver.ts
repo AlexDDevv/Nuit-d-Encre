@@ -25,6 +25,7 @@ import { AllBooksResult } from "../../../database/filteredBooks/allBooksResult"
 import { AllBooksQueryInput } from "../../queries/books-query-input"
 import { MyBooksResult } from "../../../database/filteredBooks/myBooksResult"
 import { MyBooksQueryInput } from "../../queries/myBooks-query-input"
+import { Brackets } from "typeorm"
 
 /**
  * Book Resolver
@@ -55,7 +56,7 @@ export class BooksResolver {
      * @throws AppError - If no books are found or in case of a server error.
      */
     @Query(() => AllBooksResult)
-    async surveys(
+    async books(
         @Arg("filters", () => AllBooksQueryInput, { nullable: true })
         filters: AllBooksQueryInput
     ): Promise<AllBooksResult> {
@@ -63,58 +64,73 @@ export class BooksResolver {
             const {
                 search,
                 categoryIds,
-                sortBy = "estimatedDuration",
-                order = "DESC",
+                format,
+                language,
                 page = 1,
                 limit = 12,
             } = filters || {}
 
-            // Retrieve the base query with all surveys created
-            const baseQuery = Survey.createQueryBuilder("survey")
-                .leftJoinAndSelect("survey.user", "user")
-                .leftJoinAndSelect("survey.category", "category")
-                .leftJoinAndSelect("survey.questions", "questions")
+            // Retrieve the base query with all books created
+            const baseQuery = Book.createQueryBuilder("book")
+                .leftJoinAndSelect("book.user", "user")
+                .leftJoinAndSelect("book.category", "category")
 
-            // Get the total number of unfiltered surveys and clone the query to apply filters
+            // Get the total number of unfiltered books and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
                 baseQuery.getCount(),
                 baseQuery.clone(),
             ])
 
-            // Filter by title (search)
+            // Filter by title, isnb13, authors and publisher (search)
             if (search?.trim()) {
-                filteredQuery.andWhere("survey.title ILIKE :search", {
-                    search: `%${search.trim()}%`,
-                })
+                const trimmedSearch = `%${search.trim()}%`;
+
+                filteredQuery.andWhere(new Brackets(qb => {
+                    qb.where("book.title ILIKE :search", { search: trimmedSearch })
+                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
+                        .orWhere("book.author ILIKE :search", { search: trimmedSearch })
+                        .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
+                }));
             }
 
             // Filter by category
             if (categoryIds && categoryIds.length > 0) {
                 filteredQuery.andWhere(
-                    "survey.category.id IN (:...categoryIds)",
+                    "book.category.id IN (:...categoryIds)",
                     {
                         categoryIds,
                     }
                 )
             }
 
-            // Get the total number of surveys matching the filters (for pagination)
-            const totalCount = await filteredQuery.getCount()
+            // Filter by format
+            if (format && format.length > 0) {
+                filteredQuery.andWhere("book.format IN (:...format)", {
+                    format,
+                })
+            }
 
-            // Sort results by selected field (sortBy) and order (ASC/DESC)
-            filteredQuery.orderBy(`survey.${sortBy}`, order)
+            // Filter by language
+            if (language) {
+                filteredQuery.andWhere("book.language ILIKE :language", {
+                    language
+                })
+            }
+
+            // Get the total number of books matching the filters (for pagination)
+            const totalCount = await filteredQuery.getCount()
 
             // Apply pagination
             filteredQuery.skip((page - 1) * limit).take(limit)
 
-            const allSurveys = await filteredQuery.getMany()
+            const allBooks = await filteredQuery.getMany()
 
-            if (!allSurveys) {
-                throw new AppError("Surveys not found", 404, "NotFoundError")
+            if (!allBooks) {
+                throw new AppError("Books not found", 404, "NotFoundError")
             }
 
             return {
-                allSurveys,
+                allBooks,
                 totalCount,
                 totalCountAll,
                 page,
@@ -122,7 +138,7 @@ export class BooksResolver {
             }
         } catch (error) {
             throw new AppError(
-                "Failed to fetch surveys",
+                "Failed to fetch books",
                 500,
                 "InternalServerError"
             )
@@ -185,7 +201,7 @@ export class BooksResolver {
      */
     @Authorized(Roles.User, Roles.Admin)
     @Query(() => MyBooksResult)
-    async mySurveys(
+    async myBooks(
         @Arg("filters", () => MyBooksQueryInput, { nullable: true })
         filters: MyBooksQueryInput,
         @Ctx() context: Context
@@ -195,7 +211,7 @@ export class BooksResolver {
 
             if (!user) {
                 throw new AppError(
-                    "You can only retrieve your own surveys",
+                    "You can only retrieve your own books",
                     401,
                     "UnauthorizedError"
                 )
@@ -203,52 +219,71 @@ export class BooksResolver {
 
             const {
                 search,
-                status,
-                sortBy = "createdAt",
-                order = "DESC",
+                categoryIds,
+                format,
+                language,
                 page = 1,
-                limit = 5,
+                limit = 12,
             } = filters || {}
 
-            // Retrieve the base query with all surveys created by the user
-            const baseQuery = Survey.createQueryBuilder("survey").where(
-                "survey.userId = :userId",
+            // Retrieve the base query with all books created by the user
+            const baseQuery = Book.createQueryBuilder("book").where(
+                "book.userId = :userId",
                 { userId: user.id }
             )
 
-            // Get the total number of unfiltered surveys and clone the query to apply filters
+            // Get the total number of unfiltered books and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
                 baseQuery.getCount(),
                 baseQuery.clone(),
             ])
 
-            // Filter by title (search)
+            // Filter by title, isnb13, authors and publisher (search)
             if (search?.trim()) {
-                filteredQuery.andWhere("survey.title ILIKE :search", {
-                    search: `%${search.trim()}%`,
+                const trimmedSearch = `%${search.trim()}%`;
+
+                filteredQuery.andWhere(new Brackets(qb => {
+                    qb.where("book.title ILIKE :search", { search: trimmedSearch })
+                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
+                        .orWhere("book.author ILIKE :search", { search: trimmedSearch })
+                        .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
+                }));
+            }
+
+            // Filter by category
+            if (categoryIds && categoryIds.length > 0) {
+                filteredQuery.andWhere(
+                    "book.category.id IN (:...categoryIds)",
+                    {
+                        categoryIds,
+                    }
+                )
+            }
+
+            // Filter by format
+            if (format && format.length > 0) {
+                filteredQuery.andWhere("book.format IN (:...format)", {
+                    format,
                 })
             }
 
-            // Filter by status
-            if (status && status.length > 0) {
-                filteredQuery.andWhere("survey.status IN (:...status)", {
-                    status,
+            // Filter by language
+            if (language) {
+                filteredQuery.andWhere("book.language ILIKE :language", {
+                    language
                 })
             }
 
-            // Get the total number of surveys matching the filters (for pagination)
+            // Get the total number of books matching the filters (for pagination)
             const totalCount = await filteredQuery.getCount()
-
-            // Sort results by selected field (sortBy) and order (ASC/DESC)
-            filteredQuery.orderBy(`survey.${sortBy}`, order)
 
             // Apply pagination
             filteredQuery.skip((page - 1) * limit).take(limit)
 
-            const surveys = await filteredQuery.getMany()
+            const books = await filteredQuery.getMany()
 
             return {
-                surveys,
+                books,
                 totalCount,
                 totalCountAll,
                 page,
@@ -256,7 +291,7 @@ export class BooksResolver {
             }
         } catch (error) {
             throw new AppError(
-                "Failed to fetch user surveys",
+                "Failed to fetch user books",
                 500,
                 "InternalServerError"
             )
