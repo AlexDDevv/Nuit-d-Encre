@@ -1,5 +1,5 @@
-import { IsOptional } from "class-validator"
-import { Field, InputType } from "type-graphql"
+import { IsOptional, IsInt, Min, IsArray, IsString } from "class-validator"
+import { Field, InputType, Int } from "type-graphql"
 import { BookFormat } from "../../types/types"
 
 /**
@@ -7,11 +7,10 @@ import { BookFormat } from "../../types/types"
  * This input is used to filter, sort, and paginate the user's personal book collection.
  *
  * @description
- * - `search`: optional string to filter books by keyword (typically matched against the title).
- * - `sortBy`: defines the sorting criteria (currently supports sorting by creation date).
- * - `order`: defines the sorting order — ascending (`ASC`) or descending (`DESC`).
- * - `status`: optional list of book formats (`BookFormat[]`) to filter by format
- *             (e.g., "hardcover", "paperback", "softcover").
+ * - `search`: filter books by keyword (matches the book title, isbn or author).
+ * - `categoryIds`: filter books by one or more category IDs.
+ * - `format`: filter books by their format
+ * - `language`: filter books by their language
  * - `page`: optional page number for pagination (e.g., 1 for the first page).
  * - `limit`: optional number of items per page (used for pagination).
  *
@@ -23,27 +22,36 @@ import { BookFormat } from "../../types/types"
  */
 @InputType()
 export class MyBooksQueryInput {
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
 	@IsOptional()
+	@IsString()
 	search?: string
 
-	@Field({ nullable: true })
+	@Field(() => [Int], { nullable: true })
 	@IsOptional()
-	sortBy?: "createdAt"
-
-	@Field({ nullable: true })
-	@IsOptional()
-	order?: "ASC" | "DESC"
+	@IsArray()
+	@IsInt({ each: true })
+	categoryIds?: number[]
 
 	@Field(() => [String], { nullable: true })
 	@IsOptional()
-	status?: BookFormat[]
+	@IsArray()
+	format?: BookFormat[]
 
-	@Field({ nullable: true })
+	@Field(() => String, { nullable: true })
 	@IsOptional()
+	@IsString()
+	language?: string
+
+	@Field(() => Int, { nullable: true })
+	@IsOptional()
+	@IsInt()
+	@Min(1)
 	page?: number
 
-	@Field({ nullable: true })
+	@Field(() => Int, { nullable: true })
 	@IsOptional()
+	@IsInt()
+	@Min(1)
 	limit?: number
 }
