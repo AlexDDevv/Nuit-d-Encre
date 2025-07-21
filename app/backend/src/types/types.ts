@@ -13,3 +13,6 @@ export const Roles = {
 } as const;
 
 export type UserRole = (typeof Roles)[keyof typeof Roles];
+
+export type BookFormat = "hardcover" | "paperback" | "softcover"
+

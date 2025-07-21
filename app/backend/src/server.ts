@@ -10,6 +10,7 @@ import { customAuthChecker } from "./middlewares/auth-checker";
 import { AppError } from "./middlewares/error-handler";
 import { createAdmin } from "./scripts/create-admin";
 import { CategoryResolver } from "./graphql/resolvers/book/category-resolver";
+import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -36,7 +37,8 @@ if (!process.env.APP_PORT) {
         const schema = await buildSchema({
             resolvers: [
                 AuthResolver,
-                CategoryResolver
+                CategoryResolver,
+                BooksResolver
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields
