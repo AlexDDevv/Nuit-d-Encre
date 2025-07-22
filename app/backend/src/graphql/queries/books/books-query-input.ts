@@ -1,27 +1,28 @@
 import { IsOptional, IsInt, Min, IsArray, IsString } from "class-validator"
 import { Field, InputType, Int } from "type-graphql"
-import { BookFormat } from "../../types/types"
+import { BookFormat } from "../../../types/types"
 
 /**
- * Represents the input parameters for querying books owned by the authenticated user.
- * This input is used to filter, sort, and paginate the user's personal book collection.
+ * Represents the input parameters for querying all books.
+ * This input is used to filter, sort, and paginate all books in the app collection.
  *
  * @description
+ * This input type defines the filters, sorting, and pagination options
+ * for retrieving a paginated list of books.
+ *
  * - `search`: filter books by keyword (matches the book title, isbn or author).
  * - `categoryIds`: filter books by one or more category IDs.
  * - `format`: filter books by their format
  * - `language`: filter books by their language
- * - `page`: optional page number for pagination (e.g., 1 for the first page).
- * - `limit`: optional number of items per page (used for pagination).
- *
- * All fields are optional, allowing flexible and partial filtering.
+ * - `page`: page number for paginated results (default is typically 1).
+ * - `limit`: maximum number of results per page (default can be 10–20).
  *
  * The decorators used are:
  * - `@Field({ nullable: true })`: exposes each property to the GraphQL schema as optional.
  * - `@IsOptional()`: marks each field as optional during validation (class-validator).
  */
 @InputType()
-export class MyBooksQueryInput {
+export class AllBooksQueryInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()

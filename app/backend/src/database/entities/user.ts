@@ -54,7 +54,7 @@ export class User extends BaseEntity {
     })
     role!: UserRole;
 
-    @Field(() => [Book], { nullable: true })
+    @Field(() => [Book])
     @OneToMany(() => Book, (book) => book.user)
     books!: Book[];
 

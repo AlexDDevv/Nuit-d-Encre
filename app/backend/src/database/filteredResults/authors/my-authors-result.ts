@@ -1,25 +1,25 @@
 import { Field, Int, ObjectType } from "type-graphql"
-import { Book } from "../entities/book/book"
+import { Author } from "../../entities/authors/author"
 
 /**
- * Represents the response of the `myBooks` query, containing paginated results of the authenticated user's books.
+ * Represents the response of the `myAuthor` query, containing paginated results of the authenticated user's authors.
  * This class structures the return value of the query along with pagination metadata.
  *
  * @description
- * - `books`: array of `Book` objects corresponding to the user's books.
- * - `totalCount`: total number of books matching the applied filters (after filtering).
- * - `totalCountAll`: total number of the user's books without any filters applied.
+ * - `authors`: array of `Author` objects corresponding to the user's authors.
+ * - `totalCount`: total number of authors matching the applied filters (after filtering).
+ * - `totalCountAll`: total number of the user's authors without any filters applied.
  * - `page`: current page number (optional, useful for client-side pagination).
- * - `limit`: number of books per page (optional, useful for client-side pagination).
+ * - `limit`: number of authors per page (optional, useful for client-side pagination).
  *
  * The decorators used are:
  * - `@ObjectType()`: marks the class as a GraphQL output type.
  * - `@Field()`: exposes each property to the GraphQL schema.
  */
 @ObjectType()
-export class MyBooksResult {
-	@Field(() => [Book])
-	books!: Book[]
+export class MyAuthorsResult {
+	@Field(() => [Author])
+	authors!: Author[]
 
 	@Field(() => Int)
 	totalCount!: number
