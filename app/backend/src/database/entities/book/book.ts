@@ -18,7 +18,7 @@ import {
 } from "typeorm";
 import { User } from "../user";
 import { Category } from "./category";
-import { Author } from "./author";
+import { Author } from "../authors/author";
 
 /**
  * Book Entity
