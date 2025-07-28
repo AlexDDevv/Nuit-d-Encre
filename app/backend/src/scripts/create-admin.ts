@@ -1,4 +1,4 @@
-import { User } from "../database/entities/user"
+import { User } from "../database/entities/user/user"
 import { register } from "../services/auth-service"
 import { Roles, UserRole } from "../types/types"
 

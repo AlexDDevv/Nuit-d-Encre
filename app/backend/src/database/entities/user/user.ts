@@ -6,8 +6,9 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { Roles, UserRole } from "../../types/types";
-import { Book } from "./book/book";
+import { Roles, UserRole } from "../../../types/types";
+import { Book } from "../book/book";
+import { UserActions } from "./user-actions";
 
 /**
  * Represents a user entity in the database.
@@ -21,6 +22,7 @@ import { Book } from "./book/book";
  * - `books`: list of books created by the user (relation to the `Book` entity).
  * - `level`: level reached by the user.
  * - `xp`: user experience earned by actions.
+ * - `actions`: actions that allow the user to gain experience.
  * - `createdAt`: timestamp of when the user was created.
  * - `updatedAt`: timestamp of when the user was last updated.
  *
@@ -39,10 +41,10 @@ export class User extends BaseEntity {
 
     @Field()
     @Column({ length: 254, unique: true })
-    email!: string; // standard RFC 5321 for email's length
+    email!: string;
 
     @Column({ length: 255 })
-    hashedPassword!: string; // User's hashed password (not exposed via GraphQL)
+    hashedPassword!: string;
 
     @Field()
     @Column({ length: 100 })
@@ -61,12 +63,16 @@ export class User extends BaseEntity {
     books!: Book[];
 
     @Field()
-    @Column({ type: "int" })
+    @Column()
     level!: number;
 
     @Field()
-    @Column({ type: "int" })
+    @Column()
     xp!: number;
+
+    @Field(() => [UserActions])
+    @OneToMany(() => UserActions, (action) => action.user)
+    actions!: UserActions[];
 
     @Field()
     @Column({ default: () => "CURRENT_TIMESTAMP" })

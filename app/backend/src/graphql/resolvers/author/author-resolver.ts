@@ -18,9 +18,9 @@ import {
 import { AppError } from "../../../middlewares/error-handler"
 import { Context, Roles } from "../../../types/types"
 import { Brackets } from "typeorm"
-import { Author } from "../../../database/entities/authors/author"
-import { CreateAuthorInput } from "../../inputs/create/book/create-author-input"
-import { UpdateAuthorInput } from "../../inputs/update/book/update-author-input"
+import { Author } from "../../../database/entities/author/author"
+import { CreateAuthorInput } from "../../inputs/create/author/create-author-input"
+import { UpdateAuthorInput } from "../../inputs/update/author/update-author-input"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { AllAuthorsResult } from "../../../database/filteredResults/authors/all-authors-result"
 import { AllAuthorsQueryInput } from "../../queries/authors/all-authors-query-input"
@@ -167,7 +167,7 @@ export class AuthorsResolver {
      */
     @Authorized(Roles.User, Roles.Admin)
     @Query(() => MyAuthorsResult)
-    async myBooks(
+    async myAuthors(
         @Arg("filters", () => MyAuthorsQueryInput, { nullable: true })
         filters: MyAuthorsQueryInput,
         @Ctx() context: Context

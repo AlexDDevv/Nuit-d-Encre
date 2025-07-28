@@ -16,9 +16,9 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "../user";
+import { User } from "../user/user";
 import { Category } from "./category";
-import { Author } from "../authors/author";
+import { Author } from "../author/author";
 
 /**
  * Book Entity

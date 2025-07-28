@@ -18,7 +18,7 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "../user";
+import { User } from "../user/user";
 import { Book } from "../book/book";
 
 /**

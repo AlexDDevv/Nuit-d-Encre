@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from "type-graphql"
-import { Author } from "../../entities/authors/author"
+import { Author } from "../../entities/author/author"
 
 /**
  * Represents the response of the `authors` query, containing paginated results of all authors.

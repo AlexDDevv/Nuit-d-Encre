@@ -1,5 +1,5 @@
 import { Arg, Ctx, Mutation, Query, Resolver, Authorized } from "type-graphql";
-import { LogInResponse, User } from "../../database/entities/user";
+import { LogInResponse, User } from "../../database/entities/user/user";
 import { CreateUserInput } from "../../graphql/inputs/create/create-auth-input";
 import { AppError } from "../../middlewares/error-handler";
 import { login, register, whoami } from "../../services/auth-service";
