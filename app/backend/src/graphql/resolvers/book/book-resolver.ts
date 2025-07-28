@@ -16,7 +16,7 @@ import {
     Resolver,
 } from "type-graphql"
 import { AppError } from "../../../middlewares/error-handler"
-import { Context, Roles } from "../../../types/types"
+import { Context, Roles, UserActionType } from "../../../types/types"
 import { Book } from "../../../database/entities/book/book"
 import { CreateBookInput } from "../../inputs/create/book/create-book-input"
 import { Category } from "../../../database/entities/book/category"
@@ -27,6 +27,7 @@ import { MyBooksResult } from "../../../database/filteredResults/books/my-books-
 import { MyBooksQueryInput } from "../../queries/books/my-books-query-input"
 import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
+import { grantXpService } from "../../../services/grind/grant-xp-service"
 
 /**
  * Book Resolver
@@ -338,6 +339,12 @@ export class BooksResolver {
             Object.assign(newBook, data, { user, category })
 
             await newBook.save()
+
+            await grantXpService(user, UserActionType.BOOK_ADDED, {
+                targetId: newBook.id.toString(),
+                metadata: { title: newBook.title }
+            });
+
             return newBook
         } catch (error) {
             throw new AppError(
