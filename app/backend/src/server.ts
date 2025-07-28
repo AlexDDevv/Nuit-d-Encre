@@ -11,6 +11,7 @@ import { AppError } from "./middlewares/error-handler";
 import { createAdmin } from "./scripts/create-admin";
 import { CategoryResolver } from "./graphql/resolvers/book/category-resolver";
 import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
+import { AuthorsResolver } from "./graphql/resolvers/author/author-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -38,7 +39,8 @@ if (!process.env.APP_PORT) {
             resolvers: [
                 AuthResolver,
                 CategoryResolver,
-                BooksResolver
+                BooksResolver,
+                AuthorsResolver,
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields
