@@ -18,7 +18,9 @@ import { Book } from "./book/book";
  * - `hashedPassword`: the user's password stored in a hashed format (not exposed via GraphQL).
  * - `userName`: the user's name.
  * - `role`: the user's role (defaults to `Roles.User`).
- * - `surveys`: list of surveys created by the user (relation to the `Survey` entity).
+ * - `books`: list of books created by the user (relation to the `Book` entity).
+ * - `level`: level reached by the user.
+ * - `xp`: user experience earned by actions.
  * - `createdAt`: timestamp of when the user was created.
  * - `updatedAt`: timestamp of when the user was last updated.
  *
@@ -57,6 +59,14 @@ export class User extends BaseEntity {
     @Field(() => [Book])
     @OneToMany(() => Book, (book) => book.user)
     books!: Book[];
+
+    @Field()
+    @Column({ type: "int" })
+    level!: number;
+
+    @Field()
+    @Column({ type: "int" })
+    xp!: number;
 
     @Field()
     @Column({ default: () => "CURRENT_TIMESTAMP" })
