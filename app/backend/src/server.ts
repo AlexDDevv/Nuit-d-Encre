@@ -5,13 +5,14 @@ import dotenv from "dotenv";
 import { GraphQLFormattedError } from "graphql";
 import { buildSchema } from "type-graphql";
 import { dataSource } from "./database/config/datasource";
-import { AuthResolver } from "./graphql/resolvers/auth-resolver";
+import { AuthResolver } from "./graphql/resolvers/user/auth-resolver";
 import { customAuthChecker } from "./middlewares/auth-checker";
 import { AppError } from "./middlewares/error-handler";
 import { createAdmin } from "./scripts/create-admin";
 import { CategoryResolver } from "./graphql/resolvers/book/category-resolver";
 import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
 import { AuthorsResolver } from "./graphql/resolvers/author/author-resolver";
+import { UserActionsResolver } from "./graphql/resolvers/user/user-actions-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -41,6 +42,7 @@ if (!process.env.APP_PORT) {
                 CategoryResolver,
                 BooksResolver,
                 AuthorsResolver,
+                UserActionsResolver
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields
