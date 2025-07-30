@@ -9,7 +9,7 @@
  * Wikipedia link or official website.
  */
 
-import { IsDate, IsOptional, IsUrl, Length, MaxDate, MinDate } from "class-validator";
+import { IsOptional, IsUrl, Length, Matches } from "class-validator";
 import { Field, InputType } from "type-graphql";
 import { Column } from "typeorm";
 
@@ -50,14 +50,10 @@ export class CreateAuthorInput {
 
     @Field()
     @Column()
-    @IsDate({ message: "Birth date must be a valid date." })
-    @MinDate(new Date("1000-01-01"), {
-        message: "Birth date must be after January 1, 1000.",
+    @Matches(/^\d{2}\/\d{2}\/\d{4}$/, {
+        message: "Birth date must be in the format DD/MM/YYYY.",
     })
-    @MaxDate(new Date(), {
-        message: "Birth date cannot be in the future.",
-    })
-    birthDate!: Date;
+    birthDate!: string;
 
     @Field()
     @Column()

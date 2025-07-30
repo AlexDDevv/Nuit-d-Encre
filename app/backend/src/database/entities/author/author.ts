@@ -92,7 +92,7 @@ export class Author extends BaseEntity {
      */
     @Field()
     @Column()
-    birthDate!: Date;
+    birthDate!: string;
 
     /**
      * Nationality of the author
