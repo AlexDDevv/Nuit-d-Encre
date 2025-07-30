@@ -18,45 +18,41 @@ import { Lock } from "lucide-react";
  */
 export default function AuthRequired() {
     return (
-        <div className="flex min-h-[80vh] flex-col items-center justify-center px-4 pt-20">
-            <div className="shadow-component w-full max-w-md rounded-xl bg-white p-8 text-center">
-                <div className="mb-6 flex justify-center">
-                    <div className="bg-primary-50 rounded-full p-4">
-                        <Lock className="text-primary-600 h-12 w-12" />
-                    </div>
+        <div className="mx-auto flex max-w-md items-center justify-center">
+            <div className="bg-card border-border flex w-full flex-col gap-6 rounded-xl border p-8 text-center">
+                <div className="flex justify-center">
+                    <Lock className="text-card-foreground h-12 w-12" />
                 </div>
-
-                <h1 className="text-black-default mb-2 text-2xl font-bold">
-                    Authentification requise
-                </h1>
-
-                <p className="text-black-default mb-6">
-                    Vous devez être connecté pour accéder à cette page. Veuillez
-                    vous connecter ou créer un compte pour continuer.
-                </p>
-
-                <nav className="flex flex-col gap-3">
-                    <Button
-                        to="/connexion"
-                        variant="primary"
-                        fullWidth
-                        ariaLabel="Se connecter"
-                    >
-                        Se connecter
-                    </Button>
-
+                <div className="flex flex-col gap-2">
+                    <h1 className="text-card-foreground text-2xl font-bold">
+                        Authentification requise
+                    </h1>
+                    <p className="text-card-foreground">
+                        Vous devez être connecté pour accéder à cette page.
+                        Veuillez vous connecter ou créer un compte pour
+                        continuer.
+                    </p>
+                </div>
+                <nav className="flex flex-col gap-4">
                     <Button
                         to="/register"
-                        variant="outline"
+                        variant="primary"
                         fullWidth
                         ariaLabel="S'inscrire"
                     >
                         S'inscrire
                     </Button>
-
+                    <Button
+                        to="/connexion"
+                        variant="secondary"
+                        fullWidth
+                        ariaLabel="Se connecter"
+                    >
+                        Se connecter
+                    </Button>
                     <Link
                         to="/"
-                        className="hover:text-primary-600 text-black-default mt-2 text-sm hover:underline"
+                        className="text-card-foreground hover:underline"
                     >
                         Retour à l'accueil
                     </Link>
