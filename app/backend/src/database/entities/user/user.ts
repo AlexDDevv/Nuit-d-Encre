@@ -6,8 +6,9 @@ import {
     OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { Roles, UserRole } from "../../types/types";
-import { Book } from "./book/book";
+import { Roles, UserRole } from "../../../types/types";
+import { Book } from "../book/book";
+import { UserActions } from "./user-actions";
 
 /**
  * Represents a user entity in the database.
@@ -18,7 +19,10 @@ import { Book } from "./book/book";
  * - `hashedPassword`: the user's password stored in a hashed format (not exposed via GraphQL).
  * - `userName`: the user's name.
  * - `role`: the user's role (defaults to `Roles.User`).
- * - `surveys`: list of surveys created by the user (relation to the `Survey` entity).
+ * - `books`: list of books created by the user (relation to the `Book` entity).
+ * - `level`: level reached by the user.
+ * - `xp`: user experience earned by actions.
+ * - `actions`: actions that allow the user to gain experience.
  * - `createdAt`: timestamp of when the user was created.
  * - `updatedAt`: timestamp of when the user was last updated.
  *
@@ -37,10 +41,10 @@ export class User extends BaseEntity {
 
     @Field()
     @Column({ length: 254, unique: true })
-    email!: string; // standard RFC 5321 for email's length
+    email!: string;
 
     @Column({ length: 255 })
-    hashedPassword!: string; // User's hashed password (not exposed via GraphQL)
+    hashedPassword!: string;
 
     @Field()
     @Column({ length: 100 })
@@ -54,9 +58,21 @@ export class User extends BaseEntity {
     })
     role!: UserRole;
 
-    @Field(() => [Book], { nullable: true })
+    @Field(() => [Book])
     @OneToMany(() => Book, (book) => book.user)
     books!: Book[];
+
+    @Field()
+    @Column()
+    level!: number;
+
+    @Field()
+    @Column()
+    xp!: number;
+
+    @Field(() => [UserActions])
+    @OneToMany(() => UserActions, (action) => action.user)
+    actions!: UserActions[];
 
     @Field()
     @Column({ default: () => "CURRENT_TIMESTAMP" })

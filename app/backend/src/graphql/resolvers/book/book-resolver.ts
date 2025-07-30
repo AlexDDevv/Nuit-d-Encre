@@ -16,16 +16,18 @@ import {
     Resolver,
 } from "type-graphql"
 import { AppError } from "../../../middlewares/error-handler"
-import { Context, Roles } from "../../../types/types"
+import { Context, Roles, UserActionType } from "../../../types/types"
 import { Book } from "../../../database/entities/book/book"
 import { CreateBookInput } from "../../inputs/create/book/create-book-input"
 import { Category } from "../../../database/entities/book/category"
 import { UpdateBookInput } from "../../inputs/update/book/update-book-input"
-import { AllBooksResult } from "../../../database/filteredBooks/allBooksResult"
-import { AllBooksQueryInput } from "../../queries/books-query-input"
-import { MyBooksResult } from "../../../database/filteredBooks/myBooksResult"
-import { MyBooksQueryInput } from "../../queries/myBooks-query-input"
+import { AllBooksResult } from "../../../database/filteredResults/books/all-books-result"
+import { AllBooksQueryInput } from "../../queries/books/books-query-input"
+import { MyBooksResult } from "../../../database/filteredResults/books/my-books-result"
+import { MyBooksQueryInput } from "../../queries/books/my-books-query-input"
 import { Brackets } from "typeorm"
+import { isOwnerOrAdmin } from "../../../utils/authorizations"
+import { grantXpService } from "../../../services/grind/grant-xp-service"
 
 /**
  * Book Resolver
@@ -41,7 +43,7 @@ export class BooksResolver {
      * This query supports:
      * - search by title,
      * - filtering by category,
-     * - sorting (by title, publication date, or page count, ASC/DESC),
+     * - sorting (by title, publication date, or page count),
      * - pagination,
      * - as well as counting total books before and after filters are applied.
      *
@@ -166,6 +168,7 @@ export class BooksResolver {
                     category: true,
                 },
             })
+
             if (!book) {
                 throw new AppError("Book not found", 404, "NotFoundError")
             }
@@ -184,9 +187,9 @@ export class BooksResolver {
      * GraphQL Query to retrieve books belonging to the currently authenticated user.
      *
      * This query supports:
-     * - search by title,
-     * - filtering by availability,
-     * - sorting (by creation or update date, ASC/DESC),
+     * - search by title, isbn, author, publisher
+     * - filtering by category,
+     * - sorting (by format, language),
      * - pagination,
      * - and total count before and after filters.
      *
@@ -336,6 +339,12 @@ export class BooksResolver {
             Object.assign(newBook, data, { user, category })
 
             await newBook.save()
+
+            await grantXpService(user, UserActionType.BOOK_ADDED, {
+                targetId: newBook.id.toString(),
+                metadata: { title: newBook.title }
+            });
+
             return newBook
         } catch (error) {
             throw new AppError(
@@ -372,11 +381,8 @@ export class BooksResolver {
                 throw new AppError("User not found", 404, "NotFoundError")
             }
 
-            const whereCreatedBy =
-                user.role === "admin" ? undefined : { id: user.id }
-
             const book = await Book.findOne({
-                where: { id: data.id, user: whereCreatedBy },
+                where: { id: data.id, user },
                 relations: {
                     user: true,
                     category: true,
@@ -388,6 +394,14 @@ export class BooksResolver {
                     "Book not found",
                     404,
                     "BookNotFoundError"
+                )
+            }
+
+            if (!isOwnerOrAdmin(book.user.id, user)) {
+                throw new AppError(
+                    "Not authorized to delete this book",
+                    403,
+                    "ForbiddenError"
                 )
             }
 
@@ -445,14 +459,26 @@ export class BooksResolver {
                 throw new AppError("User not found", 404, "NotFoundError")
             }
 
-            // Only admins or book owner can delete books
-            const whereCreatedBy =
-                user.role === "admin" ? undefined : { id: user.id }
-
             const book = await Book.findOneBy({
                 id,
-                user: whereCreatedBy,
+                user
             })
+
+            if (!book) {
+                throw new AppError(
+                    "Book not found",
+                    404,
+                    "BookNotFoundError"
+                )
+            }
+
+            if (!isOwnerOrAdmin(book.user.id, user)) {
+                throw new AppError(
+                    "Not authorized to delete this book",
+                    403,
+                    "ForbiddenError"
+                )
+            }
 
             if (book !== null) {
                 await book.remove()

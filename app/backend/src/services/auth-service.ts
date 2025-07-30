@@ -2,7 +2,7 @@ import * as argon2 from "argon2";
 import Cookies from "cookies";
 import jwt from "jsonwebtoken";
 import { dataSource } from "../database/config/datasource";
-import { LogInResponse, User } from "../database/entities/user";
+import { LogInResponse, User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
 import { UserRole } from "../types/types";
 
@@ -36,6 +36,8 @@ export const register = async (
             hashedPassword,
             userName,
             role,
+            level: 1,
+            xp: 0
         });
 
         await user.save();

@@ -16,8 +16,9 @@ import {
     ManyToOne,
     PrimaryGeneratedColumn,
 } from "typeorm";
-import { User } from "../user";
+import { User } from "../user/user";
 import { Category } from "./category";
+import { Author } from "../author/author";
 
 /**
  * Book Entity
@@ -96,11 +97,11 @@ export class Book extends BaseEntity {
     /**
      * Author of the book
      * @description
-     * The name of the person who wrote the book.
+     * Many-to-one relationship with the Author entity
      */
-    @Field()
-    @Column({ length: 255 })
-    author!: string;
+    @ManyToOne(() => Author, author => author.books)
+    @Field(() => Author)
+    author!: Author
 
     /**
      * Category of the book
