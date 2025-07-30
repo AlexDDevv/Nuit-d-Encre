@@ -10,7 +10,7 @@ const HEADER_LINKS: readonly LinksType[] = [
         ariaLabel: "Rechercher un livre",
     },
     {
-        href: "/autors",
+        href: "/authors",
         label: "Auteurs",
         category: "Auteurs",
         ariaLabel: "Rechercher un auteur en particulier",

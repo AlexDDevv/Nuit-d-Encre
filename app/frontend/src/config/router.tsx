@@ -4,6 +4,7 @@
  */
 
 import App from "@/App";
+import ProtectedRoute from "@/components/sections/hoc/ProtectedRoute";
 import PublicRoute from "@/components/sections/hoc/PublicRoute";
 import ErrorElement from "@/components/UI/ErrorElement";
 import Loader from "@/components/UI/Loader";
@@ -18,7 +19,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
  */
 const Landing = lazy(() => import("@/pages/Landing"));
 const Auth = lazy(() => import("@/pages/Auth"));
-const Books = lazy(() => import("@/pages/Books"));
+const Books = lazy(() => import("@/pages/books/Books"));
+const BookScribe = lazy(() => import("@/pages/books/BookScribe"));
+const Authors = lazy(() => import("@/pages/authors/Authors"));
+const AuthorScribe = lazy(() => import("@/pages/authors/AuthorScribe"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
 
 /**
@@ -69,6 +73,34 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<Loader />}>
                         <Books />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "books/scribe",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProtectedRoute>
+                            <BookScribe />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "authors",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <Authors />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "authors/scribe",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProtectedRoute>
+                            <AuthorScribe />
+                        </ProtectedRoute>
                     </Suspense>
                 ),
             },
