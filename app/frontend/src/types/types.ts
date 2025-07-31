@@ -46,3 +46,16 @@ export type AuthButtonsProps = {
 export interface ErrorLayoutProps {
     children: React.ReactNode;
 }
+
+export type PaginationProps = {
+    currentPage: number
+    totalCount: number
+    perPage: number
+    onPageChange: (page: number) => void
+    className?: string
+}
+
+export type CategoryOption = {
+    value: string
+    label: string
+}

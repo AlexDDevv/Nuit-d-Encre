@@ -5,8 +5,8 @@ import {
     Path,
     UseFormRegister,
 } from "react-hook-form";
-import { Input } from "@/components/UI/Input";
-import { Label } from "@/components/UI/Label";
+import { Input } from "@/components/UI/form/Input";
+import { Label } from "@/components/UI/form/Label";
 
 type InputEmailProps<T extends FieldValues> = {
     register: UseFormRegister<T>;
