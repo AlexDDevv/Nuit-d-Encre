@@ -1,5 +1,5 @@
-import { Input } from "@/components/UI/Input";
-import { Label } from "@/components/UI/Label";
+import { Input } from "@/components/UI/form/Input";
+import { Label } from "@/components/UI/form/Label";
 import { UserSignForm } from "@/types/types";
 import {
     FieldErrors,

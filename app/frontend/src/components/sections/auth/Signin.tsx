@@ -5,11 +5,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
 import FormTitle from "@/components/sections/auth/form/FormTitle";
-import FormWrapper from "@/components/sections/auth/form/FormWrapper";
+import FormWrapper from "@/components/UI/form/FormWrapper";
 import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
 import { Checkbox } from "@/components/UI/Checkbox";
-import { Label } from "@/components/UI/Label";
+import { Label } from "@/components/UI/form/Label";
 import ContinueWithGoogle from "@/components/UI/ContinueWithGoogle";
 import { useAuth } from "@/hooks/useAuth";
 
