@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { UserRole } from "./../../../backend/src/types/types";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 export type AuthContextProps = {
     user: User | null;
@@ -59,3 +60,27 @@ export type CategoryOption = {
     value: string
     label: string
 }
+
+export type CreateBookInput = {
+    title: string;
+    description: string;
+    author: string;
+    isbn10?: string;
+    isbn13: string;
+    pageCount: number;
+    publishedYear: number;
+    language: string;
+    publisher?: string;
+    format: BookFormat;
+    category: number | string;
+};
+
+export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
+
+export type InputsProps = {
+    register: UseFormRegister<CreateBookInput>
+    errors: FieldErrors<CreateBookInput>
+}
+
+export type BookFormat = "hardcover" | "paperback" | "softcover"
+
