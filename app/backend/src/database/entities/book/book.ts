@@ -4,7 +4,7 @@
  * @description
  * This module defines the Book entity for the database.
  * It represents a book added by a user, including details like title,
- * description, author, ISBN codes, format, publication data, and its 
+ * summary, author, ISBN codes, format, publication data, and its 
  * availability. It maintains relationships with the User and Category entities.
  */
 
@@ -30,7 +30,7 @@ import { Author } from "../author/author";
  * This class defines the structure of the book entity in the database:
  * - `id`: unique identifier for the book.
  * - `title`: title of the book (must be unique).
- * - `description`: summary or context about the book.
+ * - `summary`: summary or context about the book.
  * - `author`: author of the book.
  * - `category`: category or genre the book belongs to.
  * - `isbn10`: optional 10-digit ISBN.
@@ -48,7 +48,7 @@ import { Author } from "../author/author";
  * ```typescript
  * const book = new Book();
  * book.title = "The Little Prince";
- * book.description = "A poetic and philosophical tale";
+ * book.summary = "A poetic and philosophical tale";
  * book.author = "Antoine de Saint-Exupéry";
  * book.isbn13 = "9780156012195";
  * book.format = "paperback";
@@ -92,7 +92,7 @@ export class Book extends BaseEntity {
      */
     @Field()
     @Column({ length: 5000 })
-    description!: string;
+    summary!: string;
 
     /**
      * Author of the book

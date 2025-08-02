@@ -7,7 +7,7 @@ import { Field, ID, InputType } from "type-graphql"
  *
  * @description
  * - `title`: title of the book, must be between 1 and 255 characters.
- * - `description`: summary or context about the book, between 1 and 5000 characters.
+ * - `summary`: summary or context about the book, between 1 and 5000 characters.
  * - `author`: name of the book's author, between 1 and 255 characters.
  * - `isbn10`: optional 10-character ISBN code.
  * - `isbn13`: required 13-character ISBN code.
@@ -33,8 +33,8 @@ export class CreateBookInput {
     title!: string
 
     @Field()
-    @Length(1, 5000, { message: "Description must be between 1 and 5000 characters" })
-    description!: string
+    @Length(1, 5000, { message: "Summary must be between 1 and 5000 characters" })
+    summary!: string
 
     @Field()
     @Length(1, 255, { message: "Author name must be between 1 and 255 characters" })
