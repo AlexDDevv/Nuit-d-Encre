@@ -28,6 +28,8 @@ import { MyBooksQueryInput } from "../../queries/books/my-books-query-input"
 import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
+import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
+import { Author } from "../../../database/entities/author/author"
 
 /**
  * Book Resolver
@@ -335,8 +337,26 @@ export class BooksResolver {
                 throw new AppError("Category not found", 404, "NotFoundError")
             }
 
+            // Resolve or create the minimum author from the full name
+            let authorEntity: Author;
+
+            try {
+                authorEntity = await getOrCreateAuthorByFullName(data.author, user);
+            } catch (error) {
+                throw new AppError(
+                    "Failed to get or create author",
+                    500,
+                    "InternalServerError",
+                );
+            }
+
             const newBook = new Book()
-            Object.assign(newBook, data, { user, category })
+
+            Object.assign(newBook, data, {
+                user,
+                category,
+                author: authorEntity,
+            });
 
             await newBook.save()
 
