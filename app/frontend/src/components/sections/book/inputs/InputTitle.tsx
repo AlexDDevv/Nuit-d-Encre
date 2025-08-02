@@ -4,14 +4,14 @@ import { InputsProps } from "@/types/types";
 
 export default function InputTitle({ register, errors }: InputsProps) {
     return (
-        <div>
+        <div className="flex flex-col gap-2 w-1/2">
             <Label htmlFor="title" required>
                 Titre
             </Label>
             <Input
                 id="title"
                 type="text"
-                placeholder="Saisissez un titre pour votre enquête"
+                placeholder="Saisissez le titre du livre"
                 aria-required
                 {...register("title", {
                     required: "Le titre est requis",
@@ -28,7 +28,7 @@ export default function InputTitle({ register, errors }: InputsProps) {
                 })}
                 aria-invalid={errors?.title ? "true" : "false"}
                 errorMessage={errors?.title?.message}
-            ></Input>
+            />
         </div>
     );
 }

@@ -1,3 +1,4 @@
+import BookForm from "@/components/sections/book/BookForm";
 import { Helmet } from "react-helmet";
 
 export default function BookScribe() {
@@ -32,7 +33,9 @@ export default function BookScribe() {
                     content="Page pour enregistrer un livre sur le site Nuit d'Encre."
                 />
             </Helmet>
-            <div>Formulaire d'enregistrement</div>;
+            <div className="w-3xl mx-auto flex flex-col items-center">
+                <BookForm />
+            </div>
         </>
     );
 }

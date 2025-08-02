@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { forwardRef, ComponentProps, useState } from "react";
-import ErrorInput from "@/components/UI/ErrorInput";
+import ErrorInput from "@/components/UI/form/ErrorInput";
 
 type TextareaProps = ComponentProps<"textarea"> & {
     errorMessage: string | undefined;
@@ -23,7 +23,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         const [charCount, setCharCount] = useState(0);
 
         const classError = errorMessage
-            ? "border-destructive-medium-dark focus-visible:border-destructive-medium "
+            ? "border-destructive focus-visible:ring-destructive focus-visible:border-none"
             : "";
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -35,10 +35,10 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
         };
 
         return (
-            <div>
+            <div className="flex flex-col gap-1">
                 <textarea
                     className={cn(
-                        "border-black-100 file:text-black-default placeholder:border-black-400 focus-visible:border-primary-700 flex h-20 w-full resize-none rounded-lg border bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring border-border flex h-20 w-full rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none",
                         classError,
                         className,
                     )}
@@ -49,7 +49,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                 <div className="flex items-center justify-between gap-5">
                     {errorMessage && <ErrorInput message={errorMessage} />}
                     {counter && maxLength && (
-                        <p className="text-black-default ml-auto text-xs">
+                        <p className="text-card-foreground ml-auto text-xs">
                             {charCount}/{maxLength}
                         </p>
                     )}

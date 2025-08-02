@@ -1,15 +1,21 @@
 import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/useToast";
 import { useNavigate, useParams } from "react-router-dom";
-import { CategoryOption, CreateBookInput } from "@/types/types";
+import { TypeSelectOptions, CreateBookInput } from "@/types/types";
 import { useBook } from "@/hooks/useBook";
 import { useEffect } from "react";
 import FormWrapper from "@/components/UI/form/FormWrapper";
-import InputTitle from "./InputTitle";
-import InputDescription from "./InputDescription";
-import TypeSelect from "@/components/UI/form/TypeSelect";
+import InputTitle from "@/components/sections/book/inputs/InputTitle";
+import InputSummary from "@/components/sections/book/inputs/InputSummary";
+import InputCategory from "@/components/sections/book/inputs/InputCategory";
+import InputAuthor from "@/components/sections/book/inputs/InputAuthor";
+import InputIsbn from "@/components/sections/book/inputs/InputIsbn";
+import InputPage from "@/components/sections/book/inputs/InputPage";
+import InputPublishedYear from "@/components/sections/book/inputs/InputPublishedYear";
+import InputLanguage from "@/components/sections/book/inputs/InputLanguage";
+import InputPublisher from "@/components/sections/book/inputs/InputPublisher";
+import InputFormat from "@/components/sections/book/inputs/InputFormat";
 import { Button } from "@/components/UI/Button";
-import { Label } from "@/components/UI/form/Label";
 
 export default function BookForm() {
     const {
@@ -29,15 +35,15 @@ export default function BookForm() {
     const form = useForm<CreateBookInput>({
         defaultValues: {
             title: "",
-            description: "",
+            summary: "",
             author: "",
             isbn10: "",
             isbn13: "",
-            pageCount: 0,
+            pageCount: 1,
             publishedYear: new Date().getFullYear(),
-            language: "fr",
+            language: "",
             publisher: "",
-            format: "hardcover",
+            format: "pocket",
             category: "",
         },
     });
@@ -56,7 +62,7 @@ export default function BookForm() {
         if (book) {
             reset({
                 title: book.title,
-                description: book.description,
+                summary: book.summary,
                 author: book.author,
                 isbn10: book.isbn10,
                 isbn13: book.isbn13,
@@ -73,7 +79,7 @@ export default function BookForm() {
     if (bookId && isUpdating) {
         return (
             <div className="flex items-center justify-center">
-                <div>Chargement de l'enquête...</div>
+                <div>Chargement du livre...</div>
             </div>
         );
     }
@@ -154,7 +160,7 @@ export default function BookForm() {
             ? "Modifier le livre"
             : "Créer le livre";
 
-    const categoryOptions: CategoryOption[] =
+    const categoryOptions: TypeSelectOptions[] =
         categories?.map((cat: { id: string; name: string }) => ({
             value: cat.id,
             label: cat.name,
@@ -162,28 +168,34 @@ export default function BookForm() {
 
     return (
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
-            <h1 className="text-center text-2xl font-bold">
-                {bookId ? "Modifier le livre" : "Créer un livre"}
-            </h1>
-            <InputTitle register={register} errors={errors} />
-            <InputDescription register={register} errors={errors} />
             <div>
-                <Label htmlFor="category" required>
-                    Catégorie
-                </Label>
-                <TypeSelect
-                    control={control}
-                    name="category"
-                    message="La catégorie est requise"
-                    selectSomething="Sélectionner une catégorie"
-                    options={categoryOptions}
-                    disabled={loadingCategories}
-                />
-                {errors.category && (
-                    <p className="text-destructive-medium-dark text-sm font-medium">
-                        {errors.category.message}
-                    </p>
-                )}
+                <h1 className="text-2xl font-bold text-card-foreground">
+                    {bookId ? "Modifier le livre" : "Créer un livre"}
+                </h1>
+                <p className="font-medium text-card-foreground">
+                    {bookId ? "Modifier les informations du livre." : "Remplissez les informations du livre pour l'ajouter à la bibliothèque de Nuit d'Encre."}
+                </p>
+            </div>
+            <div className="flex items-center gap-5">
+                <InputTitle register={register} errors={errors} />
+                <InputAuthor register={register} errors={errors} />
+            </div>
+            <InputSummary register={register} errors={errors} />
+            <div className="flex items-center gap-5">
+                <InputCategory control={control} categoryOptions={categoryOptions} loadingCategories={loadingCategories} errors={errors} />
+                <InputFormat control={control} errors={errors} />
+            </div>
+            <div className="flex items-center gap-5">
+                <InputIsbn isbn13 register={register} errors={errors} />
+                <InputIsbn isbn13={false} register={register} errors={errors} />
+            </div>
+            <div className="flex items-center gap-5">
+                <InputPage register={register} errors={errors} />
+                <InputLanguage register={register} errors={errors} />
+            </div>
+            <div className="flex items-center gap-5">
+                <InputPublishedYear register={register} errors={errors} />
+                <InputPublisher register={register} errors={errors} />
             </div>
             <Button
                 type="submit"

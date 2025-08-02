@@ -32,7 +32,7 @@ export default function InputUserName({
                 })}
                 aria-invalid={errors?.userName ? "true" : "false"}
                 errorMessage={errors?.userName?.message}
-            ></Input>
+            />
         </div>
     );
 }
