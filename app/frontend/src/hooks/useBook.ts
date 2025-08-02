@@ -21,6 +21,7 @@ const formatLabelMap: Record<BookFormat, string> = {
 	hardcover: "Livre relié",
 	paperback: "Livre broché",
 	softcover: "Livre de poche",
+	pocket: "Livre de poche"
 }
 
 const languageLabelMap: Record<string, string> = {

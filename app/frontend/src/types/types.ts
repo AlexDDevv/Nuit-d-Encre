@@ -1,6 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { UserRole } from "./../../../backend/src/types/types";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 
 export type AuthContextProps = {
     user: User | null;
@@ -56,14 +56,14 @@ export type PaginationProps = {
     className?: string
 }
 
-export type CategoryOption = {
+export type TypeSelectOptions = {
     value: string
     label: string
 }
 
 export type CreateBookInput = {
     title: string;
-    description: string;
+    summary: string;
     author: string;
     isbn10?: string;
     isbn13: string;
@@ -71,7 +71,7 @@ export type CreateBookInput = {
     publishedYear: number;
     language: string;
     publisher?: string;
-    format: BookFormat;
+    format: BookFormat | undefined;
     category: number | string;
 };
 
@@ -82,5 +82,17 @@ export type InputsProps = {
     errors: FieldErrors<CreateBookInput>
 }
 
-export type BookFormat = "hardcover" | "paperback" | "softcover"
+export type CategoryInputProps = {
+    control: Control<CreateBookInput>
+    categoryOptions: TypeSelectOptions[]
+    loadingCategories: boolean
+    errors: FieldErrors<CreateBookInput>
+}
+
+export type InputIsbnProps = Pick<InputsProps, "register" | "errors"> & {
+    isbn13: boolean
+}
+
+export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket"
+export type FormatInputProps = Pick<CategoryInputProps, "control" | "errors">;
 
