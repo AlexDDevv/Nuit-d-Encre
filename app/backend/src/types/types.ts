@@ -32,3 +32,9 @@ export type GrantXPOptions = {
     metadata?: Record<string, any>;
 };
 
+export interface AuthorNameParts {
+    firstname: string;
+    lastname: string;
+}
+
+
