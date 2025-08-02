@@ -20,6 +20,7 @@ export default function InputPage({ register, errors }: InputsProps) {
                     }
                 }}
                 {...register("pageCount", {
+                    valueAsNumber: true,
                     required: "Le nombre de page est requis",
                     min: {
                         value: 1,

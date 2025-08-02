@@ -8,7 +8,7 @@
  * availability. It maintains relationships with the User and Category entities.
  */
 
-import { Field, ID, ObjectType } from "type-graphql";
+import { Field, ID, Int, ObjectType } from "type-graphql";
 import {
     BaseEntity,
     Column,
@@ -136,7 +136,7 @@ export class Book extends BaseEntity {
      * Total number of pages in the book.  
      * Optional field.
      */
-    @Field()
+    @Field(() => Int)
     @Column({ type: "int" })
     pageCount!: number;
 
@@ -146,7 +146,7 @@ export class Book extends BaseEntity {
      * The year when the book was published.  
      * Optional field.
      */
-    @Field()
+    @Field(() => Int)
     @Column({ type: "int" })
     publishedYear!: number;
 

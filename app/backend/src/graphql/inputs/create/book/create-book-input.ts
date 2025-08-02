@@ -1,5 +1,5 @@
 import { Length, IsIn, IsOptional, IsInt, Min, Max } from "class-validator"
-import { Field, ID, InputType } from "type-graphql"
+import { Field, ID, InputType, Int } from "type-graphql"
 
 /**
  * Represents input data for creating a new book.
@@ -49,12 +49,12 @@ export class CreateBookInput {
     @Length(13, 13, { message: "ISBN-13 must be exactly 13 characters" })
     isbn13!: string
 
-    @Field()
+    @Field(() => Int)
     @IsInt({ message: "Page count must be an integer" })
     @Min(1, { message: "Page count must be at least 1" })
     pageCount!: number
 
-    @Field()
+    @Field(() => Int)
     @IsInt({ message: "Published year must be a number" })
     @Min(1000)
     @Max(9999)

@@ -20,6 +20,7 @@ export default function InputPublishedYear({ register, errors }: InputsProps) {
                     }
                 }}
                 {...register("publishedYear", {
+                    valueAsNumber: true,
                     required: "L'année de publication est requise",
                     min: {
                         value: 1000,
