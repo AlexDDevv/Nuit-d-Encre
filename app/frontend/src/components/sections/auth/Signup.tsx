@@ -8,7 +8,7 @@ import FormWrapper from "@/components/UI/form/FormWrapper";
 import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputUserName from "@/components/sections/auth/form/InputUserName";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
-import ContinueWithGoogle from "@/components/UI/ContinueWithGoogle";
+import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Signup() {
