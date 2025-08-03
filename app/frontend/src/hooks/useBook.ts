@@ -64,6 +64,7 @@ export function useBook(bookId?: string) {
 	const {
 		data: allBooksData,
 		loading: isFetching,
+		error: allBooksError,
 		refetch,
 	} = useQuery(GET_BOOKS, {
 		variables: {
@@ -81,11 +82,12 @@ export function useBook(bookId?: string) {
 			},
 		},
 	})
-	const books = allBooksData?.books
+	const books = allBooksData?.books.allBooks || []
 
 	const {
 		data: myBooksData,
 		loading,
+		error: myBooksError
 	} = useQuery(GET_MY_BOOKS, {
 		variables: {
 			filters: {
@@ -103,7 +105,7 @@ export function useBook(bookId?: string) {
 			},
 		},
 	})
-	const myBooks = myBooksData?.myBooks
+	const myBooks = myBooksData?.myBooks.books || []
 
 	const { data: categoriesData, loading: loadingCategories } =
 		useQuery(GET_CATEGORIES);
@@ -237,6 +239,7 @@ export function useBook(bookId?: string) {
 	return {
 		books,
 		isFetching,
+		allBooksError,
 		isCreating,
 		isUpdating,
 		createError,
@@ -248,6 +251,7 @@ export function useBook(bookId?: string) {
 		setDebouncedSearch,
 		myBooks,
 		loading,
+		myBooksError,
 		book,
 		bookLoading,
 		bookError,
