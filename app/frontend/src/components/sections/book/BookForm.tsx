@@ -111,7 +111,7 @@ export default function BookForm() {
             if (book) {
                 result = await updateBook(book.id, {
                     ...form,
-                    category: Number(form.category),
+                    category: form.category,
                 });
 
                 showToast({
@@ -122,7 +122,7 @@ export default function BookForm() {
             } else {
                 result = await addBook({
                     ...form,
-                    category: Number(form.category),
+                    category: form.category,
                 });
 
                 showToast({
