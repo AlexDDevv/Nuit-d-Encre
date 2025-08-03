@@ -63,8 +63,8 @@ export class UpdateBookInput {
     publisher?: string
 
     @Field({ nullable: true })
-    @IsIn(["hardcover", "paperback", "softcover"], {
-        message: "Format must be one of: hardcover, paperback, softcover",
+    @IsIn(["hardcover", "paperback", "softcover", "pocket"], {
+        message: "Format must be one of: hardcover, paperback, softcover or pocket",
     })
     @IsOptional()
     format?: string

@@ -82,7 +82,7 @@ export class Book extends BaseEntity {
      * A short, unique label that identifies the book.
      */
     @Field()
-    @Column({ length: 255, unique: true }) // NOTE: Two books cannot have the same title
+    @Column({ length: 255, unique: true })
     title!: string;
 
     /**
@@ -137,7 +137,7 @@ export class Book extends BaseEntity {
      * Optional field.
      */
     @Field(() => Int)
-    @Column({ type: "int" })
+    @Column()
     pageCount!: number;
 
     /**
@@ -147,7 +147,7 @@ export class Book extends BaseEntity {
      * Optional field.
      */
     @Field(() => Int)
-    @Column({ type: "int" })
+    @Column()
     publishedYear!: number;
 
     /**
@@ -182,7 +182,7 @@ export class Book extends BaseEntity {
     @Field()
     @Column({
         type: "enum",
-        enum: ["hardcover", "paperback", "softcover"],
+        enum: ["hardcover", "paperback", "softcover", "pocket"],
     })
     format!: string;
 
