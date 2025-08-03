@@ -78,6 +78,7 @@ export class BooksResolver {
             const baseQuery = Book.createQueryBuilder("book")
                 .leftJoinAndSelect("book.user", "user")
                 .leftJoinAndSelect("book.category", "category")
+                .leftJoinAndSelect("book.author", "author")
 
             // Get the total number of unfiltered books and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
@@ -92,7 +93,8 @@ export class BooksResolver {
                 filteredQuery.andWhere(new Brackets(qb => {
                     qb.where("book.title ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.author ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.firstname ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
                 }));
             }
@@ -250,7 +252,8 @@ export class BooksResolver {
                 filteredQuery.andWhere(new Brackets(qb => {
                     qb.where("book.title ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.author ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.firstname ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
                 }));
             }
