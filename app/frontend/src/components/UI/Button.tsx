@@ -37,7 +37,7 @@ const buttonVariants = cva(
                 square_sm: "w-10 h-10",
             },
             pagination: {
-                selected: "bg-fg text-white",
+                selected: "bg-foreground text-background",
             },
         },
         defaultVariants: {
@@ -49,7 +49,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
     extends ButtonHTMLAttributes<HTMLButtonElement>,
-        VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
     icon?: LucideIcon;
     iconPosition?: "left" | "right";
     ariaLabel: string;
@@ -85,7 +85,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                 size,
             }),
             isNavBtnSelected &&
-                "text-primary hover:bg-primary-default bg-white hover:text-white",
+            "text-primary hover:bg-primary-default bg-white hover:text-white",
             fullWidth && "w-full",
             className,
         );
