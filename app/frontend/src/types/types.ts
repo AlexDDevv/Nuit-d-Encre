@@ -96,3 +96,12 @@ export type InputIsbnProps = Pick<InputsProps, "register" | "errors"> & {
 export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket"
 export type FormatInputProps = Pick<CategoryInputProps, "control" | "errors">;
 
+export type BookCardProps = {
+    id: string
+    title: string
+    author: {
+        firstname: string
+        lastname: string
+    }
+}
+
