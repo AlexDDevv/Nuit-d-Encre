@@ -9,6 +9,7 @@ import {
 import { Roles, UserRole } from "../../../types/types";
 import { Book } from "../book/book";
 import { UserActions } from "./user-actions";
+import { Author } from "../author/author";
 
 /**
  * Represents a user entity in the database.
@@ -61,6 +62,10 @@ export class User extends BaseEntity {
     @Field(() => [Book])
     @OneToMany(() => Book, (book) => book.user)
     books!: Book[];
+
+    @Field(() => [Author])
+    @OneToMany(() => Author, (author) => author.user)
+    authors!: Author[];
 
     @Field()
     @Column()

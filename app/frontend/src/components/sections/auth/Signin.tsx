@@ -10,7 +10,7 @@ import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
 import { Checkbox } from "@/components/UI/Checkbox";
 import { Label } from "@/components/UI/form/Label";
-import ContinueWithGoogle from "@/components/UI/ContinueWithGoogle";
+import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Signin() {

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ComponentProps, forwardRef } from "react";
-import ErrorInput from "@/components/UI/ErrorInput";
+import ErrorInput from "@/components/UI/form/ErrorInput";
 
 type InputProps = ComponentProps<"input"> & {
     errorMessage: string | undefined;

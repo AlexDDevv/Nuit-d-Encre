@@ -90,18 +90,18 @@ export class Author extends BaseEntity {
     /**
      * Birth date of the author
      */
-    @Field()
-    @Column()
-    birthDate!: string;
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    birthDate?: string;
 
     /**
      * Nationality of the author
      * @description
      * The language or country of origin (e.g., "en", "fr").
      */
-    @Field()
-    @Column()
-    nationality!: string;
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    nationality?: string;
 
     /**
      * Wikipedia link
@@ -135,7 +135,7 @@ export class Author extends BaseEntity {
      * @description
      * Many-to-one relationship with the User entity.
      */
-    @ManyToOne(() => User, (user) => user.books)
+    @ManyToOne(() => User, (user) => user.authors)
     @Field(() => User)
     user!: User;
 

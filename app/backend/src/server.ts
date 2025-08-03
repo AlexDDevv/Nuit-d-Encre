@@ -3,7 +3,7 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import Cookies from "cookies";
 import dotenv from "dotenv";
 import { GraphQLFormattedError } from "graphql";
-import { buildSchema } from "type-graphql";
+import { buildSchema, ArgumentValidationError } from "type-graphql";
 import { dataSource } from "./database/config/datasource";
 import { AuthResolver } from "./graphql/resolvers/user/auth-resolver";
 import { customAuthChecker } from "./middlewares/auth-checker";
@@ -77,6 +77,17 @@ if (!process.env.APP_PORT) {
                         extensions: {
                             code: "BAD_USER_INPUT",
                             validationErrors: (error as any).validationErrors,
+                        },
+                    };
+                }
+
+                // Manage validation errors (type-graphql)
+                if (error instanceof ArgumentValidationError) {
+                    return {
+                        message: "Données invalides",
+                        extensions: {
+                            code: "BAD_USER_INPUT",
+                            originalError: error.message,
                         },
                     };
                 }
