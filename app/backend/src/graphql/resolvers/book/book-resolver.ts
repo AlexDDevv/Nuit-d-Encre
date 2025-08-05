@@ -170,6 +170,7 @@ export class BooksResolver {
                 relations: {
                     user: true,
                     category: true,
+                    author: true
                 },
             })
 
@@ -405,10 +406,14 @@ export class BooksResolver {
             }
 
             const book = await Book.findOne({
-                where: { id: data.id, user },
+                where: {
+                    id: data.id,
+                    user: { id: user.id }
+                },
                 relations: {
                     user: true,
                     category: true,
+                    author: true
                 },
             })
 
@@ -428,7 +433,7 @@ export class BooksResolver {
                 )
             }
 
-            const { id, category, ...updateData } = data
+            const { id, category, author, ...updateData } = data
 
             if (category) {
                 const categoryBook = await Category.findOne({
@@ -444,11 +449,18 @@ export class BooksResolver {
                 book.category = categoryBook
             }
 
-            Object.assign(book, updateData)
+            if (author) {
+                const authorEntity = await getOrCreateAuthorByFullName(author, user);
+                book.author = authorEntity;
+            }
 
-            await book.save()
-            return book
+            Object.assign(book, updateData);
+
+            await book.save();
+
+            return book;
         } catch (error) {
+            console.error("updateBook error:", error);
             throw new AppError(
                 "Failed to update book",
                 500,
