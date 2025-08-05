@@ -21,6 +21,7 @@ const Landing = lazy(() => import("@/pages/Landing"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Books = lazy(() => import("@/pages/books/Books"));
 const BookScribe = lazy(() => import("@/pages/books/BookScribe"));
+const BookUpdate = lazy(() => import("@/pages/books/BookUpdate"));
 const Authors = lazy(() => import("@/pages/authors/Authors"));
 const AuthorScribe = lazy(() => import("@/pages/authors/AuthorScribe"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
@@ -82,6 +83,16 @@ const router = createBrowserRouter([
                     <Suspense fallback={<Loader />}>
                         <ProtectedRoute>
                             <BookScribe />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "books/update/:id",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProtectedRoute>
+                            <BookUpdate />
                         </ProtectedRoute>
                     </Suspense>
                 ),
