@@ -18,6 +18,7 @@ import InputFormat from "@/components/sections/book/inputs/InputFormat";
 import { Button } from "@/components/UI/Button";
 
 export default function BookForm() {
+    const { id: bookId } = useParams();
     const {
         addBook,
         updateBook,
@@ -27,9 +28,8 @@ export default function BookForm() {
         bookLoading,
         bookError,
         loadingCategories,
-    } = useBook();
+    } = useBook(bookId);
     const navigate = useNavigate();
-    const { id: bookId } = useParams();
     const { showToast } = useToast();
 
     const form = useForm<CreateBookInput>({
@@ -63,7 +63,7 @@ export default function BookForm() {
             reset({
                 title: book.title,
                 summary: book.summary,
-                author: book.author,
+                author: `${book.author.firstname} ${book.author.lastname}`,
                 isbn10: book.isbn10,
                 isbn13: book.isbn13,
                 pageCount: book.pageCount,
