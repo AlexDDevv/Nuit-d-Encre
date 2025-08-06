@@ -79,7 +79,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: "books/:title",
+                path: "books/:slug",
                 element: (
                     <Suspense fallback={<Loader />}>
                         <BookDetails />

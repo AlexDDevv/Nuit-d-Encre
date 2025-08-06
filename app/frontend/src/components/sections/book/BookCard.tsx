@@ -2,8 +2,8 @@ import { buildAriaLabel, slugify } from "@/lib/utils";
 import { BookCardProps } from "@/types/types";
 import { Link } from "react-router-dom";
 
-export default function BookCard({ title, author }: BookCardProps) {
-    const path = `/books/${slugify(title)}`;
+export default function BookCard({ id, title, author }: BookCardProps) {
+    const path = `/books/${id}-${slugify(title)}`;
     const ariaLabel = buildAriaLabel(title, author);
     const isCurrent = path === window.location.pathname;
 

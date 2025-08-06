@@ -53,7 +53,8 @@ export default function Books() {
                     <div className="w-full flex items-center justify-center gap-20 flex-wrap">
                         {books.map((book: BookCardProps) => (
                             <BookCard
-                                key={book.title}
+                                key={book.id}
+                                id={book.id}
                                 title={book.title}
                                 author={book.author}
                             />
