@@ -133,7 +133,7 @@ export default function BookForm() {
             }
 
             if (result && result.id) {
-                navigate(`/books/${result.id}`);
+                navigate(`/books/${result.title}`);
             }
         } catch (err) {
             const msg =
