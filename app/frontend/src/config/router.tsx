@@ -20,6 +20,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const Landing = lazy(() => import("@/pages/Landing"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const Books = lazy(() => import("@/pages/books/Books"));
+const BookDetails = lazy(() => import("@/pages/books/BookDetails"));
 const BookScribe = lazy(() => import("@/pages/books/BookScribe"));
 const BookUpdate = lazy(() => import("@/pages/books/BookUpdate"));
 const Authors = lazy(() => import("@/pages/authors/Authors"));
@@ -74,6 +75,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<Loader />}>
                         <Books />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "books/:slug",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <BookDetails />
                     </Suspense>
                 ),
             },

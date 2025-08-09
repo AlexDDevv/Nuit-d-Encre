@@ -16,6 +16,7 @@ import InputLanguage from "@/components/sections/book/inputs/InputLanguage";
 import InputPublisher from "@/components/sections/book/inputs/InputPublisher";
 import InputFormat from "@/components/sections/book/inputs/InputFormat";
 import { Button } from "@/components/UI/Button";
+import Loader from "@/components/UI/Loader";
 
 export default function BookForm() {
     const { id: bookId } = useParams();
@@ -78,9 +79,7 @@ export default function BookForm() {
 
     if (bookId && isUpdating) {
         return (
-            <div className="flex items-center justify-center">
-                <div>Chargement du livre...</div>
-            </div>
+            <Loader />
         );
     }
 
@@ -133,7 +132,7 @@ export default function BookForm() {
             }
 
             if (result && result.id) {
-                navigate(`/books/${result.id}`);
+                navigate(`/books/${result.id}-${result.title}`);
             }
         } catch (err) {
             const msg =
