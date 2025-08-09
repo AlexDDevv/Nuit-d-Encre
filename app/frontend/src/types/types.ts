@@ -105,3 +105,20 @@ export type BookCardProps = {
     }
 }
 
+interface Book {
+    publisher: string;
+    publishedYear: number;
+    language: string;
+    pageCount: number;
+    format: string;
+    category: {
+        name: string;
+    };
+    isbn10: string;
+    isbn13: string;
+}
+
+export interface BookInfoProps {
+    book: Book;
+}
+
