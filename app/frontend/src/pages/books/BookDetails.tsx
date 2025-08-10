@@ -41,7 +41,6 @@ export default function BookDetails() {
 
     return (
         <div className="flex flex-col gap-20">
-            <Loader />
             <div className="flex gap-10">
                 <div className="max-w-3xs max-h-96">
                     <img src="/images/bookCover.svg" alt="Couverture d'un livre" className="w-full h-full" />

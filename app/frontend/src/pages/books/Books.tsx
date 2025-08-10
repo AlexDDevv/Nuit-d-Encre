@@ -1,9 +1,9 @@
 import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
+import Loader from "@/components/UI/Loader";
 import Pagination from "@/components/UI/Pagination";
 import { useBook } from "@/hooks/useBook";
 import { BookCardProps } from "@/types/types";
-import { Loader } from "lucide-react";
 import { Helmet } from "react-helmet";
 
 export default function Books() {
