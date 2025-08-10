@@ -5,11 +5,15 @@ html {
     scroll-behavior: smooth;
 }
 
+html body[data-scroll-locked] {
+    overflow-y: scroll !important;
+    margin: 0 !important;
+}
+
 body {
     background-color: var(--color-background);
-    /* background-color: white; */
     font-family: var(--font-body);
-    padding: 1.5rem;
+    padding: 1.5rem !important;
     position: relative;
 }
 
