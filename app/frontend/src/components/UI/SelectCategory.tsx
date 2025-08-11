@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronsUpDown, Check } from "lucide-react";
+import { Check, ListFilter } from "lucide-react";
 import { motion, Variants, MotionProps, AnimatePresence } from "motion/react";
 
 export default function SelectCategory() {
@@ -48,18 +48,18 @@ export default function SelectCategory() {
     return (
         <div className="mx-auto flex w-[300px] flex-col gap-[10px]">
             <button
-                className="bg-input border-border focus-visible:ring-ring flex w-full items-center justify-between rounded px-[10px] py-[9px] focus-visible:ring-1 focus-visible:outline-none"
+                className="bg-input border-border focus-visible:ring-ring flex w-full items-center justify-between rounded-lg px-4 py-2.5 focus-visible:ring-1 focus-visible:outline-none cursor-pointer"
                 onClick={handleCategories}
             >
                 <p className="font-bodyFont text-accent-foreground text-sm">
                     {selectedCategory}
                 </p>
-                <ChevronsUpDown className="text-accent-foreground h-4 w-4" />
+                <ListFilter className="text-accent-foreground h-4 w-4" />
             </button>
             <AnimatePresence>
                 {showCategory && (
                     <motion.div
-                        className="bg-input w-full rounded p-[10px]"
+                        className="bg-input w-full rounded-lg p-2.5"
                         initial="closed"
                         animate={showCategory ? "open" : "closed"}
                         exit="closed"
@@ -68,7 +68,7 @@ export default function SelectCategory() {
                         {categories.map((category, i) => (
                             <motion.div
                                 key={i}
-                                className={`mb-[10px] flex cursor-pointer items-center justify-between rounded px-[10px] py-2 transition-colors last:mb-0 ${selectedCategory === category ? "bg-accent" : "hover:bg-accent"}`}
+                                className={`mb-2.5 flex cursor-pointer items-center justify-between rounded px-2.5 py-2 transition-colors last:mb-0 ${selectedCategory === category ? "bg-accent" : "hover:bg-accent"}`}
                                 onClick={() => selectCategory(category)}
                                 {...itemVariants}
                             >
@@ -76,7 +76,7 @@ export default function SelectCategory() {
                                     {category}
                                 </p>
                                 {selectedCategory === category && (
-                                    <Check className="text-accent-foreground h-[10px] w-[10px]" />
+                                    <Check className="text-accent-foreground h-2.5 w-2.5" />
                                 )}
                             </motion.div>
                         ))}
