@@ -4,7 +4,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/UI/form/Select";
+} from "@/components/UI/Select";
 import { cn } from "@/lib/utils";
 import { TypeSelectOptions } from "@/types/types";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
