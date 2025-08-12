@@ -57,7 +57,7 @@ export default function TypeSelect<T extends FieldValues>({
                         )}>
                             <SelectValue placeholder={selectSomething} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent animate={true}>
                             {options.map((option) => (
                                 <SelectItem key={option.value} value={option.value}>
                                     {option.label}
