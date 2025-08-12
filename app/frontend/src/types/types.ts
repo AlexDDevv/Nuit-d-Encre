@@ -122,3 +122,8 @@ export interface BookInfoProps {
     book: Book;
 }
 
+export type categoryPropsType = {
+    id: string,
+    name: string
+}
+
