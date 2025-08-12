@@ -115,44 +115,55 @@ const SelectContent = forwardRef<
 	}
 >(({ className, children, position = "popper", animate = false, ...props }, ref) => (
 	<Portal>
-		<SelectContentBase
-			ref={ref}
-			className={cn(
-				"text-accent-foreground bg-input border-border shadow-default relative z-50 min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-x-hidden rounded-lg border data-[state=open]:ring-2 ring-ring data-[state=close]:ring-0",
-				className,
-				!animate && "max-h-[--radix-select-content-available-height] overflow-y-auto",
-				position === "popper" &&
-				"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-			)}
-			position={position}
-			{...props}
-		>
-			{animate ? (
-				<motion.div
-					initial="closed"
-					animate="open"
-					exit="closed"
-					variants={menuVariants}
-					className="p-1 w-full min-w-[var(--radix-select-trigger-width)]"
+		{animate ? (
+			<motion.div
+				initial="closed"
+				animate="open"
+				exit="closed"
+				variants={menuVariants}
+			>
+				<SelectContentBase
+					ref={ref}
+					className={cn(
+						"text-accent-foreground bg-input border-border shadow-default relative z-50 min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=open]:ring-2 ring-ring data-[state=close]:ring-0",
+						position === "popper" &&
+						"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+						className
+					)}
+					position={position}
+					{...props}
+				>
+					<div className="p-1 w-full min-w-[var(--radix-select-trigger-width)]">
+						{children}
+					</div>
+				</SelectContentBase>
+			</motion.div>
+		) : (
+			<SelectContentBase
+				ref={ref}
+				className={cn(
+					"text-accent-foreground bg-input border-border shadow-default relative z-50 min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=open]:ring-2 ring-ring data-[state=close]:ring-0",
+					"max-h-[--radix-select-content-available-height] overflow-y-auto",
+					position === "popper" &&
+					"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+					className
+				)}
+				position={position}
+				{...props}
+			>
+				<SelectScrollUpButton />
+				<Viewport
+					className={cn(
+						"p-1",
+						position === "popper" &&
+						"h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+					)}
 				>
 					{children}
-				</motion.div>
-			) : (
-				<>
-					<SelectScrollUpButton />
-					<Viewport
-						className={cn(
-							"p-1",
-							position === "popper" &&
-							"h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
-						)}
-					>
-						{children}
-					</Viewport>
-					<SelectScrollDownButton />
-				</>
-			)}
-		</SelectContentBase>
+				</Viewport>
+				<SelectScrollDownButton />
+			</SelectContentBase>
+		)}
 	</Portal>
 ))
 SelectContent.displayName = "SelectContent"
