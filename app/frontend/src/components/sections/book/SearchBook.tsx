@@ -44,7 +44,7 @@ export default function SearchBook() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="relative flex w-lg flex-1 items-center justify-center"
+            className="relative flex flex-1 items-center justify-center w-sm"
         >
             <Label htmlFor="search" className="sr-only">
                 Rechercher un livre

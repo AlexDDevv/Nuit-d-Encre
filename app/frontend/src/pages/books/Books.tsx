@@ -2,6 +2,7 @@ import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
 import Loader from "@/components/UI/Loader";
 import Pagination from "@/components/UI/Pagination";
+import SelectCategory from "@/components/UI/SelectCategory";
 import { useBook } from "@/hooks/useBook";
 import { BookCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";
@@ -43,7 +44,10 @@ export default function Books() {
             <section className="flex flex-col items-center justify-center gap-20">
                 <div className="flex flex-col items-center justify-center gap-10">
                     <h1 className="text-foreground font-bold text-4xl">Rechercher un livre</h1>
-                    <SearchBook />
+                    <div className="flex items-center justify-center gap-5">
+                        <SearchBook />
+                        <SelectCategory />
+                    </div>
                 </div>
                 {isFetching ? (
                     <div className="flex items-center justify-center">
