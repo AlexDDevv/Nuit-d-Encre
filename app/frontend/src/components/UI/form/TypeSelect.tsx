@@ -4,7 +4,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/UI/form/Select";
+} from "@/components/UI/Select";
 import { cn } from "@/lib/utils";
 import { TypeSelectOptions } from "@/types/types";
 import { Control, Controller, FieldPath, FieldValues } from "react-hook-form";
@@ -57,7 +57,7 @@ export default function TypeSelect<T extends FieldValues>({
                         )}>
                             <SelectValue placeholder={selectSomething} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent animate={true}>
                             {options.map((option) => (
                                 <SelectItem key={option.value} value={option.value}>
                                     {option.label}

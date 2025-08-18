@@ -107,7 +107,7 @@ export function useBook(bookId?: string) {
 	})
 	const myBooks = myBooksData?.myBooks.books || []
 
-	const { data: categoriesData, loading: loadingCategories } =
+	const { data: categoriesData, loading: loadingCategories, error: errorCategories } =
 		useQuery(GET_CATEGORIES);
 	const categories = categoriesData?.categories
 
@@ -257,6 +257,7 @@ export function useBook(bookId?: string) {
 		bookError,
 		categories,
 		loadingCategories,
+		errorCategories,
 		filters,
 		setFilters,
 		formatLabelMap,

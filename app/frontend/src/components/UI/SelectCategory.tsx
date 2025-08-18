@@ -1,88 +1,104 @@
 import { useState } from "react";
-import { ChevronsUpDown, Check } from "lucide-react";
-import { motion, Variants, MotionProps, AnimatePresence } from "motion/react";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/UI/Select";
+import { cn, slugify } from "@/lib/utils";
+import { useBook } from "@/hooks/useBook";
+import Loader from "@/components/UI/Loader";
+import { categoryPropsType } from "@/types/types";
+import { useSearchParams } from "react-router-dom";
+import { Button } from "@/components/UI/Button";
 
 export default function SelectCategory() {
-    const [showCategory, setShowCategory] = useState(false);
-    const [selectedCategory, setSelectedCategory] =
-        useState<string>("Toutes catégories");
+    const { categories, loadingCategories, errorCategories } = useBook()
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(
+        null
+    )
+    const [searchParams, setSearchParams] = useSearchParams()
+    const newParams = new URLSearchParams(searchParams);
 
-    const handleCategories = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
-        setShowCategory(!showCategory);
+    const filterByCategory = (categoryId: string) => {
+        const category = categories.find((category: categoryPropsType) => category.id === categoryId);
+        if (!category) return;
+
+        const slug = slugify(category.name);
+
+        if (newParams.get("category") === slug) {
+            newParams.delete("category");
+            newParams.delete("categoryId");
+            setSelectedCategory(null);
+        } else {
+            newParams.set("category", slug);
+            newParams.set("categoryId", category.id);
+            setSelectedCategory(category.id);
+        }
+
+        setSearchParams(newParams);
     };
 
-    const selectCategory = (category: string) => {
-        setSelectedCategory(category);
-        setShowCategory(!showCategory);
+    const handleResetFilter = () => {
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete("category");
+        newParams.delete("categoryId");
+
+        setSelectedCategory(null);
+        setSearchParams(newParams);
     };
 
-    const menuVariants: Variants = {
-        closed: {
-            scale: 0,
-            transition: {
-                delay: 0.15,
-            },
-        },
-        open: {
-            scale: 1,
-            transition: {
-                type: "spring",
-                duration: 0.4,
-                delayChildren: 0.2,
-                staggerChildren: 0.05,
-            },
-        },
-    };
+    if (loadingCategories) {
+        return (
+            <Loader />
+        );
+    }
 
-    const itemVariants: MotionProps = {
-        variants: {
-            closed: { x: -16, opacity: 0 },
-            open: { x: 0, opacity: 1 },
-        },
-        transition: { opacity: { duration: 0.2 } },
-    };
+    if (errorCategories) {
+        const isNotFoundError = errorCategories.graphQLErrors.some((error) =>
+            error.message.includes("Failed to fetch categories"),
+        );
 
-    const categories = ["Toutes catégories", "Romans", "Mangas", "BD"];
+        if (isNotFoundError) {
+            throw new Response("Categories not found", { status: 404 });
+        }
+
+        // Pour les autres erreurs GraphQL
+        throw new Response("Error loading categories", { status: 500 });
+    }
+
+    if (!categories) {
+        throw new Response("Categories not found", { status: 404 });
+    }
+
+    const openStateClasses =
+        "data-[state=open]:ring-2 data-[state=open]:ring-ring data-[state=open]:ring-offset-2";
 
     return (
-        <div className="mx-auto flex w-[300px] flex-col gap-[10px]">
-            <button
-                className="bg-input border-border focus-visible:ring-ring flex w-full items-center justify-between rounded px-[10px] py-[9px] focus-visible:ring-1 focus-visible:outline-none"
-                onClick={handleCategories}
-            >
-                <p className="font-bodyFont text-accent-foreground text-sm">
-                    {selectedCategory}
-                </p>
-                <ChevronsUpDown className="text-accent-foreground h-4 w-4" />
-            </button>
-            <AnimatePresence>
-                {showCategory && (
-                    <motion.div
-                        className="bg-input w-full rounded p-[10px]"
-                        initial="closed"
-                        animate={showCategory ? "open" : "closed"}
-                        exit="closed"
-                        variants={menuVariants}
-                    >
-                        {categories.map((category, i) => (
-                            <motion.div
-                                key={i}
-                                className={`mb-[10px] flex cursor-pointer items-center justify-between rounded px-[10px] py-2 transition-colors last:mb-0 ${selectedCategory === category ? "bg-accent" : "hover:bg-accent"}`}
-                                onClick={() => selectCategory(category)}
-                                {...itemVariants}
-                            >
-                                <p className="font-bodyFont text-accent-foreground text-sm">
-                                    {category}
-                                </p>
-                                {selectedCategory === category && (
-                                    <Check className="text-accent-foreground h-[10px] w-[10px]" />
-                                )}
-                            </motion.div>
-                        ))}
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
+        <>
+            <Select value={selectedCategory ?? ""} onValueChange={filterByCategory}>
+                <SelectTrigger className={cn(
+                    "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border flex rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-60 min-w-60 mx-auto",
+                    openStateClasses
+                )}>
+                    <SelectValue placeholder="Sélectionnez une catégorie" />
+                </SelectTrigger>
+                <SelectContent animate={true}>
+                    {categories.map((category: categoryPropsType) => (
+                        <SelectItem
+                            key={category.id}
+                            value={category.id}
+                            animate={true}
+                        >
+                            {category.name}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
+            </Select>
+            {selectedCategory && (
+                <Button ariaLabel="Retirer le filtre sur la catégorie" children="Retirer le filtre" onClick={handleResetFilter} className="max-h-10" />
+            )}
+        </>
     );
 }
