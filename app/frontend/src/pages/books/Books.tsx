@@ -53,6 +53,12 @@ export default function Books() {
                     <div className="flex items-center justify-center">
                         <Loader />
                     </div>
+                ) : totalCount === 0 ? (
+                    <div className="flex w-full items-center justify-center">
+                        <p className="text-foreground text-xl font-medium">
+                            Aucun livre n'a encore été enregistré...
+                        </p>
+                    </div>
                 ) : (
                     <div className="w-full flex items-center justify-center gap-20 flex-wrap">
                         {books.map((book: BookCardProps) => (
@@ -63,13 +69,6 @@ export default function Books() {
                                 author={book.author}
                             />
                         ))}
-                    </div>
-                )}
-                {totalCount === 0 && (
-                    <div className="flex w-full items-center justify-center">
-                        <p className="text-foreground text-xl font-medium">
-                            Aucun livre n'a encore été enregistré...
-                        </p>
                     </div>
                 )}
                 <Pagination
