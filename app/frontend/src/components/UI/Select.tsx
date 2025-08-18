@@ -15,10 +15,36 @@ import {
 	Value as SelectValue,
 	Viewport,
 } from "@radix-ui/react-select"
-
 import { cn } from "@/lib/utils"
 import { Check, ChevronDown, ChevronUp } from "lucide-react"
 import { forwardRef } from "react"
+import { motion, Variants, MotionProps } from "motion/react";
+
+const menuVariants: Variants = {
+	closed: {
+		scale: 0,
+		transition: {
+			delay: 0.15,
+		},
+	},
+	open: {
+		scale: 1,
+		transition: {
+			type: "spring",
+			duration: 0.4,
+			delayChildren: 0.2,
+			staggerChildren: 0.05,
+		},
+	},
+};
+
+const itemVariants: MotionProps = {
+	variants: {
+		closed: { x: -16, opacity: 0 },
+		open: { x: 0, opacity: 1 },
+	},
+	transition: { opacity: { duration: 0.2 } },
+};
 
 // Trigger
 const SelectTrigger = forwardRef<
@@ -30,7 +56,7 @@ const SelectTrigger = forwardRef<
 	<SelectTriggerBase
 		ref={ref}
 		className={cn(
-			"border-black-100 ring-offset-background data-[placeholder]:text-muted-foreground focus:ring-focus group flex h-10 w-full cursor-pointer items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap focus:ring-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+			"border-border ring-offset-background data-[placeholder]:text-accent-foreground focus:ring-focus group flex h-10 w-full cursor-pointer items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap focus:ring-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
 			className
 		)}
 		{...props}
@@ -84,32 +110,60 @@ SelectScrollDownButton.displayName = "SelectScrollDownButton"
 // Content
 const SelectContent = forwardRef<
 	React.ComponentRef<typeof SelectContentBase>,
-	React.ComponentPropsWithoutRef<typeof SelectContentBase>
->(({ className, children, position = "popper", ...props }, ref) => (
+	React.ComponentPropsWithoutRef<typeof SelectContentBase> & {
+		animate?: boolean
+	}
+>(({ className, children, position = "popper", animate = false, ...props }, ref) => (
 	<Portal>
-		<SelectContentBase
-			ref={ref}
-			className={cn(
-				"text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 border-black-100 shadow-default relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-x-hidden overflow-y-auto rounded-md border bg-white",
-				position === "popper" &&
-					"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
-				className
-			)}
-			position={position}
-			{...props}
-		>
-			<SelectScrollUpButton />
-			<Viewport
-				className={cn(
-					"p-1",
-					position === "popper" &&
-						"h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
-				)}
+		{animate ? (
+			<motion.div
+				initial="closed"
+				animate="open"
+				exit="closed"
+				variants={menuVariants}
 			>
-				{children}
-			</Viewport>
-			<SelectScrollDownButton />
-		</SelectContentBase>
+				<SelectContentBase
+					ref={ref}
+					className={cn(
+						"text-accent-foreground bg-input border-border shadow-default relative z-50 min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=open]:ring-2 ring-ring data-[state=close]:ring-0",
+						position === "popper" &&
+						"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+						className
+					)}
+					position={position}
+					{...props}
+				>
+					<div className="p-1 w-full min-w-[var(--radix-select-trigger-width)]">
+						{children}
+					</div>
+				</SelectContentBase>
+			</motion.div>
+		) : (
+			<SelectContentBase
+				ref={ref}
+				className={cn(
+					"text-accent-foreground bg-input border-border shadow-default relative z-50 min-w-[8rem] origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=open]:ring-2 ring-ring data-[state=close]:ring-0",
+					"max-h-[--radix-select-content-available-height] overflow-y-auto",
+					position === "popper" &&
+					"data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
+					className
+				)}
+				position={position}
+				{...props}
+			>
+				<SelectScrollUpButton />
+				<Viewport
+					className={cn(
+						"p-1",
+						position === "popper" &&
+						"h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]"
+					)}
+				>
+					{children}
+				</Viewport>
+				<SelectScrollDownButton />
+			</SelectContentBase>
+		)}
 	</Portal>
 ))
 SelectContent.displayName = "SelectContent"
@@ -127,27 +181,45 @@ const SelectLabel = forwardRef<
 ))
 SelectLabel.displayName = "SelectLabel"
 
-// Item
+// Item with Animation
 const SelectItem = forwardRef<
 	React.ComponentRef<typeof SelectItemBase>,
-	React.ComponentPropsWithoutRef<typeof SelectItemBase>
->(({ className, children, ...props }, ref) => (
-	<SelectItemBase
-		ref={ref}
-		className={cn(
-			"focus:bg-focus relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-8 pl-2 text-sm outline-none select-none focus:text-white data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-			className
-		)}
-		{...props}
-	>
-		<span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
-			<ItemIndicator>
-				<Check className="h-4 w-4" />
-			</ItemIndicator>
-		</span>
-		<ItemText>{children}</ItemText>
-	</SelectItemBase>
-))
+	React.ComponentPropsWithoutRef<typeof SelectItemBase> & {
+		animate?: boolean
+	}
+>(({ className, children, animate = true, ...props }, ref) => {
+	return (
+		<SelectItemBase
+			ref={ref}
+			className={cn(
+				"focus:bg-ring relative flex w-full cursor-pointer items-center rounded-md py-1.5 pr-8 pl-2 text-sm outline-none select-none focus:text-primary-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+				className
+			)}
+			{...props}
+			asChild
+		>
+			{animate ? (
+				<motion.div {...itemVariants}>
+					<span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+						<ItemIndicator>
+							<Check className="h-4 w-4" />
+						</ItemIndicator>
+					</span>
+					<ItemText>{children}</ItemText>
+				</motion.div>
+			) : (
+				<>
+					<span className="absolute right-2 flex h-3.5 w-3.5 items-center justify-center">
+						<ItemIndicator>
+							<Check className="h-4 w-4" />
+						</ItemIndicator>
+					</span>
+					<ItemText>{children}</ItemText>
+				</>
+			)}
+		</SelectItemBase>
+	)
+})
 SelectItem.displayName = "SelectItem"
 
 // Separator

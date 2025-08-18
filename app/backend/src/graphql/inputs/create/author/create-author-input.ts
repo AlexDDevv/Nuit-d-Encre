@@ -48,19 +48,19 @@ export class CreateAuthorInput {
     })
     lastname!: string;
 
-    @Field()
-    @Column()
+    @Field({ nullable: true })
+    @Column({ nullable: true })
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/, {
         message: "Birth date must be in the format DD/MM/YYYY.",
     })
-    birthDate!: string;
+    birthDate?: string;
 
-    @Field()
-    @Column()
+    @Field({ nullable: true })
+    @Column({ nullable: true })
     @Length(1, 100, {
         message: "Nationality must be between 1 and 100 characters ('french', 'english').",
     })
-    nationality!: string;
+    nationality?: string;
 
     @Field({ nullable: true })
     @Column({ nullable: true })

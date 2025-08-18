@@ -28,6 +28,8 @@ import { MyBooksQueryInput } from "../../queries/books/my-books-query-input"
 import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
+import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
+import { Author } from "../../../database/entities/author/author"
 
 /**
  * Book Resolver
@@ -76,6 +78,7 @@ export class BooksResolver {
             const baseQuery = Book.createQueryBuilder("book")
                 .leftJoinAndSelect("book.user", "user")
                 .leftJoinAndSelect("book.category", "category")
+                .leftJoinAndSelect("book.author", "author")
 
             // Get the total number of unfiltered books and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
@@ -90,7 +93,8 @@ export class BooksResolver {
                 filteredQuery.andWhere(new Brackets(qb => {
                     qb.where("book.title ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.author ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.firstname ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
                 }));
             }
@@ -166,6 +170,7 @@ export class BooksResolver {
                 relations: {
                     user: true,
                     category: true,
+                    author: true
                 },
             })
 
@@ -248,7 +253,8 @@ export class BooksResolver {
                 filteredQuery.andWhere(new Brackets(qb => {
                     qb.where("book.title ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.author ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.firstname ILIKE :search", { search: trimmedSearch })
+                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
                         .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
                 }));
             }
@@ -335,8 +341,26 @@ export class BooksResolver {
                 throw new AppError("Category not found", 404, "NotFoundError")
             }
 
+            // Resolve or create the minimum author from the full name
+            let authorEntity: Author;
+
+            try {
+                authorEntity = await getOrCreateAuthorByFullName(data.author, user);
+            } catch (error) {
+                throw new AppError(
+                    "Failed to get or create author",
+                    500,
+                    "InternalServerError",
+                );
+            }
+
             const newBook = new Book()
-            Object.assign(newBook, data, { user, category })
+
+            Object.assign(newBook, data, {
+                user,
+                category,
+                author: authorEntity,
+            });
 
             await newBook.save()
 
@@ -382,10 +406,14 @@ export class BooksResolver {
             }
 
             const book = await Book.findOne({
-                where: { id: data.id, user },
+                where: {
+                    id: data.id,
+                    user: { id: user.id }
+                },
                 relations: {
                     user: true,
                     category: true,
+                    author: true
                 },
             })
 
@@ -405,7 +433,7 @@ export class BooksResolver {
                 )
             }
 
-            const { id, category, ...updateData } = data
+            const { id, category, author, ...updateData } = data
 
             if (category) {
                 const categoryBook = await Category.findOne({
@@ -421,11 +449,18 @@ export class BooksResolver {
                 book.category = categoryBook
             }
 
-            Object.assign(book, updateData)
+            if (author) {
+                const authorEntity = await getOrCreateAuthorByFullName(author, user);
+                book.author = authorEntity;
+            }
 
-            await book.save()
-            return book
+            Object.assign(book, updateData);
+
+            await book.save();
+
+            return book;
         } catch (error) {
+            console.error("updateBook error:", error);
             throw new AppError(
                 "Failed to update book",
                 500,

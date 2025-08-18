@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { ComponentProps, forwardRef } from "react";
-import ErrorInput from "@/components/UI/ErrorInput";
+import ErrorInput from "@/components/UI/form/ErrorInput";
 
 type InputProps = ComponentProps<"input"> & {
     errorMessage: string | undefined;
@@ -13,7 +13,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             : "";
 
         return (
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1 w-full">
                 <input
                     type={type}
                     className={cn(

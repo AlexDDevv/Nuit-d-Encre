@@ -4,11 +4,11 @@ import { ApolloError } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
 import FormTitle from "@/components/sections/auth/form/FormTitle";
-import FormWrapper from "@/components/sections/auth/form/FormWrapper";
+import FormWrapper from "@/components/UI/form/FormWrapper";
 import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputUserName from "@/components/sections/auth/form/InputUserName";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
-import ContinueWithGoogle from "@/components/UI/ContinueWithGoogle";
+import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Signup() {

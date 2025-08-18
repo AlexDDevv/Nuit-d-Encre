@@ -34,7 +34,7 @@ export default function AuthButtons({
             ariaLabel="Enregistrer un livre"
             children="Enregistrer un livre"
             variant="primary"
-            to="/books/register"
+            to="/books/scribe"
         />
     );
 

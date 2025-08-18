@@ -1,4 +1,4 @@
-import ContinueWith from "@/components/UI/ContinueWith";
+import ContinueWith from "@/components/UI/form/ContinueWith";
 import { Button } from "@/components/UI/Button";
 
 export default function ContinueWithGoogle() {

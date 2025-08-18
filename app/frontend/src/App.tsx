@@ -8,7 +8,7 @@ function App() {
         <>
             <Toaster richColors position="bottom-center" closeButton />
             <Header />
-            <main className="my-20 flex flex-col gap-20 px-6">
+            <main className="my-20 flex flex-col gap-20 px-10">
                 <Outlet />
             </main>
             <Footer />

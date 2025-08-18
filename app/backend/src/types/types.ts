@@ -14,7 +14,7 @@ export const Roles = {
 
 export type UserRole = (typeof Roles)[keyof typeof Roles];
 
-export type BookFormat = "hardcover" | "paperback" | "softcover"
+export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket"
 
 export enum UserActionType {
     BOOK_ADDED = "BOOK_ADDED",
@@ -31,4 +31,10 @@ export type GrantXPOptions = {
     targetId?: string;
     metadata?: Record<string, any>;
 };
+
+export interface AuthorNameParts {
+    firstname: string;
+    lastname: string;
+}
+
 

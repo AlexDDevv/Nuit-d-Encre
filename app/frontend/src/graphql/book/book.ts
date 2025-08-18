@@ -6,8 +6,11 @@ export const GET_BOOKS = gql`
             allBooks {
                 id
                 title
-                description
-                author
+                summary
+                author {
+                    firstname
+                    lastname
+                }
                 category {
                     id
                     name
@@ -40,8 +43,11 @@ export const GET_BOOK = gql`
         book(id: $bookId) {
             id
             title
-            description
-            author
+            summary
+            author {
+                firstname
+                lastname
+            }
             category {
                 id
                 name
@@ -70,8 +76,11 @@ export const GET_MY_BOOKS = gql`
             books {
                 id
                 title
-                description
-                author
+                summary
+                author {
+                    firstname
+                    lastname
+                }
                 category {
                     id
                     name
@@ -104,8 +113,11 @@ export const CREATE_BOOK = gql`
         createBook(data: $data) {
             id
             title
-            description
-            author
+            summary
+            author {
+                firstname
+                lastname
+            }
             category {
                 id
                 name
@@ -131,8 +143,11 @@ export const UPDATE_BOOK = gql`
         updateBook(data: $data) {
             id
             title
-            description
-            author
+            summary
+            author {
+                firstname
+                lastname
+            }
             category {
                 id
                 name
