@@ -77,6 +77,17 @@ export type CreateBookInput = {
 
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
+export type CreateAuthorInput = {
+    firstname: string
+    lastname: string
+    birthdate?: string
+    nationality?: string
+    wikipediaUrl: string
+    officialWebsite?: string
+}
+
+export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: number };
+
 export type InputsProps = {
     register: UseFormRegister<CreateBookInput>
     errors: FieldErrors<CreateBookInput>
