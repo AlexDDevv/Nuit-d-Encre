@@ -71,7 +71,7 @@ export const GET_BOOK = gql`
 `;
 
 export const GET_MY_BOOKS = gql`
-    query MySurveys($filters: MyBooksQueryInput) {
+    query MyBooks($filters: MyBooksQueryInput) {
         myBooks(filters: $filters) {
             books {
                 id
