@@ -42,28 +42,28 @@ export class UpdateAuthorInput {
     @Length(1, 100, {
         message: "Firstname must be between 1 and 100 characters.",
     })
-    firstname!: string;
+    firstname?: string;
 
     @Field()
     @Column()
     @Length(1, 100, {
         message: "Lastname must be between 1 and 100 characters.",
     })
-    lastname!: string;
+    lastname?: string;
 
     @Field()
     @Column()
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/, {
         message: "Birth date must be in the format DD/MM/YYYY.",
     })
-    birthDate!: string;
+    birthDate?: string;
 
     @Field()
     @Column()
     @Length(1, 100, {
         message: "Nationality must be between 1 and 100 characters ('french', 'english').",
     })
-    nationality!: string;
+    nationality?: string;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
