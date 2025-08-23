@@ -88,9 +88,14 @@ export type CreateAuthorInput = {
 
 export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: number };
 
-export type InputsProps = {
+export type BookInputsProps = {
     register: UseFormRegister<CreateBookInput>
     errors: FieldErrors<CreateBookInput>
+}
+
+export type AuthorInputsProps = {
+    register: UseFormRegister<CreateAuthorInput>
+    errors: FieldErrors<CreateAuthorInput>
 }
 
 export type CategoryInputProps = {
@@ -100,7 +105,7 @@ export type CategoryInputProps = {
     errors: FieldErrors<CreateBookInput>
 }
 
-export type InputIsbnProps = Pick<InputsProps, "register" | "errors"> & {
+export type InputIsbnProps = Pick<BookInputsProps, "register" | "errors"> & {
     isbn13: boolean
 }
 
