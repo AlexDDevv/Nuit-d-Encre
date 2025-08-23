@@ -302,7 +302,10 @@ export class AuthorsResolver {
             }
 
             const author = await Author.findOne({
-                where: { id: data.id, user },
+                where: {
+                    id: data.id,
+                    user: { id: user.id }
+                },
                 relations: {
                     user: true,
                 },
@@ -327,6 +330,7 @@ export class AuthorsResolver {
             await author.save()
             return author
         } catch (error) {
+            console.log("🚀 ~ AuthorsResolver ~ updateAuthor ~ error:", error)
             throw new AppError(
                 "Failed to update author",
                 500,
