@@ -5,7 +5,6 @@ export const GET_AUTHORS = gql`
         authors(filters: $filters) {
             allAuthors {
                 id
-                title
                 firstname
                 lastname
                 birthDate
@@ -48,7 +47,6 @@ export const GET_AUTHOR = gql`
     query Author($authorId: ID!) {
         author(id: $authorId) {
             id
-            title
             firstname
             lastname
             birthDate
@@ -87,7 +85,6 @@ export const GET_MY_AUTHORS = gql`
         myAuthors(filters: $filters) {
             authors {
                 id
-                title
                 firstname
                 lastname
                 birthDate
@@ -130,7 +127,6 @@ export const CREATE_AUTHOR = gql`
     mutation CreateAuthor($data: CreateAuthorInput!) {
         createAuthor(data: $data) {
             id
-            title
             firstname
             lastname
             birthDate
@@ -150,7 +146,6 @@ export const UPDATE_AUTHOR = gql`
     mutation UpdateAuthor($data: UpdateAuthorInput!) {
         updateAuthor(data: $data) {
             id
-            title
             firstname
             lastname
             birthDate
