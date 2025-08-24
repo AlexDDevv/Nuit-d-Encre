@@ -143,3 +143,9 @@ export type categoryPropsType = {
     name: string
 }
 
+export type AuthorCardProps = {
+    id: string
+    firstname: string
+    lastname: string
+}
+
