@@ -1,8 +1,8 @@
 import { Label } from "@/components/UI/form/Label";
 import { Textarea } from "@/components/UI/form/Textarea";
-import { InputsProps } from "@/types/types";
+import { BookInputsProps } from "@/types/types";
 
-export default function InputSummary({ register, errors }: InputsProps) {
+export default function InputSummary({ register, errors }: BookInputsProps) {
     return (
         <div className="flex flex-col gap-2">
             <Label htmlFor="summary" required>

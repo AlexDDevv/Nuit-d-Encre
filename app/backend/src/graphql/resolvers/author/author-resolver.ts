@@ -302,7 +302,10 @@ export class AuthorsResolver {
             }
 
             const author = await Author.findOne({
-                where: { id: data.id, user },
+                where: {
+                    id: data.id,
+                    user: { id: user.id }
+                },
                 relations: {
                     user: true,
                 },
@@ -327,6 +330,7 @@ export class AuthorsResolver {
             await author.save()
             return author
         } catch (error) {
+            console.log("🚀 ~ AuthorsResolver ~ updateAuthor ~ error:", error)
             throw new AppError(
                 "Failed to update author",
                 500,
@@ -360,10 +364,15 @@ export class AuthorsResolver {
                 throw new AppError("User not found", 404, "NotFoundError")
             }
 
-            const author = await Author.findOneBy({
-                id,
-                user
-            })
+            const author = await Author.findOne({
+                where: {
+                    id,
+                    user: { id: user.id },
+                },
+                relations: {
+                    user: true
+                },
+            });
 
             if (!author) {
                 throw new AppError("Author not found", 404, "NotFoundError")
@@ -377,6 +386,14 @@ export class AuthorsResolver {
                 )
             }
 
+            if (author.books.length > 0) {
+                throw new AppError(
+                    "Cannot delete author with existing books",
+                    400,
+                    "BadRequestError"
+                );
+            }
+
             if (author !== null) {
                 await author.remove()
                 author.id = id
@@ -384,6 +401,7 @@ export class AuthorsResolver {
 
             return author
         } catch (error) {
+            console.log("🚀 ~ AuthorsResolver ~ deleteAuthor ~ error:", error)
             throw new AppError(
                 "Failed to delete author",
                 500,

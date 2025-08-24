@@ -494,9 +494,14 @@ export class BooksResolver {
                 throw new AppError("User not found", 404, "NotFoundError")
             }
 
-            const book = await Book.findOneBy({
-                id,
-                user
+            const book = await Book.findOne({
+                where: {
+                    id,
+                    user: { id: user.id },
+                },
+                relations: {
+                    user: true
+                },
             })
 
             if (!book) {

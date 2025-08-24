@@ -28,6 +28,7 @@ export default function AuthButtons({
     const isAdmin = user.role === "admin";
     const isOnAdminPage = pathname === "/admin";
     const isOnProfilePage = pathname === "/profil";
+    const isOnAuthorsPage = pathname.startsWith("/authors")
 
     const commonButtons = (
         <Button
@@ -35,6 +36,15 @@ export default function AuthButtons({
             children="Enregistrer un livre"
             variant="primary"
             to="/books/scribe"
+        />
+    );
+
+    const authorButton = (
+        <Button
+            ariaLabel="Enregistrer un auteur"
+            children="Enregistrer un auteur"
+            variant="primary"
+            to="/authors/scribe"
         />
     );
 
@@ -50,7 +60,11 @@ export default function AuthButtons({
     if (isAdmin) {
         return (
             <div className="flex items-center justify-center gap-5">
-                {commonButtons}
+                {isOnAuthorsPage ? (
+                    authorButton
+                ) : (
+                    commonButtons
+                )}
                 {isOnAdminPage ? (
                     logoutButton
                 ) : (
@@ -67,7 +81,11 @@ export default function AuthButtons({
 
     return (
         <div className="flex items-center justify-center gap-5">
-            {commonButtons}
+            {isOnAuthorsPage ? (
+                authorButton
+            ) : (
+                commonButtons
+            )}
             {isOnProfilePage ? (
                 logoutButton
             ) : (
