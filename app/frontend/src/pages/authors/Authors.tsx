@@ -9,6 +9,10 @@ import { Helmet } from "react-helmet";
 export default function Authors() {
     const { authors, isFetching, totalCount, currentPage, setCurrentPage, PER_PAGE } = useAuthor()
 
+    const hasIncompleteInfo = (author: AuthorCardProps): boolean => {
+        return Object.values(author).some(value => value === null || value === '');
+    };
+
     return (
         <>
             {/* Update of the metadata */}
@@ -65,6 +69,7 @@ export default function Authors() {
                                 id={author.id}
                                 firstname={author.firstname}
                                 lastname={author.lastname}
+                                isIncomplete={hasIncompleteInfo(author)}
                             />
                         ))}
                     </div>

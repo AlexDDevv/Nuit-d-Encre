@@ -147,5 +147,6 @@ export type AuthorCardProps = {
     id: string
     firstname: string
     lastname: string
+    isIncomplete?: boolean
 }
 
