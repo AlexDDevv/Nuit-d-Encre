@@ -66,11 +66,13 @@ export class AuthorsResolver {
                 limit = 12,
             } = filters || {}
 
-            // Retrieve the base query with all books created
-            const baseQuery = Author.createQueryBuilder("authors")
-                .leftJoinAndSelect("authors.user", "user")
+            // Retrieve the base query with all authors created
+            const baseQuery = Author.createQueryBuilder("author")
+                .leftJoinAndSelect("author.user", "user")
+                .leftJoinAndSelect("author.books", "books")
+                .leftJoinAndSelect("books.category", "category")
 
-            // Get the total number of unfiltered books and clone the query to apply filters
+            // Get the total number of unfiltered authors and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
                 baseQuery.getCount(),
                 baseQuery.clone(),
@@ -86,7 +88,7 @@ export class AuthorsResolver {
                 }));
             }
 
-            // Get the total number of books matching the filters (for pagination)
+            // Get the total number of authors matching the filters (for pagination)
             const totalCount = await filteredQuery.getCount()
 
             // Apply pagination
@@ -107,7 +109,7 @@ export class AuthorsResolver {
             }
         } catch (error) {
             throw new AppError(
-                "Failed to fetch books",
+                "Failed to fetch authors",
                 500,
                 "InternalServerError"
             )
@@ -189,13 +191,13 @@ export class AuthorsResolver {
                 limit = 12,
             } = filters || {}
 
-            // Retrieve the base query with all books created by the user
+            // Retrieve the base query with all authors created by the user
             const baseQuery = Author.createQueryBuilder("author").where(
                 "author.userId = :userId",
                 { userId: user.id }
             )
 
-            // Get the total number of unfiltered books and clone the query to apply filters
+            // Get the total number of unfiltered authors and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
                 baseQuery.getCount(),
                 baseQuery.clone(),
@@ -211,7 +213,7 @@ export class AuthorsResolver {
                 }));
             }
 
-            // Get the total number of books matching the filters (for pagination)
+            // Get the total number of authors matching the filters (for pagination)
             const totalCount = await filteredQuery.getCount()
 
             // Apply pagination
@@ -330,7 +332,6 @@ export class AuthorsResolver {
             await author.save()
             return author
         } catch (error) {
-            console.log("🚀 ~ AuthorsResolver ~ updateAuthor ~ error:", error)
             throw new AppError(
                 "Failed to update author",
                 500,
@@ -386,6 +387,10 @@ export class AuthorsResolver {
                 )
             }
 
+            if (!author.books) {
+                throw new AppError("Author's books not found", 404, "NotFoundError")
+            }
+
             if (author.books.length > 0) {
                 throw new AppError(
                     "Cannot delete author with existing books",
@@ -401,7 +406,6 @@ export class AuthorsResolver {
 
             return author
         } catch (error) {
-            console.log("🚀 ~ AuthorsResolver ~ deleteAuthor ~ error:", error)
             throw new AppError(
                 "Failed to delete author",
                 500,
