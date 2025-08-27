@@ -1,8 +1,10 @@
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import { Copyright, Github, Twitter, Linkedin } from "lucide-react";
 import Logo from "@/components/UI/Logo";
 import { LinksType } from "@/types/types";
 import NavAndAuthButtons from "@/components/sections/auth/NavAndAuthButtons";
+import { useHeightVariable } from "@/hooks/useHeightVariable";
 
 const FOOTER_LINKS: readonly LinksType[] = [
     {
@@ -42,8 +44,11 @@ const socialLinks = [
 ];
 
 export default function Footer() {
+    const footerRef = useRef<HTMLElement>(null)
+    useHeightVariable(footerRef, "--header-height")
+
     return (
-        <footer className="bg-card border-border flex flex-col gap-10 rounded-xl border p-6">
+        <footer className="bg-card border-border flex flex-col gap-10 rounded-xl border p-6" ref={footerRef}>
             <div className="flex items-center justify-between gap-5">
                 <Logo />
                 <NavAndAuthButtons links={FOOTER_LINKS} />
