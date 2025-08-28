@@ -1,7 +1,7 @@
 import AuthorCard from "@/components/sections/author/AuthorCard";
 import SearchAuthor from "@/components/sections/author/SearchAuthor";
-import Loader from "@/components/UI/Loader";
 import Pagination from "@/components/UI/Pagination";
+import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
 import { useAuthor } from "@/hooks/useAuthor";
 import { AuthorCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";
@@ -52,9 +52,7 @@ export default function Authors() {
                     </div>
                 </div>
                 {isFetching ? (
-                    <div className="flex items-center justify-center">
-                        <Loader />
-                    </div>
+                    <AuthorCardSkeleton />
                 ) : totalCount === 0 ? (
                     <div className="flex w-full items-center justify-center">
                         <p className="text-foreground text-xl font-medium">
