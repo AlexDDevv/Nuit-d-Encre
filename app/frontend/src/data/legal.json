@@ -1,0 +1,99 @@
+{
+    "mentionsLegales": [
+        {
+            "title": "1. Informations légales",
+            "paragraph": [
+                "Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., nous portons à la connaissance des utilisateurs et visiteurs du site les informations suivantes :"
+            ],
+            "span": [
+                {
+                    "strong": "Raison sociale :",
+                    "content": " [Nom de votre entreprise]"
+                },
+                {
+                    "strong": "Forme juridique :",
+                    "content": " [Forme juridique]"
+                },
+                {
+                    "strong": "Adresse :",
+                    "content": " [Adresse complète]"
+                },
+                {
+                    "strong": "Téléphone :",
+                    "content": " [Numéro de téléphone]"
+                },
+                {
+                    "strong": "Email :",
+                    "content": " [Adresse email]"
+                },
+                {
+                    "strong": "SIRET :",
+                    "content": " [Numéro SIRET]"
+                },
+                {
+                    "strong": "Numéro de TVA intracommunautaire :",
+                    "content": " [Numéro TVA]"
+                }
+            ]
+        },
+        {
+            "title": "2. Hébergement",
+            "paragraph": [
+                "Le site est hébergé par :"
+            ],
+            "span": [
+                {
+                    "strong": "Société :",
+                    "content": " [Nom de l'hébergeur]"
+                },
+                {
+                    "strong": "Adresse :",
+                    "content": " [Adresse de l'hébergeur]"
+                },
+                {
+                    "strong": "Site web :",
+                    "content": " [Site web de l'hébergeur]"
+                }
+            ]
+        },
+        {
+            "title": "3. Propriété intellectuelle",
+            "paragraph": [
+                "L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.",
+                "La reproduction de tout ou partie de ce site sur un support électronique quel qu'il soit est formellement interdite sauf autorisation expresse du directeur de la publication."
+            ]
+        },
+        {
+            "title": "4. Collecte des données personnelles",
+            "paragraph": [
+                "Les informations recueillies via nos formulaires sont enregistrées dans un fichier informatisé par [Nom de votre entreprise] pour [finalité du traitement].",
+                "Conformément au Règlement Général sur la Protection des Données (RGPD), vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en contactant : [contact pour les données personnelles].",
+                "Nous conservons vos données pendant [durée de conservation] à compter de [point de départ de la conservation]."
+            ]
+        },
+        {
+            "title": "5. Cookies",
+            "paragraph": [
+                "Notre site internet utilise des cookies pour améliorer l'expérience utilisateur et analyser le trafic du site. Vous pouvez accepter ou refuser ces cookies à tout moment en modifiant les paramètres de votre navigateur.",
+                "Pour plus d'informations sur notre utilisation des cookies, veuillez consulter notre politique de confidentialité."
+            ]
+        },
+        {
+            "title": "6. Limitation de responsabilité",
+            "paragraph": [
+                "[Nom de votre entreprise] ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications techniques requises, soit de l'apparition d'un bug ou d'une incompatibilité.",
+                "[Nom de votre entreprise] ne pourra également être tenue responsable des dommages indirects consécutifs à l'utilisation du site."
+            ]
+        },
+        {
+            "title": "7. Droit applicable et juridiction compétente",
+            "paragraph": [
+                "Les présentes mentions légales sont soumises au droit français. En cas de litige, les tribunaux français seront compétents.",
+                "[Nom de votre entreprise] ne pourra également être tenue responsable des dommages indirects consécutifs à l'utilisation du site.",
+                "Pour toute question relative aux mentions légales de notre site, vous pouvez nous contacter par email à contact@nuitdencre.fr.",
+                "Nous vous remercions de votre confiance et de votre visite sur notre site.",
+                "Dernière mise à jour : 28/08/2025"
+            ]
+        }
+    ]
+}

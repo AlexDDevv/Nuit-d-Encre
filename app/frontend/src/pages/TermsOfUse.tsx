@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet";
-import data from "@/data/data.json";
+import data from "@/data/legal.json";
 
 export default function page() {
     return (
@@ -8,7 +8,7 @@ export default function page() {
                 <title>Mentions Légales | Nuit d'Encre</title>
                 <meta
                     name="description"
-                    content="Mentions légales et informations juridiques concernant mon application de bibliothèque en ligne."
+                    content="Mentions légales et informations juridiques concernant Nuit d'Encre, application de bibliothèque en ligne."
                 />
                 <meta name="robots" content="index, follow" />
                 <link rel="canonical" href="/legal" />
@@ -19,31 +19,29 @@ export default function page() {
                 </h1>
                 <div className="pl-5">
                     {data.mentionsLegales.map((mention, i) => (
-                        <div key={i}>
+                        <article key={i}>
                             <h2 className="font-titleFont text-foreground mb-5 text-2xl font-medium">
                                 {mention.title}
                             </h2>
                             <div className="mb-8">
-                                {mention.paragraph.map((text, index) => (
+                                {mention.paragraph.map((text, i) => (
                                     <p
                                         className={`font-bodyFont text-accent-foreground mb-5 max-w-2xl pl-5 last:mb-0 ${mention.title === "Identité de l'éditeur du site" || mention.title === "Hébergeur du site" ? "mb-0" : ""}`}
-                                        key={index}
+                                        key={i}
                                     >
-                                        {mention.span[index] && (
-                                            <span className="font-bold">
-                                                {mention.span[index]}
-                                            </span>
-                                        )}
                                         {text}
-                                        {index === 0 && mention.link && (
-                                            <a href="#" className="font-bold">
-                                                {mention.link}
-                                            </a>
-                                        )}
                                     </p>
                                 ))}
+                                <div className="flex flex-col gap-2 pl-10">
+                                    {mention.span?.map((text, i) => (
+                                        <span key={i} className="font-bodyFont text-accent-foreground">
+                                            <strong>{text.strong}</strong>
+                                            {text.content}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        </article>
                     ))}
                 </div>
             </section>
