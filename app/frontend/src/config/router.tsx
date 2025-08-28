@@ -4,8 +4,9 @@
  */
 
 import App from "@/App";
-import ProtectedRoute from "@/components/sections/hoc/ProtectedRoute";
-import PublicRoute from "@/components/sections/hoc/PublicRoute";
+import ProtectedRoute from "@/components/hoc/ProtectedRoute";
+import PublicRoute from "@/components/hoc/PublicRoute";
+import AdminRoute from "@/components/hoc/AdminRoute"
 import ErrorElement from "@/components/UI/ErrorElement";
 import Loader from "@/components/UI/Loader";
 import { lazy, Suspense } from "react";
@@ -26,6 +27,8 @@ const BookUpdate = lazy(() => import("@/pages/books/BookUpdate"));
 const Authors = lazy(() => import("@/pages/authors/Authors"));
 const AuthorScribe = lazy(() => import("@/pages/authors/AuthorScribe"));
 const AuthorUpdate = lazy(() => import("@/pages/authors/AuthorUpdate"));
+const Admin = lazy(() => import("@/pages/Admin"))
+const UserProfile = lazy(() => import("@/pages/UserProfile"))
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
 
 /**
@@ -131,6 +134,28 @@ const router = createBrowserRouter([
                     <Suspense fallback={<Loader />}>
                         <ProtectedRoute>
                             <AuthorUpdate />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "profil",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProtectedRoute>
+                            <UserProfile />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "admin",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProtectedRoute>
+                            <AdminRoute>
+                                <Admin />
+                            </AdminRoute>
                         </ProtectedRoute>
                     </Suspense>
                 ),
