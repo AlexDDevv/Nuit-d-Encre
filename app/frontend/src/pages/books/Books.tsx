@@ -1,6 +1,6 @@
 import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
-import BookCardSkeleton from "@/components/UI/BookCardSkeleton";
+import BookCardSkeleton from "@/components/UI/skeleton/BookCardSkeleton";
 import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/UI/SelectCategory";
 import { useBook } from "@/hooks/useBook";

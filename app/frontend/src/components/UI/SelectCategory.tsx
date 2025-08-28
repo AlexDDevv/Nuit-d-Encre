@@ -8,7 +8,7 @@ import {
 } from "@/components/UI/Select";
 import { cn, slugify } from "@/lib/utils";
 import { useBook } from "@/hooks/useBook";
-import { Skeleton } from "@/components/UI/Skeleton";
+import { Skeleton } from "@/components/UI/skeleton/Skeleton";
 import { categoryPropsType } from "@/types/types";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
