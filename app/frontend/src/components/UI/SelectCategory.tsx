@@ -8,7 +8,7 @@ import {
 } from "@/components/UI/Select";
 import { cn, slugify } from "@/lib/utils";
 import { useBook } from "@/hooks/useBook";
-import Loader from "@/components/UI/Loader";
+import { Skeleton } from "@/components/UI/Skeleton";
 import { categoryPropsType } from "@/types/types";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
@@ -51,7 +51,7 @@ export default function SelectCategory() {
 
     if (loadingCategories) {
         return (
-            <Loader />
+            <Skeleton className="bg-input border-border flex rounded-lg border h-10 w-60 min-w-60 mx-auto" />
         );
     }
 
