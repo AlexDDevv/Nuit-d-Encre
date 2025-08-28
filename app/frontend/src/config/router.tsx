@@ -7,6 +7,7 @@ import App from "@/App";
 import ProtectedRoute from "@/components/hoc/ProtectedRoute";
 import PublicRoute from "@/components/hoc/PublicRoute";
 import AdminRoute from "@/components/hoc/AdminRoute"
+import Books from "@/pages/books/Books";
 import ErrorElement from "@/components/UI/ErrorElement";
 import Loader from "@/components/UI/Loader";
 import { lazy, Suspense } from "react";
@@ -20,7 +21,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
  */
 const Landing = lazy(() => import("@/pages/Landing"));
 const Auth = lazy(() => import("@/pages/Auth"));
-const Books = lazy(() => import("@/pages/books/Books"));
 const BookDetails = lazy(() => import("@/pages/books/BookDetails"));
 const BookScribe = lazy(() => import("@/pages/books/BookScribe"));
 const BookUpdate = lazy(() => import("@/pages/books/BookUpdate"));
@@ -77,9 +77,7 @@ const router = createBrowserRouter([
             {
                 path: "books",
                 element: (
-                    <Suspense fallback={<Loader />}>
-                        <Books />
-                    </Suspense>
+                    <Books />
                 ),
             },
             {

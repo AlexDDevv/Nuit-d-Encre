@@ -1,6 +1,6 @@
 import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
-import Loader from "@/components/UI/Loader";
+import BookCardSkeleton from "@/components/UI/BookCardSkeleton";
 import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/UI/SelectCategory";
 import { useBook } from "@/hooks/useBook";
@@ -50,9 +50,7 @@ export default function Books() {
                     </div>
                 </div>
                 {isFetching ? (
-                    <div className="flex items-center justify-center">
-                        <Loader />
-                    </div>
+                    <BookCardSkeleton />
                 ) : totalCount === 0 ? (
                     <div className="flex w-full items-center justify-center">
                         <p className="text-foreground text-xl font-medium">
@@ -82,3 +80,4 @@ export default function Books() {
         </>
     );
 }
+
