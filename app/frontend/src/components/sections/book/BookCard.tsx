@@ -3,24 +3,38 @@ import { BookCardProps } from "@/types/types";
 import { Link } from "react-router-dom";
 
 export default function BookCard({ id, title, author }: BookCardProps) {
-    const path = `/books/${id}-${slugify(title)}`;
+    const bookPath = `/books/${id}-${slugify(title)}`;
     const ariaLabel = buildBookAriaLabel(title, author);
-    const isCurrent = path === window.location.pathname;
+    const isCurrent = bookPath === window.location.pathname;
+    const authorSlug = slugify(`${author.firstname} ${author.lastname}`);
+    const authorPath = `/authors/${author.id}-${authorSlug}`;
 
     return (
         <Link
-            to={path}
+            to={bookPath}
             aria-current={isCurrent ? "page" : undefined}
             aria-label={ariaLabel}
             data-category="Livre"
-            className="flex flex-col items-center justify-center gap-5 p-5 rounded-lg border-2 border-border w-3xs bg-card transition-all duration-200 ease-in-out hover:border-primary hover:scale-105 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ring-offset-ring"
+            className="border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring flex h-80 w-72 flex-col items-center justify-center gap-5 rounded-lg border-2 px-6 py-5 transition-all duration-200 ease-in-out hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
         >
-            <div>
-                <img src="/images/book.svg" alt="Icône d'un livre" role="img" />
+            <div className="w-32">
+                <img
+                    src="/images/bookCover.svg"
+                    alt="Icône d'un livre"
+                    role="img"
+                />
             </div>
-            <div className="flex flex-col items-center justify-center gap-2">
-                <h2 className="font-bold text-card-foreground text-3xl">{title}</h2>
-                <h3 className="font-semibold text-card-foreground text-xl">{author.firstname} {author.lastname}</h3>
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+                <h2 className="text-card-foreground line-clamp-2 text-2xl font-medium">
+                    {title}
+                </h2>
+                <Link
+                    to={authorPath}
+                    className="text-card-foreground after:transition-width relative text-lg after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-0 after:bg-current after:duration-200 after:ease-in-out hover:after:w-full"
+                    title="Accéder à la page de l'auteur"
+                >
+                    {author.firstname} {author.lastname}
+                </Link>
             </div>
         </Link>
     );

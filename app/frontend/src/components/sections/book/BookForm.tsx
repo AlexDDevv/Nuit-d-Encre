@@ -78,9 +78,7 @@ export default function BookForm() {
     }, [book, categories, reset]);
 
     if (bookId && isUpdating) {
-        return (
-            <Loader />
-        );
+        return <Loader />;
     }
 
     if (bookId) {
@@ -156,8 +154,8 @@ export default function BookForm() {
             ? "Modification..."
             : "Création..."
         : isEdit
-            ? "Modifier le livre"
-            : "Créer le livre";
+          ? "Modifier le livre"
+          : "Enregistré le livre";
 
     const categoryOptions: TypeSelectOptions[] =
         categories?.map((cat: { id: string; name: string }) => ({
@@ -168,11 +166,13 @@ export default function BookForm() {
     return (
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
             <div>
-                <h1 className="text-2xl font-bold text-card-foreground">
-                    {bookId ? "Modifier le livre" : "Créer un livre"}
+                <h1 className="text-card-foreground text-2xl font-bold">
+                    {bookId ? "Modifier le livre" : "Enregistré un livre"}
                 </h1>
-                <p className="font-medium text-card-foreground">
-                    {bookId ? "Modifier les informations du livre." : "Remplissez les informations du livre pour l'ajouter à la bibliothèque de Nuit d'Encre."}
+                <p className="text-card-foreground font-medium">
+                    {bookId
+                        ? "Modifier les informations du livre."
+                        : "Remplissez les informations du livre pour l'ajouter à la bibliothèque de Nuit d'Encre."}
                 </p>
             </div>
             <div className="flex items-center gap-5">
@@ -181,7 +181,12 @@ export default function BookForm() {
             </div>
             <InputSummary register={register} errors={errors} />
             <div className="flex items-center gap-5">
-                <InputCategory control={control} categoryOptions={categoryOptions} loadingCategories={loadingCategories} errors={errors} />
+                <InputCategory
+                    control={control}
+                    categoryOptions={categoryOptions}
+                    loadingCategories={loadingCategories}
+                    errors={errors}
+                />
                 <InputFormat control={control} errors={errors} />
             </div>
             <div className="flex items-center gap-5">

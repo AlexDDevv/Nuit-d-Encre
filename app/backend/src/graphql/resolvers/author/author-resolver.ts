@@ -366,13 +366,8 @@ export class AuthorsResolver {
             }
 
             const author = await Author.findOne({
-                where: {
-                    id,
-                    user: { id: user.id },
-                },
-                relations: {
-                    user: true
-                },
+                where: { id },
+                relations: { user: true, books: true }
             });
 
             if (!author) {

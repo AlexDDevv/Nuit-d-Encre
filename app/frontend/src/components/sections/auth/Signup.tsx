@@ -1,6 +1,6 @@
 import { useToast } from "@/hooks/useToast";
 import { UserSignUp } from "@/types/types";
-import { ApolloError } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
 import FormTitle from "@/components/sections/auth/form/FormTitle";
@@ -9,7 +9,7 @@ import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputUserName from "@/components/sections/auth/form/InputUserName";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
 import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
-import { useAuth } from "@/hooks/useAuth";
+import { REGISTER, WHOAMI } from "@/graphql/auth";
 
 export default function Signup() {
     const {
@@ -26,7 +26,10 @@ export default function Signup() {
         },
     });
 
-    const { Register } = useAuth();
+    const [Register] = useMutation(REGISTER, {
+        refetchQueries: [WHOAMI],
+    });
+
     const { showToast } = useToast();
 
     const onSubmit: SubmitHandler<UserSignUp> = async (formData) => {

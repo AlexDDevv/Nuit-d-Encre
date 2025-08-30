@@ -59,9 +59,7 @@ export default function AuthorForm() {
     }, [author, reset]);
 
     if (authorId && isUpdating) {
-        return (
-            <Loader />
-        );
+        return <Loader />;
     }
 
     if (authorId) {
@@ -95,8 +93,8 @@ export default function AuthorForm() {
 
                 showToast({
                     type: "success",
-                    title: "Auteur modifié",
-                    description: "L'auteur a bien été mis à jour.",
+                    title: "Auteur modifié !",
+                    description: "L'auteur a bien été mis à jour",
                 });
             } else {
                 result = await addAuthor({
@@ -105,13 +103,15 @@ export default function AuthorForm() {
 
                 showToast({
                     type: "success",
-                    title: "Auteur créé",
-                    description: "L'auteur a bien été enregistré.",
+                    title: "Auteur enregistré !",
+                    description: "L'auteur a bien été enregistré",
                 });
             }
 
             if (result && result.id) {
-                navigate(`/authors/${result.id}-${result.firstname}-${result.lastname}`);
+                navigate(
+                    `/authors/${result.id}-${result.firstname}-${result.lastname}`,
+                );
             }
         } catch (err) {
             const msg =
@@ -136,16 +136,18 @@ export default function AuthorForm() {
             : "Création..."
         : isEdit
             ? "Modifier l'auteur"
-            : "Créer l'auteur";
+            : "Enregistré l'auteur";
 
     return (
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
             <div>
-                <h1 className="text-2xl font-bold text-card-foreground">
-                    {authorId ? "Modifier l'auteur'" : "Créer un auteur"}
+                <h1 className="text-card-foreground text-2xl font-bold">
+                    {authorId ? "Modifier l'auteur'" : "Enregistré un auteur"}
                 </h1>
-                <p className="font-medium text-card-foreground">
-                    {authorId ? "Modifier les informations de l'auteur." : "Remplissez les informations de l'auteur pour l'ajouter à la collection d'auteurs de Nuit d'Encre."}
+                <p className="text-card-foreground font-medium">
+                    {authorId
+                        ? "Modifier les informations de l'auteur."
+                        : "Remplissez les informations de l'auteur pour l'ajouter à la collection d'auteurs de Nuit d'Encre."}
                 </p>
             </div>
             <div className="flex items-center gap-5">
