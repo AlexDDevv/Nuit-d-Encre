@@ -125,7 +125,7 @@ interface Book {
     category: {
         name: string;
     };
-    isbn10: string;
+    isbn10?: string;
     isbn13: string;
 }
 
@@ -138,9 +138,20 @@ export type categoryPropsType = {
     name: string;
 };
 
+interface Author {
+    birthdate?: string
+    nationality?: string
+    wikipediaUrl?: string
+    officialWebsite?: string
+}
+
 export type AuthorCardProps = {
     id: string;
     firstname: string;
     lastname: string;
     isIncomplete?: boolean;
 };
+
+export interface AuthorInfoProps {
+    author: Author;
+}
