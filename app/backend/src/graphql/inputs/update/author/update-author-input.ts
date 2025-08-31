@@ -54,7 +54,7 @@ export class UpdateAuthorInput {
     birthDate?: string;
 
     @Field({ nullable: true })
-    @Length(1, 5000, { message: "Biography must be between 1 and 5000 characters" })
+    @Length(1, 10000, { message: "Biography must be between 1 and 10000 characters" })
     biography?: string
 
     @Field({ nullable: true })

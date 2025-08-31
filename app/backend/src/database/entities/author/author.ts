@@ -96,7 +96,7 @@ export class Author extends BaseEntity {
      * Biography of the author
      */
     @Field({ nullable: true })
-    @Column({ nullable: true, length: 5000 })
+    @Column({ nullable: true, length: 10000 })
     biography?: string;
 
     /**
