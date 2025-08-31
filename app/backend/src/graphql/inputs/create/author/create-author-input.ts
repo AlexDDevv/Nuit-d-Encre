@@ -21,8 +21,9 @@ import { Column } from "typeorm";
  * This class is used in GraphQL mutations to receive data for creating an author:
  * - `firstname`: required first name of the author.
  * - `lastname`: required last name of the author.
- * - `birthDate`: required birth date of the author.
- * - `nationality`: required nationality or language of origin.
+ * - `birthDate`: optional birth date of the author.
+ * - `biography`: optional biography of the author.
+ * - `nationality`: optional nationality or language of origin.
  * - `wikipediaUrl`: optional link to a Wikipedia page for the author.
  * - `officialWebsite`: optional link to the author’s official website.
  *
@@ -54,6 +55,11 @@ export class CreateAuthorInput {
         message: "Birth date must be in the format DD/MM/YYYY.",
     })
     birthDate?: string;
+
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    @Length(1, 5000, { message: "Biography must be between 1 and 5000 characters" })
+    biography?: string
 
     @Field({ nullable: true })
     @Column({ nullable: true })
