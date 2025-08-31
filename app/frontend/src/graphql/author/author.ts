@@ -8,6 +8,7 @@ export const GET_AUTHORS = gql`
                 firstname
                 lastname
                 birthDate
+                biography
                 nationality
                 wikipediaUrl
                 officialWebsite
@@ -50,6 +51,7 @@ export const GET_AUTHOR = gql`
             firstname
             lastname
             birthDate
+            biography
             nationality
             wikipediaUrl
             officialWebsite
@@ -88,6 +90,7 @@ export const GET_MY_AUTHORS = gql`
                 firstname
                 lastname
                 birthDate
+                biography
                 nationality
                 wikipediaUrl
                 officialWebsite
@@ -130,6 +133,7 @@ export const CREATE_AUTHOR = gql`
             firstname
             lastname
             birthDate
+            biography
             nationality
             wikipediaUrl
             officialWebsite
@@ -149,6 +153,7 @@ export const UPDATE_AUTHOR = gql`
             firstname
             lastname
             birthDate
+            biography
             nationality
             wikipediaUrl
             officialWebsite
