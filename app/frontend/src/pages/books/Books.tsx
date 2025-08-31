@@ -1,6 +1,6 @@
 import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
-import Loader from "@/components/UI/Loader";
+import BookCardSkeleton from "@/components/UI/skeleton/BookCardSkeleton";
 import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/UI/SelectCategory";
 import { useBook } from "@/hooks/useBook";
@@ -8,7 +8,14 @@ import { BookCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";
 
 export default function Books() {
-    const { books, isFetching, totalCount, currentPage, setCurrentPage, PER_PAGE } = useBook()
+    const {
+        books,
+        isFetching,
+        totalCount,
+        currentPage,
+        setCurrentPage,
+        PER_PAGE,
+    } = useBook();
 
     return (
         <>
@@ -41,18 +48,18 @@ export default function Books() {
                     content="Page des livres disponibles sur le site Nuit d'Encre."
                 />
             </Helmet>
-            <section className="flex flex-col items-center justify-center gap-20">
+            <section className="flex min-h-[calc(100vh_-_var(--header-height))] flex-col items-center justify-center gap-20">
                 <div className="flex flex-col items-center justify-center gap-10">
-                    <h1 className="text-foreground font-bold text-4xl">Rechercher un livre</h1>
+                    <h1 className="text-foreground text-4xl font-bold">
+                        Rechercher un livre
+                    </h1>
                     <div className="flex items-center justify-center gap-5">
                         <SearchBook />
                         <SelectCategory />
                     </div>
                 </div>
                 {isFetching ? (
-                    <div className="flex items-center justify-center">
-                        <Loader />
-                    </div>
+                    <BookCardSkeleton />
                 ) : totalCount === 0 ? (
                     <div className="flex w-full items-center justify-center">
                         <p className="text-foreground text-xl font-medium">
@@ -60,13 +67,14 @@ export default function Books() {
                         </p>
                     </div>
                 ) : (
-                    <div className="w-full flex items-center justify-center gap-20 flex-wrap">
+                    <div className="flex w-full flex-wrap items-center justify-center gap-20">
                         {books.map((book: BookCardProps) => (
                             <BookCard
                                 key={book.id}
                                 id={book.id}
                                 title={book.title}
                                 author={book.author}
+                                className="w-72 hover:scale-105"
                             />
                         ))}
                     </div>

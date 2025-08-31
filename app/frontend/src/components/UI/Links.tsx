@@ -13,6 +13,7 @@ import { JSX } from "react";
  * @returns {JSX.Element} A Link component with appropriate safety and accessibility attributes
  */
 export default function Links({
+    className,
     href,
     label,
     category,
@@ -33,7 +34,7 @@ export default function Links({
     return (
         <Link
             to={href}
-            className="font-body text-card-foreground text-lg font-medium"
+            className={`font-body ${className}`}
             // Indicates to assistive technologies the current page
             aria-current={
                 href === window.location.pathname ? "page" : undefined

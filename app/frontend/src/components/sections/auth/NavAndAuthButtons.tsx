@@ -1,9 +1,6 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { LinksType } from "@/types/types";
 import Links from "@/components/UI/Links";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { useToast } from "@/hooks/useToast";
-import { useAuth } from "@/hooks/useAuth";
 import AuthButtons from "@/components/sections/auth/AuthButtons";
 
 export default function NavAndAuthButtons({
@@ -11,21 +8,7 @@ export default function NavAndAuthButtons({
 }: {
     links: readonly LinksType[];
 }) {
-    const { user } = useAuthContext();
-    const navigate = useNavigate();
     const location = useLocation();
-    const { showToast } = useToast();
-    const { Logout } = useAuth();
-
-    const logout = () => {
-        Logout();
-        navigate("/");
-        showToast({
-            type: "success",
-            title: "Déconnexion réussie !",
-            description: "À bientôt sur Nuit d'Encre !",
-        });
-    };
 
     return (
         <nav className="flex flex-1 items-center justify-between gap-12">
@@ -36,16 +19,15 @@ export default function NavAndAuthButtons({
                             className="transition-transform hover:scale-110"
                             key={link.href}
                         >
-                            <Links {...link} />
+                            <Links
+                                {...link}
+                                className="text-card-foreground text-lg font-medium"
+                            />
                         </li>
                     ))}
                 </ul>
             </div>
-            <AuthButtons
-                user={user}
-                pathname={location.pathname}
-                logout={logout}
-            />
+            <AuthButtons pathname={location.pathname} />
         </nav>
     );
 }

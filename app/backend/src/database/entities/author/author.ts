@@ -33,6 +33,7 @@ import { Book } from "../book/book";
  * - `firstname`: first name of the author.
  * - `lastname`: last name of the author.
  * - `birthDate`: date of birth of the author.
+ * - `biography`: biography of the author.
  * - `nationality`: nationality or language of origin.
  * - `wikipediaUrl`: optional link to Wikipedia page.
  * - `officialWebsite`: optional link to official website.
@@ -40,18 +41,6 @@ import { Book } from "../book/book";
  * - `user`: user who added the author (foreign key).
  * - `createdAt`: timestamp when the author was created.
  * - `updatedAt`: timestamp when the author was last updated.
- *
- * @example
- * ```typescript
- * const author = new Author();
- * author.firstname = "Antoine";
- * author.lastname = "de Saint-Exupéry";
- * author.birthDate = new Date("1900-06-29");
- * author.nationality = "fr";
- * author.wikipediaUrl = "https://en.wikipedia.org/wiki/Antoine_de_Saint-Exupéry";
- * author.user = userInstance;
- * await author.save();
- * ```
  *
  * Decorators used:
  * - `@Entity()`: Declares the class as a database entity.
@@ -102,6 +91,13 @@ export class Author extends BaseEntity {
     @Field({ nullable: true })
     @Column({ nullable: true })
     nationality?: string;
+
+    /**
+     * Biography of the author
+     */
+    @Field({ nullable: true })
+    @Column({ nullable: true, length: 10000 })
+    biography?: string;
 
     /**
      * Wikipedia link

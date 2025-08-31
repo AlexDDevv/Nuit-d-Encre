@@ -1,6 +1,6 @@
 import { useToast } from "@/hooks/useToast";
 import { UserSignIn } from "@/types/types";
-import { ApolloError } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
@@ -11,7 +11,7 @@ import InputPassword from "@/components/sections/auth/form/InputPassword";
 import { Checkbox } from "@/components/UI/Checkbox";
 import { Label } from "@/components/UI/form/Label";
 import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
-import { useAuth } from "@/hooks/useAuth";
+import { LOGIN, WHOAMI } from "@/graphql/auth";
 
 export default function Signin() {
     const {
@@ -27,7 +27,10 @@ export default function Signin() {
         },
     });
 
-    const { Login } = useAuth();
+    const [Login] = useMutation(LOGIN, {
+        refetchQueries: [WHOAMI],
+    });
+
     const navigate = useNavigate();
     const { showToast } = useToast();
 

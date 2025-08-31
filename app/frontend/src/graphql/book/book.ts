@@ -8,6 +8,7 @@ export const GET_BOOKS = gql`
                 title
                 summary
                 author {
+                    id
                     firstname
                     lastname
                 }
@@ -45,6 +46,7 @@ export const GET_BOOK = gql`
             title
             summary
             author {
+                id
                 firstname
                 lastname
             }
@@ -71,13 +73,14 @@ export const GET_BOOK = gql`
 `;
 
 export const GET_MY_BOOKS = gql`
-    query MySurveys($filters: MyBooksQueryInput) {
+    query MyBooks($filters: MyBooksQueryInput) {
         myBooks(filters: $filters) {
             books {
                 id
                 title
                 summary
                 author {
+                    id
                     firstname
                     lastname
                 }

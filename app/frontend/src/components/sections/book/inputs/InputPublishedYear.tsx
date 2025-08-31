@@ -1,8 +1,8 @@
 import { Input } from "@/components/UI/form/Input";
 import { Label } from "@/components/UI/form/Label";
-import { InputsProps } from "@/types/types";
+import { BookInputsProps } from "@/types/types";
 
-export default function InputPublishedYear({ register, errors }: InputsProps) {
+export default function InputPublishedYear({ register, errors }: BookInputsProps) {
     return (
         <div className="flex flex-col gap-2 w-1/2">
             <Label htmlFor="publishedYear" required>

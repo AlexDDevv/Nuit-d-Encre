@@ -1,11 +1,23 @@
 import { Button } from "@/components/UI/Button";
-import { AuthButtonsProps } from "@/types/types";
+import { useAuthContext } from "@/hooks/useAuthContext";
+import { useToast } from "@/hooks/useToast";
+import { useNavigate } from "react-router-dom";
 
-export default function AuthButtons({
-    user,
-    pathname,
-    logout,
-}: AuthButtonsProps) {
+export default function AuthButtons({ pathname }: { pathname: string }) {
+    const navigate = useNavigate();
+    const { showToast } = useToast();
+    const { user, logout } = useAuthContext();
+
+    const onSignOut = () => {
+        logout();
+        navigate("/books");
+        showToast({
+            type: "success",
+            title: "Déconnexion réussie !",
+            description: "À bientôt sur Nuit d'Encre !",
+        });
+    };
+
     if (!user) {
         return (
             <div className="flex items-center justify-center gap-5">
@@ -28,6 +40,7 @@ export default function AuthButtons({
     const isAdmin = user.role === "admin";
     const isOnAdminPage = pathname === "/admin";
     const isOnProfilePage = pathname === "/profil";
+    const isOnAuthorsPage = pathname.startsWith("/authors");
 
     const commonButtons = (
         <Button
@@ -38,19 +51,28 @@ export default function AuthButtons({
         />
     );
 
+    const authorButton = (
+        <Button
+            ariaLabel="Enregistrer un auteur"
+            children="Enregistrer un auteur"
+            variant="primary"
+            to="/authors/scribe"
+        />
+    );
+
     const logoutButton = (
         <Button
             ariaLabel="Se déconnecter de Nuit d'Encre"
             children="Se déconnecter"
             variant="destructive"
-            onClick={logout}
+            onClick={onSignOut}
         />
     );
 
     if (isAdmin) {
         return (
             <div className="flex items-center justify-center gap-5">
-                {commonButtons}
+                {isOnAuthorsPage ? authorButton : commonButtons}
                 {isOnAdminPage ? (
                     logoutButton
                 ) : (
@@ -67,7 +89,7 @@ export default function AuthButtons({
 
     return (
         <div className="flex items-center justify-center gap-5">
-            {commonButtons}
+            {isOnAuthorsPage ? authorButton : commonButtons}
             {isOnProfilePage ? (
                 logoutButton
             ) : (

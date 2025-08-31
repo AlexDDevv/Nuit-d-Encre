@@ -9,7 +9,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { User } from "@/types/types";
 import { AuthContext, AuthContextType } from "@/contexts/AuthContext";
-import { useAuth } from "@/hooks/useAuth";
+import { useMutation, useQuery } from "@apollo/client";
+import { LOGOUT, WHOAMI } from "@/graphql/auth";
 
 /**
  * Props for the AuthContextProvider component
@@ -28,11 +29,14 @@ export const AuthProvider: React.FC<AuthContextProviderProps> = ({
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    // Query whoami to fetch the user
-    const { data, loading, error, refetch } = useAuth();
+    const [Logout] = useMutation(LOGOUT);
 
-    // Mutation to logout
-    const { Logout } = useAuth();
+    const { data, loading, error, refetch } = useQuery<{ whoami: User }>(
+        WHOAMI,
+        {
+            fetchPolicy: "network-only", // Ensure fresh data on each load
+        },
+    );
 
     // Update user state based on query result
     useEffect(() => {
