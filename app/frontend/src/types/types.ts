@@ -20,6 +20,7 @@ export interface User {
 }
 
 export interface LinksType {
+    className?: string;
     href: string;
     label: string;
     category: string;
@@ -71,14 +72,16 @@ export type CreateBookInput = {
 
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
-export type CreateAuthorInput = {
+interface Author {
     firstname: string;
     lastname: string;
-    birthdate?: string;
-    nationality?: string;
-    wikipediaUrl: string;
-    officialWebsite?: string;
-};
+    birthDate?: string
+    nationality?: string
+    wikipediaUrl?: string
+    officialWebsite?: string
+}
+
+export type CreateAuthorInput = Author
 
 export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: number };
 
@@ -114,6 +117,8 @@ export type BookCardProps = {
         firstname: string;
         lastname: string;
     };
+    className?: string;
+    isInAuthorPage?: boolean
 };
 
 interface Book {
@@ -125,7 +130,7 @@ interface Book {
     category: {
         name: string;
     };
-    isbn10: string;
+    isbn10?: string;
     isbn13: string;
 }
 
@@ -144,3 +149,7 @@ export type AuthorCardProps = {
     lastname: string;
     isIncomplete?: boolean;
 };
+
+export interface AuthorInfoProps {
+    author: Author;
+}

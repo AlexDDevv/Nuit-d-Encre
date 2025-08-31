@@ -6,7 +6,7 @@
 import App from "@/App";
 import ProtectedRoute from "@/components/hoc/ProtectedRoute";
 import PublicRoute from "@/components/hoc/PublicRoute";
-import AdminRoute from "@/components/hoc/AdminRoute"
+import AdminRoute from "@/components/hoc/AdminRoute";
 import Books from "@/pages/books/Books";
 import ErrorElement from "@/components/UI/ErrorElement";
 import Loader from "@/components/UI/Loader";
@@ -27,8 +27,9 @@ const BookUpdate = lazy(() => import("@/pages/books/BookUpdate"));
 const Authors = lazy(() => import("@/pages/authors/Authors"));
 const AuthorScribe = lazy(() => import("@/pages/authors/AuthorScribe"));
 const AuthorUpdate = lazy(() => import("@/pages/authors/AuthorUpdate"));
-const Admin = lazy(() => import("@/pages/Admin"))
-const UserProfile = lazy(() => import("@/pages/UserProfile"))
+const AuthorDetails = lazy(() => import("@/pages/authors/AuthorDetails"));
+const Admin = lazy(() => import("@/pages/Admin"));
+const UserProfile = lazy(() => import("@/pages/UserProfile"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
 
 /**
@@ -76,9 +77,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "books",
-                element: (
-                    <Books />
-                ),
+                element: <Books />,
             },
             {
                 path: "books/:slug",
@@ -133,6 +132,14 @@ const router = createBrowserRouter([
                         <ProtectedRoute>
                             <AuthorUpdate />
                         </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "authors/:slug",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <AuthorDetails />
                     </Suspense>
                 ),
             },

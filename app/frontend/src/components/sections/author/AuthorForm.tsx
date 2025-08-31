@@ -8,6 +8,7 @@ import FormWrapper from "@/components/UI/form/FormWrapper";
 import InputName from "@/components/sections/author/inputs/InputName";
 import InputNationality from "@/components/sections/author/inputs/InputNationality";
 import InputBirthDate from "@/components/sections/author/inputs/InputBirthDate";
+import InputBiography from "@/components/sections/author/inputs/InputBiography";
 import InputUrl from "@/components/sections/author/inputs/InputUrl";
 import { Button } from "@/components/UI/Button";
 import Loader from "@/components/UI/Loader";
@@ -29,7 +30,8 @@ export default function AuthorForm() {
         defaultValues: {
             firstname: "",
             lastname: "",
-            birthdate: "",
+            birthDate: "",
+            biography: "",
             nationality: "",
             wikipediaUrl: "",
             officialWebsite: "",
@@ -50,7 +52,8 @@ export default function AuthorForm() {
             reset({
                 firstname: author.firstname,
                 lastname: author.lastname,
-                birthdate: author.birthdate,
+                birthDate: author.birthDate,
+                biography: author.biography,
                 nationality: author.nationality,
                 wikipediaUrl: author.wikipediaUrl,
                 officialWebsite: author.officialWebsite,
@@ -135,8 +138,8 @@ export default function AuthorForm() {
             ? "Modification..."
             : "Création..."
         : isEdit
-            ? "Modifier l'auteur"
-            : "Enregistré l'auteur";
+          ? "Modifier l'auteur"
+          : "Enregistré l'auteur";
 
     return (
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
@@ -152,16 +155,16 @@ export default function AuthorForm() {
             </div>
             <div className="flex items-center gap-5">
                 <InputName
-                    name="firstname"
-                    label="Prénom"
-                    placeholder="Saisissez le prénom de l'auteur"
+                    name="lastname"
+                    label="Nom"
+                    placeholder="Saisissez le nom de l'auteur"
                     register={register}
                     errors={errors}
                 />
                 <InputName
-                    name="lastname"
-                    label="Nom"
-                    placeholder="Saisissez le nom de l'auteur"
+                    name="firstname"
+                    label="Prénom"
+                    placeholder="Saisissez le prénom de l'auteur"
                     register={register}
                     errors={errors}
                 />
@@ -170,6 +173,7 @@ export default function AuthorForm() {
                 <InputBirthDate register={register} errors={errors} />
                 <InputNationality register={register} errors={errors} />
             </div>
+            <InputBiography register={register} errors={errors} />
             <div className="flex items-center gap-5">
                 <InputUrl
                     name="wikipediaUrl"
