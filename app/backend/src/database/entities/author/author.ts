@@ -122,9 +122,9 @@ export class Author extends BaseEntity {
      * @description
      * One-to-many relationship with the Book entity.
      */
-    @Field(() => [Book], { nullable: true })
-    @OneToMany(() => Book, (book) => book.author, { nullable: true })
-    books?: Book[];
+    @Field(() => [Book])
+    @OneToMany(() => Book, (book) => book.author)
+    books!: Book[];
 
     /**
      * The user who added the author

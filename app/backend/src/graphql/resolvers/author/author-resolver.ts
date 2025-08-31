@@ -134,7 +134,9 @@ export class AuthorsResolver {
                 where: { id },
                 relations: {
                     user: true,
-                    books: true
+                    books: {
+                        category: true,
+                    },
                 },
             })
             if (!author) {
