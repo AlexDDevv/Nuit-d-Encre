@@ -1,8 +1,12 @@
 import AuthorInfos from "@/components/sections/author/AuthorInfos";
+import BookCard from "@/components/sections/book/BookCard";
 import { Button } from "@/components/UI/Button";
+import Links from "@/components/UI/Links";
 import Loader from "@/components/UI/Loader";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useAuthor } from "@/hooks/useAuthor";
+import { BookCardProps } from "@/types/types";
+import { User } from "lucide-react";
 import { useParams } from "react-router-dom";
 
 export default function AuthorDetails() {
@@ -44,36 +48,39 @@ export default function AuthorDetails() {
     return (
         <div className="flex flex-col gap-20">
             <div className="flex gap-10">
-                <div className="max-w-3xs max-h-96">
-                    <img
-                        src="/images/bookCover.svg"
-                        alt="Couverture d'un livre"
-                        className="h-full w-full"
-                    />
+                <div className="border-border flex h-40 w-40 items-center justify-center rounded-lg border-2">
+                    <User className="text-foreground h-32 w-32 stroke-1" />
                 </div>
                 <div className="flex flex-col gap-6">
                     <h1 className="text-foreground flex gap-2 text-4xl font-bold">
                         <span>{author.firstname}</span>
                         <span>{author.lastname}</span>
                     </h1>
-                    {/* <div className="max-w-xl">
-                        {author.biography.length > 200 ? (
-                            <p className="text-secondary-foreground">
-                                {author.biography.substring(0, 200)}
-                                ...
-                                <a
-                                    href="#biography"
-                                    className="text-foreground ml-1 font-semibold"
-                                >
-                                    Lire la suite
-                                </a>
-                            </p>
+                    <div className="max-w-xl">
+                        {author.biography ? (
+                            author.biography.length > 200 ? (
+                                <p className="text-secondary-foreground">
+                                    {author.biography.substring(0, 200)}
+                                    ...
+                                    <a
+                                        href="#biography"
+                                        className="text-foreground ml-1 font-semibold"
+                                    >
+                                        Lire la suite
+                                    </a>
+                                </p>
+                            ) : (
+                                <p className="text-secondary-foreground">
+                                    {author.biography}
+                                </p>
+                            )
                         ) : (
                             <p className="text-secondary-foreground">
-                                {author.biography}
+                                Aucune biographie n'a été enregistrée pour cet
+                                auteur.
                             </p>
                         )}
-                    </div> */}
+                    </div>
                 </div>
             </div>
             <div className="flex gap-20">
@@ -82,7 +89,15 @@ export default function AuthorDetails() {
                         Biographie :
                     </h2>
                     <p className="text-secondary-foreground">
-                        {author.biography}
+                        {author.biography.substring(0, 1000)}
+                        ...
+                        <Links
+                            href={author.wikipediaUrl}
+                            label="Lire la suite sur Wikipedia"
+                            category="author"
+                            ariaLabel="Consulter la page Wikipedia de ${author.firstname} ${author.lastname} (s'ouvre dans un nouvel onglet)"
+                            className="text-foreground ml-1 font-semibold"
+                        />
                     </p>
                 </div>
                 <div className="flex w-1/2 flex-col gap-5">
@@ -100,6 +115,26 @@ export default function AuthorDetails() {
                     children="Modifier l'auteur"
                 />
             )}
+            <section className="bg-muted flex flex-col gap-10 rounded-lg p-6">
+                <div className="bg-card flex items-center gap-6 rounded-md p-5">
+                    <h3 className="text-muted-foreground font-semibold uppercase tracking-wider">
+                        Bibliographie
+                    </h3>
+                    <span className="text-card-foreground cursor-pointer font-bold italic">
+                        Voir plus
+                    </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-10">
+                    {author.books.map((book: BookCardProps) => (
+                        <BookCard
+                            key={book.id}
+                            id={book.id}
+                            title={book.title}
+                            author={author}
+                        />
+                    ))}
+                </div>
+            </section>
         </div>
     );
 }
