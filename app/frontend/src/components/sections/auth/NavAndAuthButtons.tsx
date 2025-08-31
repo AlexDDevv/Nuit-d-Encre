@@ -19,7 +19,10 @@ export default function NavAndAuthButtons({
                             className="transition-transform hover:scale-110"
                             key={link.href}
                         >
-                            <Links {...link} />
+                            <Links
+                                {...link}
+                                className="text-card-foreground text-lg font-medium"
+                            />
                         </li>
                     ))}
                 </ul>
