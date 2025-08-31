@@ -74,6 +74,7 @@ export default function Books() {
                                 id={book.id}
                                 title={book.title}
                                 author={book.author}
+                                className="w-72 hover:scale-105"
                             />
                         ))}
                     </div>

@@ -131,6 +131,8 @@ export default function AuthorDetails() {
                             id={book.id}
                             title={book.title}
                             author={author}
+                            className="w-60"
+                            isInAuthorPage={true}
                         />
                     ))}
                 </div>
