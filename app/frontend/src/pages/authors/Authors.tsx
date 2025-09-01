@@ -3,6 +3,7 @@ import SearchAuthor from "@/components/sections/author/SearchAuthor";
 import Pagination from "@/components/UI/Pagination";
 import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
 import { useAuthor } from "@/hooks/useAuthor";
+import { hasIncompleteInfo } from "@/lib/utils";
 import { AuthorCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";
 
@@ -15,12 +16,6 @@ export default function Authors() {
         setCurrentPage,
         PER_PAGE,
     } = useAuthor();
-
-    const hasIncompleteInfo = (author: AuthorCardProps): boolean => {
-        return Object.values(author).some(
-            (value) => value === null || value === "",
-        );
-    };
 
     return (
         <>

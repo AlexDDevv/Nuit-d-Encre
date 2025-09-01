@@ -72,10 +72,11 @@ export type CreateBookInput = {
 
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
-interface Author {
-    firstname: string;
-    lastname: string;
+export interface Author {
+    firstname: string
+    lastname: string
     birthDate?: string
+    biography?: string
     nationality?: string
     wikipediaUrl?: string
     officialWebsite?: string
@@ -149,6 +150,8 @@ export type AuthorCardProps = {
     lastname: string;
     isIncomplete?: boolean;
 };
+
+export type RequiredAuthorFields = 'birthDate' | 'nationality' | 'wikipediaUrl' | 'biography';
 
 export interface AuthorInfoProps {
     author: Author;
