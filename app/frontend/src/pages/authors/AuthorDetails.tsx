@@ -88,17 +88,26 @@ export default function AuthorDetails() {
                     <h2 className="text-foreground text-3xl font-semibold">
                         Biographie :
                     </h2>
-                    <p className="text-secondary-foreground">
-                        {author.biography.substring(0, 1000)}
-                        ...
-                        <Links
-                            href={author.wikipediaUrl}
-                            label="Lire la suite sur Wikipedia"
-                            category="author"
-                            ariaLabel="Consulter la page Wikipedia de ${author.firstname} ${author.lastname} (s'ouvre dans un nouvel onglet)"
-                            className="text-foreground ml-1 font-semibold"
-                        />
-                    </p>
+                    {author.biography ? (
+                        <p className="text-secondary-foreground">
+                            {author.biography.substring(0, 1000)}
+                            ...
+                            {author.wikipediaUrl && (
+                                <Links
+                                    href={author.wikipediaUrl}
+                                    label="Lire la suite sur Wikipedia"
+                                    category="author"
+                                    ariaLabel={`Consulter la page Wikipedia de ${author.firstname} ${author.lastname} (s'ouvre dans un nouvel onglet)`}
+                                    className="text-foreground ml-1 font-semibold"
+                                />
+                            )}
+                        </p>
+                    ) : (
+                        <p className="text-secondary-foreground">
+                            Aucune biographie n'a été enregistrée pour cet
+                            auteur.
+                        </p>
+                    )}
                 </div>
                 <div className="flex w-1/2 flex-col gap-5">
                     <h2 className="text-foreground text-3xl font-semibold">

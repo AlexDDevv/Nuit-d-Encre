@@ -1,6 +1,6 @@
 import { buildBookAriaLabel, slugify } from "@/lib/utils";
 import { BookCardProps } from "@/types/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function BookCard({
     id,
@@ -14,6 +14,21 @@ export default function BookCard({
     const isCurrent = bookPath === window.location.pathname;
     const authorSlug = slugify(`${author.firstname} ${author.lastname}`);
     const authorPath = `/authors/${author.id}-${authorSlug}`;
+    const navigate = useNavigate();
+
+    const handleAuthorClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        navigate(authorPath);
+    };
+
+    const handleAuthorKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            e.stopPropagation();
+            navigate(authorPath);
+        }
+    };
 
     return (
         <Link
@@ -35,13 +50,16 @@ export default function BookCard({
                     {title}
                 </h2>
                 {!isInAuthorPage && (
-                    <Link
-                        to={authorPath}
-                        className="text-card-foreground after:transition-width relative text-lg after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-0 after:bg-current after:duration-200 after:ease-in-out hover:after:w-full"
-                        title="Accéder à la page de l'auteur"
+                    <span
+                        onClick={handleAuthorClick}
+                        onKeyDown={handleAuthorKeyDown}
+                        tabIndex={0}
+                        role="link"
+                        aria-label={`Accéder à la page de ${author.firstname} ${author.lastname}`}
+                        className="text-card-foreground after:transition-width focus-visible:ring-ring ring-offset-ring relative cursor-pointer rounded-lg text-lg transition-all duration-200 ease-in-out after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-0 after:bg-current after:duration-200 after:ease-in-out hover:after:w-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                     >
                         {author.firstname} {author.lastname}
-                    </Link>
+                    </span>
                 )}
             </div>
         </Link>
