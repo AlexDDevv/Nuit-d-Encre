@@ -27,7 +27,7 @@ import { Column } from "typeorm";
  * - `wikipediaUrl`: optional link to a Wikipedia page for the author.
  * - `officialWebsite`: optional link to the author’s official website.
  *
- * The class uses the following decorators:
+    * The class uses the following decorators:
  * - `@Field()`: Exposes the property in the GraphQL schema (via type-graphql).
  * - `@Length()`: Validates string length.
  * - `@IsOptional()`: Marks the field as optional during validation.
@@ -51,6 +51,7 @@ export class CreateAuthorInput {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
+    @IsOptional()
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/, {
         message: "Birth date must be in the format DD/MM/YYYY.",
     })
@@ -58,11 +59,13 @@ export class CreateAuthorInput {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
+    @IsOptional()
     @Length(1, 10000, { message: "Biography must be between 1 and 10000 characters" })
     biography?: string
 
     @Field({ nullable: true })
     @Column({ nullable: true })
+    @IsOptional()
     @Length(1, 100, {
         message: "Nationality must be between 1 and 100 characters ('french', 'english').",
     })

@@ -36,28 +36,33 @@ export class UpdateAuthorInput {
     id!: number
 
     @Field({ nullable: true })
+    @IsOptional()
     @Length(1, 100, {
         message: "Firstname must be between 1 and 100 characters.",
     })
     firstname?: string;
 
     @Field({ nullable: true })
+    @IsOptional()
     @Length(1, 100, {
         message: "Lastname must be between 1 and 100 characters.",
     })
     lastname?: string;
 
     @Field({ nullable: true })
+    @IsOptional()
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/, {
         message: "Birth date must be in the format DD/MM/YYYY.",
     })
     birthDate?: string;
 
     @Field({ nullable: true })
+    @IsOptional()
     @Length(1, 10000, { message: "Biography must be between 1 and 10000 characters" })
     biography?: string
 
     @Field({ nullable: true })
+    @IsOptional()
     @Length(1, 100, {
         message: "Nationality must be between 1 and 100 characters ('french', 'english').",
     })
