@@ -22,7 +22,7 @@ export default function BookDetailsSkeleton() {
                 </div>
             </div>
             <div className="flex gap-20">
-                <div id="summary" className="flex w-1/2 flex-col gap-5">
+                <div className="flex w-1/2 flex-col gap-5">
                     <Skeleton className="h-8 w-32 rounded-lg" />
                     <Skeleton className="h-96 w-full rounded-lg" />
                 </div>
