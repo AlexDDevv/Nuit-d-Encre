@@ -14,6 +14,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
+import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 
 /**
  *  Using lazy loading for pages
@@ -144,7 +145,7 @@ const router = createBrowserRouter([
             {
                 path: "authors/:slug",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<AuthorDetailsSkeleton />}>
                         <AuthorDetails />
                     </Suspense>
                 ),
