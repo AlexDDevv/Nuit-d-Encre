@@ -1,10 +1,10 @@
 import { Button } from "@/components/UI/Button";
-import Loader from "@/components/UI/Loader";
 import SelectBookState from "@/components/UI/SelectBookState";
 import BookInfos from "@/components/sections/book/BookInfos";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useBook } from "@/hooks/useBook";
 import { useParams } from "react-router-dom";
+import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 
 export default function BookDetails() {
     const { slug } = useParams<{ slug: string }>();
@@ -20,7 +20,7 @@ export default function BookDetails() {
     const { book, bookLoading, bookError } = useBook(id);
 
     if (bookLoading) {
-        return <Loader />;
+        return <BookDetailsSkeleton />;
     }
 
     if (bookError) {

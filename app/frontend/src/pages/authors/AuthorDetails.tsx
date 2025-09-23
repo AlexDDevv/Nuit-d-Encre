@@ -2,7 +2,7 @@ import AuthorInfos from "@/components/sections/author/AuthorInfos";
 import BookCard from "@/components/sections/book/BookCard";
 import { Button } from "@/components/UI/Button";
 import Links from "@/components/UI/Links";
-import Loader from "@/components/UI/Loader";
+import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useAuthor } from "@/hooks/useAuthor";
 import { BookCardProps } from "@/types/types";
@@ -23,7 +23,7 @@ export default function AuthorDetails() {
     const { author, authorLoading, authorError } = useAuthor(id);
 
     if (authorLoading) {
-        return <Loader />;
+        return <AuthorDetailsSkeleton />;
     }
 
     if (authorError) {
