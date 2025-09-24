@@ -14,15 +14,17 @@ import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
 
 export default function SelectCategory() {
-    const { categories, loadingCategories, errorCategories } = useBook()
+    const { categories, loadingCategories, errorCategories } = useBook();
     const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        null
-    )
-    const [searchParams, setSearchParams] = useSearchParams()
+        null,
+    );
+    const [searchParams, setSearchParams] = useSearchParams();
     const newParams = new URLSearchParams(searchParams);
 
     const filterByCategory = (categoryId: string) => {
-        const category = categories.find((category: categoryPropsType) => category.id === categoryId);
+        const category = categories.find(
+            (category: categoryPropsType) => category.id === categoryId,
+        );
         if (!category) return;
 
         const slug = slugify(category.name);
@@ -51,7 +53,7 @@ export default function SelectCategory() {
 
     if (loadingCategories) {
         return (
-            <Skeleton className="bg-input border-border flex rounded-lg border h-10 w-60 min-w-60 mx-auto" />
+            <Skeleton className="bg-input border-border mx-auto flex h-10 w-60 min-w-60 rounded-lg border" />
         );
     }
 
@@ -77,27 +79,40 @@ export default function SelectCategory() {
 
     return (
         <>
-            <Select value={selectedCategory ?? ""} onValueChange={filterByCategory}>
-                <SelectTrigger className={cn(
-                    "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border flex rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 w-60 min-w-60 mx-auto",
-                    openStateClasses
-                )}>
+            <Select
+                value={selectedCategory ?? ""}
+                onValueChange={filterByCategory}
+            >
+                <SelectTrigger
+                    className={cn(
+                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border mx-auto flex w-60 min-w-60 rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                        openStateClasses,
+                    )}
+                >
                     <SelectValue placeholder="Sélectionnez une catégorie" />
                 </SelectTrigger>
                 <SelectContent animate={true}>
-                    {categories.map((category: categoryPropsType) => (
-                        <SelectItem
-                            key={category.id}
-                            value={category.id}
-                            animate={true}
-                        >
-                            {category.name}
-                        </SelectItem>
-                    ))}
+                    {categories.map(
+                        (category: categoryPropsType, index: number) => (
+                            <SelectItem
+                                key={category.id}
+                                value={category.id}
+                                animate={true}
+                                index={index}
+                            >
+                                {category.name}
+                            </SelectItem>
+                        ),
+                    )}
                 </SelectContent>
             </Select>
             {selectedCategory && (
-                <Button ariaLabel="Retirer le filtre sur la catégorie" children="Retirer le filtre" onClick={handleResetFilter} className="max-h-10" />
+                <Button
+                    ariaLabel="Retirer le filtre sur la catégorie"
+                    children="Retirer le filtre"
+                    onClick={handleResetFilter}
+                    className="max-h-10"
+                />
             )}
         </>
     );

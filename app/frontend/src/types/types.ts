@@ -73,16 +73,16 @@ export type CreateBookInput = {
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
 export interface Author {
-    firstname: string
-    lastname: string
-    birthDate?: string
-    biography?: string
-    nationality?: string
-    wikipediaUrl?: string
-    officialWebsite?: string
+    firstname: string;
+    lastname: string;
+    birthDate?: string;
+    biography?: string;
+    nationality?: string;
+    wikipediaUrl?: string;
+    officialWebsite?: string;
 }
 
-export type CreateAuthorInput = Author
+export type CreateAuthorInput = Author;
 
 export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: number };
 
@@ -119,7 +119,7 @@ export type BookCardProps = {
         lastname: string;
     };
     className?: string;
-    isInAuthorPage?: boolean
+    isInAuthorPage?: boolean;
 };
 
 interface Book {
@@ -151,8 +151,17 @@ export type AuthorCardProps = {
     isIncomplete?: boolean;
 };
 
-export type RequiredAuthorFields = 'birthDate' | 'nationality' | 'wikipediaUrl' | 'biography';
+export type RequiredAuthorFields =
+    | "birthDate"
+    | "nationality"
+    | "wikipediaUrl"
+    | "biography";
 
 export interface AuthorInfoProps {
     author: Author;
 }
+
+export type BookStateItem = {
+    icon: React.ReactNode;
+    content: string;
+};
