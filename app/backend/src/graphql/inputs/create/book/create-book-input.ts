@@ -1,4 +1,4 @@
-import { Length, IsIn, IsOptional, IsInt, Min, Max } from "class-validator"
+import { Length, IsIn, IsInt, Min, Max, ValidateIf } from "class-validator"
 import { Field, ID, InputType, Int } from "type-graphql"
 
 /**
@@ -22,7 +22,7 @@ import { Field, ID, InputType, Int } from "type-graphql"
  * - `@Field()`: Exposes the property in the GraphQL schema (via type-graphql).
  * - `@Length()`: Validates string length.
  * - `@IsIn()`: Ensures the value is within a set of allowed values.
- * - `@IsOptional()`: Marks the field as optional during validation.
+ * - `@ValidateIf()`: Allowed to accept empty fields.
  * - `@IsInt()` and `@Min()`: Ensure numeric fields are valid integers and not negative.
  * - `@IsDateString()`: Ensures the value is a valid date string.
  */
@@ -41,8 +41,8 @@ export class CreateBookInput {
     author!: string
 
     @Field({ nullable: true })
+    @ValidateIf((o) => o.isbn10 !== "" && o.isbn10 != null)
     @Length(10, 10, { message: "ISBN-10 must be exactly 10 characters" })
-    @IsOptional()
     isbn10?: string
 
     @Field()
@@ -66,7 +66,6 @@ export class CreateBookInput {
 
     @Field()
     @Length(1, 255, { message: "Publisher name must be between 1 and 255 characters" })
-    @IsOptional()
     publisher!: string
 
     @Field()

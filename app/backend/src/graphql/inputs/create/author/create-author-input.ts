@@ -9,7 +9,7 @@
  * Wikipedia link or official website.
  */
 
-import { IsOptional, IsUrl, Length, Matches } from "class-validator";
+import { IsUrl, Length, Matches, ValidateIf } from "class-validator";
 import { Field, InputType } from "type-graphql";
 import { Column } from "typeorm";
 
@@ -30,7 +30,7 @@ import { Column } from "typeorm";
     * The class uses the following decorators:
  * - `@Field()`: Exposes the property in the GraphQL schema (via type-graphql).
  * - `@Length()`: Validates string length.
- * - `@IsOptional()`: Marks the field as optional during validation.
+ * - `@ValidateIf()`: Allowed to accept empty fields.
  * - `@IsUrl()`: check if it's a valid url.
  */
 @InputType()
@@ -51,7 +51,7 @@ export class CreateAuthorInput {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-    @IsOptional()
+    @ValidateIf((o) => o.isbn10 !== "" && o.isbn10 != null)
     @Matches(/^\d{2}\/\d{2}\/\d{4}$/, {
         message: "Birth date must be in the format DD/MM/YYYY.",
     })
@@ -59,13 +59,13 @@ export class CreateAuthorInput {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-    @IsOptional()
+    @ValidateIf((o) => o.isbn10 !== "" && o.isbn10 != null)
     @Length(1, 10000, { message: "Biography must be between 1 and 10000 characters" })
     biography?: string
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-    @IsOptional()
+    @ValidateIf((o) => o.isbn10 !== "" && o.isbn10 != null)
     @Length(1, 100, {
         message: "Nationality must be between 1 and 100 characters ('french', 'english').",
     })
@@ -73,13 +73,13 @@ export class CreateAuthorInput {
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-    @IsOptional()
+    @ValidateIf((o) => o.isbn10 !== "" && o.isbn10 != null)
     @IsUrl({}, { message: "Wikipedia URL must be a valid URL." })
     wikipediaUrl?: string;
 
     @Field({ nullable: true })
     @Column({ nullable: true })
-    @IsOptional()
+    @ValidateIf((o) => o.isbn10 !== "" && o.isbn10 != null)
     @IsUrl({}, { message: "Official website URL must be a valid URL." })
     officialWebsite?: string;
 }
