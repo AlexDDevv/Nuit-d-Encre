@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
     Select,
     SelectContent,
@@ -15,11 +14,9 @@ import { Button } from "@/components/UI/Button";
 
 export default function SelectCategory() {
     const { categories, loadingCategories, errorCategories } = useBook();
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(
-        null,
-    );
     const [searchParams, setSearchParams] = useSearchParams();
-    const newParams = new URLSearchParams(searchParams);
+
+    const selectedCategoryId = searchParams.get("categoryId");
 
     const filterByCategory = (categoryId: string) => {
         const category = categories.find(
@@ -28,15 +25,14 @@ export default function SelectCategory() {
         if (!category) return;
 
         const slug = slugify(category.name);
+        const newParams = new URLSearchParams(searchParams);
 
         if (newParams.get("category") === slug) {
             newParams.delete("category");
             newParams.delete("categoryId");
-            setSelectedCategory(null);
         } else {
             newParams.set("category", slug);
             newParams.set("categoryId", category.id);
-            setSelectedCategory(category.id);
         }
 
         setSearchParams(newParams);
@@ -47,7 +43,6 @@ export default function SelectCategory() {
         newParams.delete("category");
         newParams.delete("categoryId");
 
-        setSelectedCategory(null);
         setSearchParams(newParams);
     };
 
@@ -80,7 +75,7 @@ export default function SelectCategory() {
     return (
         <>
             <Select
-                value={selectedCategory ?? ""}
+                value={selectedCategoryId ?? ""}
                 onValueChange={filterByCategory}
             >
                 <SelectTrigger
@@ -106,7 +101,7 @@ export default function SelectCategory() {
                     )}
                 </SelectContent>
             </Select>
-            {selectedCategory && (
+            {selectedCategoryId && (
                 <Button
                     ariaLabel="Retirer le filtre sur la catégorie"
                     children="Retirer le filtre"
