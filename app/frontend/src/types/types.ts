@@ -168,3 +168,16 @@ export type BookStateItem = {
     icon: React.ReactNode;
     content: string;
 };
+
+export type GetCategoriesQuery = {
+    categories: {
+        id: string;
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+    }[];
+};
+
+export type UseBooksMode = {
+    mode: "home" | "library";
+};

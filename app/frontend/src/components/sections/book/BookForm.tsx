@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { TypeSelectOptions, CreateBookInput } from "@/types/types";
-import { useBook } from "@/hooks/useBook";
 import { useEffect } from "react";
 import FormWrapper from "@/components/UI/form/FormWrapper";
 import InputTitle from "@/components/sections/book/inputs/InputTitle";
@@ -18,16 +17,34 @@ import InputFormat from "@/components/sections/book/inputs/InputFormat";
 import { Button } from "@/components/UI/Button";
 import Loader from "@/components/UI/Loader";
 import { useBookData } from "@/hooks/book/useBookData";
+import { useBookMutations } from "@/hooks/book/useBookMutations";
+import { useCategoriesData } from "@/hooks/category/useCategoriesData";
 
 export default function BookForm() {
     const { id: bookId } = useParams();
+    const isEdit = Boolean(bookId);
 
-    if (!bookId) {
-        throw new Response("Book not found", { status: 404 });
+    const { categories, isLoadingCategories, errorCategories } =
+        useCategoriesData();
+
+    if (!categories && errorCategories) {
+        const isNotFoundError = errorCategories.graphQLErrors.some((error) =>
+            error.message.includes("Categories not found"),
+        );
+
+        if (isNotFoundError) {
+            throw new Response("Categories not found", { status: 404 });
+        }
+
+        // Pour les autres erreurs GraphQL
+        throw new Response("Failed to fetch categories", { status: 500 });
     }
 
-    const { addBook, updateBook, categories, isUpdating, loadingCategories } =
-        useBook();
+    if (!isLoadingCategories && !categories) {
+        throw new Response("Categories not found", { status: 404 });
+    }
+
+    const { createBook, updateBook, isUpdatingBook } = useBookMutations();
 
     const { book, isLoadingBook, bookError } = useBookData(bookId);
 
@@ -61,7 +78,7 @@ export default function BookForm() {
     } = form;
 
     useEffect(() => {
-        if (book) {
+        if (isEdit && book) {
             reset({
                 title: book.title,
                 summary: book.summary,
@@ -76,13 +93,13 @@ export default function BookForm() {
                 category: book.category.id.toString(),
             });
         }
-    }, [book, categories, reset]);
+    }, [book, categories, isEdit, reset]);
 
-    if (bookId && isUpdating) {
+    if (isEdit && isUpdatingBook) {
         return <Loader />;
     }
 
-    if (bookId) {
+    if (isEdit) {
         if (!book && bookError) {
             const isNotFoundError = bookError.graphQLErrors.some((error) =>
                 error.message.includes("Failed to fetch book"),
@@ -106,7 +123,7 @@ export default function BookForm() {
         try {
             let result;
 
-            if (book) {
+            if (isEdit && book) {
                 result = await updateBook(book.id, {
                     ...form,
                     category: form.category,
@@ -118,7 +135,7 @@ export default function BookForm() {
                     description: "Votre livre a bien été mis à jour.",
                 });
             } else {
-                result = await addBook({
+                result = await createBook({
                     ...form,
                     category: form.category,
                 });
@@ -149,14 +166,13 @@ export default function BookForm() {
         }
     };
 
-    const isEdit = Boolean(bookId);
     const label = isSubmitting
         ? isEdit
             ? "Modification..."
             : "Création..."
         : isEdit
           ? "Modifier le livre"
-          : "Enregistré le livre";
+          : "Enregistrer le livre";
 
     const categoryOptions: TypeSelectOptions[] =
         categories?.map((cat: { id: string; name: string }) => ({
@@ -168,7 +184,7 @@ export default function BookForm() {
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
             <div>
                 <h1 className="text-card-foreground text-2xl font-bold">
-                    {bookId ? "Modifier le livre" : "Enregistré un livre"}
+                    {bookId ? "Modifier le livre" : "Enregistrer un livre"}
                 </h1>
                 <p className="text-card-foreground font-medium">
                     {bookId
@@ -185,7 +201,7 @@ export default function BookForm() {
                 <InputCategory
                     control={control}
                     categoryOptions={categoryOptions}
-                    loadingCategories={loadingCategories}
+                    loadingCategories={isLoadingCategories}
                     errors={errors}
                 />
                 <InputFormat control={control} errors={errors} />

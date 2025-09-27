@@ -35,7 +35,7 @@ import { useQuery } from "@apollo/client";
  * ```
  */
 
-export function useBookData(bookId: string) {
+export function useBookData(bookId?: string) {
     const {
         data: bookData,
         loading: isLoadingBook,

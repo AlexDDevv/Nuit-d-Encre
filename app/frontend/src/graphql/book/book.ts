@@ -82,50 +82,6 @@ export const GET_BOOK = gql`
     }
 `;
 
-export const GET_MY_BOOKS = gql`
-    query MyBooks($filters: MyBooksQueryInput) {
-        myBooks(filters: $filters) {
-            books {
-                id
-                title
-                summary
-                author {
-                    id
-                    firstname
-                    lastname
-                    birthDate
-                    biography
-                    nationality
-                    wikipediaUrl
-                    officialWebsite
-                }
-                category {
-                    id
-                    name
-                }
-                isbn10
-                isbn13
-                pageCount
-                publishedYear
-                language
-                publisher
-                format
-                user {
-                    id
-                    email
-                    userName
-                }
-                createdAt
-                updatedAt
-            }
-            totalCount
-            totalCountAll
-            page
-            limit
-        }
-    }
-`;
-
 export const CREATE_BOOK = gql`
     mutation CreateBook($data: CreateBookInput!) {
         createBook(data: $data) {
