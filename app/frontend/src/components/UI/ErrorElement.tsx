@@ -6,7 +6,7 @@ import {
 import { useEffect, useRef } from "react";
 import { ErrorLayoutProps } from "@/types/types";
 import { Button } from "@/components/UI/Button";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 
 /**
  * Error messages

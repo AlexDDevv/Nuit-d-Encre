@@ -1,7 +1,7 @@
 import { Button } from "@/components/UI/Button";
 import SelectBookState from "@/components/UI/SelectBookState";
 import BookInfos from "@/components/sections/book/BookInfos";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useBook } from "@/hooks/useBook";
 import { useParams } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";

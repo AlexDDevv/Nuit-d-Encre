@@ -3,7 +3,7 @@ import BookCard from "@/components/sections/book/BookCard";
 import { Button } from "@/components/UI/Button";
 import Links from "@/components/UI/Links";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useAuthor } from "@/hooks/useAuthor";
 import { BookCardProps } from "@/types/types";
 import { User } from "lucide-react";

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import logo from "/logo/logo.svg";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 
 export default function Logo() {
     const { user } = useAuthContext();
