@@ -122,27 +122,30 @@ export type BookCardProps = {
     isInAuthorPage?: boolean;
 };
 
-interface Book {
+export interface Book {
+    id: string;
+    title: string;
+    author: Author;
+    summary: string;
     publisher: string;
     publishedYear: number;
     language: string;
     pageCount: number;
-    format: string;
-    category: {
-        name: string;
-    };
+    format: BookFormat;
+    category: CategoryBook;
     isbn10?: string;
     isbn13: string;
+    user: User;
 }
 
 export interface BookInfoProps {
     book: Book;
 }
 
-export type categoryPropsType = {
+export interface CategoryBook {
     id: string;
     name: string;
-};
+}
 
 export type AuthorCardProps = {
     id: string;

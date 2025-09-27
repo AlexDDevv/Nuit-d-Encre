@@ -11,6 +11,11 @@ export const GET_BOOKS = gql`
                     id
                     firstname
                     lastname
+                    birthDate
+                    biography
+                    nationality
+                    wikipediaUrl
+                    officialWebsite
                 }
                 category {
                     id
@@ -49,6 +54,11 @@ export const GET_BOOK = gql`
                 id
                 firstname
                 lastname
+                birthDate
+                biography
+                nationality
+                wikipediaUrl
+                officialWebsite
             }
             category {
                 id
@@ -83,6 +93,11 @@ export const GET_MY_BOOKS = gql`
                     id
                     firstname
                     lastname
+                    birthDate
+                    biography
+                    nationality
+                    wikipediaUrl
+                    officialWebsite
                 }
                 category {
                     id

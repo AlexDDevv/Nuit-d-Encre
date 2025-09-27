@@ -2,9 +2,9 @@ import { Button } from "@/components/UI/Button";
 import SelectBookState from "@/components/UI/SelectBookState";
 import BookInfos from "@/components/sections/book/BookInfos";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
-import { useBook } from "@/hooks/useBook";
 import { useParams } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
+import { useBookData } from "@/hooks/book/useBookData";
 
 export default function BookDetails() {
     const { slug } = useParams<{ slug: string }>();
@@ -17,9 +17,9 @@ export default function BookDetails() {
     const [idStr] = slug.split("-");
     const id = idStr;
 
-    const { book, bookLoading, bookError } = useBook(id);
+    const { book, isLoadingBook, bookError } = useBookData(id);
 
-    if (bookLoading) {
+    if (isLoadingBook) {
         return <BookDetailsSkeleton />;
     }
 

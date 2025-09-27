@@ -17,19 +17,20 @@ import InputPublisher from "@/components/sections/book/inputs/InputPublisher";
 import InputFormat from "@/components/sections/book/inputs/InputFormat";
 import { Button } from "@/components/UI/Button";
 import Loader from "@/components/UI/Loader";
+import { useBookData } from "@/hooks/book/useBookData";
 
 export default function BookForm() {
     const { id: bookId } = useParams();
-    const {
-        addBook,
-        updateBook,
-        book,
-        categories,
-        isUpdating,
-        bookLoading,
-        bookError,
-        loadingCategories,
-    } = useBook(bookId);
+
+    if (!bookId) {
+        throw new Response("Book not found", { status: 404 });
+    }
+
+    const { addBook, updateBook, categories, isUpdating, loadingCategories } =
+        useBook();
+
+    const { book, isLoadingBook, bookError } = useBookData(bookId);
+
     const navigate = useNavigate();
     const { showToast } = useToast();
 
@@ -95,7 +96,7 @@ export default function BookForm() {
             throw new Response("Error loading book", { status: 500 });
         }
 
-        if (!bookLoading && !book) {
+        if (!isLoadingBook && !book) {
             throw new Response("Book not found", { status: 404 });
         }
     }

@@ -8,7 +8,7 @@ import {
 import { cn, slugify } from "@/lib/utils";
 import { useBook } from "@/hooks/useBook";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
-import { categoryPropsType } from "@/types/types";
+import { CategoryBook } from "@/types/types";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
 
@@ -20,7 +20,7 @@ export default function SelectCategory() {
 
     const filterByCategory = (categoryId: string) => {
         const category = categories.find(
-            (category: categoryPropsType) => category.id === categoryId,
+            (category: CategoryBook) => category.id === categoryId,
         );
         if (!category) return;
 
@@ -87,18 +87,16 @@ export default function SelectCategory() {
                     <SelectValue placeholder="Sélectionnez une catégorie" />
                 </SelectTrigger>
                 <SelectContent animate={true}>
-                    {categories.map(
-                        (category: categoryPropsType, index: number) => (
-                            <SelectItem
-                                key={category.id}
-                                value={category.id}
-                                animate={true}
-                                index={index}
-                            >
-                                {category.name}
-                            </SelectItem>
-                        ),
-                    )}
+                    {categories.map((category: CategoryBook, index: number) => (
+                        <SelectItem
+                            key={category.id}
+                            value={category.id}
+                            animate={true}
+                            index={index}
+                        >
+                            {category.name}
+                        </SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
             {selectedCategoryId && (

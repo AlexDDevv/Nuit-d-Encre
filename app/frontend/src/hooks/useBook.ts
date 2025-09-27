@@ -5,7 +5,6 @@ import {
     UPDATE_BOOK,
     GET_MY_BOOKS,
     DELETE_BOOK,
-    GET_BOOK,
 } from "@/graphql/book/book";
 import { useState } from "react";
 import { BookFormat, CreateBookInput, UpdateBookInput } from "@/types/types";
@@ -31,7 +30,7 @@ const languageLabelMap: Record<string, string> = {
 /**
  * Hook for the book management.
  */
-export function useBook(bookId?: string) {
+export function useBook() {
     const [searchParams] = useSearchParams();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filters, setFilters] = useState<string[]>([]);
@@ -114,16 +113,6 @@ export function useBook(bookId?: string) {
         error: errorCategories,
     } = useQuery(GET_CATEGORIES);
     const categories = categoriesData?.categories;
-
-    const {
-        data: bookData,
-        loading: bookLoading,
-        error: bookError,
-    } = useQuery(GET_BOOK, {
-        variables: { bookId: bookId },
-        skip: !bookId,
-    });
-    const book = bookData?.book;
 
     const totalCount = allBooksData?.books.totalCount ?? 0;
 
@@ -256,9 +245,6 @@ export function useBook(bookId?: string) {
         myBooks,
         loading,
         myBooksError,
-        book,
-        bookLoading,
-        bookError,
         categories,
         loadingCategories,
         errorCategories,
