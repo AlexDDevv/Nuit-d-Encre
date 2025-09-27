@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/toast/useToast";
 import { useAuthor } from "@/hooks/useAuthor";
 import { useNavigate, useParams } from "react-router-dom";
 import { CreateAuthorInput } from "@/types/types";
