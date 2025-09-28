@@ -73,6 +73,7 @@ export type CreateBookInput = {
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
 export interface Author {
+    id: string;
     firstname: string;
     lastname: string;
     birthDate?: string;
@@ -80,6 +81,8 @@ export interface Author {
     nationality?: string;
     wikipediaUrl?: string;
     officialWebsite?: string;
+    books: Book[];
+    user: User;
 }
 
 export type CreateAuthorInput = Author;
@@ -122,27 +125,30 @@ export type BookCardProps = {
     isInAuthorPage?: boolean;
 };
 
-interface Book {
+export interface Book {
+    id: string;
+    title: string;
+    author: Author;
+    summary: string;
     publisher: string;
     publishedYear: number;
     language: string;
     pageCount: number;
-    format: string;
-    category: {
-        name: string;
-    };
+    format: BookFormat;
+    category: CategoryBook;
     isbn10?: string;
     isbn13: string;
+    user: User;
 }
 
 export interface BookInfoProps {
     book: Book;
 }
 
-export type categoryPropsType = {
+export interface CategoryBook {
     id: string;
     name: string;
-};
+}
 
 export type AuthorCardProps = {
     id: string;
@@ -165,3 +171,18 @@ export type BookStateItem = {
     icon: React.ReactNode;
     content: string;
 };
+
+export type GetCategoriesQuery = {
+    categories: {
+        id: string;
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+    }[];
+};
+
+export type UseBooksMode = {
+    mode: "home" | "library";
+};
+
+export type UseAuthorsMode = UseBooksMode;

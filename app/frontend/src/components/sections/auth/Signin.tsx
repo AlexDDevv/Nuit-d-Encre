@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/toast/useToast";
 import { UserSignIn } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";

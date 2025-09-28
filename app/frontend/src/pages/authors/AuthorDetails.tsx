@@ -3,8 +3,8 @@ import BookCard from "@/components/sections/book/BookCard";
 import { Button } from "@/components/UI/Button";
 import Links from "@/components/UI/Links";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { useAuthor } from "@/hooks/useAuthor";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
+import { useAuthorData } from "@/hooks/author/useAuthorData";
 import { BookCardProps } from "@/types/types";
 import { User } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -20,9 +20,9 @@ export default function AuthorDetails() {
     const [idStr] = slug.split("-");
     const id = idStr;
 
-    const { author, authorLoading, authorError } = useAuthor(id);
+    const { author, isLoadingAuthor, authorError } = useAuthorData(id);
 
-    if (authorLoading) {
+    if (isLoadingAuthor) {
         return <AuthorDetailsSkeleton />;
     }
 

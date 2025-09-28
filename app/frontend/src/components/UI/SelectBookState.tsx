@@ -7,7 +7,7 @@ import {
     BookCheck,
     Trash2,
 } from "lucide-react";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import {
     Select,
     SelectContent,

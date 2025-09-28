@@ -6,21 +6,45 @@ import {
     SelectValue,
 } from "@/components/UI/Select";
 import { cn, slugify } from "@/lib/utils";
-import { useBook } from "@/hooks/useBook";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
-import { categoryPropsType } from "@/types/types";
+import { CategoryBook } from "@/types/types";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
+import { useCategoriesData } from "@/hooks/category/useCategoriesData";
 
 export default function SelectCategory() {
-    const { categories, loadingCategories, errorCategories } = useBook();
+    const { categories, isLoadingCategories, errorCategories } =
+        useCategoriesData();
     const [searchParams, setSearchParams] = useSearchParams();
+
+    if (isLoadingCategories) {
+        return (
+            <Skeleton className="bg-input border-border mx-auto flex h-10 w-60 min-w-60 rounded-lg border" />
+        );
+    }
+
+    if (errorCategories) {
+        const isNotFoundError = errorCategories.graphQLErrors.some((error) =>
+            error.message.includes("Failed to fetch categories"),
+        );
+
+        if (isNotFoundError) {
+            throw new Response("Categories not found", { status: 404 });
+        }
+
+        // Pour les autres erreurs GraphQL
+        throw new Response("Error loading categories", { status: 500 });
+    }
+
+    if (!categories) {
+        throw new Response("Categories not found", { status: 404 });
+    }
 
     const selectedCategoryId = searchParams.get("categoryId");
 
     const filterByCategory = (categoryId: string) => {
         const category = categories.find(
-            (category: categoryPropsType) => category.id === categoryId,
+            (category: CategoryBook) => category.id === categoryId,
         );
         if (!category) return;
 
@@ -46,29 +70,6 @@ export default function SelectCategory() {
         setSearchParams(newParams);
     };
 
-    if (loadingCategories) {
-        return (
-            <Skeleton className="bg-input border-border mx-auto flex h-10 w-60 min-w-60 rounded-lg border" />
-        );
-    }
-
-    if (errorCategories) {
-        const isNotFoundError = errorCategories.graphQLErrors.some((error) =>
-            error.message.includes("Failed to fetch categories"),
-        );
-
-        if (isNotFoundError) {
-            throw new Response("Categories not found", { status: 404 });
-        }
-
-        // Pour les autres erreurs GraphQL
-        throw new Response("Error loading categories", { status: 500 });
-    }
-
-    if (!categories) {
-        throw new Response("Categories not found", { status: 404 });
-    }
-
     const openStateClasses =
         "data-[state=open]:ring-2 data-[state=open]:ring-ring data-[state=open]:ring-offset-2";
 
@@ -87,18 +88,16 @@ export default function SelectCategory() {
                     <SelectValue placeholder="Sélectionnez une catégorie" />
                 </SelectTrigger>
                 <SelectContent animate={true}>
-                    {categories.map(
-                        (category: categoryPropsType, index: number) => (
-                            <SelectItem
-                                key={category.id}
-                                value={category.id}
-                                animate={true}
-                                index={index}
-                            >
-                                {category.name}
-                            </SelectItem>
-                        ),
-                    )}
+                    {categories.map((category: CategoryBook, index: number) => (
+                        <SelectItem
+                            key={category.id}
+                            value={category.id}
+                            animate={true}
+                            index={index}
+                        >
+                            {category.name}
+                        </SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
             {selectedCategoryId && (

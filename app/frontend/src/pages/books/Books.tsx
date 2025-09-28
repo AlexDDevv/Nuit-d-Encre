@@ -2,7 +2,7 @@ import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
 import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/UI/SelectCategory";
-import { useBook } from "@/hooks/useBook";
+import { useBooksData } from "@/hooks/book/useBooksData";
 import { BookCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
@@ -10,12 +10,30 @@ import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 export default function Books() {
     const {
         books,
-        isFetching,
+        isLoadingBooks,
+        booksError,
         totalCount,
         currentPage,
         setCurrentPage,
         PER_PAGE,
-    } = useBook();
+    } = useBooksData({ mode: "home" });
+
+    if (!books && booksError) {
+        const isNotFoundError = booksError.graphQLErrors.some((error) =>
+            error.message.includes("Books not found"),
+        );
+
+        if (isNotFoundError) {
+            throw new Response("Books not found", { status: 404 });
+        }
+
+        // Pour les autres erreurs GraphQL
+        throw new Response("Failed to fetch books", { status: 500 });
+    }
+
+    if (!isLoadingBooks && !books) {
+        throw new Response("Books not found", { status: 404 });
+    }
 
     return (
         <>
@@ -48,7 +66,7 @@ export default function Books() {
                     content="Page des livres disponibles sur le site Nuit d'Encre."
                 />
             </Helmet>
-            {isFetching ? (
+            {isLoadingBooks ? (
                 <BookPageSkeleton />
             ) : (
                 <section className="flex min-h-[calc(100vh_-_var(--header-height))] flex-col items-center justify-center gap-20">
@@ -84,7 +102,7 @@ export default function Books() {
                         className="mx-auto my-0 w-max"
                         currentPage={currentPage}
                         totalCount={totalCount}
-                        perPage={PER_PAGE.all}
+                        perPage={PER_PAGE.home}
                         onPageChange={setCurrentPage}
                     />
                 </section>

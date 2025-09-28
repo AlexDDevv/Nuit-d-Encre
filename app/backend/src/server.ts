@@ -9,7 +9,7 @@ import { AuthResolver } from "./graphql/resolvers/user/auth-resolver";
 import { customAuthChecker } from "./middlewares/auth-checker";
 import { AppError } from "./middlewares/error-handler";
 import { createAdmin } from "./scripts/create-admin";
-import { CategoryResolver } from "./graphql/resolvers/book/category-resolver";
+import { CategoryResolver } from "./graphql/resolvers/category/category-resolver";
 import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
 import { AuthorsResolver } from "./graphql/resolvers/author/author-resolver";
 import { UserActionsResolver } from "./graphql/resolvers/user/user-actions-resolver";

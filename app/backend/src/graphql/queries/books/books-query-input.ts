@@ -22,7 +22,7 @@ import { BookFormat } from "../../../types/types"
  * - `@IsOptional()`: marks each field as optional during validation (class-validator).
  */
 @InputType()
-export class AllBooksQueryInput {
+export class BooksQueryInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()

@@ -1,6 +1,6 @@
 import { Button } from "@/components/UI/Button";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { useToast } from "@/hooks/useToast";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
+import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate } from "react-router-dom";
 
 export default function AuthButtons({ pathname }: { pathname: string }) {
