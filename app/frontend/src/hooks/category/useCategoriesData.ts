@@ -1,4 +1,4 @@
-import { GET_CATEGORIES } from "@/graphql/book/category";
+import { GET_CATEGORIES } from "@/graphql/category/category";
 import { GetCategoriesQuery } from "@/types/types";
 import { useQuery } from "@apollo/client";
 
