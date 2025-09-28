@@ -21,10 +21,8 @@ import { Book } from "../../../database/entities/book/book"
 import { CreateBookInput } from "../../inputs/create/book/create-book-input"
 import { Category } from "../../../database/entities/book/category"
 import { UpdateBookInput } from "../../inputs/update/book/update-book-input"
-import { AllBooksResult } from "../../../database/filteredResults/books/all-books-result"
-import { AllBooksQueryInput } from "../../queries/books/books-query-input"
-import { MyBooksResult } from "../../../database/filteredResults/books/my-books-result"
-import { MyBooksQueryInput } from "../../queries/books/my-books-query-input"
+import { BooksResult } from "../../../database/filteredResults/books/books-result"
+import { BooksQueryInput } from "../../queries/books/books-query-input"
 import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
@@ -59,11 +57,11 @@ export class BooksResolver {
      *
      * @throws AppError - If no books are found or in case of a server error.
      */
-    @Query(() => AllBooksResult)
+    @Query(() => BooksResult)
     async books(
-        @Arg("filters", () => AllBooksQueryInput, { nullable: true })
-        filters: AllBooksQueryInput
-    ): Promise<AllBooksResult> {
+        @Arg("filters", () => BooksQueryInput, { nullable: true })
+        filters: BooksQueryInput
+    ): Promise<BooksResult> {
         try {
             const {
                 search,
@@ -182,125 +180,6 @@ export class BooksResolver {
         } catch (error) {
             throw new AppError(
                 "Failed to fetch book",
-                500,
-                "InternalServerError"
-            )
-        }
-    }
-
-    /**
-     * GraphQL Query to retrieve books belonging to the currently authenticated user.
-     *
-     * This query supports:
-     * - search by title, isbn, author, publisher
-     * - filtering by category,
-     * - sorting (by format, language),
-     * - pagination,
-     * - and total count before and after filters.
-     *
-     * ⚠️ Access restricted to roles `User` and `Admin`.
-     *
-     * @param filters - Search filters and options for pagination/sorting.
-     * @param context - GraphQL context containing the authenticated user.
-     *
-     * @returns A paginated list of the user's books and related metadata.
-     *
-     * @throws AppError - If the user is not authenticated or in case of a server error.
-     */
-    @Authorized(Roles.User, Roles.Admin)
-    @Query(() => MyBooksResult)
-    async myBooks(
-        @Arg("filters", () => MyBooksQueryInput, { nullable: true })
-        filters: MyBooksQueryInput,
-        @Ctx() context: Context
-    ): Promise<MyBooksResult> {
-        try {
-            const user = context.user
-
-            if (!user) {
-                throw new AppError(
-                    "You can only retrieve your own books",
-                    401,
-                    "UnauthorizedError"
-                )
-            }
-
-            const {
-                search,
-                categoryIds,
-                format,
-                language,
-                page = 1,
-                limit = 12,
-            } = filters || {}
-
-            // Retrieve the base query with all books created by the user
-            const baseQuery = Book.createQueryBuilder("book").where(
-                "book.userId = :userId",
-                { userId: user.id }
-            )
-
-            // Get the total number of unfiltered books and clone the query to apply filters
-            const [totalCountAll, filteredQuery] = await Promise.all([
-                baseQuery.getCount(),
-                baseQuery.clone(),
-            ])
-
-            // Filter by title, isnb13, authors and publisher (search)
-            if (search?.trim()) {
-                const trimmedSearch = `%${search.trim()}%`;
-
-                filteredQuery.andWhere(new Brackets(qb => {
-                    qb.where("book.title ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
-                        .orWhere("author.firstname ILIKE :search", { search: trimmedSearch })
-                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
-                }));
-            }
-
-            // Filter by category
-            if (categoryIds && categoryIds.length > 0) {
-                filteredQuery.andWhere(
-                    "book.category.id IN (:...categoryIds)",
-                    {
-                        categoryIds,
-                    }
-                )
-            }
-
-            // Filter by format
-            if (format && format.length > 0) {
-                filteredQuery.andWhere("book.format IN (:...format)", {
-                    format,
-                })
-            }
-
-            // Filter by language
-            if (language) {
-                filteredQuery.andWhere("book.language ILIKE :language", {
-                    language
-                })
-            }
-
-            // Get the total number of books matching the filters (for pagination)
-            const totalCount = await filteredQuery.getCount()
-
-            // Apply pagination
-            filteredQuery.skip((page - 1) * limit).take(limit)
-
-            const books = await filteredQuery.getMany()
-
-            return {
-                books,
-                totalCount,
-                totalCountAll,
-                page,
-                limit,
-            }
-        } catch (error) {
-            throw new AppError(
-                "Failed to fetch user books",
                 500,
                 "InternalServerError"
             )

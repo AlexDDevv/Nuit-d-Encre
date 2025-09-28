@@ -18,8 +18,8 @@ import {
 import { Context, Roles } from "../../../types/types"
 import { AppError } from "../../../middlewares/error-handler"
 import { Category } from "../../../database/entities/book/category"
-import { CreateCategoryInput } from "../../inputs/create/book/create-category-input"
-import { UpdateCategoryInput } from "../../inputs/update/book/update-category-input"
+import { CreateCategoryInput } from "../../inputs/create/category/create-category-input"
+import { UpdateCategoryInput } from "../../inputs/update/category/update-category-input"
 
 /**
  * CategoryResolver

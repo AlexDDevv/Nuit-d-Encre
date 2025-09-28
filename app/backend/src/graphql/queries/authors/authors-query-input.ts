@@ -2,22 +2,25 @@ import { IsOptional, IsInt, Min, IsString } from "class-validator"
 import { Field, InputType, Int } from "type-graphql"
 
 /**
- * Represents the input parameters for querying authors owned by the authenticated user.
- * This input is used to filter, sort, and paginate the user's personal author collection.
+ * Represents the input parameters for querying all authors.
+ * This input is used to filter, sort, and paginate all authors in the app collection.
  *
  * @description
+ * This input type defines the filters, sorting, and pagination options
+ * for retrieving a paginated list of authors.
+ *
  * - `search`: filter authors by firstname and lastname.
- * - `page`: optional page number for pagination (e.g., 1 for the first page).
- * - `limit`: optional number of items per page (used for pagination).
+ * - `page`: page number for paginated results (default is typically 1).
+ * - `limit`: maximum number of results per page (default can be 10–20).
  *
  * All fields are optional, allowing flexible and partial filtering.
- *
+ * 
  * The decorators used are:
  * - `@Field({ nullable: true })`: exposes each property to the GraphQL schema as optional.
  * - `@IsOptional()`: marks each field as optional during validation (class-validator).
  */
 @InputType()
-export class MyAuthorsQueryInput {
+export class AuthorsQueryInput {
 	@Field(() => String, { nullable: true })
 	@IsOptional()
 	@IsString()

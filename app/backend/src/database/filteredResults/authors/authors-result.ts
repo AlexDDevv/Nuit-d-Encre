@@ -17,7 +17,7 @@ import { Author } from "../../entities/author/author"
  * - `@Field()`: exposes each property to the GraphQL schema.
  */
 @ObjectType()
-export class AllAuthorsResult {
+export class AuthorsResult {
 	@Field(() => [Author])
 	allAuthors!: Author[]
 
