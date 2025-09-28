@@ -1,6 +1,6 @@
 import { IsEmail, IsIn, IsOptional, Length } from "class-validator";
 import { Field, InputType } from "type-graphql";
-import { Roles, UserRole } from "../../../types/types";
+import { Roles, UserRole } from "../../../../types/types";
 
 /**
  * Represents user input for updating an existing user.

@@ -1,10 +1,10 @@
 import { Arg, Ctx, Mutation, Query, Resolver, Authorized } from "type-graphql";
 import { LogInResponse, User } from "../../../database/entities/user/user";
-import { CreateUserInput } from "../../inputs/create/create-auth-input";
+import { CreateUserInput } from "../../inputs/create/user/create-auth-input";
 import { AppError } from "../../../middlewares/error-handler";
 import { login, register, whoami } from "../../../services/auth-service";
 import { Context, Roles } from "../../../types/types";
-import { LogUserInput } from "../../inputs/create/create-auth-input";
+import { LogUserInput } from "../../inputs/create/user/create-auth-input";
 
 /**
  * AuthResolver handles all authentication-related GraphQL mutations and queries.
