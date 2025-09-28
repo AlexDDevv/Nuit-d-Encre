@@ -73,6 +73,7 @@ export type CreateBookInput = {
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
 export interface Author {
+    id: string;
     firstname: string;
     lastname: string;
     birthDate?: string;
@@ -80,6 +81,8 @@ export interface Author {
     nationality?: string;
     wikipediaUrl?: string;
     officialWebsite?: string;
+    books: Book[];
+    user: User;
 }
 
 export type CreateAuthorInput = Author;
@@ -181,3 +184,5 @@ export type GetCategoriesQuery = {
 export type UseBooksMode = {
     mode: "home" | "library";
 };
+
+export type UseAuthorsMode = UseBooksMode;

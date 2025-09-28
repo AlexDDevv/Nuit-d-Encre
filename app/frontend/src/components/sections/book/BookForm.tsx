@@ -188,7 +188,7 @@ export default function BookForm() {
                 </h1>
                 <p className="text-card-foreground font-medium">
                     {bookId
-                        ? "Modifier les informations du livre."
+                        ? "Modifiez les informations du livre."
                         : "Remplissez les informations du livre pour l'ajouter à la bibliothèque de Nuit d'Encre."}
                 </p>
             </div>

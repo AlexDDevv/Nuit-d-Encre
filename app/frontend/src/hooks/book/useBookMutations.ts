@@ -9,14 +9,14 @@ import {
 } from "@/graphql/book/book";
 
 /**
- * Hook fournissant toutes les mutations GraphQL liées aux livres.
+ * Hook providing all GraphQL mutations related to books.
  *
  * @description
- * Ce hook encapsule la logique de création, mise à jour et suppression d’un livre.
- * Il utilise `useMutation` d’Apollo Client et expose les états de chargement,
- * les erreurs ainsi que des fonctions pour les réinitialiser.
+ * This hook encapsulates the logic for creating, updating, and deleting a book.
+ * It uses Apollo Client's `useMutation` and exposes loading states,
+ * errors, as well as functions to reset them.
  *
- * @returns {Object} Un objet contenant les fonctions de mutation et leurs états.
+ * @returns {Object} An object containing mutation functions and their states.
  * - createBook(book: CreateBookInput): Promise<{ id: string } | undefined>
  * - isCreatingBook: boolean
  * - createBookError: ApolloError | undefined
@@ -32,7 +32,7 @@ import {
  *
  * @example
  * ```ts
- * import { useBookMutations } from "@/hooks/..."; // le nom du hook reste identique dans cet exemple
+ * import { useBookMutations } from "@/hooks/...";
  *
  * const {
  *   createBook,
@@ -49,19 +49,19 @@ import {
  *   resetDeleteBookError,
  * } = useBookMutations();
  *
- * // Créer un livre
+ * // Create a book
  * const created = await createBook({
- *   title: "Le chat et le code",
- *   description: "Un guide pour les devs félins.",
+ *   title: "The Cat and the Code",
+ *   description: "A guide for feline developers.",
  *   public: true,
  *   category: 1,
  * } as CreateBookInput);
  * console.log(created?.id);
  *
- * // Mettre à jour un livre
- * await updateBook("bookId", { title: "Titre mis à jour" });
+ * // Update a book
+ * await updateBook("bookId", { title: "Updated title" });
  *
- * // Supprimer un livre
+ * // Delete a book
  * await deleteBook("bookId");
  * ```
  */
