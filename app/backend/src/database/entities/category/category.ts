@@ -16,7 +16,7 @@ import {
 } from "typeorm"
 import { ObjectType, Field, ID } from "type-graphql"
 import { User } from "../user/user"
-import { Book } from "./book"
+import { Book } from "../book/book"
 
 /**
  * Category Entity

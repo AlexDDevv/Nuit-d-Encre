@@ -14,11 +14,13 @@ import {
     Column,
     Entity,
     ManyToOne,
+    OneToMany,
     PrimaryGeneratedColumn,
 } from "typeorm";
 import { User } from "../user/user";
-import { Category } from "./category";
+import { Category } from "../category/category";
 import { Author } from "../author/author";
+import { UserBook } from "../user/user-book";
 
 /**
  * Book Entity
@@ -194,6 +196,9 @@ export class Book extends BaseEntity {
     @ManyToOne(() => User, (user) => user.books)
     @Field(() => User)
     user!: User;
+
+    @OneToMany(() => UserBook, (ub) => ub.book)
+    userBooks!: UserBook[];
 
     /**
      * Timestamp when the book was created

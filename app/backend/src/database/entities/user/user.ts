@@ -10,6 +10,7 @@ import { Roles, UserRole } from "../../../types/types";
 import { Book } from "../book/book";
 import { UserActions } from "./user-actions";
 import { Author } from "../author/author";
+import { UserBook } from "./user-book";
 
 /**
  * Represents a user entity in the database.
@@ -78,6 +79,9 @@ export class User extends BaseEntity {
     @Field(() => [UserActions])
     @OneToMany(() => UserActions, (action) => action.user)
     actions!: UserActions[];
+
+    @OneToMany(() => UserBook, (ub) => ub.user)
+    userBooks!: UserBook[];
 
     @Field()
     @Column({ default: () => "CURRENT_TIMESTAMP" })

@@ -37,4 +37,11 @@ export interface AuthorNameParts {
     lastname: string;
 }
 
+export enum ReadingStatus {
+    TO_READ = "to_read",      
+    READING = "reading",       
+    READ = "read",             
+    PAUSED = "paused",        
+}
+
 
