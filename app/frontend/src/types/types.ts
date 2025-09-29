@@ -186,3 +186,34 @@ export type UseBooksMode = {
 };
 
 export type UseAuthorsMode = UseBooksMode;
+
+export interface UserBook {
+    id: string;
+    book: Book;
+    user: User;
+    status: userBookStatus;
+    rating?: number;
+    review?: string;
+    recommended?: boolean;
+    startedAt?: string;
+    finishedAt?: string;
+    isPublic?: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+type userBookStatus = "to_read" | "reading" | "read" | "paused";
+
+export interface CreateUserBookInput {
+    book: Book;
+    user: User;
+    status: userBookStatus;
+    rating?: number;
+    review?: string;
+    recommended?: boolean;
+    startedAt?: string;
+    finishedAt?: string;
+    isPublic?: boolean;
+}
+
+export type UserBookStatus = "to_read" | "reading" | "read" | "paused";
