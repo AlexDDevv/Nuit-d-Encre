@@ -133,8 +133,6 @@ export function useBooksData({ mode }: UseBooksMode) {
         setCurrentPage,
         PER_PAGE,
         totalCount: booksData?.books.totalCount ?? 0,
-        filters,
         setFilters,
-        formatLabelMap,
     };
 }
