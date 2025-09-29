@@ -92,12 +92,12 @@ export class CreateUserBookInput {
    * @description
    * Optional integer rating (typically 0–5).
    */
-@Field(() => Int, { nullable: true })
-@IsOptional()
-@IsInt()
-@Min(0)
-@Max(5)
-rating?: number;
+  @Field(() => Int, { nullable: true })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(5)
+  rating?: number;
 
   /**
    * Initial textual review
@@ -112,20 +112,20 @@ rating?: number;
    * @description
    * Optional boolean indicating whether the user recommends this book.
    */
-@Field({ nullable: true })
-@IsOptional()
-@IsBoolean()
-recommended?: boolean;
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  recommended?: boolean;
 
   /**
    * Visibility of the entry
    * @description
    * If omitted, defaults to true (public).
    */
-@Field({ nullable: true })
-@IsOptional()
-@IsBoolean()
-isPublic?: boolean;
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  isPublic?: boolean;
 
   /**
    * Reading start date

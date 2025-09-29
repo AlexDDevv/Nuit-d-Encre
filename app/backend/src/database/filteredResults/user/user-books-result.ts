@@ -8,7 +8,7 @@ import { UserBook } from "../../../database/entities/user/user-book";
 @ObjectType()
 export class UserBooksResult {
     @Field(() => [UserBook])
-    entries!: UserBook[];
+    userBooks!: UserBook[];
 
     @Field(() => Int)
     totalCount!: number;
