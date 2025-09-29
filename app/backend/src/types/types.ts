@@ -19,6 +19,8 @@ export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket"
 export enum UserActionType {
     BOOK_ADDED = "BOOK_ADDED",
     AUTHOR_ADDED = "AUTHOR_ADDED",
+    BOOK_ADDED_TO_LIBRARY = "BOOK_ADDED_TO_LIBRARY",
+    BOOK_FINISHED = "BOOK_FINISHED",
 }
 
 export type XPResultType = {
@@ -35,6 +37,13 @@ export type GrantXPOptions = {
 export interface AuthorNameParts {
     firstname: string;
     lastname: string;
+}
+
+export enum ReadingStatus {
+    TO_READ = "to_read",      
+    READING = "reading",       
+    READ = "read",             
+    PAUSED = "paused",        
 }
 
 

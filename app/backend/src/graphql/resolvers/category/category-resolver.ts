@@ -17,7 +17,7 @@ import {
 } from "type-graphql"
 import { Context, Roles } from "../../../types/types"
 import { AppError } from "../../../middlewares/error-handler"
-import { Category } from "../../../database/entities/book/category"
+import { Category } from "../../../database/entities/category/category"
 import { CreateCategoryInput } from "../../inputs/create/category/create-category-input"
 import { UpdateCategoryInput } from "../../inputs/update/category/update-category-input"
 
