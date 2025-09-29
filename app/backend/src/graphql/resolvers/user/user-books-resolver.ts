@@ -71,6 +71,8 @@ export class UserBooksResolver {
         try {
             const {
                 status,
+                ratingMin,
+                ratingMax,
                 recommended,
                 isPublic,
                 search,
@@ -97,6 +99,16 @@ export class UserBooksResolver {
             // Filter by status
             if (status && status.length > 0) {
                 filteredQuery.andWhere("userBook.status IN :status", { status });
+            }
+
+            // Filter by Rating min
+            if (typeof ratingMin === "number") {
+                filteredQuery.andWhere("userBook.rating >= :ratingMin", { ratingMin });
+            }
+
+            // Filter by Rating max
+            if (typeof ratingMax === "number") {
+                filteredQuery.andWhere("userBook.rating <= :ratingMax", { ratingMax });
             }
 
             // Filter by recommended book
