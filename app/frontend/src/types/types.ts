@@ -237,4 +237,31 @@ export type BookCardLibraryProps = {
     rating: number;
     recommended: boolean;
     status: UserBookStatus;
+    layout: LayoutOptionsValue;
+};
+
+export type LayoutOptionsValue = "grid" | "list" | "shelf";
+
+export type UserBookInfoProps = {
+    category: string;
+    rating: number;
+    recommended: boolean;
+};
+
+export type LayoutOptions = {
+    icon: LucideIcon;
+    label: string;
+    value: LayoutOptionsValue;
+};
+
+export type LayoutButtonsProps = {
+    activeLayout: LayoutOptionsValue;
+    onLayoutChange: (layout: LayoutOptionsValue) => void;
+};
+
+export type BookShelfProps = Omit<
+    BookCardLibraryProps,
+    "layout" | "id" | "status"
+> & {
+    statusLabel: string;
 };
