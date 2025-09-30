@@ -145,7 +145,7 @@ export class UserBook extends BaseEntity {
    * @description
    * Optional free-form text review associated with the book.
    */
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   @Column({ type: "text", nullable: true })
   review?: string | null;
 
@@ -164,7 +164,7 @@ export class UserBook extends BaseEntity {
    * @description
    * Optional date when the user started reading the book.
    */
-  @Field({ nullable: true })
+  @Field(() => Date, { nullable: true })
   @Column({ type: "date", nullable: true })
   startedAt?: Date | null;
 
@@ -173,7 +173,7 @@ export class UserBook extends BaseEntity {
    * @description
    * Optional date when the user finished reading the book.
    */
-  @Field({ nullable: true })
+  @Field(() => Date, { nullable: true })
   @Column({ type: "date", nullable: true })
   finishedAt?: Date | null;
 
