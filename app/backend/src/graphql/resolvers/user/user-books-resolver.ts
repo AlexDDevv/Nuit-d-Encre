@@ -282,7 +282,18 @@ export class UserBooksResolver {
                 });
             }
 
-            return newUserBook;
+            const userBookWithRelations = await UserBook.findOne({
+                where: { id: newUserBook.id },
+                relations: {
+                    user: true,
+                    book: {
+                        author: true,
+                        category: true
+                    }
+                },
+            });
+
+            return userBookWithRelations!
         } catch (error) {
             throw new AppError(
                 "Failed to create book",

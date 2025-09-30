@@ -119,10 +119,10 @@ const languageLabelMap: Record<string, string> = {
 };
 
 const statusLabelMap: Record<UserBookStatus, string> = {
-    to_read: "À lire",
-    reading: "En cours",
-    read: "Lu",
-    paused: "En pause",
+    TO_READ: "À lire",
+    READING: "En cours",
+    READ: "Lu",
+    PAUSED: "En pause",
 };
 
 const booleanLabelMap: Record<
@@ -176,6 +176,15 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         Object.values(statusLabelMap).includes(f),
     );
 
+    const statusValues = selectedStatus
+        .map(
+            (label) =>
+                Object.entries(statusLabelMap).find(
+                    ([, v]) => v === label,
+                )?.[0],
+        )
+        .filter(Boolean) as (keyof typeof statusLabelMap)[];
+
     const selectedIsPublic = Object.entries(booleanLabelMap.isPublic).find(
         ([, label]) => filters.includes(label),
     )?.[0];
@@ -210,12 +219,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
                 language: selectedLanguage
                     ? languageLabelToCode[selectedLanguage]
                     : undefined,
-                status: selectedStatus.map(
-                    (label) =>
-                        Object.entries(statusLabelMap).find(
-                            ([, v]) => v === label,
-                        )?.[0],
-                ),
+                status: statusValues.length ? statusValues[0] : undefined,
                 isPublic: selectedIsPublic
                     ? selectedIsPublic === "true"
                     : undefined,

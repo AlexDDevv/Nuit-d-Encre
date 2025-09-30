@@ -13,6 +13,7 @@ import { CategoryResolver } from "./graphql/resolvers/category/category-resolver
 import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
 import { AuthorsResolver } from "./graphql/resolvers/author/author-resolver";
 import { UserActionsResolver } from "./graphql/resolvers/user/user-actions-resolver";
+import { UserBooksResolver } from "./graphql/resolvers/user/user-books-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -42,7 +43,8 @@ if (!process.env.APP_PORT) {
                 CategoryResolver,
                 BooksResolver,
                 AuthorsResolver,
-                UserActionsResolver
+                UserActionsResolver,
+                UserBooksResolver
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields

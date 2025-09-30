@@ -84,7 +84,7 @@ export default function BookDetails() {
                             {book.category.name}
                         </p>
                     </div>
-                    <SelectBookState />
+                    <SelectBookState bookId={id} />
                 </div>
             </div>
             <div className="flex gap-20">
