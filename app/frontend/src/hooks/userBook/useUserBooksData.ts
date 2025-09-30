@@ -176,6 +176,15 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         Object.values(statusLabelMap).includes(f),
     );
 
+    const statusValues = selectedStatus
+        .map(
+            (label) =>
+                Object.entries(statusLabelMap).find(
+                    ([, v]) => v === label,
+                )?.[0],
+        )
+        .filter(Boolean) as (keyof typeof statusLabelMap)[];
+
     const selectedIsPublic = Object.entries(booleanLabelMap.isPublic).find(
         ([, label]) => filters.includes(label),
     )?.[0];
@@ -210,12 +219,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
                 language: selectedLanguage
                     ? languageLabelToCode[selectedLanguage]
                     : undefined,
-                status: selectedStatus.map(
-                    (label) =>
-                        Object.entries(statusLabelMap).find(
-                            ([, v]) => v === label,
-                        )?.[0],
-                ),
+                status: statusValues.length ? statusValues[0] : undefined,
                 isPublic: selectedIsPublic
                     ? selectedIsPublic === "true"
                     : undefined,
