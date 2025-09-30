@@ -11,6 +11,7 @@ export const GET_USER_BOOKS = gql`
                     userName
                 }
                 book {
+                    id
                     title
                     summary
                     author {
@@ -63,6 +64,7 @@ export const GET_USER_BOOK = gql`
                 userName
             }
             book {
+                id
                 title
                 summary
                 author {
@@ -110,6 +112,7 @@ export const CREATE_USER_BOOK = gql`
                 userName
             }
             book {
+                id
                 title
                 summary
                 author {
