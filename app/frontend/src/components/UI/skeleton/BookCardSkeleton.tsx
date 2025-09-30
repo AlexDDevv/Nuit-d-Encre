@@ -15,7 +15,7 @@ export default function BookCardSkeleton({
         >
             {Array.from({ length: isInAuthor ? 4 : 12 }, (_, index) => (
                 <div
-                    className="border-border bg-card flex h-80 w-72 flex-col items-center justify-center gap-5 rounded-lg border-2 p-8"
+                    className="border-border bg-card flex h-80 w-72 flex-col items-center justify-center gap-5 rounded-xl border-2 p-8"
                     key={index}
                 >
                     {/* Book icon skeleton */}

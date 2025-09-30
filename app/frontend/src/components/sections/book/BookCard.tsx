@@ -36,7 +36,7 @@ export default function BookCard({
             aria-current={isCurrent ? "page" : undefined}
             aria-label={ariaLabel}
             data-category="Livre"
-            className={`border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring flex h-80 flex-col items-center justify-center gap-5 rounded-lg border-2 px-6 py-5 transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${className}`}
+            className={`border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring flex h-80 flex-col items-center justify-center gap-5 rounded-xl border-2 px-6 py-5 transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${className}`}
         >
             <div className="w-32">
                 <img
