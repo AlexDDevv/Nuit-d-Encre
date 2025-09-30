@@ -243,5 +243,6 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         setFilters,
         ratingRange,
         setRatingRange,
+        statusLabelMap,
     };
 }
