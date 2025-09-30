@@ -119,10 +119,10 @@ const languageLabelMap: Record<string, string> = {
 };
 
 const statusLabelMap: Record<UserBookStatus, string> = {
-    to_read: "À lire",
-    reading: "En cours",
-    read: "Lu",
-    paused: "En pause",
+    TO_READ: "À lire",
+    READING: "En cours",
+    READ: "Lu",
+    PAUSED: "En pause",
 };
 
 const booleanLabelMap: Record<
