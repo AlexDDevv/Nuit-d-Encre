@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_AUTHORS = gql`
-    query Authors($filters: AllAuthorsQueryInput) {
+    query Authors($filters: AuthorsQueryInput) {
         authors(filters: $filters) {
             allAuthors {
                 id
