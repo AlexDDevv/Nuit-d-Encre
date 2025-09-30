@@ -46,7 +46,10 @@ export default function BookCard({
                 />
             </div>
             <div className="flex flex-col items-center justify-center gap-2 text-center">
-                <h2 className="text-card-foreground line-clamp-2 text-2xl font-medium">
+                <h2
+                    className="text-card-foreground line-clamp-2 text-2xl font-medium"
+                    title={title}
+                >
                     {title}
                 </h2>
                 {!isInAuthorPage && (
