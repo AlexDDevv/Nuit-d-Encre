@@ -191,7 +191,7 @@ export interface UserBook {
     id: string;
     book: Book;
     user: User;
-    status: userBookStatus;
+    status: UserBookStatus;
     rating?: number;
     review?: string;
     recommended?: boolean;
@@ -202,12 +202,9 @@ export interface UserBook {
     updatedAt: string;
 }
 
-type userBookStatus = "to_read" | "reading" | "read" | "paused";
-
 export interface CreateUserBookInput {
-    book: Book;
-    user: User;
-    status: userBookStatus;
+    bookId: string;
+    status: UserBookStatus;
     rating?: number;
     review?: string;
     recommended?: boolean;
@@ -216,4 +213,4 @@ export interface CreateUserBookInput {
     isPublic?: boolean;
 }
 
-export type UserBookStatus = "to_read" | "reading" | "read" | "paused";
+export type UserBookStatus = "TO_READ" | "READING" | "READ" | "PAUSED";
