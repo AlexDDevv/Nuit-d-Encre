@@ -19,7 +19,7 @@ export default function SelectCategory() {
 
     if (isLoadingCategories) {
         return (
-            <Skeleton className="bg-input border-border mx-auto flex h-10 w-60 min-w-60 rounded-lg border" />
+            <Skeleton className="bg-input border-border flex h-10 w-60 min-w-60 rounded-lg border" />
         );
     }
 
@@ -81,7 +81,7 @@ export default function SelectCategory() {
             >
                 <SelectTrigger
                     className={cn(
-                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border mx-auto flex w-60 min-w-60 rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border flex w-60 min-w-60 rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                         openStateClasses,
                     )}
                 >
