@@ -26,7 +26,7 @@ export default function LayoutButtons({
     onLayoutChange,
 }: LayoutButtonsProps) {
     return (
-        <div className="flex items-center justify-center gap-8">
+        <div className="flex items-center justify-center gap-3">
             {LAYOUT_OPTIONS.map(({ icon, label, value }) => (
                 <Button
                     key={value}
