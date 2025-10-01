@@ -167,11 +167,6 @@ export interface AuthorInfoProps {
     author: Author;
 }
 
-export type BookStateItem = {
-    icon: React.ReactNode;
-    content: string;
-};
-
 export type GetCategoriesQuery = {
     categories: {
         id: string;
@@ -214,3 +209,59 @@ export interface CreateUserBookInput {
 }
 
 export type UserBookStatus = "TO_READ" | "READING" | "READ" | "PAUSED";
+
+export type UserBookStatusConfig = {
+    icon: LucideIcon;
+    label: string;
+    value: UserBookStatus;
+};
+
+export type SelectBookStatusProps = {
+    bookId: string;
+    status?: UserBookStatus;
+};
+
+export type BookCardLibraryProps = {
+    id: string;
+    book: {
+        title: string;
+        author: {
+            firstname: string;
+            lastname: string;
+        };
+        publishedYear: number;
+        publisher: string;
+        pageCount: number;
+        category: CategoryBook;
+    };
+    rating: number;
+    recommended: boolean;
+    status: UserBookStatus;
+    layout: LayoutOptionsValue;
+};
+
+export type LayoutOptionsValue = "grid" | "list" | "shelf";
+
+export type UserBookInfoProps = {
+    category: string;
+    rating: number;
+    recommended: boolean;
+};
+
+export type LayoutOptions = {
+    icon: LucideIcon;
+    label: string;
+    value: LayoutOptionsValue;
+};
+
+export type LayoutButtonsProps = {
+    activeLayout: LayoutOptionsValue;
+    onLayoutChange: (layout: LayoutOptionsValue) => void;
+};
+
+export type BookShelfProps = Omit<
+    BookCardLibraryProps,
+    "layout" | "id" | "status"
+> & {
+    statusLabel: string;
+};

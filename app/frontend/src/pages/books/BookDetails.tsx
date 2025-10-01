@@ -1,5 +1,5 @@
 import { Button } from "@/components/UI/Button";
-import SelectBookState from "@/components/UI/SelectBookState";
+import SelectBookStatus from "@/components/UI/SelectBookStatus";
 import BookInfos from "@/components/sections/book/BookInfos";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useParams } from "react-router-dom";
@@ -84,7 +84,7 @@ export default function BookDetails() {
                             {book.category.name}
                         </p>
                     </div>
-                    <SelectBookState bookId={id} />
+                    <SelectBookStatus bookId={id} />
                 </div>
             </div>
             <div className="flex gap-20">
