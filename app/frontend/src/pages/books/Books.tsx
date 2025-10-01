@@ -1,7 +1,7 @@
 import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
 import Pagination from "@/components/UI/Pagination";
-import SelectCategory from "@/components/UI/SelectCategory";
+import SelectCategory from "@/components/sections/book/SelectCategory";
 import { useBooksData } from "@/hooks/book/useBooksData";
 import { BookCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";

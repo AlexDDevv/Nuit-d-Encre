@@ -22,7 +22,7 @@ import {
 import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
-import { Skeleton } from "./skeleton/Skeleton";
+import { Skeleton } from "../../UI/skeleton/Skeleton";
 
 const BOOK_STATES: readonly UserBookStatusConfig[] = [
     {

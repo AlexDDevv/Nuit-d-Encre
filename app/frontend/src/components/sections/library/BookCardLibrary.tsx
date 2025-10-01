@@ -1,4 +1,4 @@
-import SelectBookStatus from "@/components/UI/SelectBookStatus";
+import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import { cn } from "@/lib/utils";
 import { BookCardLibraryProps } from "@/types/types";
 import UserBookInfo from "@/components/sections/library/UserBookInfo";
