@@ -30,8 +30,8 @@ export default function BookCardLibrary({
                         loading="lazy"
                     />
                 </div>
-                <div className="text-card-foreground flex flex-col gap-5">
-                    <header className="flex flex-col">
+                <div className="flex flex-col gap-5">
+                    <header className="text-card-foreground flex flex-col">
                         <h2
                             className="line-clamp-1 max-w-80 text-2xl font-bold"
                             title={book.title}
@@ -42,7 +42,7 @@ export default function BookCardLibrary({
                             {book.author.firstname} {book.author.lastname}
                         </p>
                     </header>
-                    <ul className="flex flex-col gap-1">
+                    <ul className="text-secondary-foreground flex flex-col gap-1">
                         <li>Année de publication : {book.publishedYear}</li>
                         <li>{book.publisher}</li>
                         <li>Nombre de page : {book.pageCount}</li>

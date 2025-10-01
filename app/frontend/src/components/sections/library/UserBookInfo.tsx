@@ -8,9 +8,9 @@ export default function UserBookInfo({
 }: UserBookInfoProps) {
     return (
         <>
-            <p className="text-card-foreground">{category}</p>
+            <p className="text-secondary-foreground">{category}</p>
             <RatingStars rating={rating} />
-            <p className="text-card-foreground">
+            <p className="text-secondary-foreground">
                 Recommandé par x {recommended} lecteurs
             </p>
         </>
