@@ -1,14 +1,25 @@
+import SearchBook from "@/components/sections/book/SearchBook";
 import BookCardLibrary from "@/components/sections/library/BookCardLibrary";
 import BookShelf from "@/components/sections/library/BookShelf";
 import LayoutButtons from "@/components/sections/library/UI/LayoutButtons";
 import Pagination from "@/components/UI/Pagination";
+import SelectCategory from "@/components/sections/book/SelectCategory";
 import { useUserBooksData } from "@/hooks/userBook/useUserBooksData";
 import { cn } from "@/lib/utils";
-import { BookCardLibraryProps, LayoutOptionsValue } from "@/types/types";
+import {
+    BookCardLibraryProps,
+    LayoutOptionsValue,
+    UserBookStatus,
+} from "@/types/types";
 import { useState } from "react";
+import FilterUserBookStatus from "@/components/sections/library/UI/FilterUserBookStatus";
 
 export default function UserLibrary() {
     const [layout, setLayout] = useState<LayoutOptionsValue>("grid");
+    const [selectedStatus, setSelectedStatus] = useState<UserBookStatus | "">(
+        "",
+    );
+
     const {
         userBooks,
         totalCount,
@@ -16,15 +27,31 @@ export default function UserLibrary() {
         setCurrentPage,
         PER_PAGE,
         statusLabelMap,
+        setFilters,
     } = useUserBooksData({ mode: "library" });
+
+    const handleStatusChange = (statusEnum: UserBookStatus | "") => {
+        setSelectedStatus(statusEnum);
+        const label = statusEnum ? statusLabelMap[statusEnum] : "";
+        setFilters(label ? [label] : []);
+        setCurrentPage(1);
+    };
 
     return (
         <section className="flex flex-col gap-20">
-            <div className="flex items-center justify-center gap-5">
+            <div className="flex flex-col items-center justify-center gap-5">
                 <LayoutButtons
                     activeLayout={layout}
                     onLayoutChange={setLayout}
                 />
+                <div className="flex items-center justify-center gap-5">
+                    <SelectCategory />
+                    <SearchBook isInLibrary={true} />
+                    <FilterUserBookStatus
+                        selectedStatus={selectedStatus}
+                        onStatusChange={handleStatusChange}
+                    />
+                </div>
             </div>
             <div
                 className={cn(
