@@ -8,7 +8,7 @@ import {
 import { cn, slugify } from "@/lib/utils";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
 import { CategoryBook } from "@/types/types";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
 import { useCategoriesData } from "@/hooks/category/useCategoriesData";
 
@@ -16,6 +16,8 @@ export default function SelectCategory() {
     const { categories, isLoadingCategories, errorCategories } =
         useCategoriesData();
     const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
+    const isInBooksPage = location.pathname === "/books";
 
     if (isLoadingCategories) {
         return (
@@ -100,7 +102,7 @@ export default function SelectCategory() {
                     ))}
                 </SelectContent>
             </Select>
-            {selectedCategoryId && (
+            {isInBooksPage && selectedCategoryId && (
                 <Button
                     ariaLabel="Retirer le filtre sur la catégorie"
                     children="Retirer le filtre"
