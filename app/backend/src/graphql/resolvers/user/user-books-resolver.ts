@@ -125,12 +125,12 @@ export class UserBooksResolver {
             if (search?.trim()) {
                 const trimmedSearch = `%${search.trim()}%`;
 
-                filteredQuery.andWhere(new Brackets(qb => {
-                    qb.where("book.title ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
-                        .orWhere("author.firstname ILIKE :search", { search: trimmedSearch })
-                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
-                        .orWhere("book.publisher ILIKE :search", { search: trimmedSearch })
+                filteredQuery.andWhere(new Brackets((qb) => {
+                    qb.where("unaccent(book.title) ILIKE unaccent(:search)", { search: trimmedSearch })
+                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch }) 
+                        .orWhere("unaccent(author.firstname) ILIKE unaccent(:search)", { search: trimmedSearch })
+                        .orWhere("unaccent(author.lastname) ILIKE unaccent(:search)", { search: trimmedSearch })
+                        .orWhere("unaccent(book.publisher) ILIKE unaccent(:search)", { search: trimmedSearch });
                 }));
             }
 
@@ -152,10 +152,10 @@ export class UserBooksResolver {
             }
 
             // Filter by language
-            if (language) {
-                filteredQuery.andWhere("book.language ILIKE :language", {
-                    language
-                })
+            if (language?.trim()) {
+                filteredQuery.andWhere("unaccent(book.language) ILIKE unaccent(:language)", {
+                    language: `%${language.trim()}%`,
+                });
             }
 
             // Get the total number of user's books matching the filters (for pagination)
