@@ -98,7 +98,7 @@ export class UserBooksResolver {
 
             // Filter by status
             if (status && status.length > 0) {
-                filteredQuery.andWhere("userBook.status IN :status", { status });
+                filteredQuery.andWhere("userBook.status IN (:...status)", { status });
             }
 
             // Filter by Rating min

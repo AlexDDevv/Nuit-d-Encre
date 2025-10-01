@@ -22,9 +22,9 @@ import { ReadingStatus } from "../../../types/types";
  */
 @InputType()
 export class UserBooksQueryInput extends BooksQueryInput {
-    @Field(() => ReadingStatus, { nullable: true })
-    @IsEnum(ReadingStatus)
-    status?: ReadingStatus;
+    @Field(() => [ReadingStatus], { nullable: true })
+    @IsEnum(ReadingStatus, { each: true })
+    status?: ReadingStatus[];
 
     @Field(() => Int, { nullable: true })
     @IsOptional()
