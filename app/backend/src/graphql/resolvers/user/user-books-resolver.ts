@@ -127,7 +127,7 @@ export class UserBooksResolver {
 
                 filteredQuery.andWhere(new Brackets((qb) => {
                     qb.where("unaccent(book.title) ILIKE unaccent(:search)", { search: trimmedSearch })
-                        .orWhere("book.isbn13 ILIKE :searchExact", { searchExact: trimmedSearch }) 
+                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch }) 
                         .orWhere("unaccent(author.firstname) ILIKE unaccent(:search)", { search: trimmedSearch })
                         .orWhere("unaccent(author.lastname) ILIKE unaccent(:search)", { search: trimmedSearch })
                         .orWhere("unaccent(book.publisher) ILIKE unaccent(:search)", { search: trimmedSearch });
