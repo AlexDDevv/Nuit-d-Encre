@@ -5,7 +5,7 @@ import { ButtonHTMLAttributes, forwardRef, Ref } from "react";
 import { Link } from "react-router-dom";
 
 const buttonVariants = cva(
-    "inline-flex items-center gap-2 w-fit justify-center rounded-lg transition-colors duration-200 ease-in-out font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer border-2",
+    "inline-flex items-center gap-2 w-fit justify-center rounded-lg transition-colors duration-200 ease-in-out font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer border-2 h-10",
     {
         variants: {
             variant: {
