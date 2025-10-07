@@ -240,6 +240,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         setCurrentPage,
         PER_PAGE,
         totalCount: userBooksData?.userBooks.totalCount ?? 0,
+        filters,
         setFilters,
         ratingRange,
         setRatingRange,

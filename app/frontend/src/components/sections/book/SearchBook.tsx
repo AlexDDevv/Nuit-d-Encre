@@ -85,7 +85,7 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
             <Button
                 type="submit"
                 ariaLabel="Rechercher un livre"
-                className="absolute right-1.5 p-1.5"
+                className="absolute right-1.5 h-fit p-1.5"
             >
                 <Search className="text-primary-foreground h-4 w-4" />
             </Button>

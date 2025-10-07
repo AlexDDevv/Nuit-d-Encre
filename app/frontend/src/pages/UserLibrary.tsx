@@ -1,9 +1,7 @@
-import SearchBook from "@/components/sections/book/SearchBook";
 import BookCardLibrary from "@/components/sections/library/BookCardLibrary";
 import BookShelf from "@/components/sections/library/BookShelf";
 import LayoutButtons from "@/components/sections/library/UI/LayoutButtons";
 import Pagination from "@/components/UI/Pagination";
-import SelectCategory from "@/components/sections/book/SelectCategory";
 import { useUserBooksData } from "@/hooks/userBook/useUserBooksData";
 import { cn } from "@/lib/utils";
 import {
@@ -12,13 +10,15 @@ import {
     UserBookStatus,
 } from "@/types/types";
 import { useState } from "react";
-import FilterUserBookStatus from "@/components/sections/library/UI/FilterUserBookStatus";
+import { useSearchParams } from "react-router-dom";
+import FiltersUserBooks from "@/components/sections/library/UI/FiltersUserBooks";
 
 export default function UserLibrary() {
     const [layout, setLayout] = useState<LayoutOptionsValue>("grid");
     const [selectedStatus, setSelectedStatus] = useState<UserBookStatus | "">(
         "",
     );
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const {
         userBooks,
@@ -27,6 +27,7 @@ export default function UserLibrary() {
         setCurrentPage,
         PER_PAGE,
         statusLabelMap,
+        filters,
         setFilters,
     } = useUserBooksData({ mode: "library" });
 
@@ -37,6 +38,17 @@ export default function UserLibrary() {
         setCurrentPage(1);
     };
 
+    const clearAllFilters = () => {
+        setSelectedStatus("");
+        setFilters([]);
+        setCurrentPage(1);
+
+        const newParams = new URLSearchParams(searchParams);
+        newParams.delete("category");
+        newParams.delete("categoryId");
+        setSearchParams(newParams);
+    };
+
     return (
         <section className="flex flex-col gap-20">
             <div className="flex flex-col items-center justify-center gap-5">
@@ -44,14 +56,13 @@ export default function UserLibrary() {
                     activeLayout={layout}
                     onLayoutChange={setLayout}
                 />
-                <div className="flex items-center justify-center gap-5">
-                    <SelectCategory />
-                    <SearchBook isInLibrary={true} />
-                    <FilterUserBookStatus
-                        selectedStatus={selectedStatus}
-                        onStatusChange={handleStatusChange}
-                    />
-                </div>
+                <FiltersUserBooks
+                    selectedStatus={selectedStatus}
+                    onStatusChange={handleStatusChange}
+                    searchParams={searchParams}
+                    filters={filters}
+                    onClearAll={clearAllFilters}
+                />
             </div>
             <div
                 className={cn(
