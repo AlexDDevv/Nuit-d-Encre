@@ -183,7 +183,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
                     ([, v]) => v === label,
                 )?.[0],
         )
-        .filter(Boolean) as (keyof typeof statusLabelMap)[];
+        .filter(Boolean) as UserBookStatus[];
 
     const selectedIsPublic = Object.entries(booleanLabelMap.isPublic).find(
         ([, label]) => filters.includes(label),
@@ -219,7 +219,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
                 language: selectedLanguage
                     ? languageLabelToCode[selectedLanguage]
                     : undefined,
-                status: statusValues.length ? statusValues[0] : undefined,
+                status: statusValues.length ? statusValues : undefined,
                 isPublic: selectedIsPublic
                     ? selectedIsPublic === "true"
                     : undefined,

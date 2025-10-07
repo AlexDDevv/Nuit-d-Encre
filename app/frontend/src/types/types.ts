@@ -265,3 +265,8 @@ export type BookShelfProps = Omit<
 > & {
     statusLabel: string;
 };
+
+export type FilterUserBookStatusProps = {
+    selectedStatus: UserBookStatus | "";
+    onStatusChange: (status: UserBookStatus | "") => void;
+};

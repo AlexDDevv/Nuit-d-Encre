@@ -8,7 +8,7 @@ import {
 import { cn, slugify } from "@/lib/utils";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
 import { CategoryBook } from "@/types/types";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/UI/Button";
 import { useCategoriesData } from "@/hooks/category/useCategoriesData";
 
@@ -16,10 +16,12 @@ export default function SelectCategory() {
     const { categories, isLoadingCategories, errorCategories } =
         useCategoriesData();
     const [searchParams, setSearchParams] = useSearchParams();
+    const location = useLocation();
+    const isInBooksPage = location.pathname === "/books";
 
     if (isLoadingCategories) {
         return (
-            <Skeleton className="bg-input border-border mx-auto flex h-10 w-60 min-w-60 rounded-lg border" />
+            <Skeleton className="bg-input border-border flex h-10 w-60 min-w-60 rounded-lg border" />
         );
     }
 
@@ -81,7 +83,7 @@ export default function SelectCategory() {
             >
                 <SelectTrigger
                     className={cn(
-                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border mx-auto flex w-60 min-w-60 rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border flex w-60 min-w-60 rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
                         openStateClasses,
                     )}
                 >
@@ -100,7 +102,7 @@ export default function SelectCategory() {
                     ))}
                 </SelectContent>
             </Select>
-            {selectedCategoryId && (
+            {isInBooksPage && selectedCategoryId && (
                 <Button
                     ariaLabel="Retirer le filtre sur la catégorie"
                     children="Retirer le filtre"
