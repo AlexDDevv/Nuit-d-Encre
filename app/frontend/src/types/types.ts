@@ -270,3 +270,9 @@ export type FilterUserBookStatusProps = {
     selectedStatus: UserBookStatus | "";
     onStatusChange: (status: UserBookStatus | "") => void;
 };
+
+export type FiltersUserBooksProps = FilterUserBookStatusProps & {
+    searchParams: URLSearchParams;
+    filters: string[];
+    onClearAll: () => void;
+};
