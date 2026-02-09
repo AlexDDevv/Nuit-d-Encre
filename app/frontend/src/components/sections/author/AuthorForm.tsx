@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useToast } from "@/hooks/useToast";
-import { useAuthor } from "@/hooks/useAuthor";
+import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { CreateAuthorInput } from "@/types/types";
 import { useEffect } from "react";
@@ -12,17 +11,18 @@ import InputBiography from "@/components/sections/author/inputs/InputBiography";
 import InputUrl from "@/components/sections/author/inputs/InputUrl";
 import { Button } from "@/components/UI/Button";
 import Loader from "@/components/UI/Loader";
+import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
+import { useAuthorData } from "@/hooks/author/useAuthorData";
 
 export default function AuthorForm() {
     const { id: authorId } = useParams();
-    const {
-        addAuthor,
-        updateAuthor,
-        author,
-        isUpdating,
-        authorLoading,
-        authorError,
-    } = useAuthor(authorId);
+    const isEdit = Boolean(authorId);
+
+    const { createAuthor, updateAuthor, isUpdatingAuthor } =
+        useAuthorMutations();
+
+    const { author, isLoadingAuthor, authorError } = useAuthorData(authorId);
+
     const navigate = useNavigate();
     const { showToast } = useToast();
 
@@ -48,7 +48,7 @@ export default function AuthorForm() {
     } = form;
 
     useEffect(() => {
-        if (author) {
+        if (isEdit && author) {
             reset({
                 firstname: author.firstname,
                 lastname: author.lastname,
@@ -59,13 +59,13 @@ export default function AuthorForm() {
                 officialWebsite: author.officialWebsite,
             });
         }
-    }, [author, reset]);
+    }, [author, isEdit, reset]);
 
-    if (authorId && isUpdating) {
+    if (isEdit && isUpdatingAuthor) {
         return <Loader />;
     }
 
-    if (authorId) {
+    if (isEdit) {
         if (!author && authorError) {
             const isNotFoundError = authorError.graphQLErrors.some((error) =>
                 error.message.includes("Failed to fetch author"),
@@ -79,7 +79,7 @@ export default function AuthorForm() {
             throw new Response("Error loading author", { status: 500 });
         }
 
-        if (!authorLoading && !author) {
+        if (!isLoadingAuthor && !author) {
             throw new Response("Author not found", { status: 404 });
         }
     }
@@ -89,7 +89,7 @@ export default function AuthorForm() {
         try {
             let result;
 
-            if (author) {
+            if (isEdit && author) {
                 result = await updateAuthor(author.id, {
                     ...form,
                 });
@@ -100,7 +100,7 @@ export default function AuthorForm() {
                     description: "L'auteur a bien été mis à jour",
                 });
             } else {
-                result = await addAuthor({
+                result = await createAuthor({
                     ...form,
                 });
 
@@ -132,24 +132,23 @@ export default function AuthorForm() {
         }
     };
 
-    const isEdit = Boolean(authorId);
     const label = isSubmitting
         ? isEdit
             ? "Modification..."
             : "Création..."
         : isEdit
           ? "Modifier l'auteur"
-          : "Enregistré l'auteur";
+          : "Enregistrer l'auteur";
 
     return (
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
             <div>
                 <h1 className="text-card-foreground text-2xl font-bold">
-                    {authorId ? "Modifier l'auteur'" : "Enregistré un auteur"}
+                    {authorId ? "Modifier l'auteur'" : "Enregistrer un auteur"}
                 </h1>
                 <p className="text-card-foreground font-medium">
                     {authorId
-                        ? "Modifier les informations de l'auteur."
+                        ? "Modifiez les informations de l'auteur."
                         : "Remplissez les informations de l'auteur pour l'ajouter à la collection d'auteurs de Nuit d'Encre."}
                 </p>
             </div>

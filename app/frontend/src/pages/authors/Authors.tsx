@@ -2,25 +2,20 @@ import AuthorCard from "@/components/sections/author/AuthorCard";
 import SearchAuthor from "@/components/sections/author/SearchAuthor";
 import Pagination from "@/components/UI/Pagination";
 import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
-import { useAuthor } from "@/hooks/useAuthor";
+import { useAuthorsData } from "@/hooks/author/useAuthorsData";
+import { hasIncompleteInfo } from "@/lib/utils";
 import { AuthorCardProps } from "@/types/types";
 import { Helmet } from "react-helmet";
 
 export default function Authors() {
     const {
         authors,
-        isFetching,
+        isLoadingAuthors,
         totalCount,
         currentPage,
         setCurrentPage,
         PER_PAGE,
-    } = useAuthor();
-
-    const hasIncompleteInfo = (author: AuthorCardProps): boolean => {
-        return Object.values(author).some(
-            (value) => value === null || value === "",
-        );
-    };
+    } = useAuthorsData({ mode: "home" });
 
     return (
         <>
@@ -62,7 +57,7 @@ export default function Authors() {
                         <SearchAuthor />
                     </div>
                 </div>
-                {isFetching ? (
+                {isLoadingAuthors ? (
                     <AuthorCardSkeleton />
                 ) : totalCount === 0 ? (
                     <div className="flex w-full items-center justify-center">
@@ -87,7 +82,7 @@ export default function Authors() {
                     className="mx-auto my-0 w-max"
                     currentPage={currentPage}
                     totalCount={totalCount}
-                    perPage={PER_PAGE.all}
+                    perPage={PER_PAGE.home}
                     onPageChange={setCurrentPage}
                 />
             </section>

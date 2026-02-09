@@ -2,9 +2,9 @@ import AuthorInfos from "@/components/sections/author/AuthorInfos";
 import BookCard from "@/components/sections/book/BookCard";
 import { Button } from "@/components/UI/Button";
 import Links from "@/components/UI/Links";
-import Loader from "@/components/UI/Loader";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { useAuthor } from "@/hooks/useAuthor";
+import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
+import { useAuthorData } from "@/hooks/author/useAuthorData";
 import { BookCardProps } from "@/types/types";
 import { User } from "lucide-react";
 import { useParams } from "react-router-dom";
@@ -20,10 +20,10 @@ export default function AuthorDetails() {
     const [idStr] = slug.split("-");
     const id = idStr;
 
-    const { author, authorLoading, authorError } = useAuthor(id);
+    const { author, isLoadingAuthor, authorError } = useAuthorData(id);
 
-    if (authorLoading) {
-        return <Loader />;
+    if (isLoadingAuthor) {
+        return <AuthorDetailsSkeleton />;
     }
 
     if (authorError) {
@@ -88,17 +88,26 @@ export default function AuthorDetails() {
                     <h2 className="text-foreground text-3xl font-semibold">
                         Biographie :
                     </h2>
-                    <p className="text-secondary-foreground">
-                        {author.biography.substring(0, 1000)}
-                        ...
-                        <Links
-                            href={author.wikipediaUrl}
-                            label="Lire la suite sur Wikipedia"
-                            category="author"
-                            ariaLabel="Consulter la page Wikipedia de ${author.firstname} ${author.lastname} (s'ouvre dans un nouvel onglet)"
-                            className="text-foreground ml-1 font-semibold"
-                        />
-                    </p>
+                    {author.biography ? (
+                        <p className="text-secondary-foreground">
+                            {author.biography.substring(0, 1000)}
+                            ...
+                            {author.wikipediaUrl && (
+                                <Links
+                                    href={author.wikipediaUrl}
+                                    label="Lire la suite sur Wikipedia"
+                                    category="author"
+                                    ariaLabel={`Consulter la page Wikipedia de ${author.firstname} ${author.lastname} (s'ouvre dans un nouvel onglet)`}
+                                    className="text-foreground ml-1 font-semibold"
+                                />
+                            )}
+                        </p>
+                    ) : (
+                        <p className="text-secondary-foreground">
+                            Aucune biographie n'a été enregistrée pour cet
+                            auteur.
+                        </p>
+                    )}
                 </div>
                 <div className="flex w-1/2 flex-col gap-5">
                     <h2 className="text-foreground text-3xl font-semibold">

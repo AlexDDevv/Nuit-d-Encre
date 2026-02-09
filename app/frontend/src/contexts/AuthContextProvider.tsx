@@ -10,7 +10,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { User } from "@/types/types";
 import { AuthContext, AuthContextType } from "@/contexts/AuthContext";
 import { useMutation, useQuery } from "@apollo/client";
-import { LOGOUT, WHOAMI } from "@/graphql/auth";
+import { LOGOUT, WHOAMI } from "@/graphql/user/auth";
 
 /**
  * Props for the AuthContextProvider component

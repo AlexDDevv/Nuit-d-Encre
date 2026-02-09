@@ -5,7 +5,7 @@ import { ButtonHTMLAttributes, forwardRef, Ref } from "react";
 import { Link } from "react-router-dom";
 
 const buttonVariants = cva(
-    "inline-flex items-center gap-2 w-fit justify-center rounded-lg transition-colors duration-200 ease-in-out font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer border-2",
+    "inline-flex items-center gap-2 w-fit justify-center rounded-lg transition-colors duration-200 ease-in-out font-bold focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer border-2 h-10",
     {
         variants: {
             variant: {
@@ -28,8 +28,10 @@ const buttonVariants = cva(
                 ghost: "bg-transparent border-none text-primary hover:underline focus:ring-primary",
                 ghost_destructive:
                     "bg-transparent border-none text-destructive-medium hover:underline focus:ring-primary active:outline-none hover:bg-destructive-medium hover:text-white active:bg-transparent",
+                layout: "bg-transparent border-none text-accent-foreground [&_svg]:h-7 [&_svg]:w-7 transition-all hover:scale-105 hover:text-foreground focus:ring-primary",
             },
             size: {
+                xs: "p-1",
                 sm: "px-3 py-1 text-sm",
                 md: "px-5 py-2 text-base",
                 lg: "px-6 py-3 text-lg",
@@ -49,7 +51,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
     extends ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+        VariantProps<typeof buttonVariants> {
     icon?: LucideIcon;
     iconPosition?: "left" | "right";
     ariaLabel: string;
@@ -85,7 +87,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                 size,
             }),
             isNavBtnSelected &&
-            "text-primary hover:bg-primary-default bg-white hover:text-white",
+                "text-primary hover:bg-primary-default bg-white hover:text-white",
             fullWidth && "w-full",
             className,
         );

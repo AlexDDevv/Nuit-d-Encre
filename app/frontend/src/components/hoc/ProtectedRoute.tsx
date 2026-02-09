@@ -4,7 +4,7 @@
  */
 
 import Loader from "@/components/UI/Loader";
-import { useAuthContext } from "@/hooks/useAuthContext";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import AuthRequired from "@/components/sections/auth/AuthRequired";
 
 /**

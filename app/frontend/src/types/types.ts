@@ -72,16 +72,20 @@ export type CreateBookInput = {
 
 export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
 
-interface Author {
+export interface Author {
+    id: string;
     firstname: string;
     lastname: string;
-    birthDate?: string
-    nationality?: string
-    wikipediaUrl?: string
-    officialWebsite?: string
+    birthDate?: string;
+    biography?: string;
+    nationality?: string;
+    wikipediaUrl?: string;
+    officialWebsite?: string;
+    books: Book[];
+    user: User;
 }
 
-export type CreateAuthorInput = Author
+export type CreateAuthorInput = Author;
 
 export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: number };
 
@@ -118,30 +122,33 @@ export type BookCardProps = {
         lastname: string;
     };
     className?: string;
-    isInAuthorPage?: boolean
+    isInAuthorPage?: boolean;
 };
 
-interface Book {
+export interface Book {
+    id: string;
+    title: string;
+    author: Author;
+    summary: string;
     publisher: string;
     publishedYear: number;
     language: string;
     pageCount: number;
-    format: string;
-    category: {
-        name: string;
-    };
+    format: BookFormat;
+    category: CategoryBook;
     isbn10?: string;
     isbn13: string;
+    user: User;
 }
 
 export interface BookInfoProps {
     book: Book;
 }
 
-export type categoryPropsType = {
+export interface CategoryBook {
     id: string;
     name: string;
-};
+}
 
 export type AuthorCardProps = {
     id: string;
@@ -150,6 +157,122 @@ export type AuthorCardProps = {
     isIncomplete?: boolean;
 };
 
+export type RequiredAuthorFields =
+    | "birthDate"
+    | "nationality"
+    | "wikipediaUrl"
+    | "biography";
+
 export interface AuthorInfoProps {
     author: Author;
 }
+
+export type GetCategoriesQuery = {
+    categories: {
+        id: string;
+        name: string;
+        createdAt: string;
+        updatedAt: string;
+    }[];
+};
+
+export type UseBooksMode = {
+    mode: "home" | "library";
+};
+
+export type UseAuthorsMode = UseBooksMode;
+
+export interface UserBook {
+    id: string;
+    book: Book;
+    user: User;
+    status: UserBookStatus;
+    rating?: number;
+    review?: string;
+    recommended?: boolean;
+    startedAt?: string;
+    finishedAt?: string;
+    isPublic?: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface CreateUserBookInput {
+    bookId: string;
+    status: UserBookStatus;
+    rating?: number;
+    review?: string;
+    recommended?: boolean;
+    startedAt?: string;
+    finishedAt?: string;
+    isPublic?: boolean;
+}
+
+export type UserBookStatus = "TO_READ" | "READING" | "READ" | "PAUSED";
+
+export type UserBookStatusConfig = {
+    icon: LucideIcon;
+    label: string;
+    value: UserBookStatus;
+};
+
+export type SelectBookStatusProps = {
+    bookId: string;
+    status?: UserBookStatus;
+};
+
+export type BookCardLibraryProps = {
+    id: string;
+    book: {
+        title: string;
+        author: {
+            firstname: string;
+            lastname: string;
+        };
+        publishedYear: number;
+        publisher: string;
+        pageCount: number;
+        category: CategoryBook;
+    };
+    rating: number;
+    recommended: boolean;
+    status: UserBookStatus;
+    layout: LayoutOptionsValue;
+};
+
+export type LayoutOptionsValue = "grid" | "list" | "shelf";
+
+export type UserBookInfoProps = {
+    category: string;
+    rating: number;
+    recommended: boolean;
+};
+
+export type LayoutOptions = {
+    icon: LucideIcon;
+    label: string;
+    value: LayoutOptionsValue;
+};
+
+export type LayoutButtonsProps = {
+    activeLayout: LayoutOptionsValue;
+    onLayoutChange: (layout: LayoutOptionsValue) => void;
+};
+
+export type BookShelfProps = Omit<
+    BookCardLibraryProps,
+    "layout" | "id" | "status"
+> & {
+    statusLabel: string;
+};
+
+export type FilterUserBookStatusProps = {
+    selectedStatus: UserBookStatus | "";
+    onStatusChange: (status: UserBookStatus | "") => void;
+};
+
+export type FiltersUserBooksProps = FilterUserBookStatusProps & {
+    searchParams: URLSearchParams;
+    filters: string[];
+    onClearAll: () => void;
+};

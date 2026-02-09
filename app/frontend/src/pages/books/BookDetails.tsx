@@ -1,10 +1,10 @@
 import { Button } from "@/components/UI/Button";
-import Loader from "@/components/UI/Loader";
-import SelectBookState from "@/components/UI/SelectBookState";
+import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import BookInfos from "@/components/sections/book/BookInfos";
-import { useAuthContext } from "@/hooks/useAuthContext";
-import { useBook } from "@/hooks/useBook";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useParams } from "react-router-dom";
+import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
+import { useBookData } from "@/hooks/book/useBookData";
 
 export default function BookDetails() {
     const { slug } = useParams<{ slug: string }>();
@@ -17,10 +17,10 @@ export default function BookDetails() {
     const [idStr] = slug.split("-");
     const id = idStr;
 
-    const { book, bookLoading, bookError } = useBook(id);
+    const { book, isLoadingBook, bookError } = useBookData(id);
 
-    if (bookLoading) {
-        return <Loader />;
+    if (isLoadingBook) {
+        return <BookDetailsSkeleton />;
     }
 
     if (bookError) {
@@ -84,7 +84,7 @@ export default function BookDetails() {
                             {book.category.name}
                         </p>
                     </div>
-                    <SelectBookState />
+                    <SelectBookStatus bookId={id} />
                 </div>
             </div>
             <div className="flex gap-20">

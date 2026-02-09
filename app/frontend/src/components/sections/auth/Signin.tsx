@@ -1,4 +1,4 @@
-import { useToast } from "@/hooks/useToast";
+import { useToast } from "@/hooks/toast/useToast";
 import { UserSignIn } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,7 +11,7 @@ import InputPassword from "@/components/sections/auth/form/InputPassword";
 import { Checkbox } from "@/components/UI/Checkbox";
 import { Label } from "@/components/UI/form/Label";
 import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
-import { LOGIN, WHOAMI } from "@/graphql/auth";
+import { LOGIN, WHOAMI } from "@/graphql/user/auth";
 
 export default function Signin() {
     const {

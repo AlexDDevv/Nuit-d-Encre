@@ -22,10 +22,8 @@ import { Author } from "../../../database/entities/author/author"
 import { CreateAuthorInput } from "../../inputs/create/author/create-author-input"
 import { UpdateAuthorInput } from "../../inputs/update/author/update-author-input"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
-import { AllAuthorsResult } from "../../../database/filteredResults/authors/all-authors-result"
-import { AllAuthorsQueryInput } from "../../queries/authors/all-authors-query-input"
-import { MyAuthorsResult } from "../../../database/filteredResults/authors/my-authors-result"
-import { MyAuthorsQueryInput } from "../../queries/authors/my-authors-query-input"
+import { AuthorsResult } from "../../../database/filteredResults/authors/authors-result"
+import { AuthorsQueryInput } from "../../queries/authors/authors-query-input"
 
 /**
  * Author Resolver
@@ -54,11 +52,11 @@ export class AuthorsResolver {
      *
      * @throws AppError - If no authors are found or in case of a server error.
      */
-    @Query(() => AllAuthorsResult)
+    @Query(() => AuthorsResult)
     async authors(
-        @Arg("filters", () => AllAuthorsQueryInput, { nullable: true })
-        filters: AllAuthorsQueryInput
-    ): Promise<AllAuthorsResult> {
+        @Arg("filters", () => AuthorsQueryInput, { nullable: true })
+        filters: AuthorsQueryInput
+    ): Promise<AuthorsResult> {
         try {
             const {
                 search,
@@ -147,93 +145,6 @@ export class AuthorsResolver {
         } catch (error) {
             throw new AppError(
                 "Failed to fetch author",
-                500,
-                "InternalServerError"
-            )
-        }
-    }
-
-    /**
-     * GraphQL Query to retrieve authors created by the currently authenticated user.
-     *
-     * This query supports:
-     * - search by name,
-     * - pagination,
-     * - and total count before and after filters.
-     *
-     * ⚠️ Access restricted to roles `User` and `Admin`.
-     *
-     * @param filters - Search filters and options for pagination.
-     * @param context - GraphQL context containing the authenticated user.
-     *
-     * @returns A paginated list of the user's authors and related metadata.
-     *
-     * @throws AppError - If the user is not authenticated or in case of a server error.
-     */
-    @Authorized(Roles.User, Roles.Admin)
-    @Query(() => MyAuthorsResult)
-    async myAuthors(
-        @Arg("filters", () => MyAuthorsQueryInput, { nullable: true })
-        filters: MyAuthorsQueryInput,
-        @Ctx() context: Context
-    ): Promise<MyAuthorsResult> {
-        try {
-            const user = context.user
-
-            if (!user) {
-                throw new AppError(
-                    "You can only retrieve your own authors",
-                    401,
-                    "UnauthorizedError"
-                )
-            }
-
-            const {
-                search,
-                page = 1,
-                limit = 12,
-            } = filters || {}
-
-            // Retrieve the base query with all authors created by the user
-            const baseQuery = Author.createQueryBuilder("author").where(
-                "author.userId = :userId",
-                { userId: user.id }
-            )
-
-            // Get the total number of unfiltered authors and clone the query to apply filters
-            const [totalCountAll, filteredQuery] = await Promise.all([
-                baseQuery.getCount(),
-                baseQuery.clone(),
-            ])
-
-            // Filter by firstname and lastname (search)
-            if (search?.trim()) {
-                const trimmedSearch = `%${search.trim()}%`;
-
-                filteredQuery.andWhere(new Brackets(qb => {
-                    qb.where("author.firstname ILIKE :search", { search: trimmedSearch })
-                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
-                }));
-            }
-
-            // Get the total number of authors matching the filters (for pagination)
-            const totalCount = await filteredQuery.getCount()
-
-            // Apply pagination
-            filteredQuery.skip((page - 1) * limit).take(limit)
-
-            const authors = await filteredQuery.getMany()
-
-            return {
-                authors,
-                totalCount,
-                totalCountAll,
-                page,
-                limit,
-            }
-        } catch (error) {
-            throw new AppError(
-                "Failed to fetch user authors",
                 500,
                 "InternalServerError"
             )

@@ -2,7 +2,7 @@ import { AuthorInfoProps } from "@/types/types";
 import Links from "@/components/UI/Links";
 
 export default function AuthorInfos({ author }: AuthorInfoProps) {
-    const AuthorInfos = [
+    const authorInfos = [
         { label: "Date de naissance", value: author.birthDate },
         { label: "Nationalité", value: author.nationality },
         { label: "Lien Wikipedia", value: author.wikipediaUrl },
@@ -12,10 +12,24 @@ export default function AuthorInfos({ author }: AuthorInfoProps) {
     const isUrl = (label: string) =>
         label === "Lien Wikipedia" || label === "Lien du site personnel";
 
+    const getEmptyText = (label: string) => {
+        switch (label) {
+            case "Date de naissance":
+                return "non renseignée";
+            case "Nationalité":
+                return "non renseignée";
+            case "Lien Wikipedia":
+            case "Lien du site personnel":
+                return "non renseigné";
+            default:
+                return "non renseigné";
+        }
+    };
+
     return (
         <div>
             <ul className="flex flex-col gap-2">
-                {AuthorInfos.map(({ label, value }) => (
+                {authorInfos.map(({ label, value }) => (
                     <li key={label} className="text-secondary-foreground">
                         {isUrl(label) ? (
                             <span>
@@ -25,7 +39,7 @@ export default function AuthorInfos({ author }: AuthorInfoProps) {
                                         href={value}
                                         label={
                                             label === "Lien Wikipedia"
-                                                ? "lien vers le Wikipedia"
+                                                ? "lien vers Wikipedia"
                                                 : "lien vers le site personnel"
                                         }
                                         category="author"
@@ -37,13 +51,12 @@ export default function AuthorInfos({ author }: AuthorInfoProps) {
                                         className="text-foreground text-base font-semibold hover:underline"
                                     />
                                 ) : (
-                                    <span>non renseigné</span>
+                                    <span>{getEmptyText(label)}</span>
                                 )}
                             </span>
                         ) : (
                             <span>
-                                {label} :{" "}
-                                {value ? value.toLowerCase() : "non renseignée"}
+                                {label} : {value || getEmptyText(label)}
                             </span>
                         )}
                     </li>

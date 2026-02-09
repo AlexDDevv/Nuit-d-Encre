@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const GET_BOOKS = gql`
-    query Books($filters: AllBooksQueryInput) {
+    query Books($filters: BooksQueryInput) {
         books(filters: $filters) {
             allBooks {
                 id
@@ -11,6 +11,11 @@ export const GET_BOOKS = gql`
                     id
                     firstname
                     lastname
+                    birthDate
+                    biography
+                    nationality
+                    wikipediaUrl
+                    officialWebsite
                 }
                 category {
                     id
@@ -49,6 +54,11 @@ export const GET_BOOK = gql`
                 id
                 firstname
                 lastname
+                birthDate
+                biography
+                nationality
+                wikipediaUrl
+                officialWebsite
             }
             category {
                 id
@@ -68,45 +78,6 @@ export const GET_BOOK = gql`
             }
             createdAt
             updatedAt
-        }
-    }
-`;
-
-export const GET_MY_BOOKS = gql`
-    query MyBooks($filters: MyBooksQueryInput) {
-        myBooks(filters: $filters) {
-            books {
-                id
-                title
-                summary
-                author {
-                    id
-                    firstname
-                    lastname
-                }
-                category {
-                    id
-                    name
-                }
-                isbn10
-                isbn13
-                pageCount
-                publishedYear
-                language
-                publisher
-                format
-                user {
-                    id
-                    email
-                    userName
-                }
-                createdAt
-                updatedAt
-            }
-            totalCount
-            totalCountAll
-            page
-            limit
         }
     }
 `;

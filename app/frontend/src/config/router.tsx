@@ -12,6 +12,9 @@ import ErrorElement from "@/components/UI/ErrorElement";
 import Loader from "@/components/UI/Loader";
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
+import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
+import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 
 /**
  *  Using lazy loading for pages
@@ -28,6 +31,7 @@ const Authors = lazy(() => import("@/pages/authors/Authors"));
 const AuthorScribe = lazy(() => import("@/pages/authors/AuthorScribe"));
 const AuthorUpdate = lazy(() => import("@/pages/authors/AuthorUpdate"));
 const AuthorDetails = lazy(() => import("@/pages/authors/AuthorDetails"));
+const UserLibrary = lazy(() => import("@/pages/UserLibrary"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const UserProfile = lazy(() => import("@/pages/UserProfile"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
@@ -77,12 +81,16 @@ const router = createBrowserRouter([
             },
             {
                 path: "books",
-                element: <Books />,
+                element: (
+                    <Suspense fallback={<BookPageSkeleton />}>
+                        <Books />
+                    </Suspense>
+                ),
             },
             {
                 path: "books/:slug",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<BookDetailsSkeleton />}>
                         <BookDetails />
                     </Suspense>
                 ),
@@ -138,8 +146,18 @@ const router = createBrowserRouter([
             {
                 path: "authors/:slug",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<AuthorDetailsSkeleton />}>
                         <AuthorDetails />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "library",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <ProtectedRoute>
+                            <UserLibrary />
+                        </ProtectedRoute>
                     </Suspense>
                 ),
             },
