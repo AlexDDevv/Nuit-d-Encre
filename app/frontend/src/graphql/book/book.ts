@@ -59,6 +59,18 @@ export const GET_BOOK = gql`
                 nationality
                 wikipediaUrl
                 officialWebsite
+                books {
+                    id
+                    title
+                    summary
+                    publishedYear
+                    category {
+                        id
+                        name
+                    }
+                    format
+                    pageCount
+                }
             }
             category {
                 id
