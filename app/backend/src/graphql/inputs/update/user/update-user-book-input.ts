@@ -74,18 +74,8 @@ import { EndAfterStart } from "../../../helpers/endAfterStart";
 @InputType()
 export class UpdateUserBookInput {
   /** Target by UserBook primary key (preferred) */
-  @Field(() => ID, { nullable: true })
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  id?: number;
-
-  /** Alternative targeting by Book (unique per user) */
-  @Field(() => ID, { nullable: true })
-  @IsOptional()
-  @IsInt()
-  @Min(1)
-  bookId?: number;
+  @Field(() => ID)
+  id!: number
 
   /** Reading status */
   @Field(() => ReadingStatus, { nullable: true })
@@ -102,7 +92,7 @@ export class UpdateUserBookInput {
   rating?: number | null;
 
   /** Textual review */
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   @IsOptional()
   @IsString()
   @MaxLength(10000)
