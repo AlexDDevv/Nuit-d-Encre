@@ -1,11 +1,10 @@
 import AuthorInfos from "@/components/sections/author/AuthorInfos";
-import BookCard from "@/components/sections/book/BookCard";
+import BooksBibliography from "@/components/sections/book/BooksBibliography";
 import { Button } from "@/components/UI/Button";
 import Links from "@/components/UI/Links";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
-import { BookCardProps } from "@/types/types";
 import { User } from "lucide-react";
 import { useParams } from "react-router-dom";
 
@@ -124,28 +123,7 @@ export default function AuthorDetails() {
                     children="Modifier l'auteur"
                 />
             )}
-            <section className="bg-muted flex flex-col gap-10 rounded-lg p-6">
-                <div className="bg-card flex items-center gap-6 rounded-md p-5">
-                    <h3 className="text-muted-foreground font-semibold uppercase tracking-wider">
-                        Bibliographie
-                    </h3>
-                    <span className="text-card-foreground cursor-pointer font-bold italic">
-                        Voir plus
-                    </span>
-                </div>
-                <div className="flex flex-wrap items-center gap-10">
-                    {author.books.map((book: BookCardProps) => (
-                        <BookCard
-                            key={book.id}
-                            id={book.id}
-                            title={book.title}
-                            author={author}
-                            className="w-60"
-                            isInAuthorPage={true}
-                        />
-                    ))}
-                </div>
-            </section>
+            <BooksBibliography author={author} fromAuthorPage={true} />
         </div>
     );
 }

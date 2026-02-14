@@ -2,9 +2,11 @@ import { Button } from "@/components/UI/Button";
 import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import BookInfos from "@/components/sections/book/BookInfos";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import { useBookData } from "@/hooks/book/useBookData";
+import BooksBibliography from "@/components/sections/book/BooksBibliography";
+import { slugify } from "@/lib/utils";
 
 export default function BookDetails() {
     const { slug } = useParams<{ slug: string }>();
@@ -57,9 +59,13 @@ export default function BookDetails() {
                         <h1 className="text-foreground text-4xl font-bold">
                             {book.title}
                         </h1>
-                        <p className="text-foreground text-xl font-semibold italic">
+                        <Link
+                            to={`/authors/${book.author.id}-${slugify(`${book.author.firstname} ${book.author.lastname}`)}`}
+                            className="text-foreground inline-block text-xl font-semibold italic hover:underline"
+                            aria-label={`Accéder à la page de ${book.author.firstname} ${book.author.lastname}`}
+                        >
                             {book.author.firstname} {book.author.lastname}
-                        </p>
+                        </Link>
                     </div>
                     <div className="max-w-xl">
                         {book.summary.length > 200 ? (
@@ -109,6 +115,11 @@ export default function BookDetails() {
                     children="Modifier le livre"
                 />
             )}
+            <BooksBibliography
+                author={book.author}
+                excludeBookId={id}
+                fromAuthorPage={false}
+            />
         </div>
     );
 }
