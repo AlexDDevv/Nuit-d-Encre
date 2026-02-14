@@ -12,6 +12,8 @@ import {
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import FiltersUserBooks from "@/components/sections/library/UI/FiltersUserBooks";
+import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
+import { useToast } from "@/hooks/toast/useToast";
 
 export default function UserLibrary() {
     const [layout, setLayout] = useState<LayoutOptionsValue>("grid");
@@ -19,6 +21,7 @@ export default function UserLibrary() {
         "",
     );
     const [searchParams, setSearchParams] = useSearchParams();
+    const { showToast } = useToast();
 
     const {
         userBooks,
@@ -47,6 +50,37 @@ export default function UserLibrary() {
         newParams.delete("category");
         newParams.delete("categoryId");
         setSearchParams(newParams);
+    };
+
+    const { updateUserBook } = useUserBookMutations();
+
+    const handleStatusBookChange = async ({
+        userBookId,
+        status,
+    }: {
+        userBookId: string;
+        status: UserBookStatus;
+    }) => {
+        try {
+            await updateUserBook({
+                id: userBookId,
+                status,
+            });
+
+            showToast({
+                type: "success",
+                title: "Succès",
+                description:
+                    "La modification du statut de votre livre a bien été prise en compte !",
+            });
+        } catch (error) {
+            showToast({
+                type: "error",
+                title: "Erreur",
+                description:
+                    "La modification du statut de votre livre a échoué...",
+            });
+        }
     };
 
     return (
@@ -90,6 +124,7 @@ export default function UserLibrary() {
                               recommended={userBook.recommended}
                               status={userBook.status}
                               layout={layout}
+                              onStatusChange={handleStatusBookChange}
                           />
                       ))}
             </div>

@@ -1,6 +1,6 @@
 import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import { cn } from "@/lib/utils";
-import { BookCardLibraryProps } from "@/types/types";
+import { BookCardLibraryProps, UserBookStatus } from "@/types/types";
 import UserBookInfo from "@/components/sections/library/UserBookInfo";
 
 export default function BookCardLibrary({
@@ -10,7 +10,16 @@ export default function BookCardLibrary({
     recommended,
     status,
     layout,
+    onStatusChange,
 }: BookCardLibraryProps) {
+    const handleChange = (newStatus: UserBookStatus) => {
+        onStatusChange?.({
+            userBookId: id,
+            bookId: book.id,
+            status: newStatus,
+        });
+    };
+
     return (
         <article
             className={cn(
@@ -59,7 +68,10 @@ export default function BookCardLibrary({
                             recommended={recommended}
                         />
                     </div>
-                    <SelectBookStatus bookId={id} status={status} />
+                    <SelectBookStatus
+                        value={status}
+                        onChange={onStatusChange ? handleChange : undefined}
+                    />
                 </>
             ) : (
                 <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
@@ -70,7 +82,10 @@ export default function BookCardLibrary({
                             recommended={recommended}
                         />
                     </div>
-                    <SelectBookStatus bookId={id} status={status} />
+                    <SelectBookStatus
+                        value={status}
+                        onChange={onStatusChange ? handleChange : undefined}
+                    />
                 </div>
             )}
         </article>

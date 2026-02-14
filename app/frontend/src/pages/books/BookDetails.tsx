@@ -7,8 +7,16 @@ import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import { useBookData } from "@/hooks/book/useBookData";
 import BooksBibliography from "@/components/sections/book/BooksBibliography";
 import { slugify } from "@/lib/utils";
+import { useState } from "react";
+import { UserBookStatus } from "@/types/types";
+import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
+import { useToast } from "@/hooks/toast/useToast";
 
 export default function BookDetails() {
+    const { createUserBook, isCreatingUserBook } = useUserBookMutations();
+    const [status, setStatus] = useState<UserBookStatus | undefined>(undefined);
+    const { showToast } = useToast();
+
     const { slug } = useParams<{ slug: string }>();
     const { user } = useAuthContext();
 
@@ -43,6 +51,30 @@ export default function BookDetails() {
     }
 
     const isOwner = user && book.user.id === user.id;
+
+    const handleStatusChange = async (newStatus: UserBookStatus) => {
+        try {
+            await createUserBook({
+                bookId: id,
+                status: newStatus,
+            });
+
+            setStatus(newStatus);
+            showToast({
+                type: "success",
+                title: "Succès",
+                description:
+                    "Le livre a bien été ajouté à votre bibliothèque !",
+            });
+        } catch (error) {
+            showToast({
+                type: "error",
+                title: "Erreur",
+                description:
+                    "L'ajout du livre dans la bibliothèque de l'utilisateur a échoué...",
+            });
+        }
+    };
 
     return (
         <div className="flex flex-col gap-20">
@@ -90,7 +122,11 @@ export default function BookDetails() {
                             {book.category.name}
                         </p>
                     </div>
-                    <SelectBookStatus bookId={id} />
+                    <SelectBookStatus
+                        value={status}
+                        onChange={handleStatusChange}
+                        disabled={isCreatingUserBook}
+                    />
                 </div>
             </div>
             <div className="flex gap-20">
