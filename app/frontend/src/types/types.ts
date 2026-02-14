@@ -276,3 +276,9 @@ export type FiltersUserBooksProps = FilterUserBookStatusProps & {
     filters: string[];
     onClearAll: () => void;
 };
+
+export interface BooksBibliographyProps {
+    author: Author;
+    excludeBookId?: string;
+    fromAuthorPage?: boolean;
+}
