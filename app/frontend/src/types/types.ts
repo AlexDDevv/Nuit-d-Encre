@@ -208,6 +208,17 @@ export interface CreateUserBookInput {
     isPublic?: boolean;
 }
 
+export interface UpdateUserBookInput {
+    id?: string;
+    status?: UserBookStatus;
+    rating?: number;
+    review?: string;
+    recommended?: boolean;
+    startedAt?: string;
+    finishedAt?: string;
+    isPublic?: boolean;
+}
+
 export type UserBookStatus = "TO_READ" | "READING" | "READ" | "PAUSED";
 
 export type UserBookStatusConfig = {
@@ -217,13 +228,17 @@ export type UserBookStatusConfig = {
 };
 
 export type SelectBookStatusProps = {
-    bookId: string;
-    status?: UserBookStatus;
+    value?: UserBookStatus;
+    onChange?: (status: UserBookStatus) => void;
+    disabled?: boolean;
 };
+
+export type LayoutOptionsValue = "grid" | "list" | "shelf";
 
 export type BookCardLibraryProps = {
     id: string;
     book: {
+        id: string;
         title: string;
         author: {
             firstname: string;
@@ -238,9 +253,12 @@ export type BookCardLibraryProps = {
     recommended: boolean;
     status: UserBookStatus;
     layout: LayoutOptionsValue;
+    onStatusChange?: (args: {
+        userBookId: string;
+        bookId: string;
+        status: UserBookStatus;
+    }) => void;
 };
-
-export type LayoutOptionsValue = "grid" | "list" | "shelf";
 
 export type UserBookInfoProps = {
     category: string;

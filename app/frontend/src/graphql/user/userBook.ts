@@ -150,6 +150,54 @@ export const CREATE_USER_BOOK = gql`
     }
 `;
 
+export const UPDATE_USER_BOOK = gql`
+    mutation UpdateUserBook($data: UpdateUserBookInput!) {
+        updateUserBook(data: $data) {
+            id
+            user {
+                id
+                email
+                userName
+            }
+            book {
+                id
+                title
+                summary
+                author {
+                    id
+                    firstname
+                    lastname
+                    birthDate
+                    biography
+                    nationality
+                    wikipediaUrl
+                    officialWebsite
+                }
+                category {
+                    id
+                    name
+                }
+                isbn10
+                isbn13
+                pageCount
+                publishedYear
+                language
+                publisher
+                format
+            }
+            status
+            rating
+            review
+            recommended
+            startedAt
+            finishedAt
+            isPublic
+            createdAt
+            updatedAt
+        }
+    }
+`;
+
 export const DELETE_USER_BOOK = gql`
     mutation DeleteUserBook($userBookId: ID!) {
         deleteUserBook(id: $userBookId) {

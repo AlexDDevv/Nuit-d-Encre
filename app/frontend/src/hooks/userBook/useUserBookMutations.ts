@@ -1,8 +1,9 @@
-import { CreateUserBookInput } from "@/types/types";
+import { CreateUserBookInput, UpdateUserBookInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
 import { useToast } from "@/hooks/toast/useToast";
 import {
     CREATE_USER_BOOK,
+    UPDATE_USER_BOOK,
     DELETE_USER_BOOK,
     GET_USER_BOOKS,
 } from "@/graphql/user/userBook";
@@ -78,15 +79,58 @@ export function useUserBookMutations() {
         },
     ] = useMutation(CREATE_USER_BOOK, {
         refetchQueries: [{ query: GET_USER_BOOKS }],
+        awaitRefetchQueries: true,
     });
 
     const addUserBook = async (
         userBook: CreateUserBookInput,
     ): Promise<{ id: string } | undefined> => {
+        const { bookId, ...rest } = userBook;
         const result = await createUserBookMutation({
-            variables: { data: userBook },
+            variables: {
+                data: {
+                    ...rest,
+                    bookId: parseInt(bookId),
+                },
+            },
         });
         return result.data?.createUserBook;
+    };
+
+    // ************************ UPDATE ************************
+    const [updateUserBookMutation] = useMutation(UPDATE_USER_BOOK, {
+        update(cache, { data }) {
+            const updated = data?.updateUserBook;
+            if (!updated) return;
+
+            cache.modify({
+                id: cache.identify({ __typename: "UserBook", id: updated.id }),
+                fields: {
+                    status() {
+                        return updated.status;
+                    },
+                    updatedAt() {
+                        return updated.updatedAt;
+                    },
+                },
+            });
+        },
+    });
+
+    const editUserBook = async (
+        userBook: UpdateUserBookInput,
+    ): Promise<{ id: string } | undefined> => {
+        const { id, ...rest } = userBook;
+
+        const result = await updateUserBookMutation({
+            variables: {
+                data: {
+                    ...rest,
+                    ...(id && { id: parseInt(id) }),
+                },
+            },
+        });
+        return result.data?.updateUserBook;
     };
 
     // ************************ DELETE ************************
@@ -149,6 +193,9 @@ export function useUserBookMutations() {
         isCreatingUserBook,
         createUserBookError,
         resetCreateUserBookError,
+
+        // update
+        updateUserBook: editUserBook,
 
         // delete
         deleteUserBook,

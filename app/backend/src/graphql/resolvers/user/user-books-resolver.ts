@@ -34,6 +34,7 @@ import { UserBooksResult } from "../../../database/filteredResults/user/user-boo
 import { UserBooksQueryInput } from "../../queries/user/user-books-input"
 import { UserBook } from "../../../database/entities/user/user-book"
 import { CreateUserBookInput } from "../../inputs/create/user/create-user-book-input"
+import { UpdateUserBookInput } from "../../inputs/update/user/update-user-book-input"
 
 /**
  * UserBook Resolver
@@ -127,7 +128,7 @@ export class UserBooksResolver {
 
                 filteredQuery.andWhere(new Brackets((qb) => {
                     qb.where("unaccent(book.title) ILIKE unaccent(:search)", { search: trimmedSearch })
-                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch }) 
+                        .orWhere("book.isbn13 ILIKE :search", { search: trimmedSearch })
                         .orWhere("unaccent(author.firstname) ILIKE unaccent(:search)", { search: trimmedSearch })
                         .orWhere("unaccent(author.lastname) ILIKE unaccent(:search)", { search: trimmedSearch })
                         .orWhere("unaccent(book.publisher) ILIKE unaccent(:search)", { search: trimmedSearch });
@@ -297,6 +298,100 @@ export class UserBooksResolver {
         } catch (error) {
             throw new AppError(
                 "Failed to create book",
+                500,
+                "InternalServerError"
+            )
+        }
+    }
+
+    /**
+     * Mutation to update an existing user book.
+     *
+     * @param data - The input data containing fields to update.
+     * @param context - The context object that contains the currently authenticated user.
+     *
+     * @returns The updated UserBook object.
+     *
+     * Only users with the role `User` or `Admin` can update a user book.
+     * The user can only update their own books.
+     *
+     * @throws AppError - If the user book is not found, user is unauthorized, or update fails.
+     */
+    @Authorized(Roles.User, Roles.Admin)
+    @Mutation(() => UserBook, { nullable: true })
+    async updateUserBook(
+        @Arg("data", () => UpdateUserBookInput) data: UpdateUserBookInput,
+        @Ctx() context: Context
+    ): Promise<UserBook> {
+        try {
+            const user = context.user
+            
+            if (!user) {
+                throw new AppError("User not found", 404, "NotFoundError")
+            }
+
+            const userBook = await UserBook.findOne({
+                where: {
+                    id: data.id,
+                    user: { id: user.id }
+                },
+                relations: {
+                    user: true,
+                    book: {
+                        author: true,
+                        category: true
+                    }
+                },
+            })
+
+            if (!userBook) {
+                throw new AppError("User book not found", 404, "NotFoundError");
+            }
+
+            // Check authorization
+            if (!isOwnerOrAdmin(userBook.user.id, user)) {
+                throw new AppError(
+                    "Not authorized to update this book",
+                    403,
+                    "ForbiddenError"
+                )
+            }
+
+            // Track if status changed to READ
+            const wasRead = userBook.status === ReadingStatus.READ;
+
+            const { id, ...updateData } = data
+
+            // Apply updates
+            Object.assign(userBook, updateData);
+
+            await userBook.save();
+
+            // Grant XP if book status changed to READ
+            if (!wasRead && userBook.status === ReadingStatus.READ) {
+                await grantXpService(user, UserActionType.BOOK_FINISHED, {
+                    targetId: userBook.id.toString(),
+                    metadata: { to: userBook.status, title: userBook.book.title },
+                });
+            }
+
+            // Reload with all relations
+            const updatedUserBook = await UserBook.findOne({
+                where: { id: userBook.id },
+                relations: {
+                    user: true,
+                    book: {
+                        author: true,
+                        category: true
+                    }
+                },
+            });
+
+            return updatedUserBook!
+        } catch (error) {
+            console.error(error)
+            throw new AppError(
+                "Failed to update user book",
                 500,
                 "InternalServerError"
             )
