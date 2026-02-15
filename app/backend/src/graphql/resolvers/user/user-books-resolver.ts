@@ -412,7 +412,7 @@ export class UserBooksResolver {
     */
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => UserBook, { nullable: true })
-    async deleteBook(
+    async deleteUserBook(
         @Arg("id", () => ID) id: number,
         @Ctx() context: Context
     ): Promise<UserBook | null> {
@@ -422,7 +422,7 @@ export class UserBooksResolver {
             if (!user) {
                 throw new AppError("User not found", 404, "NotFoundError")
             }
-
+            
             const userBook = await UserBook.findOne({
                 where: {
                     id,
@@ -440,7 +440,7 @@ export class UserBooksResolver {
                     "BookNotFoundError"
                 )
             }
-
+            
             if (!isOwnerOrAdmin(userBook.user.id, user)) {
                 throw new AppError(
                     "Not authorized to delete this book",
@@ -448,7 +448,7 @@ export class UserBooksResolver {
                     "ForbiddenError"
                 )
             }
-
+            
             if (userBook !== null) {
                 await userBook.remove()
                 userBook.id = id
