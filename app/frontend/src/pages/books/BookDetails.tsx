@@ -11,10 +11,15 @@ import { useState } from "react";
 import { UserBookStatus } from "@/types/types";
 import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
 import { useToast } from "@/hooks/toast/useToast";
+import { useNavigate } from "react-router-dom";
+import { useBookMutations } from "@/hooks/book/useBookMutations";
 
 export default function BookDetails() {
     const { createUserBook, isCreatingUserBook } = useUserBookMutations();
     const [status, setStatus] = useState<UserBookStatus | undefined>(undefined);
+    const navigate = useNavigate();
+    const { deleteBook, isDeletingBook } = useBookMutations();
+
     const { showToast } = useToast();
 
     const { slug } = useParams<{ slug: string }>();
@@ -51,6 +56,9 @@ export default function BookDetails() {
     }
 
     const isOwner = user && book.user.id === user.id;
+    const isAdmin = user && user.role === "admin";
+    const canEdit = !!user && (isOwner || isAdmin);
+    const canDelete = !!user && isAdmin;
 
     const handleStatusChange = async (newStatus: UserBookStatus) => {
         try {
@@ -73,6 +81,47 @@ export default function BookDetails() {
                 description:
                     "L'ajout du livre dans la bibliothèque de l'utilisateur a échoué...",
             });
+        }
+    };
+
+    const handleDeleteBook = async () => {
+        try {
+            await deleteBook(book.id);
+
+            showToast({
+                type: "success",
+                title: "Le livre a bien été supprimé !",
+                description:
+                    "Vous allez être redirigé vers la page d'accueil pour poursuivre votre navigation.",
+            });
+            navigate("/books");
+        } catch (error) {
+            if (error instanceof Error) {
+                if (
+                    error.message.includes(
+                        "Access denied! You don't have permission for this action!",
+                    )
+                ) {
+                    showToast({
+                        type: "error",
+                        title: "Échec de la suppression",
+                        description: "Vous n'avez pas les droits nécessaires.",
+                    });
+                } else {
+                    showToast({
+                        type: "error",
+                        title: "Erreur lors de la suppression",
+                        description:
+                            "Une erreur est survenue. Veuillez réessayer plus tard.",
+                    });
+                }
+            } else {
+                showToast({
+                    type: "error",
+                    title: "Erreur inattendue",
+                    description: "Une erreur inconnue est survenue.",
+                });
+            }
         }
     };
 
@@ -143,14 +192,28 @@ export default function BookDetails() {
                     <BookInfos book={book} />
                 </div>
             </div>
-            {isOwner && (
-                <Button
-                    ariaLabel={`Modifier le livre ${book.title} de ${book.author.firstname} ${book.author.lastname}`}
-                    to={`/books/update/${book.id}`}
-                    variant="primary"
-                    children="Modifier le livre"
-                />
-            )}
+            <div className="flex gap-5">
+                {canEdit && (
+                    <Button
+                        ariaLabel={`Modifier le livre ${book.title} de ${book.author.firstname} ${book.author.lastname}`}
+                        to={`/books/update/${book.id}`}
+                        variant="primary"
+                    >
+                        Modifier le livre
+                    </Button>
+                )}
+                {canDelete && (
+                    <Button
+                        ariaLabel={`Supprimer le livre ${book.title} de ${book.author.firstname} ${book.author.lastname} en tant qu'administrateur`}
+                        variant="destructive"
+                        onClick={handleDeleteBook}
+                        loading={isDeletingBook}
+                        disabled={isDeletingBook}
+                    >
+                        Supprimer
+                    </Button>
+                )}
+            </div>
             <BooksBibliography
                 author={book.author}
                 excludeBookId={id}
