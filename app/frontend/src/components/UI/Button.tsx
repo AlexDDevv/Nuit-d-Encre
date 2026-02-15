@@ -51,7 +51,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
     extends ButtonHTMLAttributes<HTMLButtonElement>,
-        VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
     icon?: LucideIcon;
     iconPosition?: "left" | "right";
     ariaLabel: string;
@@ -60,6 +60,7 @@ export interface ButtonProps
     onClick?: React.MouseEventHandler;
     role?: "button" | "submit" | "link";
     to?: string;
+    loading?: boolean;
 }
 
 const Button = forwardRef<HTMLElement, ButtonProps>(
@@ -77,6 +78,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
             children,
             to,
             onClick,
+            loading = false,
             ...props
         },
         ref,
@@ -87,19 +89,29 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                 size,
             }),
             isNavBtnSelected &&
-                "text-primary hover:bg-primary-default bg-white hover:text-white",
+            "text-primary hover:bg-primary-default bg-white hover:text-white",
             fullWidth && "w-full",
             className,
         );
 
         const childrenContent = (
             <>
-                {Icon && iconPosition === "left" && (
-                    <Icon className="h-5 w-5" aria-hidden />
+                {loading && (
+                    <span
+                        className="h-5 w-5 animate-spin rounded-full border-2 border-current border-t-transparent"
+                        aria-hidden
+                    />
                 )}
-                {children}
-                {Icon && iconPosition === "right" && (
-                    <Icon className="h-5 w-5" aria-hidden />
+                {!loading && (
+                    <>
+                        {Icon && iconPosition === "left" && (
+                            <Icon className="h-5 w-5" aria-hidden />
+                        )}
+                        {children}
+                        {Icon && iconPosition === "right" && (
+                            <Icon className="h-5 w-5" aria-hidden />
+                        )}
+                    </>
                 )}
             </>
         );
@@ -125,6 +137,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                     role={role}
                     onClick={onClick}
                     className={classNameContent}
+                    disabled={loading || props.disabled}
                     {...props}
                 >
                     {childrenContent}
