@@ -1,6 +1,5 @@
 import { CreateBookInput, UpdateBookInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
-import { useToast } from "@/hooks/toast/useToast";
 import {
     CREATE_BOOK,
     DELETE_BOOK,
@@ -67,8 +66,6 @@ import {
  */
 
 export function useBookMutations() {
-    const { showToast } = useToast();
-
     // ************************ CREATE ************************
     const [
         createBookMutation,
@@ -126,51 +123,13 @@ export function useBookMutations() {
             reset: resetDeleteBookError,
         },
     ] = useMutation(DELETE_BOOK, {
-        refetchQueries: [GET_BOOKS],
+        refetchQueries: [{ query: GET_BOOKS }],
     });
 
     const deleteBook = async (bookId: string) => {
-        try {
-            await deleteBookMutation({
-                variables: {
-                    bookId: bookId,
-                },
-            });
-
-            showToast({
-                type: "success",
-                title: "Le livre a bien été supprimée !",
-                description:
-                    "Vous pouvez poursuivre votre lecture du tableau de bord.",
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                if (
-                    error.message.includes(
-                        "Access denied! You don't have permission for this action!",
-                    )
-                ) {
-                    showToast({
-                        type: "error",
-                        title: "Échec de la suppression",
-                        description: "Vous n'avez pas les droits nécessaires.",
-                    });
-                } else {
-                    showToast({
-                        type: "error",
-                        title: "Erreur lors de la suppression",
-                        description:
-                            "Une erreur est survenue. Veuillez réessayer plus tard.",
-                    });
-                }
-            } else {
-                showToast({
-                    type: "error",
-                    title: "Erreur inattendue",
-                    description: "Une erreur inconnue est survenue.",
-                });
-            }
-        }
+        await deleteBookMutation({
+            variables: { bookId },
+        });
     };
 
     return {
