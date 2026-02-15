@@ -237,18 +237,7 @@ export type LayoutOptionsValue = "grid" | "list" | "shelf";
 
 export type BookCardLibraryProps = {
     id: string;
-    book: {
-        id: string;
-        title: string;
-        author: {
-            firstname: string;
-            lastname: string;
-        };
-        publishedYear: number;
-        publisher: string;
-        pageCount: number;
-        category: CategoryBook;
-    };
+    book: Book;
     rating: number;
     recommended: boolean;
     status: UserBookStatus;
@@ -258,6 +247,16 @@ export type BookCardLibraryProps = {
         bookId: string;
         status: UserBookStatus;
     }) => void;
+    isUpdatingUserBook?: boolean;
+    handleDeleteUserBook?: (userBookId: string) => void;
+    isDeletingUserBook?: boolean;
+};
+
+export type BookShelfProps = {
+    book: Book;
+    rating: number;
+    recommended: boolean;
+    statusLabel: string;
 };
 
 export type UserBookInfoProps = {
@@ -275,13 +274,6 @@ export type LayoutOptions = {
 export type LayoutButtonsProps = {
     activeLayout: LayoutOptionsValue;
     onLayoutChange: (layout: LayoutOptionsValue) => void;
-};
-
-export type BookShelfProps = Omit<
-    BookCardLibraryProps,
-    "layout" | "id" | "status"
-> & {
-    statusLabel: string;
 };
 
 export type FilterUserBookStatusProps = {

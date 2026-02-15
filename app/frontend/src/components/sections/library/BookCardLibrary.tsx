@@ -2,6 +2,7 @@ import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import { cn } from "@/lib/utils";
 import { BookCardLibraryProps, UserBookStatus } from "@/types/types";
 import UserBookInfo from "@/components/sections/library/UserBookInfo";
+import { Button } from "@/components/UI/Button";
 
 export default function BookCardLibrary({
     id,
@@ -11,6 +12,9 @@ export default function BookCardLibrary({
     status,
     layout,
     onStatusChange,
+    isUpdatingUserBook,
+    handleDeleteUserBook,
+    isDeletingUserBook,
 }: BookCardLibraryProps) {
     const handleChange = (newStatus: UserBookStatus) => {
         onStatusChange?.({
@@ -68,10 +72,22 @@ export default function BookCardLibrary({
                             recommended={recommended}
                         />
                     </div>
-                    <SelectBookStatus
-                        value={status}
-                        onChange={onStatusChange ? handleChange : undefined}
-                    />
+                    <div className="flex items-center justify-between gap-5">
+                        <SelectBookStatus
+                            value={status}
+                            onChange={onStatusChange ? handleChange : undefined}
+                            disabled={isUpdatingUserBook}
+                        />
+                        <Button
+                            ariaLabel="Supprimer ce livre de votre bibliothèque personnelle"
+                            role="button"
+                            onClick={() => handleDeleteUserBook?.(id)}
+                            loading={isDeletingUserBook}
+                            children="Supprimer"
+                            variant="destructive"
+                            size="sm"
+                        />
+                    </div>
                 </>
             ) : (
                 <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
@@ -85,6 +101,7 @@ export default function BookCardLibrary({
                     <SelectBookStatus
                         value={status}
                         onChange={onStatusChange ? handleChange : undefined}
+                        disabled={isUpdatingUserBook}
                     />
                 </div>
             )}

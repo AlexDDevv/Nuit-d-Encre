@@ -20,6 +20,7 @@ export default function UserLibrary() {
     const [selectedStatus, setSelectedStatus] = useState<UserBookStatus | "">(
         "",
     );
+    const [deletingUserBookId, setDeletingUserBookId] = useState<string | null>(null);
     const [searchParams, setSearchParams] = useSearchParams();
     const { showToast } = useToast();
 
@@ -52,7 +53,7 @@ export default function UserLibrary() {
         setSearchParams(newParams);
     };
 
-    const { updateUserBook } = useUserBookMutations();
+    const { updateUserBook, isUpdatingUserBook, deleteUserBook } = useUserBookMutations();
 
     const handleStatusBookChange = async ({
         userBookId,
@@ -83,6 +84,15 @@ export default function UserLibrary() {
         }
     };
 
+    const handleDeleteUserBook = async (userBookId: string) => {
+        setDeletingUserBookId(userBookId);
+        try {
+            await deleteUserBook(userBookId);
+        } finally {
+            setDeletingUserBookId(null);
+        }
+    };
+
     return (
         <section className="flex flex-col gap-20">
             <div className="flex flex-col items-center justify-center gap-5">
@@ -107,26 +117,29 @@ export default function UserLibrary() {
             >
                 {layout === "shelf"
                     ? userBooks.map((userBook: BookCardLibraryProps) => (
-                          <BookShelf
-                              key={userBook.id}
-                              book={userBook.book}
-                              rating={userBook.rating}
-                              recommended={userBook.recommended}
-                              statusLabel={statusLabelMap[userBook.status]}
-                          />
-                      ))
+                        <BookShelf
+                            key={userBook.id}
+                            book={userBook.book}
+                            rating={userBook.rating}
+                            recommended={userBook.recommended}
+                            statusLabel={statusLabelMap[userBook.status]}
+                        />
+                    ))
                     : userBooks.map((userBook: BookCardLibraryProps) => (
-                          <BookCardLibrary
-                              key={userBook.id}
-                              id={userBook.id}
-                              book={userBook.book}
-                              rating={userBook.rating}
-                              recommended={userBook.recommended}
-                              status={userBook.status}
-                              layout={layout}
-                              onStatusChange={handleStatusBookChange}
-                          />
-                      ))}
+                        <BookCardLibrary
+                            key={userBook.id}
+                            id={userBook.id}
+                            book={userBook.book}
+                            rating={userBook.rating}
+                            recommended={userBook.recommended}
+                            status={userBook.status}
+                            layout={layout}
+                            onStatusChange={handleStatusBookChange}
+                            isUpdatingUserBook={isUpdatingUserBook}
+                            handleDeleteUserBook={handleDeleteUserBook}
+                            isDeletingUserBook={deletingUserBookId === userBook.id}
+                        />
+                    ))}
             </div>
             <Pagination
                 className="mx-auto my-0 w-max"
