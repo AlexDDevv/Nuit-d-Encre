@@ -98,7 +98,14 @@ export function useUserBookMutations() {
     };
 
     // ************************ UPDATE ************************
-    const [updateUserBookMutation] = useMutation(UPDATE_USER_BOOK, {
+    const [
+        updateUserBookMutation,
+        {
+            loading: isUpdatingUserBook,
+            error: updateUserBookError,
+            reset: resetUpdateUserBookError,
+        },
+    ] = useMutation(UPDATE_USER_BOOK, {
         update(cache, { data }) {
             const updated = data?.updateUserBook;
             if (!updated) return;
@@ -141,7 +148,25 @@ export function useUserBookMutations() {
             error: deleteUserBookError,
             reset: resetDeleteUserBookError,
         },
-    ] = useMutation(DELETE_USER_BOOK, { refetchQueries: [GET_USER_BOOKS] });
+    ] = useMutation(DELETE_USER_BOOK, {
+        update(cache, { data }) {
+            const deletedUserBook = data?.deleteUserBook;
+            if (!deletedUserBook) return;
+
+            // Supprimer l'entrée du cache
+            cache.evict({
+                id: cache.identify({
+                    __typename: "UserBook",
+                    id: deletedUserBook.id,
+                }),
+            });
+
+            // Nettoyer les références orphelines
+            cache.gc();
+        },
+        refetchQueries: [{ query: GET_USER_BOOKS }],
+        awaitRefetchQueries: true,
+    });
 
     const deleteUserBook = async (userBookId: string) => {
         try {
@@ -196,6 +221,9 @@ export function useUserBookMutations() {
 
         // update
         updateUserBook: editUserBook,
+        isUpdatingUserBook,
+        updateUserBookError,
+        resetUpdateUserBookError,
 
         // delete
         deleteUserBook,
