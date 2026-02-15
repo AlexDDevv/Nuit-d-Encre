@@ -52,6 +52,7 @@ export default function BookForm() {
     const { showToast } = useToast();
 
     const form = useForm<CreateBookInput>({
+        mode: "all",
         defaultValues: {
             title: "",
             summary: "",
@@ -171,8 +172,8 @@ export default function BookForm() {
             ? "Modification..."
             : "Création..."
         : isEdit
-          ? "Modifier le livre"
-          : "Enregistrer le livre";
+            ? "Modifier le livre"
+            : "Enregistrer le livre";
 
     const categoryOptions: TypeSelectOptions[] =
         categories?.map((cat: { id: string; name: string }) => ({

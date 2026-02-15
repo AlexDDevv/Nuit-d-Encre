@@ -2,7 +2,7 @@ import { Input } from "@/components/UI/form/Input";
 import { Label } from "@/components/UI/form/Label";
 import { InputIsbnProps } from "@/types/types";
 
-export default function InputAuthor({ isbn13, register, errors }: InputIsbnProps) {
+export default function InputIsbn({ isbn13, register, errors }: InputIsbnProps) {
     const fieldName = isbn13 ? "isbn13" : "isbn10";
     const label = isbn13 ? "Code ISBN-13" : "Code ISBN-10";
 
