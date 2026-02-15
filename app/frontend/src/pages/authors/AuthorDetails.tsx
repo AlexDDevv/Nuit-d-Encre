@@ -5,10 +5,15 @@ import Links from "@/components/UI/Links";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
+import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
+import { useToast } from "@/hooks/toast/useToast";
 import { User } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function AuthorDetails() {
+    const navigate = useNavigate();
+    const { deleteAuthor, isDeletingAuthor } = useAuthorMutations();
+    const { showToast } = useToast();
     const { slug } = useParams<{ slug: string }>();
     const { user } = useAuthContext();
 
@@ -43,6 +48,50 @@ export default function AuthorDetails() {
     }
 
     const isOwner = user && author.user.id === user.id;
+    const isAdmin = user && user.role === "admin";
+    const canEdit = !!user && (isOwner || isAdmin);
+    const canDelete = !!user && isAdmin;
+
+    const handleDeleteAuthor = async () => {
+        try {
+            await deleteAuthor(author.id);
+
+            showToast({
+                type: "success",
+                title: "L'auteur a bien été supprimé !",
+                description:
+                    "Vous allez être redirigé vers la page d'accueil pour poursuivre votre navigation.",
+            });
+            navigate("/authors");
+        } catch (error) {
+            if (error instanceof Error) {
+                if (
+                    error.message.includes(
+                        "Access denied! You don't have permission for this action!",
+                    )
+                ) {
+                    showToast({
+                        type: "error",
+                        title: "Échec de la suppression",
+                        description: "Vous n'avez pas les droits nécessaires.",
+                    });
+                } else {
+                    showToast({
+                        type: "error",
+                        title: "Erreur lors de la suppression",
+                        description:
+                            "Une erreur est survenue. Veuillez réessayer plus tard.",
+                    });
+                }
+            } else {
+                showToast({
+                    type: "error",
+                    title: "Erreur inattendue",
+                    description: "Une erreur inconnue est survenue.",
+                });
+            }
+        }
+    };
 
     return (
         <div className="flex flex-col gap-20">
@@ -115,14 +164,27 @@ export default function AuthorDetails() {
                     <AuthorInfos author={author} />
                 </div>
             </div>
-            {isOwner && (
-                <Button
-                    ariaLabel={`Modifier les informations de l'auteur ${author.firstname} ${author.lastname}`}
-                    to={`/authors/update/${author.id}`}
-                    variant="primary"
-                    children="Modifier l'auteur"
-                />
-            )}
+            <div className="flex gap-5">
+                {canEdit && (
+                    <Button
+                        ariaLabel={`Modifier les informations de l'auteur ${author.firstname} ${author.lastname}`}
+                        to={`/authors/update/${author.id}`}
+                        variant="primary"
+                        children="Modifier l'auteur"
+                    />
+                )}
+                {canDelete && (
+                    <Button
+                        ariaLabel={`Supprimer l'auteur ${author.firstname} ${author.lastname} en tant qu'administrateur`}
+                        variant="destructive"
+                        onClick={handleDeleteAuthor}
+                        loading={isDeletingAuthor}
+                        disabled={isDeletingAuthor}
+                    >
+                        Supprimer
+                    </Button>
+                )}
+            </div>
             <BooksBibliography author={author} fromAuthorPage={true} />
         </div>
     );

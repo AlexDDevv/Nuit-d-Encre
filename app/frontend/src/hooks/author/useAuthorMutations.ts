@@ -1,6 +1,5 @@
 import { CreateAuthorInput, UpdateAuthorInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
-import { useToast } from "@/hooks/toast/useToast";
 import {
     CREATE_AUTHOR,
     DELETE_AUTHOR,
@@ -66,8 +65,6 @@ import {
  */
 
 export function useAuthorMutations() {
-    const { showToast } = useToast();
-
     // ************************ CREATE ************************
     const [
         createAuthorMutation,
@@ -125,51 +122,13 @@ export function useAuthorMutations() {
             reset: resetDeleteAuthorError,
         },
     ] = useMutation(DELETE_AUTHOR, {
-        refetchQueries: [GET_AUTHORS],
+        refetchQueries: [{ query: GET_AUTHORS }],
     });
 
     const deleteAuthor = async (authorId: string) => {
-        try {
-            await deleteAuthorMutation({
-                variables: {
-                    authorId: authorId,
-                },
-            });
-
-            showToast({
-                type: "success",
-                title: "L'auteur a bien été supprimé !",
-                description:
-                    "Vous pouvez poursuivre votre lecture du tableau de bord.",
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                if (
-                    error.message.includes(
-                        "Access denied! You don't have permission for this action!",
-                    )
-                ) {
-                    showToast({
-                        type: "error",
-                        title: "Échec de la suppression",
-                        description: "Vous n'avez pas les droits nécessaires.",
-                    });
-                } else {
-                    showToast({
-                        type: "error",
-                        title: "Erreur lors de la suppression",
-                        description:
-                            "Une erreur est survenue. Veuillez réessayer plus tard.",
-                    });
-                }
-            } else {
-                showToast({
-                    type: "error",
-                    title: "Erreur inattendue",
-                    description: "Une erreur inconnue est survenue.",
-                });
-            }
-        }
+        await deleteAuthorMutation({
+            variables: { authorId },
+        });
     };
 
     return {
