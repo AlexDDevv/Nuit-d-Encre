@@ -38,7 +38,7 @@ export default function BooksBibliography({
                     </Link>
                 )}
             </div>
-            <div className="flex flex-wrap items-center justify-between gap-5">
+            <div className="flex flex-wrap items-center justify-start gap-10">
                 {displayedBooks.map((book: BookCardProps) => (
                     <BookCard
                         key={book.id}
