@@ -5,11 +5,11 @@ import { Link } from "react-router-dom";
 
 export default function BooksBibliography({
     author,
-    excludeBookId,
+    excludedBookId,
     fromAuthorPage = false,
 }: BooksBibliographyProps) {
     const books = author.books?.filter(
-        (book) => !excludeBookId || book.id !== excludeBookId,
+        (book) => !excludedBookId || book.id !== excludedBookId,
     );
 
     if (!books || books.length === 0) {
@@ -21,24 +21,24 @@ export default function BooksBibliography({
     const authorPath = `/authors/${author.id}-${slugify(`${author.firstname} ${author.lastname}`)}`;
 
     return (
-        <section className="bg-muted flex flex-col gap-10 rounded-lg p-6">
-            <div className="bg-card flex items-center gap-6 rounded-md p-5">
+        <section className="flex flex-col gap-10">
+            <div className="bg-card flex items-end gap-6 rounded-md p-5 border-border border-2">
                 <h3 className="text-muted-foreground font-semibold uppercase tracking-wider">
                     {fromAuthorPage
                         ? "Bibliographie"
-                        : `Autres livres de ${author.firstname} ${author.lastname}`}
+                        : "Du même auteur"}
                 </h3>
                 {hasMore && (
                     <Link
                         to={authorPath}
-                        className="text-card-foreground font-bold italic hover:underline"
+                        className="text-card-foreground font-semibold italic hover:underline text-sm"
                         aria-label={`Voir tous les livres de ${author.firstname} ${author.lastname}`}
                     >
                         Voir plus
                     </Link>
                 )}
             </div>
-            <div className="flex flex-wrap items-center justify-start gap-10">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-10">
                 {displayedBooks.map((book: BookCardProps) => (
                     <BookCard
                         key={book.id}

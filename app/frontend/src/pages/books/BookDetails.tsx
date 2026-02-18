@@ -5,6 +5,7 @@ import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { Link, useParams } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import { useBookData } from "@/hooks/book/useBookData";
+import { useBooksByCategory } from "@/hooks/book/useBooksByCategory";
 import BooksBibliography from "@/components/sections/book/BooksBibliography";
 import { slugify } from "@/lib/utils";
 import { useState } from "react";
@@ -13,6 +14,7 @@ import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
 import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate } from "react-router-dom";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
+import BooksByCategory from "@/components/sections/book/BooksByCategory";
 
 export default function BookDetails() {
     const { createUserBook, isCreatingUserBook } = useUserBookMutations();
@@ -33,6 +35,10 @@ export default function BookDetails() {
     const id = idStr;
 
     const { book, isLoadingBook, bookError } = useBookData(id);
+    const { books: categoryBooks } = useBooksByCategory(
+        book?.category.id,
+        6,
+    );
 
     if (isLoadingBook) {
         return <BookDetailsSkeleton />;
@@ -214,11 +220,19 @@ export default function BookDetails() {
                     </Button>
                 )}
             </div>
-            <BooksBibliography
-                author={book.author}
-                excludeBookId={id}
-                fromAuthorPage={false}
-            />
+            <div className="flex flex-col gap-20 bg-muted rounded-lg p-6 border-border border-2">
+                <BooksBibliography
+                    author={book.author}
+                    excludedBookId={book.id}
+                    fromAuthorPage={false}
+                />
+                <BooksByCategory
+                    category={book.category}
+                    books={categoryBooks}
+                    excludedBookId={book.id}
+                    excludedBookTitle={book.title}
+                />
+            </div>
         </div>
     );
 }
