@@ -289,6 +289,13 @@ export type FiltersUserBooksProps = FilterUserBookStatusProps & {
 
 export interface BooksBibliographyProps {
     author: Author;
-    excludeBookId?: string;
+    excludedBookId?: string;
     fromAuthorPage?: boolean;
+}
+
+export interface BooksByCategoryProps {
+    category: CategoryBook;
+    books: Book[];
+    excludedBookId?: string;
+    excludedBookTitle?: string;
 }
