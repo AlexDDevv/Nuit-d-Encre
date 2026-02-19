@@ -1,6 +1,6 @@
 import { BookCardProps, BooksBibliographyProps } from "@/types/types";
 import BookCard from "@/components/sections/book/BookCard";
-import { slugify } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
 export default function BooksBibliography({
@@ -19,6 +19,7 @@ export default function BooksBibliography({
     const displayedBooks = fromAuthorPage ? books : books.slice(0, 5);
     const hasMore = !fromAuthorPage && books.length > 5;
     const authorPath = `/authors/${author.id}-${slugify(`${author.firstname} ${author.lastname}`)}`;
+    const numberOfBooks = books.length;
 
     return (
         <section className="flex flex-col gap-10">
@@ -38,7 +39,7 @@ export default function BooksBibliography({
                     </Link>
                 )}
             </div>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-10">
+            <div className={cn("flex flex-wrap items-center", numberOfBooks >= 5 ? "justify-between gap-5" : "justify-start gap-10")}>
                 {displayedBooks.map((book: BookCardProps) => (
                     <BookCard
                         key={book.id}

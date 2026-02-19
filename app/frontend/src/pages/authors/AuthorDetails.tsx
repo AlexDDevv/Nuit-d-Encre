@@ -185,7 +185,9 @@ export default function AuthorDetails() {
                     </Button>
                 )}
             </div>
-            <BooksBibliography author={author} fromAuthorPage={true} />
+            <div className="flex flex-col gap-20 bg-muted rounded-lg p-6 border-border border-2">
+                <BooksBibliography author={author} fromAuthorPage={true} />
+            </div>
         </div>
     );
 }
