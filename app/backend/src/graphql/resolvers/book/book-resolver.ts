@@ -10,10 +10,14 @@ import {
     Arg,
     Authorized,
     Ctx,
+    FieldResolver,
+    Float,
     ID,
+    Int,
     Mutation,
     Query,
     Resolver,
+    Root,
 } from "type-graphql"
 import { AppError } from "../../../middlewares/error-handler"
 import { Context, Roles, UserActionType } from "../../../types/types"
@@ -28,6 +32,8 @@ import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
 import { Author } from "../../../database/entities/author/author"
+import { BookReview } from "../../../database/entities/book/bookReview"
+import { BookRecommendation } from "../../../database/entities/book/bookRecommendation"
 
 /**
  * Book Resolver
@@ -415,6 +421,262 @@ export class BooksResolver {
                 500,
                 "InternalServerError"
             )
+        }
+    }
+
+    /* ========================================================================
+     * FIELD RESOLVERS - Computed fields for Book entity
+     * ======================================================================== */
+
+    /**
+     * Field Resolver: Average rating for a book
+     * 
+     * @description
+     * Calculates the average rating across all reviews for this book.
+     * Uses SQL AVG function for optimal performance.
+     * 
+     * @param book - The parent Book object from the query.
+     * 
+     * @returns The average rating as a float (e.g., 4.2), or null if no reviews exist.
+     * 
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     averageRating  # Returns: 4.2
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Float, { nullable: true })
+    async averageRating(@Root() book: Book): Promise<number | null> {
+        try {
+            const result = await BookReview
+                .createQueryBuilder("review")
+                .select("AVG(review.rating)", "avg")
+                .where("review.bookId = :bookId", { bookId: book.id })
+                .getRawOne();
+
+            return result?.avg ? parseFloat(Number(result.avg).toFixed(2)) : null;
+        } catch (error) {
+            console.error("Error calculating average rating:", error);
+            return null;
+        }
+    }
+
+    /**
+     * Field Resolver: Total number of reviews for a book
+     * 
+     * @description
+     * Counts the total number of reviews written for this book.
+     * 
+     * @param book - The parent Book object from the query.
+     * 
+     * @returns The count of reviews as an integer.
+     * 
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     reviewCount  # Returns: 42
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Int)
+    async reviewCount(@Root() book: Book): Promise<number> {
+        try {
+            return await BookReview.count({
+                where: { book: { id: book.id } }
+            });
+        } catch (error) {
+            console.error("Error counting reviews:", error);
+            return 0;
+        }
+    }
+
+    /**
+     * Field Resolver: Total number of recommendations for a book
+     * 
+     * @description
+     * Counts how many users have recommended this book.
+     * 
+     * @param book - The parent Book object from the query.
+     * 
+     * @returns The count of recommendations as an integer.
+     * 
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     recommendationCount  # Returns: 327
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Int)
+    async recommendationCount(@Root() book: Book): Promise<number> {
+        try {
+            return await BookRecommendation.count({
+                where: { book: { id: book.id } }
+            });
+        } catch (error) {
+            console.error("Error counting recommendations:", error);
+            return 0;
+        }
+    }
+
+    /**
+     * Field Resolver: Check if the current user has reviewed this book
+     * 
+     * @description
+     * Returns true if the authenticated user has already written a review
+     * for this book, false otherwise. Returns false for unauthenticated users.
+     * 
+     * @param book - The parent Book object from the query.
+     * @param context - GraphQL context containing the authenticated user.
+     * 
+     * @returns Boolean indicating if the user has reviewed the book.
+     * 
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     hasUserReviewed  # Returns: true or false
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Boolean)
+    async hasUserReviewed(
+        @Root() book: Book,
+        @Ctx() context: Context
+    ): Promise<boolean> {
+        try {
+            const user = context.user;
+            
+            if (!user) {
+                return false;
+            }
+
+            const review = await BookReview.findOne({
+                where: {
+                    book: { id: book.id },
+                    user: { id: user.id }
+                }
+            });
+
+            return !!review;
+        } catch (error) {
+            console.error("Error checking user review:", error);
+            return false;
+        }
+    }
+
+    /**
+     * Field Resolver: Check if the current user has recommended this book
+     * 
+     * @description
+     * Returns true if the authenticated user has recommended this book,
+     * false otherwise. Returns false for unauthenticated users.
+     * 
+     * @param book - The parent Book object from the query.
+     * @param context - GraphQL context containing the authenticated user.
+     * 
+     * @returns Boolean indicating if the user has recommended the book.
+     * 
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     hasUserRecommended  # Returns: true or false
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Boolean)
+    async hasUserRecommended(
+        @Root() book: Book,
+        @Ctx() context: Context
+    ): Promise<boolean> {
+        try {
+            const user = context.user;
+            
+            if (!user) {
+                return false;
+            }
+
+            const recommendation = await BookRecommendation.findOne({
+                where: {
+                    book: { id: book.id },
+                    user: { id: user.id }
+                }
+            });
+
+            return !!recommendation;
+        } catch (error) {
+            console.error("Error checking user recommendation:", error);
+            return false;
+        }
+    }
+
+    /**
+     * Field Resolver: Get top reviews sorted by helpfulness
+     * 
+     * @description
+     * Returns the most helpful reviews for this book, sorted by the number
+     * of "helpful" votes. Useful for displaying featured reviews on the book page.
+     * 
+     * @param book - The parent Book object from the query.
+     * @param limit - Maximum number of reviews to return (default: 5).
+     * 
+     * @returns Array of BookReview objects, ordered by helpfulness.
+     * 
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     topReviews(limit: 3) {
+     *       reviewText
+     *       rating
+     *       user { name }
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => [BookReview])
+    async topReviews(
+        @Root() book: Book,
+        @Arg("limit", () => Int, { defaultValue: 5 }) limit: number
+    ): Promise<BookReview[]> {
+        try {
+            const reviews = await BookReview
+                .createQueryBuilder("review")
+                .leftJoinAndSelect("review.user", "user")
+                .leftJoinAndSelect("review.votes", "votes")
+                .where("review.bookId = :bookId", { bookId: book.id })
+                .loadRelationCountAndMap(
+                    "review.helpfulCount",
+                    "review.votes",
+                    "helpfulVotes",
+                    (qb) => qb.andWhere("helpfulVotes.isHelpful = :isHelpful", { isHelpful: true })
+                )
+                .orderBy("helpfulCount", "DESC")
+                .addOrderBy("review.createdAt", "DESC")
+                .limit(limit)
+                .getMany();
+
+            return reviews;
+        } catch (error) {
+            console.error("Error fetching top reviews:", error);
+            return [];
         }
     }
 }
