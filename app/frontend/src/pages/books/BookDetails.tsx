@@ -81,6 +81,14 @@ export default function BookDetails() {
                     "Le livre a bien été ajouté à votre bibliothèque !",
             });
         } catch (error) {
+            if (!user) {
+                showToast({
+                    type: "error",
+                    title: "Action non autorisée",
+                    description: "Vous devez être connecté pour ajouter un livre à votre bibliothèque.",
+                });
+                return;
+            }
             showToast({
                 type: "error",
                 title: "Erreur",
