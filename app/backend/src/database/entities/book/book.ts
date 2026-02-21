@@ -21,6 +21,8 @@ import { User } from "../user/user";
 import { Category } from "../category/category";
 import { Author } from "../author/author";
 import { UserBook } from "../user/user-book";
+import { BookReview } from "./bookReview";
+import { BookRecommendation } from "./bookRecommendation";
 
 /**
  * Book Entity
@@ -199,6 +201,14 @@ export class Book extends BaseEntity {
 
     @OneToMany(() => UserBook, (ub) => ub.book)
     userBooks!: UserBook[];
+
+    @OneToMany(() => BookReview, (review) => review.book)
+    @Field(() => [BookReview])
+    reviews!: BookReview[];
+
+    @OneToMany(() => BookRecommendation, (recommendation) => recommendation.book)
+    @Field(() => [BookRecommendation])
+    recommendations!: BookRecommendation[];
 
     /**
      * Timestamp when the book was created

@@ -11,6 +11,9 @@ import { Book } from "../book/book";
 import { UserActions } from "./user-actions";
 import { Author } from "../author/author";
 import { UserBook } from "./user-book";
+import { BookReview } from "../book/bookReview";
+import { BookRecommendation } from "../book/bookRecommendation";
+import { BookReviewVote } from "../book/bookReviewVote";
 
 /**
  * Represents a user entity in the database.
@@ -82,6 +85,18 @@ export class User extends BaseEntity {
 
     @OneToMany(() => UserBook, (ub) => ub.user)
     userBooks!: UserBook[];
+
+    @OneToMany(() => BookReview, (review) => review.user)
+    @Field(() => [BookReview])
+    bookReviews!: BookReview[];
+
+    @OneToMany(() => BookRecommendation, (recommendation) => recommendation.user)
+    @Field(() => [BookRecommendation])
+    bookRecommendations!: BookRecommendation[];
+
+    @OneToMany(() => BookReviewVote, (vote) => vote.user)
+    @Field(() => [BookReviewVote])
+    bookReviewVotes!: BookReviewVote[];
 
     @Field()
     @Column({ default: () => "CURRENT_TIMESTAMP" })
