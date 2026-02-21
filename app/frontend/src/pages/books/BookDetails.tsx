@@ -15,6 +15,7 @@ import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate } from "react-router-dom";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import BooksByCategory from "@/components/sections/book/BooksByCategory";
+import { RecommendationCount } from "@/components/UI/RecommendationCount";
 
 export default function BookDetails() {
     const { createUserBook, isCreatingUserBook } = useUserBookMutations();
@@ -162,25 +163,25 @@ export default function BookDetails() {
                             {book.author.firstname} {book.author.lastname}
                         </Link>
                     </div>
-                    <div className="max-w-xl">
-                        {book.summary.length > 200 ? (
-                            <p className="text-secondary-foreground">
-                                {book.summary.substring(0, 200)}
-                                ...
-                                <a
-                                    href="#summary"
-                                    className="text-foreground ml-1 font-semibold"
-                                >
-                                    Lire la suite
-                                </a>
-                            </p>
-                        ) : (
-                            <p className="text-secondary-foreground">
-                                {book.summary}
-                            </p>
-                        )}
-                    </div>
-                    <div>
+                    <div className="flex flex-col gap-2">
+                        <div className="max-w-xl">
+                            {book.summary.length > 200 ? (
+                                <p className="text-secondary-foreground">
+                                    {book.summary.substring(0, 200)}
+                                    ...
+                                    <a
+                                        href="#summary"
+                                        className="text-foreground ml-1 font-semibold"
+                                    >
+                                        Lire la suite
+                                    </a>
+                                </p>
+                            ) : (
+                                <p className="text-secondary-foreground">
+                                    {book.summary}
+                                </p>
+                            )}
+                        </div>
                         <p className="text-foreground font-semibold">
                             {book.category.name}
                         </p>
@@ -190,6 +191,9 @@ export default function BookDetails() {
                         onChange={handleStatusChange}
                         disabled={isCreatingUserBook}
                     />
+                    {book.recommendationCount !== undefined && book.recommendationCount > 0 && (
+                        <RecommendationCount count={book.recommendationCount} variant="outline" />
+                    )}
                 </div>
             </div>
             <div className="flex gap-20">
