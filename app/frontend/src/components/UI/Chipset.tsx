@@ -1,32 +1,33 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
 
+export interface ChipsetProps
+	extends React.HTMLAttributes<HTMLDivElement>,
+	VariantProps<typeof chipsetVariants> {
+	rounded?: boolean
+	ariaLabel: string
+}
+
 const chipsetVariants = cva(
-	"inline-flex items-center gap-1 border-1 h-fit w-fit rounded-sm px-4 py-1 text-xs font-medium transition-colors",
+	"inline-flex items-center gap-1 border h-fit w-fit rounded-sm px-3 py-1 text-xs font-medium transition-colors",
 	{
 		variants: {
 			variant: {
-				primary: "bg-primary-700 border-primary-700 text-white",
+				primary:
+					"bg-primary text-primary-foreground border-primary",
+
 				secondary:
-					"bg-primary-default border-primary-default text-white",
-				tertiary: "bg-white border-white text-primary-700 ",
+					"bg-secondary text-secondary-foreground border-secondary",
+
+				muted:
+					"bg-muted text-muted-foreground border-border",
+
+				outline:
+					"bg-transparent text-foreground border-primary",
+
 				destructive:
-					"bg-destructive-medium border-destructive-medium text-white",
-				disabled: "bg-black-400 border-black-400 text-white",
-				outline: "bg-white border-primary-700 text-primary-700",
-				filtered:
-					"bg-primary-100 text-primary-default font-semibold text-sm px-3 h-10 py-2 gap-2 rounded-lg",
-			},
-			state: {
-				published:
-					"bg-validate-light text-validate-dark px-2 py-1 font-bold text-base border-none",
-				draft: "bg-warning-light text-warning-dark px-2 py-1 font-bold text-base border-none",
-				archived:
-					"bg-black-200 text-black-default px-2 py-1 font-bold text-base border-none",
-				censored:
-					"bg-destructive-light text-destructive-dark px-2 py-1 font-bold text-base border-none",
+					"bg-destructive text-destructive-foreground border-destructive",
 			},
 		},
 		defaultVariants: {
@@ -35,27 +36,19 @@ const chipsetVariants = cva(
 	}
 )
 
-export interface ChipsetProps
-	extends React.HTMLAttributes<HTMLDivElement>,
-		VariantProps<typeof chipsetVariants> {
-	rounded?: boolean
-	ariaLabel: string
-}
-
 function Chipset({
 	className,
 	variant,
-	state,
 	ariaLabel,
 	rounded = false,
 	...props
 }: ChipsetProps) {
 	return (
 		<div
+			aria-label={ariaLabel}
 			className={cn(
-				chipsetVariants({ variant, state }),
+				chipsetVariants({ variant }),
 				rounded && "rounded-full",
-				ariaLabel,
 				className
 			)}
 			{...props}
