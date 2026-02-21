@@ -1,5 +1,6 @@
 import Cookies from "cookies";
 import { User } from "../database/entities/user/user";
+import { registerEnumType } from "type-graphql";
 
 export type Context = {
     cookies: Cookies;
@@ -21,6 +22,10 @@ export enum UserActionType {
     AUTHOR_ADDED = "AUTHOR_ADDED",
     BOOK_ADDED_TO_LIBRARY = "BOOK_ADDED_TO_LIBRARY",
     BOOK_FINISHED = "BOOK_FINISHED",
+    BOOK_RECOMMENDED = "BOOK_RECOMMENDED",
+    REVIEW_CREATED = "REVIEW_CREATED",
+    DETAILED_REVIEW_BONUS = "DETAILED_REVIEW_BONUS",
+    REVIEW_VOTED_HELPFUL = "REVIEW_VOTED_HELPFUL"
 }
 
 export type XPResultType = {
@@ -40,10 +45,23 @@ export interface AuthorNameParts {
 }
 
 export enum ReadingStatus {
-    TO_READ = "to_read",      
-    READING = "reading",       
-    READ = "read",             
-    PAUSED = "paused",        
+    TO_READ = "to_read",
+    READING = "reading",
+    READ = "read",
+    PAUSED = "paused",
 }
+
+export enum BookReviewSortBy {
+    RECENT = "recent",
+    OLDEST = "oldest",
+    RATING_HIGH = "rating_high",
+    RATING_LOW = "rating_low",
+    HELPFUL = "helpful",
+}
+
+registerEnumType(BookReviewSortBy, {
+    name: "BookReviewSortBy",
+    description: "Sort options for book reviews",
+});
 
 
