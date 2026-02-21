@@ -19,6 +19,9 @@ import { AppError } from "../../../middlewares/error-handler";
 import { Context, Roles, UserActionType } from "../../../types/types";
 import { Book } from "../../../database/entities/book/book";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
+import { BookRecommendation } from "../../../database/entities/book/bookRecommendation";
+import { CreateBookRecommendationInput } from "../../inputs/create/book/create-book-recommendation-input";
+import { BookRecommendationToggleResult } from "../../../database/filteredResults/books/book-recommendation-result";
 
 /**
  * BookRecommendation Resolver
@@ -262,34 +265,4 @@ export class BookRecommendationsResolver {
             );
         }
     }
-}
-
-/**
- * BookRecommendationToggleResult
- * @description
- * Return type for the toggleBookRecommendation mutation.
- * Indicates whether a recommendation was created or removed.
- */
-import { ObjectType, Field } from "type-graphql";
-import { BookRecommendation } from "../../../database/entities/book/bookRecommendation";
-import { CreateBookRecommendationInput } from "../../inputs/create/book/create-book-recommendation-input";
-
-@ObjectType()
-export class BookRecommendationToggleResult {
-    /**
-     * The recommendation object
-     * @description
-     * Contains the BookRecommendation if created, or null if removed.
-     */
-    @Field(() => BookRecommendation, { nullable: true })
-    recommendation!: BookRecommendation | null;
-
-    /**
-     * Action performed
-     * @description
-     * Indicates what action was taken: "created" or "removed".
-     * Useful for frontend feedback messages.
-     */
-    @Field()
-    action!: "created" | "removed";
 }
