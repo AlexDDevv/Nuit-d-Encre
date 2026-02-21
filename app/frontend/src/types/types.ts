@@ -140,6 +140,11 @@ export interface Book {
     isbn10?: string;
     isbn13: string;
     user: User;
+    averageRating?: number;
+    reviewCount?: number;
+    recommendationCount?: number;
+    hasUserReviewed?: boolean;
+    hasUserRecommended?: boolean;
 }
 
 export interface BookInfoProps {
@@ -309,4 +314,12 @@ export interface BooksByCategoryProps {
     books: Book[];
     excludedBookId?: string;
     excludedBookTitle?: string;
+}
+
+export interface RecommendationCountProps {
+    count: number | undefined;
+    className?: string;
+    showIcon?: boolean;
+    variant?: "primary" | "secondary" | "muted" | "outline" | "destructive";
+    rounded?: boolean;
 }
