@@ -1,6 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import { UserRole } from "./../../../backend/src/types/types";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import { ReactNode } from "react";
 
 export type AuthContextProps = {
     user: User | null;
@@ -285,6 +286,16 @@ export type FiltersUserBooksProps = FilterUserBookStatusProps & {
     searchParams: URLSearchParams;
     filters: string[];
     onClearAll: () => void;
+};
+
+export type BooksSectionLayoutProps = {
+    title: string;
+    seeMoreLink?: {
+        to: string;
+        ariaLabel: string;
+    };
+    className?: string;
+    children: ReactNode;
 };
 
 export interface BooksBibliographyProps {
