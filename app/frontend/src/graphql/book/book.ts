@@ -33,6 +33,11 @@ export const GET_BOOKS = gql`
                     email
                     userName
                 }
+                averageRating
+                reviewCount
+                recommendationCount
+                hasUserReviewed
+                hasUserRecommended
                 createdAt
                 updatedAt
             }
@@ -88,6 +93,11 @@ export const GET_BOOK = gql`
                 email
                 userName
             }
+            averageRating
+            reviewCount
+            recommendationCount
+            hasUserReviewed
+            hasUserRecommended
             createdAt
             updatedAt
         }
