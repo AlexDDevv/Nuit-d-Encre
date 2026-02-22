@@ -25,13 +25,13 @@ export default function AuthButtons({ pathname }: { pathname: string }) {
                     ariaLabel="S'inscrire à Nuit d'Encre"
                     children="S'inscrire"
                     variant="primary"
-                    to="/register"
+                    to={`/register?redirect=${encodeURIComponent(pathname)}`}
                 />
                 <Button
                     ariaLabel="Se connecter à Nuit d'Encre"
                     children="Se connecter"
                     variant="secondary"
-                    to="/connexion"
+                    to={`/connexion?redirect=${encodeURIComponent(pathname)}`}
                 />
             </div>
         );

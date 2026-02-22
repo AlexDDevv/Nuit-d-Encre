@@ -2,7 +2,7 @@ import { useToast } from "@/hooks/toast/useToast";
 import { UserSignIn } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
 import FormTitle from "@/components/sections/auth/form/FormTitle";
 import FormWrapper from "@/components/UI/form/FormWrapper";
@@ -32,7 +32,11 @@ export default function Signin() {
     });
 
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const { showToast } = useToast();
+
+    // Get the redirect URL from query params, default to "/books"
+    const redirectUrl = searchParams.get("redirect") || "/books";
 
     const onSubmit: SubmitHandler<UserSignIn> = async (formData) => {
         try {
@@ -48,7 +52,7 @@ export default function Signin() {
             // If registration ok, navigate to surveys page and toastify
             if (data) {
                 reset();
-                navigate("/books");
+                navigate(redirectUrl);
                 showToast({
                     type: "success",
                     title: "Connexion réussie, bienvenue !",

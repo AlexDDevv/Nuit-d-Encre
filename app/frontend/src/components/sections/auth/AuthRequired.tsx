@@ -4,7 +4,7 @@
  */
 
 import { Button } from "@/components/UI/Button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Lock } from "lucide-react";
 
 /**
@@ -17,6 +17,8 @@ import { Lock } from "lucide-react";
  * @returns {JSX.Element} The rendered AuthRequired component
  */
 export default function AuthRequired() {
+    const location = useLocation();
+
     return (
         <div className="mx-auto flex max-w-md items-center justify-center">
             <div className="bg-card border-border flex w-full flex-col gap-6 rounded-xl border p-8 text-center">
@@ -35,7 +37,7 @@ export default function AuthRequired() {
                 </div>
                 <nav className="flex flex-col gap-4">
                     <Button
-                        to="/register"
+                        to={`/register?redirect=${encodeURIComponent(location.pathname)}`}
                         variant="primary"
                         fullWidth
                         ariaLabel="S'inscrire"
@@ -43,7 +45,7 @@ export default function AuthRequired() {
                         S'inscrire
                     </Button>
                     <Button
-                        to="/connexion"
+                        to={`/connexion?redirect=${encodeURIComponent(location.pathname)}`}
                         variant="secondary"
                         fullWidth
                         ariaLabel="Se connecter"

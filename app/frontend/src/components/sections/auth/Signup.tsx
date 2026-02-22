@@ -2,6 +2,7 @@ import { useToast } from "@/hooks/toast/useToast";
 import { UserSignUp } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
 import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
 import FormTitle from "@/components/sections/auth/form/FormTitle";
 import FormWrapper from "@/components/UI/form/FormWrapper";
@@ -30,7 +31,11 @@ export default function Signup() {
         refetchQueries: [WHOAMI],
     });
 
+    const [searchParams] = useSearchParams();
     const { showToast } = useToast();
+
+    // Get the redirect URL from query params to pass it to the login page
+    const redirectUrl = searchParams.get("redirect");
 
     const onSubmit: SubmitHandler<UserSignUp> = async (formData) => {
         try {
@@ -51,7 +56,9 @@ export default function Signup() {
                     title: "Inscription réussie !",
                     description: "Bienvenue dans Nuit d'Encre",
                     actionLabel: "Me connecter",
-                    redirectTo: "/connexion",
+                    redirectTo: redirectUrl
+                        ? `/connexion?redirect=${encodeURIComponent(redirectUrl)}`
+                        : "/connexion",
                 });
             }
         } catch (err) {
