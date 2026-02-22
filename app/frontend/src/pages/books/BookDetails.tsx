@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import BooksByCategory from "@/components/sections/book/BooksByCategory";
 import { RecommendationCount } from "@/components/UI/RecommendationCount";
+import BookReviews from "@/components/sections/book/BookReviews";
 
 export default function BookDetails() {
     const { createUserBook, isCreatingUserBook } = useUserBookMutations();
@@ -244,6 +245,7 @@ export default function BookDetails() {
                     excludedBookId={book.id}
                     excludedBookTitle={book.title}
                 />
+                <BookReviews book={book} />
             </div>
         </div>
     );
