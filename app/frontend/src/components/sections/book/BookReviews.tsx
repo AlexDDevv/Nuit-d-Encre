@@ -12,6 +12,8 @@ import { useBookReviewsData } from "@/hooks/book/review/useBookReviewsData";
 import { useMyBookReview } from "@/hooks/book/review/useBookReviewData";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
 import RatingStars from "../library/UI/RatingStars";
+import { useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 interface BookReviewsProps {
     book: Book;
@@ -33,6 +35,7 @@ const sortOptions: SortOption[] = [
 export default function BookReviews({ book }: BookReviewsProps) {
     const { user } = useAuthContext();
     const { showToast } = useToast();
+    const location = useLocation();
 
     const [sortBy, setSortBy] = useState<BookReviewSortBy>(
         BookReviewSortBy.HELPFUL,
@@ -95,7 +98,7 @@ export default function BookReviews({ book }: BookReviewsProps) {
         <>
             <BooksSectionLayout
                 title="Avis et critiques"
-                className="flex-col gap-6"
+                className="items-start"
             >
                 {/* Header with rating summary and action button */}
                 {hasReviews && (
@@ -153,18 +156,19 @@ export default function BookReviews({ book }: BookReviewsProps) {
 
                 {/* Empty state with inline form */}
                 {!hasReviews && (
-                    <div className="bg-muted border-border flex flex-col items-center gap-6 rounded-lg border-2 p-8 text-center">
+                    <div className={cn("bg-card border-border flex flex-col gap-5 rounded-xl border-2 p-6", user && "min-w-135")}>
                         <div className="flex flex-col gap-2">
                             <p className="text-foreground text-lg font-semibold">
                                 Ce livre n'a reçu aucune critique pour le
                                 moment.
                             </p>
-                            <p className="text-muted-foreground flex items-center justify-center gap-2">
-                                <MessageSquare className="h-5 w-5" />
-                                Soyez le premier à partager votre avis !
-                            </p>
+                            <div className="flex items-end gap-2">
+                                <p className="text-muted-foreground">
+                                    Soyez le premier à partager votre avis !
+                                </p>
+                                <MessageSquare className="h-5 w-5 text-muted-foreground" />
+                            </div>
                         </div>
-
                         {user ? (
                             <div className="w-full max-w-2xl">
                                 <ReviewForm
@@ -176,9 +180,14 @@ export default function BookReviews({ book }: BookReviewsProps) {
                                 />
                             </div>
                         ) : (
-                            <p className="text-muted-foreground text-sm">
-                                Connectez-vous pour écrire une critique
-                            </p>
+                            <div className="w-full flex justify-end">
+                                <Button
+                                    ariaLabel="Se connecter à Nuit d'Encre"
+                                    children="Se connecter"
+                                    variant="primary"
+                                    to={`/connexion?redirect=${encodeURIComponent(location.pathname)}`}
+                                />
+                            </div>
                         )}
                     </div>
                 )}

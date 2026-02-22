@@ -109,7 +109,7 @@ export default function ReviewForm({
             {/* Book info (only in modal variant) */}
             {variant === "modal" && (
                 <div className="flex items-center gap-4">
-                    <div className="h-16 w-12 flex-shrink-0">
+                    <div className="h-16 w-12 shrink-0">
                         <img
                             src="/images/bookCover.svg"
                             alt={book.title}
@@ -160,40 +160,41 @@ export default function ReviewForm({
                 </div>
 
                 {/* Review text */}
-                <div className="flex flex-col gap-2">
-                    <Label htmlFor="reviewText">Votre critique (optionnel)</Label>
-                    <Textarea
-                        id="reviewText"
-                        placeholder="Partagez votre avis sur ce livre..."
-                        maxLength={5000}
-                        counter
-                        className="min-h-32"
-                        errorMessage={errors.reviewText?.message}
-                        {...register("reviewText", {
-                            maxLength: {
-                                value: 5000,
-                                message:
-                                    "La critique ne peut pas dépasser 5000 caractères",
-                            },
-                        })}
-                    />
+                <div className="flex flex-col gap-4">
+                    <div className="flex flex-col gap-2">
+                        <Label htmlFor="reviewText">Votre critique (optionnel)</Label>
+                        <Textarea
+                            id="reviewText"
+                            placeholder="Partagez votre avis sur ce livre..."
+                            maxLength={5000}
+                            counter
+                            className="min-h-32"
+                            errorMessage={errors.reviewText?.message}
+                            {...register("reviewText", {
+                                maxLength: {
+                                    value: 5000,
+                                    message:
+                                        "La critique ne peut pas dépasser 5000 caractères",
+                                },
+                            })}
+                        />
+                    </div>
 
                     {/* XP bonus hint */}
-                    {reviewTextValue.length < 200 && reviewTextValue.length > 0 && (
-                        <div className="bg-muted border-border flex items-start gap-2 rounded-md border p-3">
-                            <Sparkles className="text-primary mt-0.5 h-4 w-4 flex-shrink-0" />
+                    {reviewTextValue.length < 200 && (
+                        <div className="bg-muted border-border flex items-center justify-center gap-2 rounded-md border p-3">
+                            <Sparkles className="text-primary h-4 w-4 shrink-0" />
                             <p className="text-muted-foreground text-xs">
                                 <span className="font-medium">Astuce :</span> Les
                                 critiques de plus de 200 caractères donnent un
-                                bonus d'XP ! (
-                                {200 - reviewTextValue.length} caractères restants)
+                                bonus d'XP !
                             </p>
                         </div>
                     )}
 
                     {reviewTextValue.length >= 200 && (
-                        <div className="bg-primary/10 border-primary/20 flex items-start gap-2 rounded-md border p-3">
-                            <Sparkles className="text-primary mt-0.5 h-4 w-4 flex-shrink-0" />
+                        <div className="bg-primary/10 border-primary/20 flex items-center justify-center gap-2 rounded-md border p-3">
+                            <Sparkles className="text-primary h-4 w-4 shrink-0" />
                             <p className="text-primary text-xs font-medium">
                                 Vous recevrez un bonus d'XP pour cette critique
                                 détaillée !
@@ -203,7 +204,7 @@ export default function ReviewForm({
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3">
+                <div className="flex gap-4">
                     {onCancel && (
                         <Button
                             type="button"
