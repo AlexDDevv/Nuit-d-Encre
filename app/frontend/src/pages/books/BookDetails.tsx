@@ -5,7 +5,7 @@ import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { Link, useParams } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import { useBookData } from "@/hooks/book/useBookData";
-import { useBooksByCategory } from "@/hooks/book/useBooksByCategory";
+import { useBooksByCategory } from "@/hooks/book/category/useBooksByCategory";
 import BooksBibliography from "@/components/sections/book/BooksBibliography";
 import { slugify } from "@/lib/utils";
 import { useState } from "react";
