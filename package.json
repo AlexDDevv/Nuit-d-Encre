@@ -4,8 +4,8 @@
     "private": true,
     "description": "Development of an online library platform",
     "workspaces": [
-        "frontend",
-        "backend"
+        "app/frontend",
+        "app/backend"
     ],
     "directories": {
         "doc": "docs",
