@@ -14,6 +14,9 @@ import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
 import { AuthorsResolver } from "./graphql/resolvers/author/author-resolver";
 import { UserActionsResolver } from "./graphql/resolvers/user/user-actions-resolver";
 import { UserBooksResolver } from "./graphql/resolvers/user/user-books-resolver";
+import { BookReviewsResolver } from "./graphql/resolvers/book/book-review-resolver";
+import { BookReviewVotesResolver } from "./graphql/resolvers/book/book-review-vote-resolver";
+import { BookRecommendationsResolver } from "./graphql/resolvers/book/book-recommendation-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -44,7 +47,10 @@ if (!process.env.APP_PORT) {
                 BooksResolver,
                 AuthorsResolver,
                 UserActionsResolver,
-                UserBooksResolver
+                UserBooksResolver,
+                BookReviewsResolver,
+                BookReviewVotesResolver,
+                BookRecommendationsResolver,
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields
@@ -57,7 +63,7 @@ if (!process.env.APP_PORT) {
             schema,
             formatError: (
                 formattedError: GraphQLFormattedError,
-                error: unknown
+                error: unknown,
             ): GraphQLFormattedError => {
                 // Check if the error is an instance of AppError
                 if (error instanceof AppError) {
@@ -113,7 +119,7 @@ if (!process.env.APP_PORT) {
         });
 
         console.log(
-            `🚀  Server ready at: ${url} \n 🚀 Backend : http://localhost:5173/api \n 🚀 Frontend : http://localhost:5173`
+            `🚀  Server ready at: ${url} \n 🚀 Backend : http://localhost:5173/api \n 🚀 Frontend : http://localhost:5173`,
         );
     } catch (error) {
         console.error("🚨 Error during initialization:", error);
