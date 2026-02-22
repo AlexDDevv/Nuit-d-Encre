@@ -98,7 +98,7 @@ export function useMyBookReview(bookId?: string) {
         loading: isLoadingMyReview,
         error: myReviewError,
         refetch: refetchMyReview,
-    } = useQuery<{ myBookReview: BookReview | null }>(GET_MY_BOOK_REVIEW, {
+    } = useQuery<{ myBookReview: BookReview | undefined }>(GET_MY_BOOK_REVIEW, {
         variables: { bookId },
         skip: !bookId,
     });
