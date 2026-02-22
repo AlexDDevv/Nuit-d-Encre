@@ -233,6 +233,69 @@ export type UserBookStatusConfig = {
     value: UserBookStatus;
 };
 
+export interface BookReview {
+    id: string;
+    rating: number;
+    reviewText?: string;
+    createdAt: string;
+    updatedAt: string;
+    user: User;
+    book: Book;
+    helpfulCount?: number;
+    notHelpfulCount?: number;
+}
+
+export interface BookReviewsResult {
+    reviews: BookReview[];
+    totalCount: number;
+    page: number;
+    limit: number;
+}
+
+export type CreateBookReviewInput = {
+    bookId: number;
+    rating: number;
+    reviewText?: string;
+};
+
+export type UpdateBookReviewInput = {
+    id: number;
+    rating?: number;
+    reviewText?: string;
+};
+
+export enum BookReviewSortBy {
+    RECENT = "recent",
+    OLDEST = "oldest",
+    RATING_HIGH = "rating_high",
+    RATING_LOW = "rating_low",
+    HELPFUL = "helpful",
+}
+
+export interface BookReviewVote {
+    id: string;
+    isHelpful: boolean;
+    createdAt: string;
+    user: User;
+    review: BookReview;
+}
+
+enum BookReviewVoteAction {
+    CREATED = "created",
+    UPDATED = "updated",
+    REMOVED = "removed",
+}
+
+export interface BookReviewVoteResult {
+    vote: BookReviewVote | null;
+    action: BookReviewVoteAction;
+}
+
+export type CreateBookReviewVoteInput = {
+    reviewId: number;
+    isHelpful: boolean;
+};
+
 export type SelectBookStatusProps = {
     value?: UserBookStatus;
     onChange?: (status: UserBookStatus) => void;
