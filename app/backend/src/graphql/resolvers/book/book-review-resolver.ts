@@ -19,7 +19,12 @@ import {
     Root,
 } from "type-graphql";
 import { AppError } from "../../../middlewares/error-handler";
-import { BookReviewSortBy, Context, Roles, UserActionType } from "../../../types/types";
+import {
+    BookReviewSortBy,
+    Context,
+    Roles,
+    UserActionType,
+} from "../../../types/types";
 import { Book } from "../../../database/entities/book/book";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
 import { isOwnerOrAdmin } from "../../../utils/authorizations";
@@ -32,7 +37,7 @@ import { UpdateBookReviewInput } from "../../inputs/update/book/update-book-revi
  * BookReview Resolver
  * @description
  * Handles all book review-related GraphQL mutations and queries.
- * 
+ *
  * Reviews are comprehensive user assessments of books, consisting of a
  * numerical rating and optional text critique. Each user can write only
  * one review per book.
@@ -41,14 +46,14 @@ import { UpdateBookReviewInput } from "../../inputs/update/book/update-book-revi
 export class BookReviewsResolver {
     /**
      * Query to get a specific review by its ID.
-     * 
+     *
      * @description
      * Retrieves a single review with all its relationships loaded.
-     * 
+     *
      * @param id - The ID of the review to fetch.
-     * 
+     *
      * @returns A BookReview object if found, null otherwise.
-     * 
+     *
      * @example
      * ```graphql
      * query {
@@ -60,11 +65,13 @@ export class BookReviewsResolver {
      *   }
      * }
      * ```
-     * 
+     *
      * @throws AppError - If the review is not found or query fails.
      */
     @Query(() => BookReview, { nullable: true })
-    async bookReview(@Arg("id", () => ID) id: number): Promise<BookReview | null> {
+    async bookReview(
+        @Arg("id", () => ID) id: number,
+    ): Promise<BookReview | null> {
         try {
             const review = await BookReview.findOne({
                 where: { id },
@@ -83,25 +90,25 @@ export class BookReviewsResolver {
             throw new AppError(
                 "Failed to fetch review",
                 500,
-                "InternalServerError"
+                "InternalServerError",
             );
         }
     }
 
     /**
      * Query to get all reviews for a specific book.
-     * 
+     *
      * @description
      * Retrieves all reviews for a given book with pagination and sorting support.
      * By default, sorts by most recent reviews first.
-     * 
+     *
      * @param bookId - The ID of the book to fetch reviews for.
      * @param page - Page number for pagination (default: 1).
      * @param limit - Number of reviews per page (default: 10).
      * @param sortBy - Sort order: "recent" (newest first), "oldest", "rating_high", "rating_low", "helpful" (default: "recent").
-     * 
+     *
      * @returns An object containing reviews and pagination metadata.
-     * 
+     *
      * @example
      * ```graphql
      * query {
@@ -118,7 +125,7 @@ export class BookReviewsResolver {
      *   }
      * }
      * ```
-     * 
+     *
      * @throws AppError - If the book is not found or query fails.
      */
     @Query(() => BookReviewsResult)
@@ -126,8 +133,10 @@ export class BookReviewsResolver {
         @Arg("bookId", () => ID) bookId: number,
         @Arg("page", () => Int, { defaultValue: 1 }) page: number,
         @Arg("limit", () => Int, { defaultValue: 10 }) limit: number,
-        @Arg("sortBy", () => BookReviewSortBy, { defaultValue: BookReviewSortBy.RECENT })
-        sortBy: BookReviewSortBy
+        @Arg("sortBy", () => BookReviewSortBy, {
+            defaultValue: BookReviewSortBy.RECENT,
+        })
+        sortBy: BookReviewSortBy,
     ): Promise<BookReviewsResult> {
         try {
             // Verify book exists
@@ -160,14 +169,17 @@ export class BookReviewsResolver {
                             "review.votes",
                             "helpfulVotes",
                             (qb) =>
-                                qb.andWhere("helpfulVotes.isHelpful = :isHelpful", {
-                                    isHelpful: true,
-                                })
+                                qb.andWhere(
+                                    "helpfulVotes.isHelpful = :isHelpful",
+                                    {
+                                        isHelpful: true,
+                                    },
+                                ),
                         )
                         .orderBy("helpfulCount", "DESC")
                         .addOrderBy("review.createdAt", "DESC");
                     break;
-                case "recent":
+                case BookReviewSortBy.RECENT:
                 default:
                     query.orderBy("review.createdAt", "DESC");
                     break;
@@ -191,24 +203,24 @@ export class BookReviewsResolver {
             throw new AppError(
                 "Failed to fetch reviews",
                 500,
-                "InternalServerError"
+                "InternalServerError",
             );
         }
     }
 
     /**
      * Query to get the current user's review for a specific book.
-     * 
+     *
      * @description
      * Returns the authenticated user's review for a given book, if it exists.
      * Useful for checking if the user has already reviewed a book and
      * for pre-filling edit forms.
-     * 
+     *
      * @param bookId - The ID of the book.
      * @param context - GraphQL context containing the authenticated user.
-     * 
+     *
      * @returns The user's BookReview if found, null otherwise.
-     * 
+     *
      * @example
      * ```graphql
      * query {
@@ -219,14 +231,14 @@ export class BookReviewsResolver {
      *   }
      * }
      * ```
-     * 
+     *
      * @throws AppError - If user is not authenticated or query fails.
      */
     @Authorized(Roles.User, Roles.Admin)
     @Query(() => BookReview, { nullable: true })
     async myBookReview(
         @Arg("bookId", () => ID) bookId: number,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<BookReview | null> {
         try {
             const user = context.user;
@@ -251,23 +263,23 @@ export class BookReviewsResolver {
             throw new AppError(
                 "Failed to fetch review",
                 500,
-                "InternalServerError"
+                "InternalServerError",
             );
         }
     }
 
     /**
      * Mutation to create a new book review.
-     * 
+     *
      * @description
      * Creates a new review for a book. Each user can only write one review per book.
      * Awards XP to the user, with bonus XP for detailed reviews (>200 characters).
-     * 
+     *
      * @param data - The input data containing book ID, rating, and optional review text.
      * @param context - GraphQL context containing the authenticated user.
-     * 
+     *
      * @returns The newly created BookReview object.
-     * 
+     *
      * @example
      * ```graphql
      * mutation {
@@ -283,14 +295,14 @@ export class BookReviewsResolver {
      *   }
      * }
      * ```
-     * 
+     *
      * @throws AppError - If user not found, book not found, review already exists, or creation fails.
      */
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookReview)
     async createBookReview(
         @Arg("data", () => CreateBookReviewInput) data: CreateBookReviewInput,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<BookReview> {
         try {
             const user = context.user;
@@ -320,7 +332,7 @@ export class BookReviewsResolver {
                 throw new AppError(
                     "You have already reviewed this book. Use updateBookReview to modify your review.",
                     409,
-                    "ConflictError"
+                    "ConflictError",
                 );
             }
 
@@ -344,13 +356,17 @@ export class BookReviewsResolver {
 
             // Bonus XP for detailed reviews (>200 characters)
             if (data.reviewText && data.reviewText.length > 200) {
-                await grantXpService(user, UserActionType.DETAILED_REVIEW_BONUS, {
-                    targetId: newReview.id.toString(),
-                    metadata: {
-                        bookTitle: book.title,
-                        textLength: data.reviewText.length,
+                await grantXpService(
+                    user,
+                    UserActionType.DETAILED_REVIEW_BONUS,
+                    {
+                        targetId: newReview.id.toString(),
+                        metadata: {
+                            bookTitle: book.title,
+                            textLength: data.reviewText.length,
+                        },
                     },
-                });
+                );
             }
 
             return newReview;
@@ -361,23 +377,23 @@ export class BookReviewsResolver {
             throw new AppError(
                 "Failed to create review",
                 500,
-                "InternalServerError"
+                "InternalServerError",
             );
         }
     }
 
     /**
      * Mutation to update an existing book review.
-     * 
+     *
      * @description
      * Updates a review's rating and/or text. Only the review's author can update it.
      * Partial updates are supported (can update just rating or just text).
-     * 
+     *
      * @param data - The input data containing review ID and fields to update.
      * @param context - GraphQL context containing the authenticated user.
-     * 
+     *
      * @returns The updated BookReview object.
-     * 
+     *
      * @example
      * ```graphql
      * mutation {
@@ -393,14 +409,14 @@ export class BookReviewsResolver {
      *   }
      * }
      * ```
-     * 
+     *
      * @throws AppError - If review not found, user unauthorized, or update fails.
      */
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookReview)
     async updateBookReview(
         @Arg("data", () => UpdateBookReviewInput) data: UpdateBookReviewInput,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<BookReview> {
         try {
             const user = context.user;
@@ -426,7 +442,7 @@ export class BookReviewsResolver {
                 throw new AppError(
                     "Not authorized to update this review",
                     403,
-                    "ForbiddenError"
+                    "ForbiddenError",
                 );
             }
 
@@ -449,22 +465,22 @@ export class BookReviewsResolver {
             throw new AppError(
                 "Failed to update review",
                 500,
-                "InternalServerError"
+                "InternalServerError",
             );
         }
     }
 
     /**
      * Mutation to delete a book review.
-     * 
+     *
      * @description
      * Permanently deletes a review. Only the review's author or an admin can delete it.
-     * 
+     *
      * @param id - The ID of the review to delete.
      * @param context - GraphQL context containing the authenticated user.
-     * 
+     *
      * @returns The deleted BookReview object (with ID preserved).
-     * 
+     *
      * @example
      * ```graphql
      * mutation {
@@ -474,14 +490,14 @@ export class BookReviewsResolver {
      *   }
      * }
      * ```
-     * 
+     *
      * @throws AppError - If review not found, user unauthorized, or deletion fails.
      */
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookReview)
     async deleteBookReview(
         @Arg("id", () => ID) id: number,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<BookReview> {
         try {
             const user = context.user;
@@ -507,7 +523,7 @@ export class BookReviewsResolver {
                 throw new AppError(
                     "Not authorized to delete this review",
                     403,
-                    "ForbiddenError"
+                    "ForbiddenError",
                 );
             }
 
@@ -523,7 +539,7 @@ export class BookReviewsResolver {
             throw new AppError(
                 "Failed to delete review",
                 500,
-                "InternalServerError"
+                "InternalServerError",
             );
         }
     }
@@ -534,14 +550,14 @@ export class BookReviewsResolver {
 
     /**
      * Field Resolver: Count of helpful votes
-     * 
+     *
      * @description
      * Counts how many users found this review helpful.
-     * 
+     *
      * @param review - The parent BookReview object.
-     * 
+     *
      * @returns Number of "helpful" votes.
-     * 
+     *
      * @example
      * ```graphql
      * query {
@@ -555,7 +571,8 @@ export class BookReviewsResolver {
     @FieldResolver(() => Int)
     async helpfulCount(@Root() review: BookReview): Promise<number> {
         try {
-            const count = await review.votes?.filter((vote) => vote.isHelpful).length;
+            const count = await review.votes?.filter((vote) => vote.isHelpful)
+                .length;
             return count || 0;
         } catch (error) {
             console.error("Error counting helpful votes:", error);
@@ -565,14 +582,14 @@ export class BookReviewsResolver {
 
     /**
      * Field Resolver: Count of not helpful votes
-     * 
+     *
      * @description
      * Counts how many users found this review not helpful.
-     * 
+     *
      * @param review - The parent BookReview object.
-     * 
+     *
      * @returns Number of "not helpful" votes.
-     * 
+     *
      * @example
      * ```graphql
      * query {
@@ -586,7 +603,8 @@ export class BookReviewsResolver {
     @FieldResolver(() => Int)
     async notHelpfulCount(@Root() review: BookReview): Promise<number> {
         try {
-            const count = await review.votes?.filter((vote) => !vote.isHelpful).length;
+            const count = await review.votes?.filter((vote) => !vote.isHelpful)
+                .length;
             return count || 0;
         } catch (error) {
             console.error("Error counting not helpful votes:", error);
