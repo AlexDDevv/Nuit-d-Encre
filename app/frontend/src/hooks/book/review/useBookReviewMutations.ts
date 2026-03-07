@@ -4,8 +4,6 @@ import {
     CREATE_BOOK_REVIEW,
     UPDATE_BOOK_REVIEW,
     DELETE_BOOK_REVIEW,
-    GET_BOOK_REVIEWS,
-    GET_MY_BOOK_REVIEW,
 } from "@/graphql/book/book-review";
 
 /**
@@ -76,10 +74,7 @@ export function useBookReviewMutations() {
             reset: resetCreateReviewError,
         },
     ] = useMutation(CREATE_BOOK_REVIEW, {
-        refetchQueries: [
-            { query: GET_BOOK_REVIEWS },
-            { query: GET_MY_BOOK_REVIEW },
-        ],
+        refetchQueries: ["BookReviews", "MyBookReview"],
     });
 
     const createReview = async (
@@ -100,10 +95,7 @@ export function useBookReviewMutations() {
             reset: resetUpdateReviewError,
         },
     ] = useMutation(UPDATE_BOOK_REVIEW, {
-        refetchQueries: [
-            { query: GET_BOOK_REVIEWS },
-            { query: GET_MY_BOOK_REVIEW },
-        ],
+        refetchQueries: ["BookReviews", "MyBookReview"],
     });
 
     const updateReview = async (
@@ -130,10 +122,7 @@ export function useBookReviewMutations() {
             reset: resetDeleteReviewError,
         },
     ] = useMutation(DELETE_BOOK_REVIEW, {
-        refetchQueries: [
-            { query: GET_BOOK_REVIEWS },
-            { query: GET_MY_BOOK_REVIEW },
-        ],
+        refetchQueries: ["BookReviews", "MyBookReview"],
     });
 
     const deleteReview = async (reviewId: string) => {

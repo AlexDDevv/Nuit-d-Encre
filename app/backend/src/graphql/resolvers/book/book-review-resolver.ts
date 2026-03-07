@@ -145,61 +145,74 @@ export class BookReviewsResolver {
                 throw new AppError("Book not found", 404, "NotFoundError");
             }
 
-            const query = BookReview.createQueryBuilder("review")
-                .leftJoinAndSelect("review.user", "user")
-                .leftJoinAndSelect("review.book", "book")
-                .leftJoinAndSelect("review.votes", "votes")
-                .where("review.bookId = :bookId", { bookId });
+            const totalCount = await BookReview.count({
+                where: { book: { id: bookId } },
+            });
 
-            // Apply sorting
-            switch (sortBy) {
-                case BookReviewSortBy.OLDEST:
-                    query.orderBy("review.createdAt", "ASC");
-                    break;
-                case BookReviewSortBy.RATING_HIGH:
-                    query.orderBy("review.rating", "DESC");
-                    break;
-                case BookReviewSortBy.RATING_LOW:
-                    query.orderBy("review.rating", "ASC");
-                    break;
-                case BookReviewSortBy.HELPFUL:
-                    query
-                        .loadRelationCountAndMap(
-                            "review.helpfulCount",
-                            "review.votes",
-                            "helpfulVotes",
-                            (qb) =>
-                                qb.andWhere(
-                                    "helpfulVotes.isHelpful = :isHelpful",
-                                    {
-                                        isHelpful: true,
-                                    },
-                                ),
-                        )
-                        .orderBy("helpfulCount", "DESC")
-                        .addOrderBy("review.createdAt", "DESC");
-                    break;
-                case BookReviewSortBy.RECENT:
-                default:
-                    query.orderBy("review.createdAt", "DESC");
-                    break;
+            let reviews: BookReview[];
+
+            if (sortBy === BookReviewSortBy.HELPFUL) {
+                const rawIds = await BookReview.createQueryBuilder("review")
+                    .select("review.id", "id")
+                    .addSelect(
+                        `(SELECT COUNT(*) FROM "book_review_vote" "bv" WHERE "bv"."reviewId" = "review"."id" AND "bv"."isHelpful" = true)`,
+                        "helpfulCount",
+                    )
+                    .where("review.bookId = :bookId", { bookId })
+                    .orderBy('"helpfulCount"', "DESC")
+                    .addOrderBy("review.createdAt", "DESC")
+                    .limit(limit)
+                    .offset((page - 1) * limit)
+                    .getRawMany();
+
+                const ids: number[] = rawIds.map((r: any) => Number(r.id));
+
+                // Step 2 — fetch full entities for those IDs (no skip/take = no DISTINCT pagination).
+                if (ids.length === 0) {
+                    reviews = [];
+                } else {
+                    const reviewsData = await BookReview.createQueryBuilder(
+                        "review",
+                    )
+                        .leftJoinAndSelect("review.user", "user")
+                        .leftJoinAndSelect("review.votes", "votes")
+                        .whereInIds(ids)
+                        .getMany();
+
+                    // Restore the sorted order from step 1.
+                    reviews = ids
+                        .map((id) => reviewsData.find((r) => r.id === id)!)
+                        .filter(Boolean);
+                }
+            } else {
+                const query = BookReview.createQueryBuilder("review")
+                    .leftJoinAndSelect("review.user", "user")
+                    .leftJoinAndSelect("review.votes", "votes")
+                    .where("review.bookId = :bookId", { bookId });
+
+                switch (sortBy) {
+                    case BookReviewSortBy.OLDEST:
+                        query.orderBy("review.createdAt", "ASC");
+                        break;
+                    case BookReviewSortBy.RATING_HIGH:
+                        query.orderBy("review.rating", "DESC");
+                        break;
+                    case BookReviewSortBy.RATING_LOW:
+                        query.orderBy("review.rating", "ASC");
+                        break;
+                    case BookReviewSortBy.RECENT:
+                    default:
+                        query.orderBy("review.createdAt", "DESC");
+                        break;
+                }
+
+                query.skip((page - 1) * limit).take(limit);
+                reviews = await query.getMany();
             }
 
-            // Get total count
-            const totalCount = await query.getCount();
-
-            // Apply pagination
-            query.skip((page - 1) * limit).take(limit);
-
-            const reviews = await query.getMany();
-
-            return {
-                reviews,
-                totalCount,
-                page,
-                limit,
-            };
+            return { reviews, totalCount, page, limit };
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch reviews",
                 500,

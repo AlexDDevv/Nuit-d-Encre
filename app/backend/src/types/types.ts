@@ -52,11 +52,11 @@ export enum ReadingStatus {
 }
 
 export enum BookReviewSortBy {
-    RECENT = "recent",
-    OLDEST = "oldest",
-    RATING_HIGH = "rating_high",
-    RATING_LOW = "rating_low",
-    HELPFUL = "helpful",
+    RECENT = "RECENT",
+    OLDEST = "OLDEST",
+    RATING_HIGH = "RATING_HIGH",
+    RATING_LOW = "RATING_LOW",
+    HELPFUL = "HELPFUL",
 }
 
 registerEnumType(BookReviewSortBy, {

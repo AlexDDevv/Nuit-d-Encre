@@ -99,11 +99,6 @@ export const CREATE_BOOK_REVIEW = gql`
             book {
                 id
                 title
-                author {
-                    id
-                    firstname
-                    lastname
-                }
             }
             helpfulCount
             notHelpfulCount

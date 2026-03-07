@@ -662,13 +662,11 @@ export class BooksResolver {
                 .leftJoinAndSelect("review.user", "user")
                 .leftJoinAndSelect("review.votes", "votes")
                 .where("review.bookId = :bookId", { bookId: book.id })
-                .loadRelationCountAndMap(
-                    "review.helpfulCount",
-                    "review.votes",
-                    "helpfulVotes",
-                    (qb) => qb.andWhere("helpfulVotes.isHelpful = :isHelpful", { isHelpful: true })
+                .addSelect(
+                    `(SELECT COUNT(*) FROM "book_review_vote" "bv" WHERE "bv"."reviewId" = "review"."id" AND "bv"."isHelpful" = true)`,
+                    "helpfulvotecount",
                 )
-                .orderBy("helpfulCount", "DESC")
+                .orderBy("helpfulvotecount", "DESC")
                 .addOrderBy("review.createdAt", "DESC")
                 .limit(limit)
                 .getMany();
