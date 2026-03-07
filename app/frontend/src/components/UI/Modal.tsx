@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/UI/Button";
 
 interface ModalProps {
     isOpen: boolean;
@@ -26,27 +27,23 @@ export default function Modal({
     className,
     size = "md",
 }: ModalProps) {
-    // Prevent body scroll when modal is open
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = "hidden";
         } else {
             document.body.style.overflow = "unset";
         }
-
         return () => {
             document.body.style.overflow = "unset";
         };
     }, [isOpen]);
 
-    // Close on Escape key
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === "Escape" && isOpen) {
                 onClose();
             }
         };
-
         document.addEventListener("keydown", handleEscape);
         return () => document.removeEventListener("keydown", handleEscape);
     }, [isOpen, onClose]);
@@ -55,48 +52,42 @@ export default function Modal({
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
             onClick={onClose}
             aria-modal="true"
             role="dialog"
         >
             <div
                 className={cn(
-                    "bg-card border-border relative w-full rounded-lg border-2 shadow-lg",
+                    "relative w-full overflow-hidden rounded-xl",
+                    "border border-border",
+                    "shadow-[0_0_0_1px_hsl(43_59%_81%/0.12),0_25px_60px_-10px_rgba(0,0,0,0.9)]",
                     sizeClasses[size],
                     className,
                 )}
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                {title && (
-                    <div className="border-border flex items-center justify-between border-b p-6">
-                        <h2 className="text-foreground text-xl font-semibold">
+                <div className="bg-popover border-b border-border flex items-center justify-between px-6 py-4">
+                    {title ? (
+                        <h2 className="font-quote italic text-xl text-foreground">
                             {title}
                         </h2>
-                        <button
-                            onClick={onClose}
-                            className="text-muted-foreground hover:text-foreground rounded-md p-1 transition-colors"
-                            aria-label="Fermer la modale"
-                        >
-                            <X size={20} />
-                        </button>
-                    </div>
-                )}
-
-                {/* Close button (if no title) */}
-                {!title && (
-                    <button
+                    ) : (
+                        <span />
+                    )}
+                    <Button
+                        variant="ghost"
+                        size="square_sm"
                         onClick={onClose}
-                        className="text-muted-foreground hover:text-foreground absolute right-4 top-4 rounded-md p-1 transition-colors"
-                        aria-label="Fermer la modale"
-                    >
-                        <X size={20} />
-                    </button>
-                )}
+                        ariaLabel="Fermer la modale"
+                        icon={X}
+                        className="text-muted-foreground hover:text-foreground [&_svg]:h-5 [&_svg]:w-5"
+                    />
+                </div>
 
                 {/* Content */}
-                <div className="max-h-[calc(100vh-8rem)] overflow-y-auto p-6">
+                <div className="bg-popover max-h-[calc(100vh-10rem)] overflow-y-auto p-6">
                     {children}
                 </div>
             </div>

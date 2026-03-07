@@ -1,5 +1,6 @@
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/UI/Button";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/toast/useToast";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
@@ -99,54 +100,42 @@ export default function ReviewVoteButtons({
         }
     };
 
-    if (isOwnReview) {
-        return (
-            <div className="flex items-center gap-2">
-                <div className="text-muted-foreground flex items-center gap-1 text-sm">
-                    <ThumbsUp className="h-4 w-4" />
-                    <span>{helpfulCount}</span>
-                </div>
-                <div className="text-muted-foreground flex items-center gap-1 text-sm">
-                    <ThumbsDown className="h-4 w-4" />
-                    <span>{notHelpfulCount}</span>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="flex items-center gap-2">
-            <button
+            <Button
                 onClick={() => handleVote(true)}
-                disabled={isVoting || isLoadingMyVote}
+                disabled={isOwnReview || isVoting || isLoadingMyVote}
+                ariaLabel="Marquer comme utile"
+                size="sm"
                 className={cn(
-                    "flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                     currentVote === true
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary",
-                    (isVoting || isLoadingMyVote) && "opacity-50",
+                        ? "bg-primary border-primary text-primary-foreground"
+                        : isOwnReview
+                            ? "bg-muted border-muted text-muted-foreground"
+                            : "bg-muted border-muted text-muted-foreground hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
+                    (isOwnReview || isVoting || isLoadingMyVote) && "opacity-50",
                 )}
-                aria-label="Marquer comme utile"
             >
                 <ThumbsUp className="h-4 w-4" />
                 <span>{helpfulCount}</span>
-            </button>
-
-            <button
+            </Button>
+            <Button
                 onClick={() => handleVote(false)}
-                disabled={isVoting || isLoadingMyVote}
+                disabled={isOwnReview || isVoting || isLoadingMyVote}
+                ariaLabel="Marquer comme pas utile"
+                size="sm"
                 className={cn(
-                    "flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
                     currentVote === false
-                        ? "bg-destructive text-destructive-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-destructive/10 hover:text-destructive",
-                    (isVoting || isLoadingMyVote) && "opacity-50",
+                        ? "bg-destructive border-destructive text-destructive-foreground"
+                        : isOwnReview
+                            ? "bg-muted border-muted text-muted-foreground"
+                            : "bg-muted border-muted text-muted-foreground hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
+                    (isOwnReview || isVoting || isLoadingMyVote) && "opacity-50",
                 )}
-                aria-label="Marquer comme pas utile"
             >
                 <ThumbsDown className="h-4 w-4" />
                 <span>{notHelpfulCount}</span>
-            </button>
+            </Button>
         </div>
     );
 }

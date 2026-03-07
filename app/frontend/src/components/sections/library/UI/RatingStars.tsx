@@ -1,5 +1,6 @@
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/UI/Button";
 
 interface RatingStarsProps {
     value: number;
@@ -39,17 +40,18 @@ export default function RatingStars({
                 const isFilled = starValue <= value;
 
                 return (
-                    <button
+                    <Button
                         key={index}
-                        type="button"
+                        variant="ghost"
+                        size="xs"
                         onClick={() => handleClick(starValue)}
                         disabled={readOnly}
+                        ariaLabel={`${starValue} étoile${starValue > 1 ? "s" : ""}`}
                         className={cn(
-                            "transition-colors",
+                            "transition-colors hover:no-underline p-0",
                             !readOnly && "cursor-pointer hover:scale-110",
                             readOnly && "cursor-default",
                         )}
-                        aria-label={`${starValue} étoile${starValue > 1 ? "s" : ""}`}
                     >
                         <Star
                             className={cn(
@@ -59,7 +61,7 @@ export default function RatingStars({
                                     : "text-muted-foreground",
                             )}
                         />
-                    </button>
+                    </Button>
                 );
             })}
             {showValue && (

@@ -6,6 +6,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
+import { getRatingClasses } from "@/lib/utils";
 
 interface ReviewCardProps {
     review: BookReview;
@@ -29,15 +30,14 @@ export default function ReviewCard({
     });
 
     return (
-        <article className="border-border bg-card flex flex-col gap-4 rounded-lg border p-5">
-            {/* Header */}
+        <article
+            className={`bg-card border-2 border-border rounded-xl transition-all duration-200 flex flex-col gap-4 p-5 border-l-4 ${getRatingClasses(review.rating)}`}
+        >
             <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                    <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-full">
-                        <span className="text-muted-foreground text-sm font-semibold">
-                            {review.user.userName
-                                .charAt(0)
-                                .toUpperCase()}
+                    <div className="bg-secondary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
+                        <span className="text-secondary-foreground text-sm font-semibold">
+                            {review.user.userName.charAt(0).toUpperCase()}
                         </span>
                     </div>
                     <div>
@@ -49,8 +49,6 @@ export default function ReviewCard({
                         </p>
                     </div>
                 </div>
-
-                {/* Actions for own review */}
                 {isOwnReview && (
                     <div className="flex items-center gap-2">
                         {onEdit && (
@@ -80,19 +78,13 @@ export default function ReviewCard({
                     </div>
                 )}
             </div>
-
-            {/* Rating */}
             <RatingStars value={review.rating} readOnly size="sm" />
-
-            {/* Review text */}
             {review.reviewText && (
-                <p className="text-secondary-foreground whitespace-pre-wrap text-sm leading-relaxed">
+                <p className="font-quote italic text-base text-card-foreground whitespace-pre-wrap leading-relaxed">
                     {review.reviewText}
                 </p>
             )}
-
-            {/* Vote buttons */}
-            <div className="border-border flex items-center gap-4 border-t pt-4">
+            <div className="border-t border-border -mx-5 -mb-5 px-5 py-4 bg-muted/40 rounded-b-xl">
                 <ReviewVoteButtons
                     reviewId={review.id}
                     initialHelpfulCount={review.helpfulCount || 0}

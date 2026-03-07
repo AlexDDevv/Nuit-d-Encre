@@ -5,34 +5,23 @@ import ReviewForm from "@/components/sections/form/ReviewForm";
 import ReviewCard from "@/components/sections/book/ReviewCard";
 import Modal from "@/components/UI/Modal";
 import { Button } from "@/components/UI/Button";
+import SelectReviewSort from "@/components/sections/book/SelectReviewSort";
+import Pagination from "@/components/UI/Pagination";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
-import { Pencil, MessageSquare } from "lucide-react";
+import { Pencil, MessageSquare, BookOpen } from "lucide-react";
 import { useBookReviewsData } from "@/hooks/book/review/useBookReviewsData";
 import { useMyBookReview } from "@/hooks/book/review/useBookReviewData";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
 import RatingStars from "../library/UI/RatingStars";
 import { useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
 
 interface BookReviewsProps {
     book: Book;
+    pageLimit?: number;
 }
 
-type SortOption = {
-    value: BookReviewSortBy;
-    label: string;
-};
-
-const sortOptions: SortOption[] = [
-    { value: BookReviewSortBy.HELPFUL, label: "Plus utiles" },
-    { value: BookReviewSortBy.RECENT, label: "Plus récentes" },
-    { value: BookReviewSortBy.OLDEST, label: "Plus anciennes" },
-    { value: BookReviewSortBy.RATING_HIGH, label: "Note élevée" },
-    { value: BookReviewSortBy.RATING_LOW, label: "Note basse" },
-];
-
-export default function BookReviews({ book }: BookReviewsProps) {
+export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
     const { user } = useAuthContext();
     const { showToast } = useToast();
     const location = useLocation();
@@ -49,7 +38,7 @@ export default function BookReviews({ book }: BookReviewsProps) {
     const { reviews, totalCount, isLoadingReviews } = useBookReviewsData(
         book.id,
         page,
-        10,
+        pageLimit,
         sortBy,
     );
     const { myReview } = useMyBookReview(book.id);
@@ -69,14 +58,6 @@ export default function BookReviews({ book }: BookReviewsProps) {
     };
 
     const handleDeleteReview = async (reviewId: string) => {
-        if (
-            !confirm(
-                "Êtes-vous sûr de vouloir supprimer votre critique ? Cette action est irréversible.",
-            )
-        ) {
-            return;
-        }
-
         try {
             await deleteReview(reviewId);
             showToast({
@@ -84,7 +65,7 @@ export default function BookReviews({ book }: BookReviewsProps) {
                 title: "Critique supprimée",
                 description: "Votre critique a été supprimée avec succès.",
             });
-        } catch (error) {
+        } catch {
             showToast({
                 type: "error",
                 title: "Erreur",
@@ -100,136 +81,88 @@ export default function BookReviews({ book }: BookReviewsProps) {
                 title="Avis et critiques"
                 className="items-start"
             >
-                {/* Header with rating summary and action button */}
-                {hasReviews && (
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-6">
-                            {/* Average rating */}
-                            {book.averageRating && (
-                                <div className="flex items-center gap-3">
-                                    <RatingStars
-                                        value={book.averageRating}
-                                        readOnly
-                                        size="md"
-                                    />
-                                    <p className="text-foreground text-lg font-semibold">
-                                        {book.averageRating.toFixed(1)}/5
-                                    </p>
-                                </div>
-                            )}
-
-                            {/* Review count */}
-                            <p className="text-muted-foreground text-sm">
-                                Basé sur {totalCount} critique
-                                {totalCount && totalCount > 1 ? "s" : ""}
-                            </p>
-                        </div>
-
-                        {/* Write/Edit review button */}
-                        {user && (
-                            <Button
-                                variant={
-                                    hasUserReviewed ? "secondary" : "primary"
-                                }
-                                onClick={() => handleOpenModal(myReview)}
-                                ariaLabel={
-                                    hasUserReviewed
-                                        ? "Modifier ma critique"
-                                        : "Écrire ma critique"
-                                }
-                            >
-                                {hasUserReviewed ? (
-                                    <>
-                                        <Pencil className="h-4 w-4" />
-                                        Modifier ma critique
-                                    </>
-                                ) : (
-                                    <>
-                                        <MessageSquare className="h-4 w-4" />
-                                        Écrire ma critique
-                                    </>
-                                )}
-                            </Button>
-                        )}
-                    </div>
-                )}
-
-                {/* Empty state with inline form */}
                 {!hasReviews && (
-                    <div className={cn("bg-card border-border flex flex-col gap-5 rounded-xl border-2 p-6", user && "min-w-135")}>
-                        <div className="flex flex-col gap-2">
+                    <div className="bg-card border-2 border-border rounded-xl p-8 flex flex-col gap-6 w-full">
+                        <div className="flex flex-col items-center gap-3 text-center">
+                            <BookOpen className="h-10 w-10 text-muted-foreground" />
                             <p className="text-foreground text-lg font-semibold">
-                                Ce livre n'a reçu aucune critique pour le
-                                moment.
+                                Aucune critique pour le moment
                             </p>
-                            <div className="flex items-end gap-2">
-                                <p className="text-muted-foreground">
-                                    Soyez le premier à partager votre avis !
-                                </p>
-                                <MessageSquare className="h-5 w-5 text-muted-foreground" />
-                            </div>
+                            <p className="text-muted-foreground text-sm max-w-sm">
+                                Soyez le premier à partager votre ressenti sur ce livre.
+                            </p>
                         </div>
                         {user ? (
-                            <div className="w-full max-w-2xl">
+                            <div className="w-full max-w-2xl mx-auto">
                                 <ReviewForm
                                     book={book}
-                                    onSuccess={() => {
-                                        // Reviews will auto-refresh via refetchQueries
-                                    }}
+                                    onSuccess={() => { }}
                                     variant="inline"
                                 />
                             </div>
                         ) : (
-                            <div className="w-full flex justify-end">
+                            <div className="flex justify-center">
                                 <Button
                                     ariaLabel="Se connecter à Nuit d'Encre"
-                                    children="Se connecter"
                                     variant="primary"
                                     to={`/connexion?redirect=${encodeURIComponent(location.pathname)}`}
-                                />
+                                >
+                                    Se connecter pour laisser un avis
+                                </Button>
                             </div>
                         )}
                     </div>
                 )}
-
-                {/* Reviews list with sorting */}
                 {hasReviews && (
-                    <>
-                        {/* Sort selector */}
-                        <div className="flex items-center gap-3">
-                            <label
-                                htmlFor="sort-reviews"
-                                className="text-muted-foreground text-sm font-medium"
-                            >
-                                Trier par :
-                            </label>
-                            <select
-                                id="sort-reviews"
-                                value={sortBy}
-                                onChange={(e) =>
-                                    setSortBy(e.target.value as BookReviewSortBy)
-                                }
-                                className="bg-input border-border text-foreground rounded-md border px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                            >
-                                {sortOptions.map((option) => (
-                                    <option
-                                        key={option.value}
-                                        value={option.value}
-                                    >
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </select>
+                    <div className="flex flex-col gap-8 w-full">
+                        <div className="bg-card border-2 border-border rounded-xl p-6 flex items-center justify-between gap-6 w-full">
+                            <div className="flex items-center gap-6">
+                                {book.averageRating && (
+                                    <div className="flex items-center gap-4">
+                                        <span className="font-quote italic text-5xl text-foreground leading-none">
+                                            {book.averageRating.toFixed(1)}
+                                        </span>
+                                        <div className="flex flex-col gap-1">
+                                            <RatingStars
+                                                value={book.averageRating}
+                                                readOnly
+                                                size="md"
+                                            />
+                                            <p className="text-muted-foreground text-xs">
+                                                {totalCount} critique{totalCount && totalCount > 1 ? "s" : ""}
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                            {user && (
+                                <Button
+                                    variant={hasUserReviewed ? "secondary" : "primary"}
+                                    onClick={() => handleOpenModal(myReview)}
+                                    ariaLabel={
+                                        hasUserReviewed
+                                            ? "Modifier ma critique"
+                                            : "Écrire ma critique"
+                                    }
+                                    icon={hasUserReviewed ? Pencil : MessageSquare}
+                                >
+                                    {hasUserReviewed
+                                        ? "Modifier ma critique"
+                                        : "Écrire ma critique"}
+                                </Button>
+                            )}
                         </div>
-
-                        {/* Reviews list */}
-                        <div className="flex flex-col gap-4">
-                            {isLoadingReviews ? (
-                                <p className="text-muted-foreground text-center">
-                                    Chargement des critiques...
-                                </p>
-                            ) : (
-                                reviews?.map((review) => (
+                        <SelectReviewSort
+                            value={sortBy}
+                            onChange={setSortBy}
+                        />
+                        {isLoadingReviews ? (
+                            <p className="text-muted-foreground text-center py-8">
+                                Chargement des critiques...
+                            </p>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                                {reviews?.map((review) => (
                                     <ReviewCard
                                         key={review.id}
                                         review={review}
@@ -237,39 +170,18 @@ export default function BookReviews({ book }: BookReviewsProps) {
                                         onDelete={handleDeleteReview}
                                         isDeletingReview={isDeletingReview}
                                     />
-                                ))
-                            )}
-                        </div>
-
-                        {/* Pagination (if needed) */}
-                        {totalCount && totalCount > 10 && (
-                            <div className="flex items-center justify-center gap-4">
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => setPage((p) => Math.max(1, p - 1))}
-                                    disabled={page === 1}
-                                    ariaLabel="Page précédente"
-                                >
-                                    Précédent
-                                </Button>
-                                <span className="text-muted-foreground text-sm">
-                                    Page {page} sur {Math.ceil(totalCount / 10)}
-                                </span>
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => setPage((p) => p + 1)}
-                                    disabled={page >= Math.ceil(totalCount / 10)}
-                                    ariaLabel="Page suivante"
-                                >
-                                    Suivant
-                                </Button>
+                                ))}
                             </div>
                         )}
-                    </>
+                        <Pagination
+                            currentPage={page}
+                            totalCount={totalCount ?? 0}
+                            perPage={pageLimit}
+                            onPageChange={setPage}
+                        />
+                    </div>
                 )}
             </BooksSectionLayout>
-
-            {/* Review modal */}
             <Modal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
