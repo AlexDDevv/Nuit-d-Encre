@@ -356,6 +356,20 @@ export type FiltersUserBooksProps = FilterUserBookStatusProps & {
     onClearAll: () => void;
 };
 
+export type SelectReviewSortProps = {
+    value: BookReviewSortBy;
+    onChange: (sortBy: BookReviewSortBy) => void;
+    disabled?: boolean;
+};
+
+export const SORT_OPTIONS: { value: BookReviewSortBy; label: string }[] = [
+    { value: BookReviewSortBy.HELPFUL, label: "Plus utiles" },
+    { value: BookReviewSortBy.RECENT, label: "Plus récentes" },
+    { value: BookReviewSortBy.OLDEST, label: "Plus anciennes" },
+    { value: BookReviewSortBy.RATING_HIGH, label: "Note élevée" },
+    { value: BookReviewSortBy.RATING_LOW, label: "Note basse" },
+];
+
 export type BooksSectionLayoutProps = {
     title: string;
     seeMoreLink?: {
