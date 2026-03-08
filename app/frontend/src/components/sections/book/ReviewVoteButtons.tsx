@@ -23,7 +23,7 @@ export default function ReviewVoteButtons({
     const { user } = useAuthContext();
     const { showToast } = useToast();
     const { myVote, isLoadingMyVote } = useMyVoteOnReview(reviewId);
-    const { voteOnReview, isVoting } = useBookReviewVoteMutations();
+    const { voteOnReview, isVoting, removeVote, isRemovingVote } = useBookReviewVoteMutations();
 
     const [helpfulCount, setHelpfulCount] = useState(initialHelpfulCount);
     const [notHelpfulCount, setNotHelpfulCount] = useState(
@@ -49,43 +49,43 @@ export default function ReviewVoteButtons({
             return;
         }
 
-        if (isOwnReview) {
-            showToast({
-                type: "error",
-                title: "Action non autorisée",
-                description: "Vous ne pouvez pas voter sur votre propre critique.",
-            });
-            return;
-        }
-
         try {
             const previousVote = currentVote;
 
-            // Optimistic update
-            if (previousVote === null) {
-                // Creating new vote
+            if (previousVote === isHelpful) {
+                // Removing vote
                 if (isHelpful) {
-                    setHelpfulCount((prev) => prev + 1);
-                } else {
-                    setNotHelpfulCount((prev) => prev + 1);
-                }
-            } else if (previousVote !== isHelpful) {
-                // Changing vote
-                if (isHelpful) {
-                    setHelpfulCount((prev) => prev + 1);
-                    setNotHelpfulCount((prev) => prev - 1);
-                } else {
                     setHelpfulCount((prev) => prev - 1);
-                    setNotHelpfulCount((prev) => prev + 1);
+                } else {
+                    setNotHelpfulCount((prev) => prev - 1);
                 }
+                setCurrentVote(null);
+                await removeVote(reviewId);
+            } else {
+                // Optimistic update
+                if (previousVote === null) {
+                    // Creating new vote
+                    if (isHelpful) {
+                        setHelpfulCount((prev) => prev + 1);
+                    } else {
+                        setNotHelpfulCount((prev) => prev + 1);
+                    }
+                } else {
+                    // Changing vote
+                    if (isHelpful) {
+                        setHelpfulCount((prev) => prev + 1);
+                        setNotHelpfulCount((prev) => prev - 1);
+                    } else {
+                        setHelpfulCount((prev) => prev - 1);
+                        setNotHelpfulCount((prev) => prev + 1);
+                    }
+                }
+                setCurrentVote(isHelpful);
+                await voteOnReview({
+                    reviewId: Number(reviewId),
+                    isHelpful,
+                });
             }
-
-            setCurrentVote(isHelpful);
-
-            await voteOnReview({
-                reviewId: Number(reviewId),
-                isHelpful,
-            });
         } catch (error) {
             // Revert optimistic update on error
             setHelpfulCount(initialHelpfulCount);
@@ -104,7 +104,7 @@ export default function ReviewVoteButtons({
         <div className="flex items-center gap-2">
             <Button
                 onClick={() => handleVote(true)}
-                disabled={isOwnReview || isVoting || isLoadingMyVote}
+                disabled={isOwnReview || isVoting || isRemovingVote || isLoadingMyVote}
                 ariaLabel="Marquer comme utile"
                 size="sm"
                 className={cn(
@@ -113,7 +113,7 @@ export default function ReviewVoteButtons({
                         : isOwnReview
                             ? "bg-muted border-muted text-muted-foreground"
                             : "bg-muted border-muted text-muted-foreground hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
-                    (isOwnReview || isVoting || isLoadingMyVote) && "opacity-50",
+                    (isOwnReview || isVoting || isRemovingVote || isLoadingMyVote) && "opacity-50",
                 )}
             >
                 <ThumbsUp className="h-4 w-4" />
@@ -121,7 +121,7 @@ export default function ReviewVoteButtons({
             </Button>
             <Button
                 onClick={() => handleVote(false)}
-                disabled={isOwnReview || isVoting || isLoadingMyVote}
+                disabled={isOwnReview || isVoting || isRemovingVote || isLoadingMyVote}
                 ariaLabel="Marquer comme pas utile"
                 size="sm"
                 className={cn(
@@ -130,7 +130,7 @@ export default function ReviewVoteButtons({
                         : isOwnReview
                             ? "bg-muted border-muted text-muted-foreground"
                             : "bg-muted border-muted text-muted-foreground hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
-                    (isOwnReview || isVoting || isLoadingMyVote) && "opacity-50",
+                    (isOwnReview || isVoting || isRemovingVote || isLoadingMyVote) && "opacity-50",
                 )}
             >
                 <ThumbsDown className="h-4 w-4" />
