@@ -7,34 +7,6 @@ export const GET_AUTHORS = gql`
                 id
                 firstname
                 lastname
-                birthDate
-                biography
-                nationality
-                wikipediaUrl
-                officialWebsite
-                books {
-                    id
-                    title
-                    summary
-                    category {
-                        id
-                        name
-                    }
-                    isbn10
-                    isbn13
-                    pageCount
-                    publishedYear
-                    language
-                    publisher
-                    format
-                }
-                user {
-                    id
-                    email
-                    userName
-                }
-                createdAt
-                updatedAt
             }
             totalCount
             totalCountAll
@@ -58,26 +30,10 @@ export const GET_AUTHOR = gql`
             books {
                 id
                 title
-                summary
-                category {
-                    id
-                    name
-                }
-                isbn10
-                isbn13
-                pageCount
-                publishedYear
-                language
-                publisher
-                format
             }
             user {
                 id
-                email
-                userName
             }
-            createdAt
-            updatedAt
         }
     }
 `;
@@ -95,8 +51,6 @@ export const CREATE_AUTHOR = gql`
             officialWebsite
             user {
                 id
-                email
-                userName
             }
         }
     }
@@ -115,8 +69,6 @@ export const UPDATE_AUTHOR = gql`
             officialWebsite
             user {
                 id
-                email
-                userName
             }
         }
     }

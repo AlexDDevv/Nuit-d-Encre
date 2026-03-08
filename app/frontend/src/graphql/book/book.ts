@@ -6,40 +6,11 @@ export const GET_BOOKS = gql`
             allBooks {
                 id
                 title
-                summary
                 author {
                     id
                     firstname
                     lastname
-                    birthDate
-                    biography
-                    nationality
-                    wikipediaUrl
-                    officialWebsite
                 }
-                category {
-                    id
-                    name
-                }
-                isbn10
-                isbn13
-                pageCount
-                publishedYear
-                language
-                publisher
-                format
-                user {
-                    id
-                    email
-                    userName
-                }
-                averageRating
-                reviewCount
-                recommendationCount
-                hasUserReviewed
-                hasUserRecommended
-                createdAt
-                updatedAt
             }
             totalCount
             totalCountAll
@@ -59,22 +30,9 @@ export const GET_BOOK = gql`
                 id
                 firstname
                 lastname
-                birthDate
-                biography
-                nationality
-                wikipediaUrl
-                officialWebsite
                 books {
                     id
                     title
-                    summary
-                    publishedYear
-                    category {
-                        id
-                        name
-                    }
-                    format
-                    pageCount
                 }
             }
             category {
@@ -90,16 +48,9 @@ export const GET_BOOK = gql`
             format
             user {
                 id
-                email
-                userName
             }
             averageRating
-            reviewCount
             recommendationCount
-            hasUserReviewed
-            hasUserRecommended
-            createdAt
-            updatedAt
         }
     }
 `;
@@ -109,27 +60,6 @@ export const CREATE_BOOK = gql`
         createBook(data: $data) {
             id
             title
-            summary
-            author {
-                firstname
-                lastname
-            }
-            category {
-                id
-                name
-            }
-            isbn10
-            isbn13
-            pageCount
-            publishedYear
-            language
-            publisher
-            format
-            user {
-                id
-                email
-                userName
-            }
         }
     }
 `;
@@ -139,27 +69,6 @@ export const UPDATE_BOOK = gql`
         updateBook(data: $data) {
             id
             title
-            summary
-            author {
-                firstname
-                lastname
-            }
-            category {
-                id
-                name
-            }
-            isbn10
-            isbn13
-            pageCount
-            publishedYear
-            language
-            publisher
-            format
-            user {
-                id
-                email
-                userName
-            }
         }
     }
 `;

@@ -5,17 +5,6 @@ export const GET_MY_VOTE_ON_REVIEW = gql`
         myVoteOnReview(reviewId: $reviewId) {
             id
             isHelpful
-            createdAt
-            user {
-                id
-                userName
-                email
-            }
-            review {
-                id
-                rating
-                reviewText
-            }
         }
     }
 `;
@@ -26,12 +15,6 @@ export const VOTE_ON_REVIEW = gql`
             vote {
                 id
                 isHelpful
-                createdAt
-                user {
-                    id
-                    userName
-                    email
-                }
                 review {
                     id
                     helpfulCount
@@ -62,12 +45,6 @@ export const TOGGLE_HELPFUL_VOTE = gql`
             vote {
                 id
                 isHelpful
-                createdAt
-                user {
-                    id
-                    userName
-                    email
-                }
                 review {
                     id
                     helpfulCount

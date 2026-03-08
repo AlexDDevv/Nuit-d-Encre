@@ -10,7 +10,6 @@ import {
     TOGGLE_HELPFUL_VOTE,
     GET_MY_VOTE_ON_REVIEW,
 } from "@/graphql/book/book-review-vote";
-import { GET_BOOK_REVIEWS } from "@/graphql/book/book-review";
 
 /**
  * Hook providing all GraphQL mutations related to review votes.
@@ -75,10 +74,18 @@ export function useBookReviewVoteMutations() {
         voteOnReviewMutation,
         { loading: isVoting, error: voteError, reset: resetVoteError },
     ] = useMutation(VOTE_ON_REVIEW, {
-        refetchQueries: [
-            { query: GET_MY_VOTE_ON_REVIEW },
-            { query: GET_BOOK_REVIEWS },
-        ],
+        refetchQueries: [{ query: GET_MY_VOTE_ON_REVIEW }],
+        update(cache, { data }) {
+            const review = data?.voteOnReview?.vote?.review;
+            if (!review) return;
+            cache.modify({
+                id: cache.identify({ __typename: "BookReview", id: review.id }),
+                fields: {
+                    helpfulCount: () => review.helpfulCount,
+                    notHelpfulCount: () => review.notHelpfulCount,
+                },
+            });
+        },
     });
 
     const voteOnReview = async (
@@ -99,10 +106,18 @@ export function useBookReviewVoteMutations() {
             reset: resetRemoveVoteError,
         },
     ] = useMutation(REMOVE_VOTE_ON_REVIEW, {
-        refetchQueries: [
-            { query: GET_MY_VOTE_ON_REVIEW },
-            { query: GET_BOOK_REVIEWS },
-        ],
+        refetchQueries: [{ query: GET_MY_VOTE_ON_REVIEW }],
+        update(cache, { data }) {
+            const review = data?.removeVoteOnReview?.review;
+            if (!review) return;
+            cache.modify({
+                id: cache.identify({ __typename: "BookReview", id: review.id }),
+                fields: {
+                    helpfulCount: () => review.helpfulCount,
+                    notHelpfulCount: () => review.notHelpfulCount,
+                },
+            });
+        },
     });
 
     const removeVote = async (
@@ -123,10 +138,18 @@ export function useBookReviewVoteMutations() {
             reset: resetToggleHelpfulError,
         },
     ] = useMutation(TOGGLE_HELPFUL_VOTE, {
-        refetchQueries: [
-            { query: GET_MY_VOTE_ON_REVIEW },
-            { query: GET_BOOK_REVIEWS },
-        ],
+        refetchQueries: [{ query: GET_MY_VOTE_ON_REVIEW }],
+        update(cache, { data }) {
+            const review = data?.toggleHelpfulVote?.vote?.review;
+            if (!review) return;
+            cache.modify({
+                id: cache.identify({ __typename: "BookReview", id: review.id }),
+                fields: {
+                    helpfulCount: () => review.helpfulCount,
+                    notHelpfulCount: () => review.notHelpfulCount,
+                },
+            });
+        },
     });
 
     const toggleHelpful = async (
