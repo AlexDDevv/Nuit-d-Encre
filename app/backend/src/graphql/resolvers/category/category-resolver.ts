@@ -38,18 +38,12 @@ export class CategoryResolver {
 	@Query(() => [Category])
 	async categories(): Promise<Category[]> {
 		try {
-			const categories = await Category.find({
+			return await Category.find({
 				relations: {
 					books: true,
 					createdBy: true,
 				},
 			})
-
-			if (!categories) {
-				throw new AppError("Categories not found", 404, "NotFoundError")
-			}
-
-			return categories
 		} catch (error) {
 			throw new AppError(
 				"Failed to fetch categories",
@@ -85,6 +79,7 @@ export class CategoryResolver {
 
 			return category
 		} catch (error) {
+			if (error instanceof AppError) throw error;
 			throw new AppError(
 				"Failed to fetch category",
 				500,
@@ -111,26 +106,19 @@ export class CategoryResolver {
 		@Ctx() context: Context
 	): Promise<Category> {
 		try {
-			const newCategory = new Category()
 			const user = context.user
 
 			if (!user) {
 				throw new AppError("User not found", 404, "NotFoundError")
 			}
 
-			if (user.role !== "admin") {
-				throw new AppError(
-					"You are not allowed to create category",
-					401,
-					"UnauthorizedError"
-				)
-			}
-
+			const newCategory = new Category()
 			Object.assign(newCategory, data, { createdBy: user })
 
 			await newCategory.save()
 			return newCategory
 		} catch (error) {
+			if (error instanceof AppError) throw error;
 			throw new AppError(
 				"Failed to create category",
 				500,
@@ -165,26 +153,21 @@ export class CategoryResolver {
 				throw new AppError("User not found", 404, "NotFoundError")
 			}
 
-			if (user.role !== "admin") {
-				throw new AppError(
-					"You are not allowed to modify category",
-					401,
-					"UnauthorizedError"
-				)
-			}
-
 			const category = await Category.findOneBy({
 				id,
 				createdBy: { id: user.id },
 			})
 
-			if (category !== null) {
-				Object.assign(category, data)
-				await category.save()
+			if (!category) {
+				throw new AppError("Category not found", 404, "NotFoundError")
 			}
+
+			Object.assign(category, data)
+			await category.save()
 
 			return category
 		} catch (error) {
+			if (error instanceof AppError) throw error;
 			throw new AppError(
 				"Failed to update category",
 				500,
@@ -216,26 +199,21 @@ export class CategoryResolver {
 				throw new AppError("User not found", 404, "NotFoundError")
 			}
 
-			if (user.role !== "admin") {
-				throw new AppError(
-					"You are not allowed to delete category",
-					401,
-					"UnauthorizedError"
-				)
-			}
-
 			const category = await Category.findOneBy({
 				id,
 				createdBy: { id: user.id },
 			})
 
-			if (category !== null) {
-				await category.remove()
-				category.id = id
+			if (!category) {
+				throw new AppError("Category not found", 404, "NotFoundError")
 			}
+
+			await category.remove()
+			category.id = id
 
 			return category
 		} catch (error) {
+			if (error instanceof AppError) throw error;
 			throw new AppError(
 				"Failed to delete category",
 				500,

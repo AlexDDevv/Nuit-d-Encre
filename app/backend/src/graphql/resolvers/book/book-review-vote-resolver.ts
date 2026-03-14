@@ -381,49 +381,7 @@ export class BookReviewVotesResolver {
                 },
             });
 
-            // If exists and is helpful, remove it (toggle off)
-            if (existingVote && existingVote.isHelpful) {
-                await existingVote.remove();
-                return {
-                    vote: null,
-                    action: "removed",
-                };
-            }
-
-            // If exists and is not helpful, change to helpful
-            if (existingVote && !existingVote.isHelpful) {
-                existingVote.isHelpful = true;
-                await existingVote.save();
-
-                // Grant XP to review author
-                await grantXpService(
-                    review.user,
-                    UserActionType.REVIEW_VOTED_HELPFUL,
-                    {
-                        targetId: review.id.toString(),
-                        metadata: {
-                            voterId: user.id,
-                            voterName: user.userName || "Unknown",
-                        },
-                    }
-                );
-
-                return {
-                    vote: existingVote,
-                    action: "updated",
-                };
-            }
-
-            // If doesn't exist, create helpful vote
-            const newVote = new BookReviewVote();
-            newVote.isHelpful = true;
-            newVote.user = user;
-            newVote.review = review;
-
-            await newVote.save();
-
-            // Grant XP to review author
-            await grantXpService(
+            const grantHelpfulXp = () => grantXpService(
                 review.user,
                 UserActionType.REVIEW_VOTED_HELPFUL,
                 {
@@ -435,10 +393,30 @@ export class BookReviewVotesResolver {
                 }
             );
 
-            return {
-                vote: newVote,
-                action: "created",
-            };
+            // If exists and is helpful, remove it (toggle off)
+            if (existingVote && existingVote.isHelpful) {
+                await existingVote.remove();
+                return { vote: null, action: "removed" };
+            }
+
+            // If exists and is not helpful, change to helpful
+            if (existingVote) {
+                existingVote.isHelpful = true;
+                await existingVote.save();
+                await grantHelpfulXp();
+                return { vote: existingVote, action: "updated" };
+            }
+
+            // If doesn't exist, create helpful vote
+            const newVote = new BookReviewVote();
+            newVote.isHelpful = true;
+            newVote.user = user;
+            newVote.review = review;
+
+            await newVote.save();
+            await grantHelpfulXp();
+
+            return { vote: newVote, action: "created" };
         } catch (error) {
             if (error instanceof AppError) {
                 throw error;

@@ -179,6 +179,7 @@ export class UserBooksResolver {
                 limit,
             }
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch books",
                 500,
@@ -215,6 +216,7 @@ export class UserBooksResolver {
 
             return userBook
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch book",
                 500,
@@ -296,6 +298,7 @@ export class UserBooksResolver {
 
             return userBookWithRelations!
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to create book",
                 500,
@@ -389,7 +392,7 @@ export class UserBooksResolver {
 
             return updatedUserBook!
         } catch (error) {
-            console.error(error)
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to update user book",
                 500,
@@ -448,14 +451,13 @@ export class UserBooksResolver {
                     "ForbiddenError"
                 )
             }
-            
-            if (userBook !== null) {
-                await userBook.remove()
-                userBook.id = id
-            }
+
+            await userBook.remove()
+            userBook.id = id
 
             return userBook
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to delete book",
                 500,

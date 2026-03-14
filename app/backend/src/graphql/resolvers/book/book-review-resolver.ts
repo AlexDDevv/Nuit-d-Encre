@@ -582,15 +582,8 @@ export class BookReviewsResolver {
      * ```
      */
     @FieldResolver(() => Int)
-    async helpfulCount(@Root() review: BookReview): Promise<number> {
-        try {
-            const count = await review.votes?.filter((vote) => vote.isHelpful)
-                .length;
-            return count || 0;
-        } catch (error) {
-            console.error("Error counting helpful votes:", error);
-            return 0;
-        }
+    helpfulCount(@Root() review: BookReview): number {
+        return review.votes?.filter((vote) => vote.isHelpful).length ?? 0;
     }
 
     /**
@@ -614,14 +607,7 @@ export class BookReviewsResolver {
      * ```
      */
     @FieldResolver(() => Int)
-    async notHelpfulCount(@Root() review: BookReview): Promise<number> {
-        try {
-            const count = await review.votes?.filter((vote) => !vote.isHelpful)
-                .length;
-            return count || 0;
-        } catch (error) {
-            console.error("Error counting not helpful votes:", error);
-            return 0;
-        }
+    notHelpfulCount(@Root() review: BookReview): number {
+        return review.votes?.filter((vote) => !vote.isHelpful).length ?? 0;
     }
 }

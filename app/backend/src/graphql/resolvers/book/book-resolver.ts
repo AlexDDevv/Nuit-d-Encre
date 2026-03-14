@@ -31,7 +31,6 @@ import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
-import { Author } from "../../../database/entities/author/author"
 import { BookReview } from "../../../database/entities/book/bookReview"
 import { BookRecommendation } from "../../../database/entities/book/bookRecommendation"
 
@@ -147,6 +146,7 @@ export class BooksResolver {
                 limit,
             }
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch books",
                 500,
@@ -188,6 +188,7 @@ export class BooksResolver {
 
             return book
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch book",
                 500,
@@ -230,18 +231,7 @@ export class BooksResolver {
                 throw new AppError("Category not found", 404, "NotFoundError")
             }
 
-            // Resolve or create the minimum author from the full name
-            let authorEntity: Author;
-
-            try {
-                authorEntity = await getOrCreateAuthorByFullName(data.author, user);
-            } catch (error) {
-                throw new AppError(
-                    "Failed to get or create author",
-                    500,
-                    "InternalServerError",
-                );
-            }
+            const authorEntity = await getOrCreateAuthorByFullName(data.author, user);
 
             const newBook = new Book()
 
@@ -260,6 +250,7 @@ export class BooksResolver {
 
             return newBook
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to create book",
                 500,
@@ -349,7 +340,7 @@ export class BooksResolver {
 
             return book;
         } catch (error) {
-            console.error("updateBook error:", error);
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to update book",
                 500,
@@ -409,13 +400,12 @@ export class BooksResolver {
                 )
             }
 
-            if (book !== null) {
-                await book.remove()
-                book.id = id
-            }
+            await book.remove()
+            book.id = id
 
             return book
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to delete book",
                 500,

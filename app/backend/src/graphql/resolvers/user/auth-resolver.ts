@@ -27,32 +27,11 @@ export class AuthResolver {
         @Arg("data") data: CreateUserInput // Input object containing email and password
     ): Promise<User> {
         try {
-            // NB : for now, data is checked automatically in buildSchema() in server.ts
-            // with the option "validate:true"
-
             const { email, password, userName } = data;
 
-            return await register(
-                email,
-                password,
-                userName,
-                Roles.User // Always create a user with the role "user"
-            ); // Call register method from AuthService
+            return await register(email, password, userName, Roles.User);
         } catch (error) {
-            // If email already used
-            if (
-                error instanceof AppError &&
-                error.errorType === "EmailAlreadyUsedError"
-            ) {
-                throw new AppError(
-                    error.message,
-                    error.statusCode,
-                    error.errorType
-                );
-            }
-
-            // Others errors
-            console.error("Registration error:", error);
+            if (error instanceof AppError) throw error;
             throw new AppError("Registration failed", 400, "InternalError");
         }
     }
@@ -144,12 +123,7 @@ export class AuthResolver {
      */
     @Query(() => [User])
     @Authorized(Roles.Admin)
-    async getUsers(): Promise<User[] | string> {
-        const users = await User.find();
-        if (users) {
-            return users;
-        } else {
-            return "Error to get users";
-        }
+    async getUsers(): Promise<User[]> {
+        return User.find();
     }
 }

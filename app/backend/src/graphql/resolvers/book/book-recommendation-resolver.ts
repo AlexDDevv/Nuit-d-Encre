@@ -83,6 +83,7 @@ export class BookRecommendationsResolver {
 
             return recommendation;
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch recommendation",
                 500,
@@ -187,6 +188,7 @@ export class BookRecommendationsResolver {
                 action: "created",
             };
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to toggle recommendation",
                 500,
@@ -258,6 +260,7 @@ export class BookRecommendationsResolver {
 
             return recommendation;
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to delete recommendation",
                 500,

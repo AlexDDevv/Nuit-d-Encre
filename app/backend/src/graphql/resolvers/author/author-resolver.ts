@@ -106,6 +106,7 @@ export class AuthorsResolver {
                 limit,
             }
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch authors",
                 500,
@@ -143,6 +144,7 @@ export class AuthorsResolver {
 
             return author
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch author",
                 500,
@@ -183,6 +185,7 @@ export class AuthorsResolver {
             await newAuthor.save()
             return newAuthor
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to create author",
                 500,
@@ -246,6 +249,7 @@ export class AuthorsResolver {
             await author.save()
             return author
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to update author",
                 500,
@@ -296,10 +300,6 @@ export class AuthorsResolver {
                 )
             }
 
-            if (!author.books) {
-                throw new AppError("Author's books not found", 404, "NotFoundError")
-            }
-
             if (author.books.length > 0) {
                 throw new AppError(
                     "Cannot delete author with existing books",
@@ -308,13 +308,12 @@ export class AuthorsResolver {
                 );
             }
 
-            if (author !== null) {
-                await author.remove()
-                author.id = id
-            }
+            await author.remove()
+            author.id = id
 
             return author
         } catch (error) {
+            if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to delete author",
                 500,
