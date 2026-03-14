@@ -28,6 +28,7 @@ import { UpdateBookInput } from "../../inputs/update/book/update-book-input"
 import { BooksResult } from "../../../database/filteredResults/books/books-result"
 import { BooksQueryInput } from "../../queries/books/books-query-input"
 import { Brackets } from "typeorm"
+import { dataSource } from "../../../database/config/datasource"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
@@ -231,17 +232,19 @@ export class BooksResolver {
                 throw new AppError("Category not found", 404, "NotFoundError")
             }
 
-            const authorEntity = await getOrCreateAuthorByFullName(data.author, user);
+            const newBook = await dataSource.transaction(async (manager) => {
+                const authorEntity = await getOrCreateAuthorByFullName(data.author, user, manager);
 
-            const newBook = new Book()
+                const book = new Book()
 
-            Object.assign(newBook, data, {
-                user,
-                category,
-                author: authorEntity,
+                Object.assign(book, data, {
+                    user,
+                    category,
+                    author: authorEntity,
+                });
+
+                return manager.save(book);
             });
-
-            await newBook.save()
 
             await grantXpService(user, UserActionType.BOOK_ADDED, {
                 targetId: newBook.id.toString(),

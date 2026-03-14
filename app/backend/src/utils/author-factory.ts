@@ -1,3 +1,4 @@
+import { EntityManager } from "typeorm";
 import { Author } from "../database/entities/author/author";
 import { User } from "../database/entities/user/user";
 import { AuthorNameParts } from "../types/types";
@@ -18,20 +19,23 @@ function parseFullName(fullName: string): AuthorNameParts {
 
 /**
  * Finds an author by first and last name, or creates a new one if not found.
- * 
+ *
  * @param fullName The full name of the author (e.g., "Antoine de Saint-Exupéry")
  * @param user The user creating the author
+ * @param manager Optional EntityManager to use within a transaction
  * @returns The existing or newly created Author entity
  */
 export async function getOrCreateAuthorByFullName(
     fullName: string,
-    user: User
+    user: User,
+    manager?: EntityManager
 ): Promise<Author> {
     try {
         const { firstname, lastname } = parseFullName(fullName);
 
-        // Search for an author with the same first and last name (basic, can be improved)
-        let author = await Author.findOne({
+        const repo = manager ? manager.getRepository(Author) : Author.getRepository();
+
+        let author = await repo.findOne({
             where: { firstname, lastname },
         });
 
@@ -40,15 +44,17 @@ export async function getOrCreateAuthorByFullName(
             author.firstname = firstname;
             author.lastname = lastname;
             author.user = user;
-            await author.save();
+            if (manager) {
+                await manager.save(author);
+            } else {
+                await author.save();
+            }
         }
 
         return author;
     } catch (error) {
-        // Throw a custom error with a clear message
         throw new Error(
-            `Error finding or creating author "${fullName}": ${error instanceof Error ? error.message : String(error)
-            }`
+            `Error finding or creating author "${fullName}": ${error instanceof Error ? error.message : String(error)}`
         );
     }
 }
