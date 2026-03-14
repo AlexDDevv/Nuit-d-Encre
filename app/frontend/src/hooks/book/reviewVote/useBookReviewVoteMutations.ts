@@ -3,7 +3,7 @@ import {
     BookReviewVoteResult,
     BookReviewVote,
 } from "@/types/types";
-import { useMutation } from "@apollo/client";
+import { ApolloCache, useMutation } from "@apollo/client";
 import {
     VOTE_ON_REVIEW,
     REMOVE_VOTE_ON_REVIEW,
@@ -68,6 +68,19 @@ import {
  * ```
  */
 
+function updateReviewVotesInCache(
+    cache: ApolloCache<unknown>,
+    review: { id: string; helpfulCount: number; notHelpfulCount: number },
+) {
+    cache.modify({
+        id: cache.identify({ __typename: "BookReview", id: review.id }),
+        fields: {
+            helpfulCount: () => review.helpfulCount,
+            notHelpfulCount: () => review.notHelpfulCount,
+        },
+    });
+}
+
 export function useBookReviewVoteMutations() {
     // ************************ VOTE (UPSERT) ************************
     const [
@@ -78,13 +91,7 @@ export function useBookReviewVoteMutations() {
         update(cache, { data }) {
             const review = data?.voteOnReview?.vote?.review;
             if (!review) return;
-            cache.modify({
-                id: cache.identify({ __typename: "BookReview", id: review.id }),
-                fields: {
-                    helpfulCount: () => review.helpfulCount,
-                    notHelpfulCount: () => review.notHelpfulCount,
-                },
-            });
+            updateReviewVotesInCache(cache, review);
         },
     });
 
@@ -110,13 +117,7 @@ export function useBookReviewVoteMutations() {
         update(cache, { data }) {
             const review = data?.removeVoteOnReview?.review;
             if (!review) return;
-            cache.modify({
-                id: cache.identify({ __typename: "BookReview", id: review.id }),
-                fields: {
-                    helpfulCount: () => review.helpfulCount,
-                    notHelpfulCount: () => review.notHelpfulCount,
-                },
-            });
+            updateReviewVotesInCache(cache, review);
         },
     });
 
@@ -142,13 +143,7 @@ export function useBookReviewVoteMutations() {
         update(cache, { data }) {
             const review = data?.toggleHelpfulVote?.vote?.review;
             if (!review) return;
-            cache.modify({
-                id: cache.identify({ __typename: "BookReview", id: review.id }),
-                fields: {
-                    helpfulCount: () => review.helpfulCount,
-                    notHelpfulCount: () => review.notHelpfulCount,
-                },
-            });
+            updateReviewVotesInCache(cache, review);
         },
     });
 

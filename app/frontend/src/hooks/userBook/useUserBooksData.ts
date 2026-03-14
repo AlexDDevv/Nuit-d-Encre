@@ -1,8 +1,14 @@
 import { useQuery } from "@apollo/client";
 import { useState } from "react";
-import { BookFormat, UseBooksMode, UserBookStatus } from "@/types/types";
+import { UseBooksMode, UserBookStatus } from "@/types/types";
 import { useSearchParams } from "react-router-dom";
 import { GET_USER_BOOKS } from "@/graphql/user/userBook";
+import {
+    formatLabelMap,
+    languageLabelMap,
+    languageLabelToCode,
+    statusLabelMap,
+} from "@/lib/filterMaps";
 
 /**
  * Hook to fetch and manage a list of user books with pagination and label-based filters.
@@ -103,27 +109,7 @@ import { GET_USER_BOOKS } from "@/graphql/user/userBook";
  * ```
  */
 
-const formatLabelMap: Record<BookFormat, string> = {
-    hardcover: "Livre relié",
-    paperback: "Livre broché",
-    softcover: "Livre de poche",
-    pocket: "Livre de poche",
-};
-
-const languageLabelMap: Record<string, string> = {
-    fr: "Français",
-    en: "Anglais",
-    es: "Espagnol",
-    de: "Allemand",
-    it: "Italien",
-};
-
-const statusLabelMap: Record<UserBookStatus, string> = {
-    TO_READ: "À lire",
-    READING: "En cours",
-    READ: "Lu",
-    PAUSED: "En pause",
-};
+const PER_PAGE = { library: 24, home: 12 } as const;
 
 const booleanLabelMap: Record<
     "isPublic" | "recommended",
@@ -147,17 +133,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         [number | null, number | null]
     >([null, null]);
 
-    const PER_PAGE = {
-        library: 24,
-        home: 12,
-    };
-
-    const getLimit = () => {
-        if (!mode || mode === "home") return PER_PAGE.home;
-        if (mode === "library") return PER_PAGE.library;
-        return PER_PAGE.home;
-    };
-
+    const limit = mode === "library" ? PER_PAGE.library : PER_PAGE.home;
     const categoryId = searchParams.get("categoryId");
 
     const selectedFormat = filters.filter((f) =>
@@ -166,10 +142,6 @@ export function useUserBooksData({ mode }: UseBooksMode) {
 
     const selectedLanguage = filters.find((f) =>
         Object.values(languageLabelMap).includes(f),
-    );
-
-    const languageLabelToCode = Object.fromEntries(
-        Object.entries(languageLabelMap).map(([code, label]) => [label, code]),
     );
 
     const selectedStatus = filters.filter((f) =>
@@ -193,10 +165,9 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         booleanLabelMap.recommended,
     ).find(([, label]) => filters.includes(label))?.[0];
 
-    // Helper function to set rating range
     const setRatingRange = (min: number | null, max: number | null) => {
         setRatingRangeState([min, max]);
-        setCurrentPage(1); // Reset to first page when filter changes
+        setCurrentPage(1);
     };
 
     const {
@@ -207,7 +178,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         variables: {
             filters: {
                 page: currentPage,
-                limit: getLimit(),
+                limit,
                 search: searchParams.get("search") || "",
                 categoryIds: categoryId ? [parseInt(categoryId, 10)] : [],
                 format: selectedFormat.map(

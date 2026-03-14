@@ -16,11 +16,18 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             counter = false,
             maxLength,
             onChange,
+            value,
+            defaultValue,
             ...props
         },
         ref,
     ) => {
-        const [charCount, setCharCount] = useState(0);
+        const [charCount, setCharCount] = useState(
+            ((value ?? defaultValue) as string | undefined)?.length ?? 0,
+        );
+
+        const currentLength =
+            typeof value === "string" ? value.length : charCount;
 
         const classError = errorMessage
             ? "border-destructive focus-visible:ring-destructive focus-visible:border-none"
@@ -28,10 +35,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
 
         const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
             setCharCount(e.target.value.length);
-
-            if (onChange) {
-                onChange(e);
-            }
+            onChange?.(e);
         };
 
         return (
@@ -42,6 +46,8 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                         classError,
                         className,
                     )}
+                    value={value}
+                    defaultValue={defaultValue}
                     onChange={handleChange}
                     ref={ref}
                     {...props}
@@ -50,7 +56,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                     {errorMessage && <ErrorInput message={errorMessage} />}
                     {counter && maxLength && (
                         <p className="text-card-foreground ml-auto text-xs">
-                            {charCount}/{maxLength}
+                            {currentLength}/{maxLength}
                         </p>
                     )}
                 </div>

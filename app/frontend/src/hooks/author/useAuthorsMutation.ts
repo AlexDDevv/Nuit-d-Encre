@@ -25,7 +25,7 @@ import { DELETE_AUTHOR, GET_AUTHORS } from "@/graphql/author/author";
  * ```
  */
 
-export function useBooksMutations() {
+export function useAuthorsMutations() {
     const { showToast } = useToast();
 
     // ************************ DELETE ************************

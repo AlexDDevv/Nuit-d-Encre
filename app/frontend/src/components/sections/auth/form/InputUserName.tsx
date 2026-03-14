@@ -15,7 +15,7 @@ export default function InputUserName({
     return (
         <div className="flex flex-col gap-2">
             <Label htmlFor="userName" required>
-                Nom d'utilistateur
+                Nom d'utilisateur
             </Label>
             <Input
                 id="userName"

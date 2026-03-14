@@ -11,7 +11,7 @@ export default function InputBiography({
             <Label htmlFor="biography">Biographie</Label>
             <Textarea
                 id="biography"
-                placeholder="Saisissez la biographie du livre"
+                placeholder="Saisissez la biographie de l'auteur"
                 {...register("biography", {
                     minLength: {
                         value: 1,

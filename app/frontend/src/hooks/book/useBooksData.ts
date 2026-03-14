@@ -1,8 +1,13 @@
 import { useQuery } from "@apollo/client";
 import { GET_BOOKS } from "@/graphql/book/book";
 import { useState } from "react";
-import { BookFormat, UseBooksMode } from "@/types/types";
+import { UseBooksMode } from "@/types/types";
 import { useSearchParams } from "react-router-dom";
+import {
+    formatLabelMap,
+    languageLabelMap,
+    languageLabelToCode,
+} from "@/lib/filterMaps";
 
 /**
  * Hook to fetch and manage a list of books with filters, pagination, and modes.
@@ -57,36 +62,14 @@ import { useSearchParams } from "react-router-dom";
  * ```
  */
 
-const formatLabelMap: Record<BookFormat, string> = {
-    hardcover: "Livre relié",
-    paperback: "Livre broché",
-    softcover: "Livre de poche",
-    pocket: "Livre de poche",
-};
-
-const languageLabelMap: Record<string, string> = {
-    fr: "Français",
-    en: "Anglais",
-    es: "Espagnol",
-    de: "Allemand",
-    it: "Italien",
-};
+const PER_PAGE = { library: 24, home: 12 } as const;
 
 export function useBooksData({ mode }: UseBooksMode) {
     const [searchParams] = useSearchParams();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filters, setFilters] = useState<string[]>([]);
-    const PER_PAGE = {
-        library: 24,
-        home: 12,
-    };
 
-    const getLimit = () => {
-        if (!mode || mode === "home") return PER_PAGE.home;
-        if (mode === "library") return PER_PAGE.library;
-        return PER_PAGE.home;
-    };
-
+    const limit = mode === "library" ? PER_PAGE.library : PER_PAGE.home;
     const categoryId = searchParams.get("categoryId");
 
     const selectedFormat = filters.filter((f) =>
@@ -97,10 +80,6 @@ export function useBooksData({ mode }: UseBooksMode) {
         Object.values(languageLabelMap).includes(f),
     );
 
-    const languageLabelToCode = Object.fromEntries(
-        Object.entries(languageLabelMap).map(([code, label]) => [label, code]),
-    );
-
     const {
         data: booksData,
         loading: isLoadingBooks,
@@ -109,7 +88,7 @@ export function useBooksData({ mode }: UseBooksMode) {
         variables: {
             filters: {
                 page: currentPage,
-                limit: getLimit(),
+                limit,
                 search: searchParams.get("search") || "",
                 categoryIds: categoryId ? [parseInt(categoryId, 10)] : [],
                 format: selectedFormat.map(

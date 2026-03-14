@@ -7,6 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
 import { getRatingClasses } from "@/lib/utils";
+import { useMemo } from "react";
 
 interface ReviewCardProps {
     review: BookReview;
@@ -24,10 +25,14 @@ export default function ReviewCard({
     const { user } = useAuthContext();
     const isOwnReview = user?.id === review.user.id;
 
-    const timeAgo = formatDistanceToNow(new Date(review.createdAt), {
-        addSuffix: true,
-        locale: fr,
-    });
+    const timeAgo = useMemo(
+        () =>
+            formatDistanceToNow(new Date(review.createdAt), {
+                addSuffix: true,
+                locale: fr,
+            }),
+        [review.createdAt],
+    );
 
     return (
         <article

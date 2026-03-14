@@ -23,7 +23,8 @@ export default function ReviewVoteButtons({
     const { user } = useAuthContext();
     const { showToast } = useToast();
     const { myVote, isLoadingMyVote } = useMyVoteOnReview(reviewId);
-    const { voteOnReview, isVoting, removeVote, isRemovingVote } = useBookReviewVoteMutations();
+    const { voteOnReview, isVoting, removeVote, isRemovingVote } =
+        useBookReviewVoteMutations();
 
     const [helpfulCount, setHelpfulCount] = useState(initialHelpfulCount);
     const [notHelpfulCount, setNotHelpfulCount] = useState(
@@ -31,12 +32,29 @@ export default function ReviewVoteButtons({
     );
     const [currentVote, setCurrentVote] = useState<boolean | null>(null);
 
-    // Update local state when vote data loads
     useEffect(() => {
         if (myVote) {
             setCurrentVote(myVote.isHelpful);
         }
     }, [myVote]);
+
+    const isDisabled =
+        isOwnReview || isVoting || isRemovingVote || isLoadingMyVote;
+
+    const getVoteButtonClasses = (
+        isActive: boolean,
+        activeClass: string,
+        hoverClass: string,
+    ) =>
+        cn(
+            isActive
+                ? activeClass
+                : cn(
+                      "bg-muted border-muted text-muted-foreground",
+                      !isOwnReview && hoverClass,
+                  ),
+            isDisabled && "opacity-50",
+        );
 
     const handleVote = async (isHelpful: boolean) => {
         if (!user) {
@@ -86,7 +104,7 @@ export default function ReviewVoteButtons({
                     isHelpful,
                 });
             }
-        } catch (error) {
+        } catch {
             // Revert optimistic update on error
             setHelpfulCount(initialHelpfulCount);
             setNotHelpfulCount(initialNotHelpfulCount);
@@ -95,7 +113,8 @@ export default function ReviewVoteButtons({
             showToast({
                 type: "error",
                 title: "Erreur",
-                description: "Impossible d'enregistrer votre vote. Veuillez réessayer.",
+                description:
+                    "Impossible d'enregistrer votre vote. Veuillez réessayer.",
             });
         }
     };
@@ -104,16 +123,13 @@ export default function ReviewVoteButtons({
         <div className="flex items-center gap-2">
             <Button
                 onClick={() => handleVote(true)}
-                disabled={isOwnReview || isVoting || isRemovingVote || isLoadingMyVote}
+                disabled={isDisabled}
                 ariaLabel="Marquer comme utile"
                 size="sm"
-                className={cn(
-                    currentVote === true
-                        ? "bg-primary border-primary text-primary-foreground"
-                        : isOwnReview
-                            ? "bg-muted border-muted text-muted-foreground"
-                            : "bg-muted border-muted text-muted-foreground hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
-                    (isOwnReview || isVoting || isRemovingVote || isLoadingMyVote) && "opacity-50",
+                className={getVoteButtonClasses(
+                    currentVote === true,
+                    "bg-primary border-primary text-primary-foreground",
+                    "hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
                 )}
             >
                 <ThumbsUp className="h-4 w-4" />
@@ -121,16 +137,13 @@ export default function ReviewVoteButtons({
             </Button>
             <Button
                 onClick={() => handleVote(false)}
-                disabled={isOwnReview || isVoting || isRemovingVote || isLoadingMyVote}
+                disabled={isDisabled}
                 ariaLabel="Marquer comme pas utile"
                 size="sm"
-                className={cn(
-                    currentVote === false
-                        ? "bg-destructive border-destructive text-destructive-foreground"
-                        : isOwnReview
-                            ? "bg-muted border-muted text-muted-foreground"
-                            : "bg-muted border-muted text-muted-foreground hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
-                    (isOwnReview || isVoting || isRemovingVote || isLoadingMyVote) && "opacity-50",
+                className={getVoteButtonClasses(
+                    currentVote === false,
+                    "bg-destructive border-destructive text-destructive-foreground",
+                    "hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
                 )}
             >
                 <ThumbsDown className="h-4 w-4" />
