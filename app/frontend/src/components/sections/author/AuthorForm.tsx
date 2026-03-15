@@ -13,6 +13,7 @@ import { Button } from "@/components/UI/Button";
 import Loader from "@/components/UI/Loader";
 import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
+import { parseGraphQLError } from "@/utils/graphql-error";
 
 export default function AuthorForm() {
     const { id: authorId } = useParams();
@@ -117,17 +118,17 @@ export default function AuthorForm() {
                 );
             }
         } catch (err) {
-            const msg =
-                err instanceof Error
-                    ? err.message
-                    : "Erreur lors de la soumission de l'auteur.";
+            const { title, description } = parseGraphQLError(
+                err,
+                isEdit ? "updateAuthor" : "createAuthor",
+            );
 
-            setError("root", { message: msg });
+            setError("root", { message: description });
 
             showToast({
                 type: "error",
-                title: "Erreur",
-                description: msg,
+                title,
+                description,
             });
         }
     };

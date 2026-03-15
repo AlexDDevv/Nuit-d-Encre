@@ -1,6 +1,7 @@
 import { CreateUserBookInput, UpdateUserBookInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
 import { useToast } from "@/hooks/toast/useToast";
+import { parseGraphQLError } from "@/utils/graphql-error";
 import {
     CREATE_USER_BOOK,
     UPDATE_USER_BOOK,
@@ -183,32 +184,8 @@ export function useUserBookMutations() {
                     "Vous pouvez poursuivre votre lecture du tableau de bord.",
             });
         } catch (error) {
-            if (error instanceof Error) {
-                if (
-                    error.message.includes(
-                        "Access denied! You don't have permission for this action!",
-                    )
-                ) {
-                    showToast({
-                        type: "error",
-                        title: "Échec de la suppression",
-                        description: "Vous n'avez pas les droits nécessaires.",
-                    });
-                } else {
-                    showToast({
-                        type: "error",
-                        title: "Erreur lors de la suppression",
-                        description:
-                            "Une erreur est survenue. Veuillez réessayer plus tard.",
-                    });
-                }
-            } else {
-                showToast({
-                    type: "error",
-                    title: "Erreur inattendue",
-                    description: "Une erreur inconnue est survenue.",
-                });
-            }
+            const { title, description } = parseGraphQLError(error, "deleteUserBook");
+            showToast({ type: "error", title, description });
         }
     };
 

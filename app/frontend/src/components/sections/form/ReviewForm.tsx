@@ -8,6 +8,7 @@ import { Sparkles } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
+import { parseGraphQLError } from "@/utils/graphql-error";
 
 interface ReviewFormProps {
     book: Book;
@@ -94,13 +95,11 @@ export default function ReviewForm({
 
             onSuccess?.();
         } catch (error) {
-            showToast({
-                type: "error",
-                title: "Erreur",
-                description: isEditing
-                    ? "Impossible de modifier votre critique. Veuillez réessayer."
-                    : "Impossible de publier votre critique. Veuillez réessayer.",
-            });
+            const { title, description } = parseGraphQLError(
+                error,
+                isEditing ? "updateReview" : "createReview",
+            );
+            showToast({ type: "error", title, description });
         }
     };
 

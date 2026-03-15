@@ -19,6 +19,7 @@ import Loader from "@/components/UI/Loader";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import { useCategoriesData } from "@/hooks/category/useCategoriesData";
+import { parseGraphQLError } from "@/utils/graphql-error";
 
 export default function BookForm() {
     const { id: bookId } = useParams();
@@ -152,17 +153,17 @@ export default function BookForm() {
                 navigate(`/books/${result.id}-${result.title}`);
             }
         } catch (err) {
-            const msg =
-                err instanceof Error
-                    ? err.message
-                    : "Erreur lors de la soumission du livre.";
+            const { title, description } = parseGraphQLError(
+                err,
+                isEdit ? "updateBook" : "createBook",
+            );
 
-            setError("root", { message: msg });
+            setError("root", { message: description });
 
             showToast({
                 type: "error",
-                title: "Erreur",
-                description: msg,
+                title,
+                description,
             });
         }
     };

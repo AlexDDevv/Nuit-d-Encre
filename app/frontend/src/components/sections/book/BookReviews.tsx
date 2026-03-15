@@ -14,6 +14,7 @@ import { useBookReviewsData } from "@/hooks/book/review/useBookReviewsData";
 import { useMyBookReview } from "@/hooks/book/review/useBookReviewData";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
 import RatingStars from "../library/UI/RatingStars";
+import { parseGraphQLError } from "@/utils/graphql-error";
 import { useLocation } from "react-router-dom";
 
 interface BookReviewsProps {
@@ -65,13 +66,9 @@ export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
                 title: "Critique supprimée",
                 description: "Votre critique a été supprimée avec succès.",
             });
-        } catch {
-            showToast({
-                type: "error",
-                title: "Erreur",
-                description:
-                    "Impossible de supprimer votre critique. Veuillez réessayer.",
-            });
+        } catch (error) {
+            const { title, description } = parseGraphQLError(error, "deleteReview");
+            showToast({ type: "error", title, description });
         }
     };
 

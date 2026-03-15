@@ -14,6 +14,7 @@ import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
 import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate } from "react-router-dom";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
+import { parseGraphQLError } from "@/utils/graphql-error";
 import BooksByCategory from "@/components/sections/book/BooksByCategory";
 import { RecommendationCount } from "@/components/UI/RecommendationCount";
 import BookReviews from "@/components/sections/book/BookReviews";
@@ -83,20 +84,8 @@ export default function BookDetails() {
                     "Le livre a bien été ajouté à votre bibliothèque !",
             });
         } catch (error) {
-            if (!user) {
-                showToast({
-                    type: "error",
-                    title: "Action non autorisée",
-                    description: "Vous devez être connecté pour ajouter un livre à votre bibliothèque.",
-                });
-                return;
-            }
-            showToast({
-                type: "error",
-                title: "Erreur",
-                description:
-                    "L'ajout du livre dans la bibliothèque de l'utilisateur a échoué...",
-            });
+            const { title, description } = parseGraphQLError(error, "createUserBook");
+            showToast({ type: "error", title, description });
         }
     };
 
@@ -112,32 +101,8 @@ export default function BookDetails() {
             });
             navigate("/books");
         } catch (error) {
-            if (error instanceof Error) {
-                if (
-                    error.message.includes(
-                        "Access denied! You don't have permission for this action!",
-                    )
-                ) {
-                    showToast({
-                        type: "error",
-                        title: "Échec de la suppression",
-                        description: "Vous n'avez pas les droits nécessaires.",
-                    });
-                } else {
-                    showToast({
-                        type: "error",
-                        title: "Erreur lors de la suppression",
-                        description:
-                            "Une erreur est survenue. Veuillez réessayer plus tard.",
-                    });
-                }
-            } else {
-                showToast({
-                    type: "error",
-                    title: "Erreur inattendue",
-                    description: "Une erreur inconnue est survenue.",
-                });
-            }
+            const { title, description } = parseGraphQLError(error, "deleteBook");
+            showToast({ type: "error", title, description });
         }
     };
 

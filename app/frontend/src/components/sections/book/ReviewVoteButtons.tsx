@@ -6,6 +6,7 @@ import { useToast } from "@/hooks/toast/useToast";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useBookReviewVoteMutations } from "@/hooks/book/reviewVote/useBookReviewVoteMutations";
 import { useMyVoteOnReview } from "@/hooks/book/reviewVote/useBookReviewVoteData";
+import { parseGraphQLError } from "@/utils/graphql-error";
 
 interface ReviewVoteButtonsProps {
     reviewId: string;
@@ -104,18 +105,14 @@ export default function ReviewVoteButtons({
                     isHelpful,
                 });
             }
-        } catch {
+        } catch (error) {
             // Revert optimistic update on error
             setHelpfulCount(initialHelpfulCount);
             setNotHelpfulCount(initialNotHelpfulCount);
             setCurrentVote(currentVote);
 
-            showToast({
-                type: "error",
-                title: "Erreur",
-                description:
-                    "Impossible d'enregistrer votre vote. Veuillez réessayer.",
-            });
+            const { title, description } = parseGraphQLError(error, "voteOnReview");
+            showToast({ type: "error", title, description });
         }
     };
 
