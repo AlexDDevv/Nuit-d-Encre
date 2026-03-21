@@ -20,10 +20,11 @@ export const GET_USER_BOOKS = gql`
                     pageCount
                     publishedYear
                     publisher
+                    averageRating
+                    recommendationCount
+                    reviewCount
                 }
                 status
-                rating
-                recommended
             }
             totalCount
             page
@@ -51,10 +52,11 @@ export const GET_USER_BOOK = gql`
                 pageCount
                 publishedYear
                 publisher
+                averageRating
+                recommendationCount
+                reviewCount
             }
             status
-            rating
-            recommended
         }
     }
 `;
@@ -68,8 +70,6 @@ export const CREATE_USER_BOOK = gql`
                 title
             }
             status
-            rating
-            recommended
         }
     }
 `;
@@ -83,8 +83,6 @@ export const UPDATE_USER_BOOK = gql`
                 title
             }
             status
-            rating
-            recommended
         }
     }
 `;

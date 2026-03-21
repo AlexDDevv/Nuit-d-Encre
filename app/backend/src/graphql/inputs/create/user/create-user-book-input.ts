@@ -8,8 +8,8 @@
  * flag, reading dates, and visibility.
  */
 
-import { Field, ID, Int, InputType } from "type-graphql";
-import { IsBoolean, IsDate, IsEnum, IsInt, IsOptional, Max, Min, Validate } from "class-validator";
+import { Field, ID, InputType } from "type-graphql";
+import { IsBoolean, IsDate, IsEnum, IsOptional, Validate } from "class-validator";
 import { ReadingStatus } from "../../../../types/types";
 import { EndAfterStart } from "../../../helpers/endAfterStart";
 
@@ -21,9 +21,6 @@ import { EndAfterStart } from "../../../helpers/endAfterStart";
  * This input describes:
  * - `bookId`: the target book to attach to the user library (required).
  * - `status`: optional reading status (defaults to TO_READ at persistence level).
- * - `rating`: optional rating (typically 0–5).
- * - `review`: optional free-form textual review.
- * - `recommended`: optional flag indicating if the user recommends the book.
  * - `startedAt`: optional date when the user started reading.
  * - `finishedAt`: optional date when the user finished reading.
  * - `isPublic`: optional visibility flag (defaults to true).
@@ -55,9 +52,6 @@ import { EndAfterStart } from "../../../helpers/endAfterStart";
  *   "input": {
  *     "bookId": 42,
  *     "status": "READING",
- *     "rating": 5,
- *     "review": "A thoughtful and moving story.",
- *     "recommended": true,
  *     "isPublic": true
  *   }
  * }
@@ -86,36 +80,6 @@ export class CreateUserBookInput {
   @IsOptional()
   @IsEnum(ReadingStatus)
   status?: ReadingStatus;
-
-  /**
-   * Initial rating given by the user
-   * @description
-   * Optional integer rating (typically 0–5).
-   */
-  @Field(() => Int, { nullable: true })
-  @IsOptional()
-  @IsInt()
-  @Min(0)
-  @Max(5)
-  rating?: number;
-
-  /**
-   * Initial textual review
-   * @description
-   * Optional free-form text review attached to the entry.
-   */
-  @Field({ nullable: true })
-  review?: string;
-
-  /**
-   * Initial recommendation flag
-   * @description
-   * Optional boolean indicating whether the user recommends this book.
-   */
-  @Field({ nullable: true })
-  @IsOptional()
-  @IsBoolean()
-  recommended?: boolean;
 
   /**
    * Visibility of the entry

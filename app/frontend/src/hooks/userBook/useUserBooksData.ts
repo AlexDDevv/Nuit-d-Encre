@@ -25,7 +25,6 @@ import {
  *    • Language → GraphQL `language` (derived from `languageLabelMap`)
  *    • Status → GraphQL `status` (derived from `statusLabelMap`)
  *    • Visibility (Public/Private) → GraphQL `isPublic`
- *    • Recommendation (Recommended/Not recommended) → GraphQL `recommended`
  *
  * The hook expects you to manage a single `string[]` of labels in your UI and pass it to `setFilters`.
  * Internally, those labels are mapped to the API variables.
@@ -35,7 +34,6 @@ import {
  * - Language: "Français", "Anglais", "Espagnol", "Allemand", "Italien"
  * - Status: "À lire", "En cours", "Lu", "En pause"
  * - Visibility: "Public", "Privé"
- * - Recommendation: "Recommandé", "Non recommandé"
  *
  * Usage modes control page size:
  * - `home`   → 12 items per page
@@ -52,8 +50,6 @@ import {
  * @property {{ library: number; home: number }} PER_PAGE - Page sizes by mode.
  * @property {number} totalCount - Total number of books matching active filters.
  * @property {(filters: string[]) => void} setFilters - Setter that accepts a `string[]` of labels (see lists above).
- * @property {[number | null, number | null]} ratingRange - Current rating range filter [min, max].
- * @property {(min: number | null, max: number | null) => void} setRatingRange - Setter for rating range.
  *
  * @example
  * ```tsx
@@ -77,15 +73,8 @@ import {
  *     "Français",       // language → language: "fr"
  *     "En cours",       // status → status: ["reading"]
  *     "Public",         // isPublic → isPublic: true
- *     "Recommandé",     // recommended → recommended: true
  *   ]);
  * }, [setFilters]);
- *
- * // Set rating range (e.g., books rated between 3 and 5)
- * setRatingRange(3, 5);
- *
- * // Reset rating filter
- * setRatingRange(null, null);
  *
  * if (isLoadingUserBooks) return <p>Loading...</p>;
  * if (userBooksError) return <p>Error: {userBooksError.message}</p>;
@@ -111,27 +100,15 @@ import {
 
 const PER_PAGE = { library: 24, home: 12 } as const;
 
-const booleanLabelMap: Record<
-    "isPublic" | "recommended",
-    Record<"true" | "false", string>
-> = {
-    isPublic: {
-        true: "Public",
-        false: "Privé",
-    },
-    recommended: {
-        true: "Recommandé",
-        false: "Non recommandé",
-    },
+const isPublicLabelMap: Record<"true" | "false", string> = {
+    true: "Public",
+    false: "Privé",
 };
 
 export function useUserBooksData({ mode }: UseBooksMode) {
     const [searchParams] = useSearchParams();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [filters, setFilters] = useState<string[]>([]);
-    const [ratingRange, setRatingRangeState] = useState<
-        [number | null, number | null]
-    >([null, null]);
 
     const limit = mode === "library" ? PER_PAGE.library : PER_PAGE.home;
     const categoryId = searchParams.get("categoryId");
@@ -157,18 +134,9 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         )
         .filter(Boolean) as UserBookStatus[];
 
-    const selectedIsPublic = Object.entries(booleanLabelMap.isPublic).find(
+    const selectedIsPublic = Object.entries(isPublicLabelMap).find(
         ([, label]) => filters.includes(label),
     )?.[0];
-
-    const selectedRecommended = Object.entries(
-        booleanLabelMap.recommended,
-    ).find(([, label]) => filters.includes(label))?.[0];
-
-    const setRatingRange = (min: number | null, max: number | null) => {
-        setRatingRangeState([min, max]);
-        setCurrentPage(1);
-    };
 
     const {
         data: userBooksData,
@@ -194,11 +162,6 @@ export function useUserBooksData({ mode }: UseBooksMode) {
                 isPublic: selectedIsPublic
                     ? selectedIsPublic === "true"
                     : undefined,
-                recommended: selectedRecommended
-                    ? selectedRecommended === "true"
-                    : undefined,
-                ratingMin: ratingRange[0] ?? undefined,
-                ratingMax: ratingRange[1] ?? undefined,
             },
         },
     });
@@ -213,8 +176,6 @@ export function useUserBooksData({ mode }: UseBooksMode) {
         totalCount: userBooksData?.userBooks.totalCount ?? 0,
         filters,
         setFilters,
-        ratingRange,
-        setRatingRange,
         statusLabelMap,
     };
 }

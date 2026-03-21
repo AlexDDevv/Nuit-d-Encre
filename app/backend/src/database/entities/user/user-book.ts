@@ -4,12 +4,15 @@
  * @description
  * This module defines the UserBook entity for the database.
  * It represents the relationship between a user and a book in the user's
- * personal library, including reading status, rating, review, visibility,
- * and reading timeline. It enforces a single entry per (user, book) pair
- * and provides indexes to optimize lookups by user and by book.
+ * personal library, including reading status, visibility, and reading timeline.
+ * It enforces a single entry per (user, book) pair and provides indexes to
+ * optimize lookups by user and by book.
+ *
+ * Note: Ratings and reviews are managed via the BookReview entity.
+ * Recommendations are managed via the BookRecommendation entity.
  */
 
-import { Field, ID, Int, ObjectType, registerEnumType } from "type-graphql";
+import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -43,9 +46,6 @@ registerEnumType(ReadingStatus, { name: "ReadingStatus" });
  * - `user`: the owner of the library entry (foreign key).
  * - `book`: the referenced book (foreign key).
  * - `status`: reading status (e.g., TO_READ, READING, READ, PAUSED...).
- * - `rating`: optional rating given by the user (0–5).
- * - `review`: optional textual review provided by the user.
- * - `recommended`: optional flag indicating if the user recommends the book.
  * - `startedAt`: optional date when the user started reading the book.
  * - `finishedAt`: optional date when the user finished reading the book.
  * - `isPublic`: visibility of this entry (public by default).
@@ -65,9 +65,6 @@ registerEnumType(ReadingStatus, { name: "ReadingStatus" });
  * userBook.user = userInstance;      // existing User
  * userBook.book = bookInstance;      // existing Book
  * userBook.status = ReadingStatus.READING;
- * userBook.rating = 5;
- * userBook.review = "A thoughtful and moving story.";
- * userBook.recommended = true;
  * userBook.isPublic = true;          // optional (defaults to true)
  * await userBook.save();
  * ```
@@ -130,34 +127,6 @@ export class UserBook extends BaseEntity {
     default: ReadingStatus.TO_READ,
   })
   status!: ReadingStatus;
-
-  /**
-   * Rating given by the user
-   * @description
-   * Optional integer rating (typically 0–5).
-   */
-  @Field(() => Int, { nullable: true })
-  @Column({ type: "int", nullable: true })
-  rating?: number | null;
-
-  /**
-   * User's textual review
-   * @description
-   * Optional free-form text review associated with the book.
-   */
-  @Field(() => String, { nullable: true })
-  @Column({ type: "text", nullable: true })
-  review?: string | null;
-
-  /**
-   * User recommendation flag
-   * @description
-   * Optional boolean indicating whether the user recommends the book.
-   * Can be aggregated to compute community recommendation counts.
-   */
-  @Field({ nullable: true })
-  @Column({ type: "boolean", default: false })
-  recommended?: boolean;
 
   /**
    * Reading start date
