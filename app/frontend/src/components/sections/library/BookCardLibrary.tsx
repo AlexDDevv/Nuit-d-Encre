@@ -7,8 +7,6 @@ import Button from "@/components/UI/Button/Button";
 export default function BookCardLibrary({
     id,
     book,
-    rating,
-    recommended,
     status,
     layout,
     onStatusChange,
@@ -68,8 +66,9 @@ export default function BookCardLibrary({
                     <div className="flex flex-col gap-5">
                         <UserBookInfo
                             category={book.category.name}
-                            rating={rating}
-                            recommended={recommended}
+                            averageRating={book.averageRating}
+                            reviewCount={book.reviewCount}
+                            recommendationCount={book.recommendationCount}
                         />
                     </div>
                     <div className="flex items-center justify-between gap-5">
@@ -94,8 +93,9 @@ export default function BookCardLibrary({
                     <div className="flex flex-row items-center justify-center gap-10">
                         <UserBookInfo
                             category={book.category.name}
-                            rating={rating}
-                            recommended={recommended}
+                            averageRating={book.averageRating}
+                            reviewCount={book.reviewCount}
+                            recommendationCount={book.recommendationCount}
                         />
                     </div>
                     <SelectBookStatus

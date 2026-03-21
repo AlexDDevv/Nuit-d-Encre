@@ -9,8 +9,6 @@ import UserBookInfo from "./UserBookInfo";
 
 export default function BookShelf({
     book,
-    rating,
-    recommended,
     statusLabel,
 }: BookShelfProps) {
     return (
@@ -51,8 +49,9 @@ export default function BookShelf({
                         </header>
                         <UserBookInfo
                             category={book.category.name}
-                            rating={rating}
-                            recommended={recommended}
+                            averageRating={book.averageRating}
+                            reviewCount={book.reviewCount}
+                            recommendationCount={book.recommendationCount}
                         />
                     </div>
                 </TooltipContent>

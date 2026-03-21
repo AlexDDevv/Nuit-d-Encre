@@ -193,9 +193,6 @@ export interface UserBook {
     book: Book;
     user: User;
     status: UserBookStatus;
-    rating?: number;
-    review?: string;
-    recommended?: boolean;
     startedAt?: string;
     finishedAt?: string;
     isPublic?: boolean;
@@ -206,9 +203,6 @@ export interface UserBook {
 export interface CreateUserBookInput {
     bookId: string;
     status: UserBookStatus;
-    rating?: number;
-    review?: string;
-    recommended?: boolean;
     startedAt?: string;
     finishedAt?: string;
     isPublic?: boolean;
@@ -217,9 +211,6 @@ export interface CreateUserBookInput {
 export interface UpdateUserBookInput {
     id?: string;
     status?: UserBookStatus;
-    rating?: number;
-    review?: string;
-    recommended?: boolean;
     startedAt?: string;
     finishedAt?: string;
     isPublic?: boolean;
@@ -307,8 +298,6 @@ export type LayoutOptionsValue = "grid" | "list" | "shelf";
 export type BookCardLibraryProps = {
     id: string;
     book: Book;
-    rating: number;
-    recommended: boolean;
     status: UserBookStatus;
     layout: LayoutOptionsValue;
     onStatusChange?: (args: {
@@ -323,15 +312,14 @@ export type BookCardLibraryProps = {
 
 export type BookShelfProps = {
     book: Book;
-    rating: number;
-    recommended: boolean;
     statusLabel: string;
 };
 
 export type UserBookInfoProps = {
     category: string;
-    rating: number;
-    recommended: boolean;
+    averageRating?: number;
+    reviewCount?: number;
+    recommendationCount?: number;
 };
 
 export type LayoutOptions = {

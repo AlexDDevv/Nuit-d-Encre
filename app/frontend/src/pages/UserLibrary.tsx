@@ -34,6 +34,7 @@ export default function UserLibrary() {
         filters,
         setFilters,
     } = useUserBooksData({ mode: "library" });
+    console.log("🚀 ~ UserLibrary ~ userBooks:", userBooks)
 
     const handleStatusChange = (statusEnum: UserBookStatus | "") => {
         setSelectedStatus(statusEnum);
@@ -120,8 +121,6 @@ export default function UserLibrary() {
                         <BookShelf
                             key={userBook.id}
                             book={userBook.book}
-                            rating={userBook.rating}
-                            recommended={userBook.recommended}
                             statusLabel={statusLabelMap[userBook.status]}
                         />
                     ))
@@ -130,8 +129,6 @@ export default function UserLibrary() {
                             key={userBook.id}
                             id={userBook.id}
                             book={userBook.book}
-                            rating={userBook.rating}
-                            recommended={userBook.recommended}
                             status={userBook.status}
                             layout={layout}
                             onStatusChange={handleStatusBookChange}
