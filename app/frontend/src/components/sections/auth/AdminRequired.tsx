@@ -4,7 +4,7 @@
  */
 
 import { Lock } from "lucide-react";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 
 /**
  * AdminRequired Component

@@ -14,7 +14,7 @@ import InputPublishedYear from "@/components/sections/book/inputs/InputPublished
 import InputLanguage from "@/components/sections/book/inputs/InputLanguage";
 import InputPublisher from "@/components/sections/book/inputs/InputPublisher";
 import InputFormat from "@/components/sections/book/inputs/InputFormat";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import Loader from "@/components/UI/Loader";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useBookMutations } from "@/hooks/book/useBookMutations";

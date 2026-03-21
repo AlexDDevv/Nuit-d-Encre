@@ -1,4 +1,4 @@
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { Textarea } from "@/components/UI/form/Textarea";
 import { Label } from "@/components/UI/form/Label";
 import FormWrapper from "@/components/UI/form/FormWrapper";

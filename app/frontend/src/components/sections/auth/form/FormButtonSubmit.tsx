@@ -1,4 +1,4 @@
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 
 type FormButttonSubmitProps = {
     type: "sign-in" | "sign-up";

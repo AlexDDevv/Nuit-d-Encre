@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import { Search } from "lucide-react";
 import { Label } from "@/components/UI/form/Label";
 import { Input } from "@/components/UI/form/Input";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/search/useDebounce";
 

@@ -2,7 +2,7 @@ import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import { cn } from "@/lib/utils";
 import { BookCardLibraryProps, UserBookStatus } from "@/types/types";
 import UserBookInfo from "@/components/sections/library/UserBookInfo";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 
 export default function BookCardLibrary({
     id,
@@ -34,7 +34,7 @@ export default function BookCardLibrary({
             )}
         >
             <div className="flex gap-8">
-                <div className="w-32 flex-shrink-0">
+                <div className="w-32 shrink-0">
                     <img
                         src="/images/bookCover.svg"
                         alt={`Couverture du livre ${book.title} de ${book.author.firstname} ${book.author.lastname}`}

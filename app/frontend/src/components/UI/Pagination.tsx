@@ -76,7 +76,7 @@ export default function Pagination({
 				{pages.map((page, index) =>
 					page === "..." ? (
 						<PaginationItem key={`ellipsis-${index}`}>
-							<PaginationEllipsis />
+							<PaginationEllipsis className="text-foreground" />
 						</PaginationItem>
 					) : (
 						<PaginationItem key={page}>

@@ -1,5 +1,5 @@
 import ContinueWith from "@/components/UI/form/ContinueWith";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 
 export default function ContinueWithGoogle() {
     return (

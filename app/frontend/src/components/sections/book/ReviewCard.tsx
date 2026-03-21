@@ -1,7 +1,7 @@
 import { BookReview } from "@/types/types";
 import ReviewVoteButtons from "@/components/sections/book/ReviewVoteButtons";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { Pencil, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
@@ -63,9 +63,8 @@ export default function ReviewCard({
                                 onClick={() => onEdit(review)}
                                 ariaLabel="Modifier ma critique"
                                 className="h-8 w-8 p-0"
-                            >
-                                <Pencil className="h-4 w-4" />
-                            </Button>
+                                icon={<Pencil className="h-4 w-4" />}
+                            />
                         )}
                         {onDelete && (
                             <Button
@@ -76,9 +75,8 @@ export default function ReviewCard({
                                 disabled={isDeletingReview}
                                 ariaLabel="Supprimer ma critique"
                                 className="h-8 w-8 p-0"
-                            >
-                                <Trash2 className="h-4 w-4" />
-                            </Button>
+                                icon={<Trash2 className="h-4 w-4" />}
+                            />
                         )}
                     </div>
                 )}

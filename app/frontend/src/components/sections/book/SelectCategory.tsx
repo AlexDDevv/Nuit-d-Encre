@@ -9,7 +9,7 @@ import { cn, slugify } from "@/lib/utils";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
 import { CategoryBook } from "@/types/types";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { useCategoriesData } from "@/hooks/category/useCategoriesData";
 
 export default function SelectCategory() {

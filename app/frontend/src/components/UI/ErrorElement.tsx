@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { ErrorLayoutProps } from "@/types/types";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 
 /**

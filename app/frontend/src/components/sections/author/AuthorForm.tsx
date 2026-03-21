@@ -9,7 +9,7 @@ import InputNationality from "@/components/sections/author/inputs/InputNationali
 import InputBirthDate from "@/components/sections/author/inputs/InputBirthDate";
 import InputBiography from "@/components/sections/author/inputs/InputBiography";
 import InputUrl from "@/components/sections/author/inputs/InputUrl";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import Loader from "@/components/UI/Loader";
 import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
@@ -138,8 +138,8 @@ export default function AuthorForm() {
             ? "Modification..."
             : "Création..."
         : isEdit
-          ? "Modifier l'auteur"
-          : "Enregistrer l'auteur";
+            ? "Modifier l'auteur"
+            : "Enregistrer l'auteur";
 
     return (
         <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>

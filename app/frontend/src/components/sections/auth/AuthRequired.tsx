@@ -3,7 +3,7 @@
  * @module AuthRequired
  */
 
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { Link, useLocation } from "react-router-dom";
 import { Lock } from "lucide-react";
 

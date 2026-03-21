@@ -4,7 +4,7 @@ import BooksSectionLayout from "@/components/sections/book/BookSectionLayout";
 import ReviewForm from "@/components/sections/form/ReviewForm";
 import ReviewCard from "@/components/sections/book/ReviewCard";
 import Modal from "@/components/UI/Modal";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import SelectReviewSort from "@/components/sections/book/SelectReviewSort";
 import Pagination from "@/components/UI/Pagination";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
@@ -131,7 +131,7 @@ export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
                                     variant={isRecommended ? "secondary" : "outline"}
                                     onClick={handleToggleRecommendation}
                                     ariaLabel={isRecommended ? "Ne plus recommander ce livre" : "Recommander ce livre"}
-                                    icon={Heart}
+                                    leftIcon={<Heart />}
                                     loading={isTogglingBookRecommendation}
                                     disabled={isTogglingBookRecommendation || isLoadingBookRecommendation}
                                 >
@@ -145,7 +145,7 @@ export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
                                             ? "Modifier ma critique"
                                             : "Écrire ma critique"
                                     }
-                                    icon={hasUserReviewed ? Pencil : MessageSquare}
+                                    leftIcon={hasUserReviewed ? <Pencil /> : <MessageSquare />}
                                 >
                                     {hasUserReviewed
                                         ? "Modifier ma critique"

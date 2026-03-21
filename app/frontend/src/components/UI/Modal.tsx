@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 
 interface ModalProps {
     isOpen: boolean;
@@ -71,10 +71,10 @@ export default function Modal({
                     )}
                     <Button
                         variant="ghost"
-                        size="square_sm"
+                        size="sm"
                         onClick={onClose}
                         ariaLabel="Fermer la modale"
-                        icon={X}
+                        icon={<X />}
                         className="text-muted-foreground hover:text-foreground [&_svg]:h-5 [&_svg]:w-5"
                     />
                 </div>

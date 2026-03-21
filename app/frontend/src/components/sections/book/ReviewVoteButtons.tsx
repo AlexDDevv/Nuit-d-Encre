@@ -1,6 +1,6 @@
 import { ThumbsUp, ThumbsDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/toast/useToast";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
@@ -51,9 +51,9 @@ export default function ReviewVoteButtons({
             isActive
                 ? activeClass
                 : cn(
-                      "bg-muted border-muted text-muted-foreground",
-                      !isOwnReview && hoverClass,
-                  ),
+                    "bg-muted border-muted text-muted-foreground",
+                    !isOwnReview && hoverClass,
+                ),
             isDisabled && "opacity-50",
         );
 
@@ -128,8 +128,8 @@ export default function ReviewVoteButtons({
                     "bg-primary border-primary text-primary-foreground",
                     "hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
                 )}
+                leftIcon={<ThumbsUp className="h-4 w-4" />}
             >
-                <ThumbsUp className="h-4 w-4" />
                 <span>{helpfulCount}</span>
             </Button>
             <Button
@@ -142,8 +142,8 @@ export default function ReviewVoteButtons({
                     "bg-destructive border-destructive text-destructive-foreground",
                     "hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
                 )}
+                leftIcon={<ThumbsDown className="h-4 w-4" />}
             >
-                <ThumbsDown className="h-4 w-4" />
                 <span>{notHelpfulCount}</span>
             </Button>
         </div>

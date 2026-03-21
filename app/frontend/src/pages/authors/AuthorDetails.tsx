@@ -1,6 +1,6 @@
 import AuthorInfos from "@/components/sections/author/AuthorInfos";
 import BooksBibliography from "@/components/sections/book/BooksBibliography";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import Links from "@/components/UI/Links";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";

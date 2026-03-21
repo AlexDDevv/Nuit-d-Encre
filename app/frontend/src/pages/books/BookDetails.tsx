@@ -1,4 +1,4 @@
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import BookInfos from "@/components/sections/book/BookInfos";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";

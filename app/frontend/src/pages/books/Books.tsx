@@ -69,7 +69,7 @@ export default function Books() {
             {isLoadingBooks ? (
                 <BookPageSkeleton />
             ) : (
-                <section className="flex min-h-[calc(100vh_-_var(--header-height))] flex-col items-center justify-center gap-20">
+                <section className="flex min-h-[calc(100vh-var(--header-height))] flex-col items-center justify-center gap-20">
                     <div className="flex flex-col items-center justify-center gap-10">
                         <h1 className="text-foreground text-4xl font-bold">
                             Rechercher un livre

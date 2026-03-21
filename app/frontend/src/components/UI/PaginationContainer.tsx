@@ -1,7 +1,9 @@
 import { ComponentProps, forwardRef } from "react"
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { ButtonProps, buttonVariants } from "./Button"
+import type { ButtonProps } from "@/components/UI/Button"
+import { baseClasses, variantClasses, sizeClasses } from "@/components/UI/Button/Button.styles"
+import { ButtonSize } from "@/components/UI/Button/Button.types"
 
 const PaginationContainer = ({
 	className,
@@ -48,11 +50,10 @@ const PaginationLink = ({
 	<a
 		aria-current={isActive ? "page" : undefined}
 		className={cn(
-			buttonVariants({
-				variant: "pagination_btn",
-				pagination: isActive ? "selected" : undefined,
-				size,
-			}),
+			baseClasses,
+			variantClasses["underlineText"],
+			sizeClasses[size as ButtonSize],
+			isActive && "underline active:underline text-foreground font-bold",
 			className
 		)}
 		{...props}

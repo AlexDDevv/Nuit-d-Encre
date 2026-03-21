@@ -1,4 +1,4 @@
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 import { cn } from "@/lib/utils";
 import { LayoutButtonsProps, LayoutOptions } from "@/types/types";
 import { Sheet, LayoutList, LibraryBig } from "lucide-react";
@@ -27,13 +27,13 @@ export default function LayoutButtons({
 }: LayoutButtonsProps) {
     return (
         <div className="flex items-center justify-center gap-3">
-            {LAYOUT_OPTIONS.map(({ icon, label, value }) => (
+            {LAYOUT_OPTIONS.map(({ icon: Icon, label, value }) => (
                 <Button
                     key={value}
                     ariaLabel={label}
                     variant="layout"
                     size="xs"
-                    icon={icon}
+                    icon={<Icon />}
                     onClick={() => onLayoutChange(value)}
                     className={cn(activeLayout === value && "text-foreground")}
                 />

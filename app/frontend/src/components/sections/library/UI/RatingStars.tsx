@@ -1,6 +1,6 @@
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/UI/Button";
+import Button from "@/components/UI/Button/Button";
 
 interface RatingStarsProps {
     value: number;
