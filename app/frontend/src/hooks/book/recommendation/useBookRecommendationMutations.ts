@@ -1,4 +1,4 @@
-import { useMutation } from "@apollo/client";
+import { ApolloCache, useMutation } from "@apollo/client";
 import {
     TOGGLE_BOOK_RECOMMENDATION,
     DELETE_BOOK_RECOMMENDATION,
@@ -58,6 +58,19 @@ export function useBookRecommendationMutations() {
         },
     ] = useMutation(TOGGLE_BOOK_RECOMMENDATION, {
         refetchQueries: [GET_BOOK_RECOMMENDATION],
+        update(cache: ApolloCache<unknown>, { data }, { variables }) {
+            const action = data?.toggleBookRecommendation?.action;
+            const bookId = variables?.data?.bookId;
+            if (!action || !bookId) return;
+
+            cache.modify({
+                id: cache.identify({ __typename: "Book", id: bookId }),
+                fields: {
+                    recommendationCount: (existing = 0) =>
+                        action === "created" ? existing + 1 : Math.max(0, existing - 1),
+                },
+            });
+        },
     });
 
     const toggleBookRecommendation = async (

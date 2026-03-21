@@ -48,7 +48,7 @@ export default function RatingStars({
                         disabled={readOnly}
                         ariaLabel={`${starValue} étoile${starValue > 1 ? "s" : ""}`}
                         className={cn(
-                            "transition-colors hover:no-underline p-0",
+                            "transition-colors hover:no-underline p-0 h-fit",
                             !readOnly && "cursor-pointer hover:scale-110",
                             readOnly && "cursor-default",
                         )}

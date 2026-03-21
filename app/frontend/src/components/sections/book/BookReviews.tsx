@@ -9,11 +9,12 @@ import SelectReviewSort from "@/components/sections/book/SelectReviewSort";
 import Pagination from "@/components/UI/Pagination";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
-import { Pencil, MessageSquare, BookOpen } from "lucide-react";
+import { Pencil, MessageSquare, BookOpen, Heart } from "lucide-react";
 import { useBookReviewsData } from "@/hooks/book/review/useBookReviewsData";
 import { useMyBookReview } from "@/hooks/book/review/useBookReviewData";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
-import RatingStars from "../library/UI/RatingStars";
+import { useBookRecommendationData } from "@/hooks/book/recommendation/useBookRecommendationData";
+import { useBookRecommendationMutations } from "@/hooks/book/recommendation/useBookRecommendationMutations";
 import { parseGraphQLError } from "@/utils/graphql-error";
 import { useLocation } from "react-router-dom";
 
@@ -44,9 +45,21 @@ export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
     );
     const { myReview } = useMyBookReview(book.id);
     const { deleteReview, isDeletingReview } = useBookReviewMutations();
+    const { bookRecommendation, isLoadingBookRecommendation } = useBookRecommendationData(user ? book.id : undefined);
+    const { toggleBookRecommendation, isTogglingBookRecommendation } = useBookRecommendationMutations();
 
     const hasReviews = (totalCount ?? 0) > 0;
     const hasUserReviewed = !!myReview;
+    const isRecommended = !!bookRecommendation;
+
+    const handleToggleRecommendation = async () => {
+        try {
+            await toggleBookRecommendation(book.id);
+        } catch (error) {
+            const { title, description } = parseGraphQLError(error, "toggleRecommendation");
+            showToast({ type: "error", title, description });
+        }
+    };
 
     const handleOpenModal = (review?: BookReview) => {
         setEditingReview(review);
@@ -111,28 +124,19 @@ export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
                     </div>
                 )}
                 {hasReviews && (
-                    <div className="flex flex-col gap-8 w-full">
-                        <div className="bg-card border-2 border-border rounded-xl p-6 flex items-center justify-between gap-6 w-full">
-                            <div className="flex items-center gap-6">
-                                {book.averageRating && (
-                                    <div className="flex items-center gap-4">
-                                        <span className="font-quote italic text-5xl text-foreground leading-none">
-                                            {book.averageRating.toFixed(1)}
-                                        </span>
-                                        <div className="flex flex-col gap-1">
-                                            <RatingStars
-                                                value={book.averageRating}
-                                                readOnly
-                                                size="md"
-                                            />
-                                            <p className="text-muted-foreground text-xs">
-                                                {totalCount} critique{totalCount && totalCount > 1 ? "s" : ""}
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                            {user && (
+                    <div className="flex flex-col gap-5 w-full">
+                        {user && (
+                            <div className="flex justify-end gap-5">
+                                <Button
+                                    variant={isRecommended ? "secondary" : "outline"}
+                                    onClick={handleToggleRecommendation}
+                                    ariaLabel={isRecommended ? "Ne plus recommander ce livre" : "Recommander ce livre"}
+                                    icon={Heart}
+                                    loading={isTogglingBookRecommendation}
+                                    disabled={isTogglingBookRecommendation || isLoadingBookRecommendation}
+                                >
+                                    {isRecommended ? "Recommandé" : "Recommander"}
+                                </Button>
                                 <Button
                                     variant={hasUserReviewed ? "secondary" : "primary"}
                                     onClick={() => handleOpenModal(myReview)}
@@ -147,29 +151,31 @@ export default function BookReviews({ book, pageLimit = 5 }: BookReviewsProps) {
                                         ? "Modifier ma critique"
                                         : "Écrire ma critique"}
                                 </Button>
-                            )}
-                        </div>
-                        <SelectReviewSort
-                            value={sortBy}
-                            onChange={setSortBy}
-                        />
-                        {isLoadingReviews ? (
-                            <p className="text-muted-foreground text-center py-8">
-                                Chargement des critiques...
-                            </p>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                                {reviews?.map((review) => (
-                                    <ReviewCard
-                                        key={review.id}
-                                        review={review}
-                                        onEdit={handleOpenModal}
-                                        onDelete={handleDeleteReview}
-                                        isDeletingReview={isDeletingReview}
-                                    />
-                                ))}
                             </div>
                         )}
+                        <div className="flex flex-col gap-5">
+                            <SelectReviewSort
+                                value={sortBy}
+                                onChange={setSortBy}
+                            />
+                            {isLoadingReviews ? (
+                                <p className="text-muted-foreground text-center py-8">
+                                    Chargement des critiques...
+                                </p>
+                            ) : (
+                                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                                    {reviews?.map((review) => (
+                                        <ReviewCard
+                                            key={review.id}
+                                            review={review}
+                                            onEdit={handleOpenModal}
+                                            onDelete={handleDeleteReview}
+                                            isDeletingReview={isDeletingReview}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                         <Pagination
                             currentPage={page}
                             totalCount={totalCount ?? 0}

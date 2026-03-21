@@ -141,7 +141,7 @@ const SelectContent = forwardRef<
                         position={position}
                         {...props}
                     >
-                        <div className="w-full min-w-var(--radix-select-trigger-width) p-1">
+                        <div className="w-full min-w-[var(--radix-select-trigger-width)] p-1">
                             {children}
                         </div>
                     </SelectContentBase>
@@ -164,7 +164,7 @@ const SelectContent = forwardRef<
                         className={cn(
                             "p-1",
                             position === "popper" &&
-                            "h-var(--radix-select-trigger-height) w-full min-w-var(--radix-select-trigger-width)",
+                            "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
                         )}
                     >
                         {children}

@@ -51,6 +51,7 @@ export const GET_BOOK = gql`
             }
             averageRating
             recommendationCount
+            reviewCount
         }
     }
 `;

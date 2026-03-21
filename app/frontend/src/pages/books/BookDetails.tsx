@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import { parseGraphQLError } from "@/utils/graphql-error";
 import BooksByCategory from "@/components/sections/book/BooksByCategory";
-import { RecommendationCount } from "@/components/UI/RecommendationCount";
+import BookStats from "@/components/sections/book/BookStats";
 import BookReviews from "@/components/sections/book/BookReviews";
 
 export default function BookDetails() {
@@ -116,7 +116,7 @@ export default function BookDetails() {
                         className="h-full w-full"
                     />
                 </div>
-                <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-5">
                     <div>
                         <h1 className="text-foreground text-4xl font-bold">
                             {book.title}
@@ -152,14 +152,12 @@ export default function BookDetails() {
                             {book.category.name}
                         </p>
                     </div>
+                    <BookStats book={book} />
                     <SelectBookStatus
                         value={status}
                         onChange={handleStatusChange}
                         disabled={isCreatingUserBook}
                     />
-                    {book.recommendationCount !== undefined && book.recommendationCount > 0 && (
-                        <RecommendationCount count={book.recommendationCount} variant="outline" />
-                    )}
                 </div>
             </div>
             <div className="flex gap-20">
