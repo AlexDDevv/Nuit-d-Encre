@@ -2,9 +2,20 @@ import { Arg, Ctx, Mutation, Query, Resolver, Authorized } from "type-graphql";
 import { LogInResponse, User } from "../../../database/entities/user/user";
 import { CreateUserInput } from "../../inputs/create/user/create-auth-input";
 import { AppError } from "../../../middlewares/error-handler";
-import { login, register, whoami } from "../../../services/auth-service";
+import {
+    login,
+    register,
+    whoami,
+    updateProfile,
+    changePassword,
+    updateAvatar,
+    updateBanner,
+    removeAvatar,
+    removeBanner,
+} from "../../../services/auth-service";
 import { Context, Roles } from "../../../types/types";
 import { LogUserInput } from "../../inputs/create/user/create-auth-input";
+import { UpdateProfileInput } from "../../inputs/update/user/update-profile-input";
 
 /**
  * AuthResolver handles all authentication-related GraphQL mutations and queries.
@@ -24,7 +35,7 @@ export class AuthResolver {
      */
     @Mutation(() => User)
     async register(
-        @Arg("data") data: CreateUserInput // Input object containing email and password
+        @Arg("data") data: CreateUserInput, // Input object containing email and password
     ): Promise<User> {
         try {
             const { email, password, userName } = data;
@@ -49,7 +60,7 @@ export class AuthResolver {
     @Mutation(() => LogInResponse)
     async login(
         @Arg("data") data: LogUserInput, // Input object containing email and password
-        @Ctx() context: Context // Context object containing cookies
+        @Ctx() context: Context, // Context object containing cookies
     ): Promise<LogInResponse> {
         try {
             const { email, password } = data;
@@ -62,7 +73,7 @@ export class AuthResolver {
                 throw new AppError(
                     "Cookies context not available",
                     500,
-                    "InternalServerError"
+                    "InternalServerError",
                 );
             }
 
@@ -125,5 +136,138 @@ export class AuthResolver {
     @Authorized(Roles.Admin)
     async getUsers(): Promise<User[]> {
         return User.find();
+    }
+
+    @Authorized()
+    @Mutation(() => User)
+    async updateProfile(
+        @Arg("data") data: UpdateProfileInput,
+        @Ctx() context: Context,
+    ): Promise<User> {
+        try {
+            const user = context.user;
+
+            if (!user)
+                throw new AppError("User not found", 404, "NotFoundError");
+
+            return await updateProfile(user.id, data);
+        } catch (error) {
+            if (error instanceof AppError) throw error;
+            throw new AppError(
+                "Failed to update profile",
+                500,
+                "InternalServerError",
+            );
+        }
+    }
+
+    @Authorized()
+    @Mutation(() => Boolean)
+    async changePassword(
+        @Arg("currentPassword") currentPassword: string,
+        @Arg("newPassword") newPassword: string,
+        @Ctx() context: Context,
+    ): Promise<boolean> {
+        try {
+            const user = context.user;
+
+            if (!user)
+                throw new AppError("User not found", 404, "NotFoundError");
+
+            return await changePassword(user.id, currentPassword, newPassword);
+        } catch (error) {
+            if (error instanceof AppError) throw error;
+            throw new AppError(
+                "Failed to change password",
+                500,
+                "InternalServerError",
+            );
+        }
+    }
+
+    @Authorized()
+    @Mutation(() => User)
+    async updateAvatar(
+        @Arg("url") url: string,
+        @Ctx() context: Context,
+    ): Promise<User> {
+        try {
+            const user = context.user;
+
+            if (!user)
+                throw new AppError("User not found", 404, "NotFoundError");
+
+            return await updateAvatar(user.id, url);
+        } catch (error) {
+            if (error instanceof AppError) throw error;
+            throw new AppError(
+                "Failed to update avatar",
+                500,
+                "InternalServerError",
+            );
+        }
+    }
+
+    @Authorized()
+    @Mutation(() => User)
+    async updateBanner(
+        @Arg("url") url: string,
+        @Ctx() context: Context,
+    ): Promise<User> {
+        try {
+            const user = context.user;
+
+            if (!user)
+                throw new AppError("User not found", 404, "NotFoundError");
+
+            return await updateBanner(user.id, url);
+        } catch (error) {
+            if (error instanceof AppError) throw error;
+            throw new AppError(
+                "Failed to update banner",
+                500,
+                "InternalServerError",
+            );
+        }
+    }
+
+    @Authorized()
+    @Mutation(() => User)
+    async removeAvatar(@Ctx() context: Context): Promise<User> {
+        try {
+            const user = context.user;
+
+            if (!user)
+                throw new AppError("User not found", 404, "NotFoundError");
+
+            return await removeAvatar(user.id);
+        } catch (error) {
+            if (error instanceof AppError) throw error;
+            throw new AppError(
+                "Failed to remove avatar",
+                500,
+                "InternalServerError",
+            );
+        }
+    }
+
+    @Authorized()
+    @Mutation(() => User)
+    async removeBanner(@Ctx() context: Context): Promise<User> {
+        try {
+            const user = context.user;
+
+            if (!user)
+                throw new AppError("User not found", 404, "NotFoundError");
+
+            return await removeBanner(user.id);
+        } catch (error) {
+            if (error instanceof AppError) throw error;
+            throw new AppError(
+                "Failed to remove banner",
+                500,
+                "InternalServerError",
+            );
+        }
     }
 }

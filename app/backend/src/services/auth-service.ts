@@ -146,3 +146,128 @@ export const whoami = async (cookies: Cookies): Promise<User | null> => {
         throw new AppError("Invalid token", 401, "UnauthorizedError");
     }
 };
+
+export const updateProfile = async (
+    userId: number,
+    data: { userName?: string; bio?: string }
+): Promise<User> => {
+    const userRepository = dataSource.getRepository(User);
+
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+        throw new AppError("User not found", 404, "NotFoundError");
+    }
+
+    if (data.userName && data.userName !== user.userName) {
+        const existing = await userRepository.findOne({
+            where: { userName: data.userName },
+        });
+        if (existing) {
+            throw new AppError(
+                "Ce nom d'utilisateur est déjà pris",
+                409,
+                "ConflictError"
+            );
+        }
+    }
+
+    Object.assign(user, data);
+    await user.save();
+    return user;
+};
+
+export const changePassword = async (
+    userId: number,
+    currentPassword: string,
+    newPassword: string
+): Promise<boolean> => {
+    const userRepository = dataSource.getRepository(User);
+
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) {
+        throw new AppError("User not found", 404, "NotFoundError");
+    }
+
+    const isValid = await argon2.verify(user.hashedPassword, currentPassword);
+
+    if (!isValid) {
+        throw new AppError(
+            "Mot de passe actuel incorrect",
+            401,
+            "UnauthorizedError"
+        );
+    }
+
+    user.hashedPassword = await argon2.hash(newPassword);
+    await user.save();
+    return true;
+};
+
+const isValidHttpsUrl = (url: string): boolean => {
+    try {
+        const parsed = new URL(url);
+        return parsed.protocol === "https:";
+    } catch {
+        return false;
+    }
+};
+
+export const updateAvatar = async (
+    userId: number,
+    url: string
+): Promise<User> => {
+    if (!isValidHttpsUrl(url)) {
+        throw new AppError("Invalid URL", 400, "ValidationError");
+    }
+
+    const userRepository = dataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new AppError("User not found", 404, "NotFoundError");
+
+    user.avatar = url;
+    await user.save();
+    return user;
+};
+
+export const updateBanner = async (
+    userId: number,
+    url: string
+): Promise<User> => {
+    if (!isValidHttpsUrl(url)) {
+        throw new AppError("Invalid URL", 400, "ValidationError");
+    }
+
+    const userRepository = dataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new AppError("User not found", 404, "NotFoundError");
+
+    user.banner = url;
+    await user.save();
+    return user;
+};
+
+export const removeAvatar = async (userId: number): Promise<User> => {
+    const userRepository = dataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new AppError("User not found", 404, "NotFoundError");
+
+    user.avatar = null;
+    await user.save();
+    return user;
+};
+
+export const removeBanner = async (userId: number): Promise<User> => {
+    const userRepository = dataSource.getRepository(User);
+    const user = await userRepository.findOne({ where: { id: userId } });
+
+    if (!user) throw new AppError("User not found", 404, "NotFoundError");
+    
+    user.banner = null;
+    await user.save();
+    return user;
+};
