@@ -64,12 +64,20 @@ export class UserBooksResolver {
     *
     * @throws AppError - If no user books are found or in case of a server error.
     */
+    @Authorized(Roles.User, Roles.Admin)
     @Query(() => UserBooksResult)
     async userBooks(
         @Arg("filters", () => UserBooksQueryInput, { nullable: true })
-        filters: UserBooksQueryInput
+        filters: UserBooksQueryInput,
+        @Ctx() context: Context
     ): Promise<UserBooksResult> {
         try {
+            const user = context.user
+
+            if (!user) {
+                throw new AppError("User not found", 404, "NotFoundError")
+            }
+
             const {
                 status,
                 isPublic,
@@ -81,12 +89,13 @@ export class UserBooksResolver {
                 limit = 12,
             } = filters || {}
 
-            // Retrieve the base query with all user's books created
+            // Retrieve the base query filtered by the authenticated user
             const baseQuery = UserBook.createQueryBuilder("userBook")
                 .leftJoinAndSelect("userBook.user", "user")
                 .leftJoinAndSelect("userBook.book", "book")
                 .leftJoinAndSelect("book.category", "category")
                 .leftJoinAndSelect("book.author", "author")
+                .where("user.id = :userId", { userId: user.id })
 
             // Get the total number of unfiltered books and clone the query to apply filters
             const [totalCountAll, filteredQuery] = await Promise.all([
