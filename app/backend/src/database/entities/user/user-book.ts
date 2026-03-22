@@ -12,7 +12,7 @@
  * Recommendations are managed via the BookRecommendation entity.
  */
 
-import { Field, ID, ObjectType, registerEnumType } from "type-graphql";
+import { Field, ID, Int, ObjectType, registerEnumType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -155,6 +155,26 @@ export class UserBook extends BaseEntity {
   @Field({ nullable: true })
   @Column({ type: "boolean", default: true })
   isPublic!: boolean;
+
+  /**
+   * Indicates whether this book is marked as a favorite
+   * @description
+   * Boolean flag to mark the book as a favorite in the user's library.
+   * Defaults to false.
+   */
+  @Field()
+  @Column({ type: "boolean", default: false })
+  isFavorite!: boolean;
+
+  /**
+   * Ranking of favorite books
+   * @description
+   * Optional numeric rank for ordering favorite books.
+   * Useful for displaying favorites in a specific order.
+   */
+  @Field(() => Int, { nullable: true })
+  @Column({ type: "int", nullable: true })
+  favoriteRank?: number | null;
 
   /**
    * Timestamp when the entry was created
