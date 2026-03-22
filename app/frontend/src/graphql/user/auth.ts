@@ -25,6 +25,18 @@ export const WHOAMI = gql`
             email
             userName
             role
+            level
+            xp
+            avatar
+            banner
+            bio
+            title {
+                id
+                label
+                minLevel
+                iconKey
+                ornamentKey
+            }
         }
     }
 `;

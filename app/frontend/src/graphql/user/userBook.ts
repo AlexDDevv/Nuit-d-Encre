@@ -5,6 +5,8 @@ export const GET_USER_BOOKS = gql`
         userBooks(filters: $filters) {
             userBooks {
                 id
+                isFavorite
+                favoriteRank
                 book {
                     id
                     title
