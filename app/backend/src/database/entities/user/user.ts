@@ -14,6 +14,7 @@ import { UserBook } from "./user-book";
 import { BookReview } from "../book/bookReview";
 import { BookRecommendation } from "../book/bookRecommendation";
 import { BookReviewVote } from "../book/bookReviewVote";
+import { Title } from "../gamification/title";
 
 /**
  * Represents a user entity in the database.
@@ -78,6 +79,22 @@ export class User extends BaseEntity {
     @Field()
     @Column()
     xp!: number;
+
+    @Field({ nullable: true })
+    @Column({ type: "text", nullable: true })
+    avatar?: string | null;
+
+    @Field({ nullable: true })
+    @Column({ type: "text", nullable: true })
+    banner?: string | null;
+
+    @Field({ nullable: true })
+    @Column({ type: "varchar", length: 300, nullable: true })
+    bio?: string | null;
+
+    // Computed via FieldResolver in ProfileResolver — not stored in DB
+    @Field(() => Title, { nullable: true })
+    title?: Title | null;
 
     @Field(() => [UserActions])
     @OneToMany(() => UserActions, (action) => action.user)
