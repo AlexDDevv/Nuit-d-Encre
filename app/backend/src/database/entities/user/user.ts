@@ -80,15 +80,15 @@ export class User extends BaseEntity {
     @Column()
     xp!: number;
 
-    @Field({ nullable: true })
+    @Field(() => String, { nullable: true })
     @Column({ type: "text", nullable: true })
     avatar?: string | null;
 
-    @Field({ nullable: true })
+    @Field(() => String, { nullable: true })
     @Column({ type: "text", nullable: true })
     banner?: string | null;
 
-    @Field({ nullable: true })
+    @Field(() => String, { nullable: true })
     @Column({ type: "varchar", length: 300, nullable: true })
     bio?: string | null;
 

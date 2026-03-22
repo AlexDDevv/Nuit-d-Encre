@@ -25,7 +25,7 @@ export class Title extends BaseEntity {
     @Column({ type: "varchar", length: 100 })
     iconKey!: string;
 
-    @Field({ nullable: true })
+    @Field(() => String, { nullable: true })
     @Column({ type: "varchar", length: 100, nullable: true })
     ornamentKey?: string | null;
 }
