@@ -9,6 +9,7 @@ import { AuthResolver } from "./graphql/resolvers/user/auth-resolver";
 import { customAuthChecker } from "./middlewares/auth-checker";
 import { AppError } from "./middlewares/error-handler";
 import { createAdmin } from "./scripts/create-admin";
+import { seedTitles } from "./scripts/seed-titles";
 import { CategoryResolver } from "./graphql/resolvers/category/category-resolver";
 import { BooksResolver } from "./graphql/resolvers/book/book-resolver";
 import { AuthorsResolver } from "./graphql/resolvers/author/author-resolver";
@@ -17,6 +18,8 @@ import { UserBooksResolver } from "./graphql/resolvers/user/user-books-resolver"
 import { BookReviewsResolver } from "./graphql/resolvers/book/book-review-resolver";
 import { BookReviewVotesResolver } from "./graphql/resolvers/book/book-review-vote-resolver";
 import { BookRecommendationsResolver } from "./graphql/resolvers/book/book-recommendation-resolver";
+import { ProfileResolver } from "./graphql/resolvers/user/profile-resolver";
+import { TitleResolver } from "./graphql/resolvers/gamification/title-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -38,6 +41,9 @@ if (!process.env.APP_PORT) {
         // Create Admin user if doesn't exist
         await createAdmin();
 
+        // Seed titles
+        await seedTitles();
+
         // Constructing the GraphQL schema with TypeGraphQL
         // Replace the resolvers array with your actual resolvers
         const schema = await buildSchema({
@@ -51,6 +57,8 @@ if (!process.env.APP_PORT) {
                 BookReviewsResolver,
                 BookReviewVotesResolver,
                 BookRecommendationsResolver,
+                ProfileResolver,
+                TitleResolver,
                 /* your resolvers here */
             ],
             validate: true, // Activate validation for input fields
