@@ -18,6 +18,12 @@ export interface User {
     role: UserRole;
     created_at: string;
     updated_at: string;
+    level: number;
+    xp: number;
+    avatar: string | null;
+    banner: string | null;
+    bio: string | null;
+    title: Title | null;
 }
 
 export interface LinksType {
@@ -196,6 +202,8 @@ export interface UserBook {
     startedAt?: string;
     finishedAt?: string;
     isPublic?: boolean;
+    isFavorite: boolean;
+    favoriteRank: number | null;
     createdAt: string;
     updatedAt: string;
 }
@@ -299,6 +307,8 @@ export type BookCardLibraryProps = {
     id: string;
     book: Book;
     status: UserBookStatus;
+    isFavorite?: boolean;
+    favoriteRank?: number | null;
     layout: LayoutOptionsValue;
     onStatusChange?: (args: {
         userBookId: string;
@@ -320,6 +330,9 @@ export type UserBookInfoProps = {
     averageRating?: number;
     reviewCount?: number;
     recommendationCount?: number;
+    userBookId?: string;
+    isFavorite?: boolean;
+    favoriteRank?: number | null;
 };
 
 export type LayoutOptions = {
@@ -387,4 +400,25 @@ export interface RecommendationCountProps {
     showIcon?: boolean;
     variant?: "primary" | "secondary" | "muted" | "outline" | "destructive";
     rounded?: boolean;
+}
+
+export interface Title {
+    id: string;
+    label: string;
+    minLevel: number;
+    iconKey: string;
+    ornamentKey: string | null;
+}
+
+export interface FavoriteBookProps {
+    isFavorite: boolean;
+    favoriteRank: number | null;
+}
+
+export interface FavoriteBookModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    userBookId: string;
+    isFavorite: boolean;
+    favoriteRank: number | null;
 }
