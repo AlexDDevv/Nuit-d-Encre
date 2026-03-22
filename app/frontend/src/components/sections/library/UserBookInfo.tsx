@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { UserBookInfoProps } from "@/types/types";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
 import {
@@ -6,13 +7,20 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/UI/Tooltip";
+import Button from "@/components/UI/Button/Button";
+import FavoriteBookModal from "@/components/sections/library/FavoriteBookModal";
 
 export default function UserBookInfo({
     category,
     averageRating,
     reviewCount,
     recommendationCount,
+    userBookId,
+    isFavorite,
+    favoriteRank,
 }: UserBookInfoProps) {
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
+
     return (
         <>
             <p className="text-secondary-foreground">{category}</p>
@@ -51,6 +59,28 @@ export default function UserBookInfo({
                 Recommandé par {recommendationCount ?? 0} lecteur
                 {(recommendationCount ?? 0) > 1 ? "s" : ""}
             </p>
+            {userBookId !== undefined && (
+                <>
+                    <Button
+                        variant="underlineText"
+                        onClick={() => setModalOpen(true)}
+                        ariaLabel={
+                            isFavorite
+                                ? `Livre favori #${favoriteRank} — modifier`
+                                : "Ajouter aux favoris"
+                        }
+                        children={isFavorite ? `Livre favori #${favoriteRank}` : "Ajouter aux favoris"}
+                        className="p-0 h-fit w-fit text-card-foreground"
+                    />
+                    <FavoriteBookModal
+                        isOpen={modalOpen}
+                        onClose={() => setModalOpen(false)}
+                        userBookId={userBookId}
+                        isFavorite={isFavorite ?? false}
+                        favoriteRank={favoriteRank ?? null}
+                    />
+                </>
+            )}
         </>
     );
 }

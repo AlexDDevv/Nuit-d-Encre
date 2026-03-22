@@ -3,11 +3,14 @@ import { cn } from "@/lib/utils";
 import { BookCardLibraryProps, UserBookStatus } from "@/types/types";
 import UserBookInfo from "@/components/sections/library/UserBookInfo";
 import Button from "@/components/UI/Button/Button";
+import FavoriteBook from "@/components/sections/library/FavoriteBook";
 
 export default function BookCardLibrary({
     id,
     book,
     status,
+    isFavorite = false,
+    favoriteRank = null,
     layout,
     onStatusChange,
     isUpdatingUserBook,
@@ -25,12 +28,18 @@ export default function BookCardLibrary({
     return (
         <article
             className={cn(
-                "border-border bg-card w-lg flex rounded-xl border-2 p-8",
+                "relative border-border bg-card w-lg flex rounded-xl border-2 p-8",
                 layout === "grid"
                     ? "w-lg flex-col gap-8"
                     : "w-full flex-row items-center justify-between gap-10",
             )}
         >
+            <div className="absolute right-3 top-3">
+                <FavoriteBook
+                    isFavorite={isFavorite}
+                    favoriteRank={favoriteRank}
+                />
+            </div>
             <div className="flex gap-8">
                 <div className="w-32 shrink-0">
                     <img
@@ -53,7 +62,7 @@ export default function BookCardLibrary({
                             {book.author.firstname} {book.author.lastname}
                         </p>
                     </header>
-                    <ul className="text-secondary-foreground flex flex-col gap-1">
+                    <ul className="text-secondary-foreground flex flex-col">
                         <li>Année de publication : {book.publishedYear}</li>
                         <li>{book.publisher}</li>
                         <li>Nombre de page : {book.pageCount}</li>
@@ -63,12 +72,15 @@ export default function BookCardLibrary({
 
             {layout === "grid" ? (
                 <>
-                    <div className="flex flex-col gap-5">
+                    <div className="flex flex-col gap-1">
                         <UserBookInfo
                             category={book.category.name}
                             averageRating={book.averageRating}
                             reviewCount={book.reviewCount}
                             recommendationCount={book.recommendationCount}
+                            userBookId={id}
+                            isFavorite={isFavorite}
+                            favoriteRank={favoriteRank}
                         />
                     </div>
                     <div className="flex items-center justify-between gap-5">
@@ -84,25 +96,37 @@ export default function BookCardLibrary({
                             loading={isDeletingUserBook}
                             children="Supprimer"
                             variant="destructive"
-                            size="sm"
                         />
                     </div>
                 </>
             ) : (
-                <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-5">
-                    <div className="flex flex-row items-center justify-center gap-10">
+                <div className="flex flex-wrap items-center justify-end gap-x-10 gap-y-5">
+                    <div className="flex items-center justify-center gap-10">
                         <UserBookInfo
                             category={book.category.name}
                             averageRating={book.averageRating}
                             reviewCount={book.reviewCount}
                             recommendationCount={book.recommendationCount}
+                            userBookId={id}
+                            isFavorite={isFavorite}
+                            favoriteRank={favoriteRank}
                         />
                     </div>
-                    <SelectBookStatus
-                        value={status}
-                        onChange={onStatusChange ? handleChange : undefined}
-                        disabled={isUpdatingUserBook}
-                    />
+                    <div className="flex items-center justify-end gap-5">
+                        <SelectBookStatus
+                            value={status}
+                            onChange={onStatusChange ? handleChange : undefined}
+                            disabled={isUpdatingUserBook}
+                        />
+                        <Button
+                            ariaLabel="Supprimer ce livre de votre bibliothèque personnelle"
+                            role="button"
+                            onClick={() => handleDeleteUserBook?.(id)}
+                            loading={isDeletingUserBook}
+                            children="Supprimer"
+                            variant="destructive"
+                        />
+                    </div>
                 </div>
             )}
         </article>

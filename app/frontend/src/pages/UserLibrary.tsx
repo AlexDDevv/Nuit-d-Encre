@@ -130,6 +130,8 @@ export default function UserLibrary() {
                             id={userBook.id}
                             book={userBook.book}
                             status={userBook.status}
+                            isFavorite={userBook.isFavorite}
+                            favoriteRank={userBook.favoriteRank}
                             layout={layout}
                             onStatusChange={handleStatusBookChange}
                             isUpdatingUserBook={isUpdatingUserBook}
