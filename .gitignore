@@ -60,3 +60,7 @@ yarn-error.log*
 .cache/
 *.pyc
 __pycache__/
+
+# Documentation
+docs/
+*.md

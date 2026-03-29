@@ -22,7 +22,6 @@ import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleto
  * Lazy loaded page components
  * These components are loaded only when needed, improving initial load time
  */
-const Landing = lazy(() => import("@/pages/Landing"));
 const Auth = lazy(() => import("@/pages/Auth"));
 const BookDetails = lazy(() => import("@/pages/books/BookDetails"));
 const BookScribe = lazy(() => import("@/pages/books/BookScribe"));
@@ -50,16 +49,6 @@ const router = createBrowserRouter([
         errorElement: <ErrorElement />,
         children: [
             {
-                index: true,
-                element: (
-                    <Suspense fallback={<Loader />}>
-                        <PublicRoute>
-                            <Landing />
-                        </PublicRoute>
-                    </Suspense>
-                ),
-            },
-            {
                 path: "register",
                 element: (
                     <Suspense fallback={<Loader />}>
@@ -80,6 +69,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
+                index: true,
                 path: "books",
                 element: (
                     <Suspense fallback={<BookPageSkeleton />}>

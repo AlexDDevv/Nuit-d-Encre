@@ -13,7 +13,6 @@ html body[data-scroll-locked] {
 body {
     background-color: var(--color-background);
     font-family: var(--font-body);
-    padding: 1.5rem !important;
     position: relative;
 }
 

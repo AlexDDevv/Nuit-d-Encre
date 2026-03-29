@@ -3,7 +3,7 @@ import { Skeleton } from "./Skeleton";
 
 export default function BookPageSkeleton() {
     return (
-        <section className="flex min-h-[calc(100vh_-_var(--header-height))] flex-col items-center justify-center gap-20">
+        <section className="flex min-h-dvh flex-col items-center justify-center gap-20">
             <div className="flex flex-col items-center justify-center gap-10">
                 <Skeleton className="w-xs h-10 rounded-lg" />
                 <div className="flex items-center justify-center gap-5">

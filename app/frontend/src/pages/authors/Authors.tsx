@@ -48,7 +48,7 @@ export default function Authors() {
                     content="Page des auteurs enregistrés sur le site Nuit d'Encre."
                 />
             </Helmet>
-            <section className="flex min-h-[calc(100vh_-_var(--header-height))] flex-col items-center justify-center gap-20">
+            <section className="flex min-h-dvh flex-col items-center justify-center gap-20">
                 <div className="flex flex-col items-center justify-center gap-10">
                     <h1 className="text-foreground text-4xl font-bold">
                         Rechercher un auteur

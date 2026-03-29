@@ -1,17 +1,17 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
-import Footer from "@/components/sections/footer/Footer";
-import Header from "@/components/sections/header/Header";
+import Sidebar from "@/components/sections/sidebar/Sidebar";
 
 function App() {
     return (
         <>
             <Toaster richColors position="bottom-center" closeButton />
-            <Header />
-            <main className="my-20 flex flex-col gap-20 px-10">
-                <Outlet />
-            </main>
-            <Footer />
+            <div className="flex min-h-screen">
+                <Sidebar />
+                <main className="flex flex-1 flex-col gap-20 p-10">
+                    <Outlet />
+                </main>
+            </div>
         </>
     );
 }
