@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { LuBookOpenCheck, LuAward } from "react-icons/lu";
 import { GET_USER_FAVORITE_BOOKS } from "@/graphql/user/profile";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
-import { slugify } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import Button from "@/components/UI/Button";
 import SidebarFavoritesSkeleton from "@/components/UI/skeleton/SidebarFavoritesSkeleton";
 
@@ -58,14 +58,24 @@ export default function SidebarFavorites({
         (a, b) => a.favoriteRank - b.favoriteRank,
     );
 
+    const labelClasses = cn(
+        "whitespace-nowrap transition-opacity",
+        collapsed
+            ? "opacity-0 duration-150"
+            : "opacity-100 duration-200 delay-150"
+    );
+
     return (
         <section aria-label="Livres favoris" className="flex flex-col gap-2 p-4 pb-0">
-            {!collapsed && (
-                <h2 className="text-popover-foreground flex items-center gap-3 text-sm font-medium">
-                    <LuBookOpenCheck className="shrink-0" />
-                    <span>Vos livres favoris</span>
-                </h2>
-            )}
+            <h2 className={cn(
+                "text-popover-foreground flex items-center gap-3 text-sm font-medium overflow-hidden",
+                collapsed
+                    ? "h-5 opacity-0 transition-all duration-150"
+                    : "h-5 opacity-100 transition-all duration-200 delay-150"
+            )}>
+                <LuBookOpenCheck className="shrink-0" />
+                <span>Vos livres favoris</span>
+            </h2>
             <ol className="flex flex-col gap-1">
                 {sortedFavorites.map((fav) => (
                     <li key={fav.id}>
@@ -76,10 +86,10 @@ export default function SidebarFavorites({
                             ariaLabel={`Voir le livre ${fav.book.title}`}
                             title={fav.book.title}
                             leftIcon={<LuAward className="shrink-0" />}
-                            children={!collapsed && (
-                                <span className="truncate">{fav.book.title}</span>
-                            )}
-                        />
+                            className={cn(collapsed && "justify-center h-10 w-full rounded-md [&>span:first-child]:mr-0")}
+                        >
+                            <span className={cn(labelClasses, "truncate")}>{fav.book.title}</span>
+                        </Button>
                     </li>
                 ))}
             </ol>

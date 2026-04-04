@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { FiPlus } from "react-icons/fi";
 import Button from "@/components/UI/Button";
+import { cn } from "@/lib/utils";
 
 export default function SidebarActionButton({
     collapsed,
@@ -15,14 +16,23 @@ export default function SidebarActionButton({
         : "Enregistrer un livre";
 
     return (
-        <div className="p-4 border-b border-border">
+        <div className="border-b border-border p-4">
             <Button
                 to={href}
                 title={collapsed ? label : undefined}
-                aria-label={label}
-                children={collapsed ? <FiPlus /> : <span>{label}</span>}
                 fullWidth
-            />
+                leftIcon={<FiPlus className="shrink-0" />}
+                className={cn(collapsed && "justify-center w-full h-10 rounded-md [&>span:first-child]:mr-0")}
+            >
+                <span className={cn(
+                    "whitespace-nowrap transition-opacity",
+                    collapsed
+                        ? "opacity-0 duration-150"
+                        : "opacity-100 duration-200 delay-150"
+                )}>
+                    {label}
+                </span>
+            </Button>
         </div>
     );
 }

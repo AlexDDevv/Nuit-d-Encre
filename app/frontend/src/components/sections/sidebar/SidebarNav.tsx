@@ -1,4 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import Button from "@/components/UI/Button";
 import {
     LuBookOpenText,
@@ -105,6 +106,13 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
             },
         ];
 
+    const labelClasses = cn(
+        "whitespace-nowrap transition-opacity",
+        collapsed
+            ? "opacity-0 duration-150"
+            : "opacity-100 duration-200 delay-150"
+    );
+
     const renderLink = (link: SidebarLink) => {
         const Icon = link.icon;
         const active = isActive(link.href);
@@ -120,8 +128,10 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
                     title={collapsed ? link.label : undefined}
                     aria-current={active ? "page" : undefined}
                     leftIcon={<Icon className="shrink-0" />}
-                    children={!collapsed && link.label}
-                />
+                    className={cn(collapsed && "justify-center w-full h-10 rounded-md [&>span:first-child]:mr-0")}
+                >
+                    <span className={labelClasses}>{link.label}</span>
+                </Button>
             </li>
         );
     };
@@ -142,8 +152,10 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
                             ariaLabel="Se déconnecter de Nuit d'Encre"
                             title={collapsed ? "Se déconnecter" : undefined}
                             leftIcon={<LuLogOut className="shrink-0" />}
-                            children={!collapsed && "Se déconnecter"}
-                        />
+                            className={cn(collapsed && "justify-center w-full h-10 rounded-md [&>span:first-child]:mr-0")}
+                        >
+                            <span className={labelClasses}>Se déconnecter</span>
+                        </Button>
                     </li>
                 )}
             </ul>

@@ -81,10 +81,10 @@ export default function Sidebar() {
                     aria-label="Navigation principale"
                     onKeyDown={handleKeyDown}
                     className={cn(
-                        "bg-card border-border flex flex-col border-r transition-all duration-300",
+                        "bg-card border-border flex flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
                         overlayOpen
                             ? "fixed inset-y-0 left-0 z-50 w-64 shadow-lg"
-                            : "sticky top-0 h-screen w-16",
+                            : "sticky top-0 h-screen w-18",
                     )}
                 >
                     {sidebarContent}
@@ -117,8 +117,8 @@ export default function Sidebar() {
         <aside
             aria-label="Navigation principale"
             className={cn(
-                "bg-card border-border sticky top-0 flex h-screen flex-col border-r transition-all duration-300",
-                collapsed ? "w-16" : "w-64",
+                "bg-card border-border sticky top-0 flex h-screen flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
+                collapsed ? "w-18" : "w-64",
             )}
         >
             {sidebarContent}
