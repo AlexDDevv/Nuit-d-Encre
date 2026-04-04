@@ -1,74 +1,50 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Button from "@/components/UI/Button";
 import {
-    LuBook,
-    LuFeather,
-    LuBookOpen,
-    LuMail,
-    LuInfo,
-    LuCircle,
-    LuFileText,
+    LuBookOpenText,
+    LuLibraryBig,
+    LuMessageCircleQuestion,
     LuUserPlus,
     LuLogIn,
     LuUser,
     LuLogOut,
     LuShield,
 } from "react-icons/lu";
+import { FaFeatherPointed } from "react-icons/fa6";
+import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
-import { cn } from "@/lib/utils";
-import { IconType } from "react-icons";
-
-interface SidebarLink {
-    href: string;
-    label: string;
-    icon: IconType;
-    ariaLabel: string;
-}
+import { SidebarLink } from "@/types/types";
 
 const MAIN_LINKS: SidebarLink[] = [
     {
         href: "/books",
         label: "Livres",
-        icon: LuBook,
+        icon: LuBookOpenText,
         ariaLabel: "Rechercher un livre",
     },
     {
         href: "/authors",
         label: "Auteurs",
-        icon: LuFeather,
+        icon: FaFeatherPointed,
         ariaLabel: "Rechercher un auteur",
     },
     {
         href: "/library",
         label: "Bibliothèque",
-        icon: LuBookOpen,
+        icon: LuLibraryBig,
         ariaLabel: "Accéder à sa bibliothèque",
-    },
-];
-
-const SECONDARY_LINKS: SidebarLink[] = [
-    {
-        href: "/contact",
-        label: "Contact",
-        icon: LuMail,
-        ariaLabel: "Nous contacter",
     },
     {
         href: "/about",
         label: "À propos",
-        icon: LuInfo,
+        icon: LuMessageCircleQuestion,
         ariaLabel: "À propos de Nuit d'Encre",
-    },
-    {
-        href: "/support",
-        label: "Support",
-        icon: LuCircle,
-        ariaLabel: "Contacter le support",
     },
     {
         href: "/terms-of-use",
         label: "Mentions légales",
-        icon: LuFileText,
+        icon: LiaBalanceScaleSolid,
         ariaLabel: "Mentions légales de Nuit d'Encre",
     },
 ];
@@ -97,24 +73,23 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
     };
 
     const authLinks: SidebarLink[] = user
-        ? [
-            {
-                href: "/profil",
-                label: "Profil",
-                icon: LuUser,
-                ariaLabel: "Accéder à son profil",
-            },
-            ...(user.role === "admin"
-                ? [
-                    {
-                        href: "/admin",
-                        label: "Admin",
-                        icon: LuShield,
-                        ariaLabel: "Accéder au panel admin",
-                    },
-                ]
-                : []),
-        ]
+        ? user.role === "admin"
+            ? [
+                {
+                    href: "/admin",
+                    label: "Admin",
+                    icon: LuShield,
+                    ariaLabel: "Accéder au panel admin",
+                },
+            ]
+            : [
+                {
+                    href: "/profil",
+                    label: "Profil",
+                    icon: LuUser,
+                    ariaLabel: "Accéder à son profil",
+                },
+            ]
         : [
             {
                 href: `/register?redirect=${encodeURIComponent(pathname)}`,
@@ -136,52 +111,39 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
 
         return (
             <li key={link.href}>
-                <Link
+                <Button
+                    variant="nav"
                     to={link.href}
-                    className={cn(
-                        "flex items-center gap-3 rounded-md px-2 py-1.5 text-sm transition-colors duration-200",
-                        active
-                            ? "bg-accent text-foreground font-medium"
-                            : "text-muted-foreground hover:bg-accent hover:text-foreground",
-                    )}
-                    aria-current={active ? "page" : undefined}
-                    aria-label={link.ariaLabel}
+                    fullWidth
+                    isNavBtnSelected={active}
+                    ariaLabel={link.ariaLabel}
                     title={collapsed ? link.label : undefined}
-                >
-                    <Icon className="h-5 w-5 shrink-0" />
-                    {!collapsed && <span>{link.label}</span>}
-                </Link>
+                    aria-current={active ? "page" : undefined}
+                    leftIcon={<Icon className="shrink-0" />}
+                    children={!collapsed && link.label}
+                />
             </li>
         );
     };
 
     return (
-        <nav aria-label="Navigation principale" className="flex flex-1 flex-col gap-4">
+        <nav aria-label="Navigation principale" className="flex flex-1 flex-col gap-1 p-4">
             <ul className="flex flex-col gap-1">
                 {MAIN_LINKS.map(renderLink)}
             </ul>
-
-            <hr className="border-border" />
-
-            <ul className="flex flex-col gap-1">
-                {SECONDARY_LINKS.map(renderLink)}
-            </ul>
-
-            <hr className="border-border" />
-
             <ul className="flex flex-col gap-1">
                 {authLinks.map(renderLink)}
                 {user && (
                     <li>
-                        <button
+                        <Button
+                            variant="nav"
+                            fullWidth
                             onClick={onSignOut}
-                            className="text-muted-foreground hover:bg-accent hover:text-foreground flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm transition-colors duration-200"
+                            ariaLabel="Se déconnecter de Nuit d'Encre"
                             title={collapsed ? "Se déconnecter" : undefined}
-                            aria-label="Se déconnecter de Nuit d'Encre"
-                        >
-                            <LuLogOut className="h-5 w-5 shrink-0" />
-                            {!collapsed && <span>Se déconnecter</span>}
-                        </button>
+                            leftIcon={<LuLogOut className="shrink-0" />}
+                            children={!collapsed && "Se déconnecter"}
+                        />
                     </li>
                 )}
             </ul>

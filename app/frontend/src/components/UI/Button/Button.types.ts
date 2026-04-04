@@ -13,7 +13,9 @@ export type ButtonVariant =
     | "underlineText"
     | "nav"
     | "layout"
-    | "ghost";
+    | "ghost"
+    | "social"
+    | "hamburger";
 
 export type ButtonSize =
     | "xxs"
@@ -77,6 +79,11 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
      * Route vers laquelle naviguer — rend le bouton comme un lien react-router
      */
     to?: string;
+
+    /**
+     * Catégorie du lien pour le tracking analytics (data-category)
+     */
+    category?: string;
 
     /**
      * Fonction de clic sur le bouton

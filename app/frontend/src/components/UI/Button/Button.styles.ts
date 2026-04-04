@@ -30,9 +30,12 @@ export const variantClasses: Record<ButtonVariant, string> = {
         "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer hover:border-b rounded-none border-foreground font-[Switzer-SemiBold]",
     destructive:
         "justify-center rounded-lg bg-button-destructive-bg text-button-destructive-fg border-2 border-transparent hover:bg-transparent hover:text-button-destructive-bg hover:border-button-destructive-bg focus-visible:ring-destructive active:bg-button-destructive-bg font-[Switzer-SemiBold]",
-    nav: "justify-center bg-transparent border-none text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:ring-primary rounded-lg font-[Switzer-regular]",
+    nav: "justify-start bg-transparent border-none text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-primary rounded-md px-2 py-1.5 text-sm font-[Switzer-regular]",
     layout: "bg-transparent border-none text-accent-foreground [&_svg]:h-7 [&_svg]:w-7 transition-all hover:scale-105 hover:text-foreground focus-visible:ring-primary",
     ghost: "bg-transparent border-none text-primary hover:underline focus:ring-primary disabled:bg-transparent",
+    social: "justify-center rounded-sm border border-popover-foreground/50 text-popover-foreground/50 hover:text-popover-foreground hover:border-popover-foreground w-10",
+    hamburger:
+        "justify-center bg-card border-border text-card-foreground fixed top-5 left-5 z-50 rounded-md border p-2 shadow-md w-10",
 };
 
 export const IconClasses: Record<ButtonVariant, string> = {
@@ -49,6 +52,8 @@ export const IconClasses: Record<ButtonVariant, string> = {
     nav: "",
     layout: "",
     ghost: "",
+    social: "",
+    hamburger: "",
 };
 
 /**

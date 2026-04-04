@@ -43,6 +43,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
             isNavBtnSelected = false,
             ariaLabel,
             to,
+            category,
             leftIcon,
             icon,
             rightIcon,
@@ -58,7 +59,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
             variantClasses[variant],
             sizeClasses[size],
             fullWidth ? 'w-full' : '',
-            isNavBtnSelected && 'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground',
+            isNavBtnSelected && 'bg-accent text-foreground font-medium hover:bg-accent',
             className,
         )
 
@@ -68,10 +69,10 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                     <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent mr-2" />
                 )}
 
-                {!loading && leftIcon && <span className="mr-2">{leftIcon}</span>}
+                {!loading && leftIcon && <span className="mr-3">{leftIcon}</span>}
 
                 <div
-                    className={cn(variant === 'checkable' && 'w-4/6 flex justify-start')}
+                    className={cn('min-w-0 overflow-hidden', variant === 'checkable' && 'w-4/6 flex justify-start')}
                 >
                     {!loading && icon && (
                         <span className={cn(IconClasses[variant], className)}>
@@ -85,7 +86,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                     <span
                         onClick={handleCheck}
                         className={cn(
-                            'ml-2',
+                            'ml-3',
                             checkedRightIcon && 'text-muted-foreground hover:text-foreground',
                             isChecked && 'text-foreground',
                         )}
@@ -97,13 +98,27 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
         )
 
         if (to) {
+            const isExternal = to.startsWith('http')
+
+            if (isExternal && !to.startsWith('https://')) {
+                console.warn('Warning: Non-HTTPS external link detected')
+            }
+
+            const finalAriaLabel = isExternal && ariaLabel
+                ? `${ariaLabel} (s'ouvre dans un nouvel onglet)`
+                : ariaLabel
+
             return (
                 <Link
                     to={to}
                     ref={ref as Ref<HTMLAnchorElement>}
-                    aria-label={ariaLabel}
+                    aria-label={finalAriaLabel}
                     className={classNameContent}
+                    rel={isExternal ? 'noopener noreferrer' : undefined}
+                    target={isExternal ? '_blank' : undefined}
+                    data-category={category}
                     onClick={onClick as unknown as React.MouseEventHandler<HTMLAnchorElement>}
+                    {...(props as React.HTMLAttributes<HTMLAnchorElement>)}
                 >
                     {childrenContent}
                 </Link>

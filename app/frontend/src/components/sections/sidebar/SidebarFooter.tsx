@@ -1,12 +1,7 @@
-import { Link } from "react-router-dom";
 import { LuGithub, LuTwitter, LuLinkedin } from "react-icons/lu";
-import { IconType } from "react-icons";
-
-interface SocialLink {
-    icon: IconType;
-    url: string;
-    label: string;
-}
+import { SidebarFooterProps, SocialLink } from "@/types/types";
+import { cn } from "@/lib/utils";
+import Button from "@/components/UI/Button";
 
 const SOCIAL_LINKS: SocialLink[] = [
     {
@@ -26,37 +21,32 @@ const SOCIAL_LINKS: SocialLink[] = [
     },
 ];
 
-interface SidebarFooterProps {
-    collapsed: boolean;
-}
-
-export default function SidebarFooter({ collapsed }: SidebarFooterProps) {
+export default function SidebarFooter({ collapsed, isAuthenticated }: SidebarFooterProps) {
     return (
-        <footer className="flex flex-col gap-3">
-            {!collapsed && (
+        <footer className={cn("flex flex-col", !isAuthenticated && "gap-3 p-4 border-t border-border")}>
+            {!collapsed && !isAuthenticated && (
                 <small className="text-muted-foreground text-xs">
-                    &copy; 2025 - Alexis Delporte
+                    &copy; 2026 - Alexis Delporte
                 </small>
             )}
-            <ul
-                className={`flex items-center gap-2 ${collapsed ? "flex-col" : ""}`}
-                aria-label="Réseaux sociaux"
-            >
-                {SOCIAL_LINKS.map(({ icon: Icon, url, label }) => (
-                    <li key={label}>
-                        <Link
-                            to={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-muted-foreground hover:text-foreground border-border flex items-center justify-center rounded-sm border p-1.5 transition-colors duration-200"
-                            aria-label={`Profil ${label}`}
-                            title={label}
-                        >
-                            <Icon className="h-4 w-4" />
-                        </Link>
-                    </li>
-                ))}
-            </ul>
+            {!isAuthenticated && (
+                <ul
+                    className={`flex items-center gap-2 ${collapsed ? "flex-col" : ""}`}
+                    aria-label="Réseaux sociaux"
+                >
+                    {SOCIAL_LINKS.map(({ icon: Icon, url, label }) => (
+                        <li key={label}>
+                            <Button
+                                variant="social"
+                                to={url}
+                                ariaLabel={`Profil ${label}`}
+                                title={label}
+                                children={<Icon />}
+                            />
+                        </li>
+                    ))}
+                </ul>
+            )}
         </footer>
     );
 }

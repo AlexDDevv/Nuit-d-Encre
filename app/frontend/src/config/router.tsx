@@ -11,7 +11,7 @@ import Books from "@/pages/books/Books";
 import ErrorElement from "@/components/UI/ErrorElement";
 import Loader from "@/components/UI/Loader";
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
@@ -48,6 +48,10 @@ const router = createBrowserRouter([
         element: <App />,
         errorElement: <ErrorElement />,
         children: [
+            {
+                index: true,
+                element: <Navigate to="/books" replace />,
+            },
             {
                 path: "register",
                 element: (

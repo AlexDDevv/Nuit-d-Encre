@@ -3,15 +3,17 @@ import { LuMenu } from "react-icons/lu";
 import { useLocalStorage } from "@/hooks/storage/useLocalStorage";
 import { useMediaQuery } from "@/hooks/responsive/useMediaQuery";
 import { cn } from "@/lib/utils";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import SidebarHeader from "./SidebarHeader";
-import SidebarWelcome from "./SidebarWelcome";
 import SidebarFavorites from "./SidebarFavorites";
 import SidebarActionButton from "./SidebarActionButton";
 import SidebarNav from "./SidebarNav";
 import SidebarFooter from "./SidebarFooter";
 import SidebarOverlay from "./SidebarOverlay";
+import Button from "@/components/UI/Button";
 
 export default function Sidebar() {
+    const { user } = useAuthContext();
     const [collapsed, setCollapsed] = useLocalStorage("sidebar-collapsed", false);
     const [overlayOpen, setOverlayOpen] = useState(false);
     const isMobile = useMediaQuery("(max-width: 767px)");
@@ -44,13 +46,13 @@ export default function Sidebar() {
     // Mobile: hamburger button only, sidebar hidden
     if (isMobile && !overlayOpen) {
         return (
-            <button
+            <Button
+                variant="hamburger"
                 onClick={handleToggle}
-                className="bg-card border-border text-card-foreground fixed top-6 left-6 z-50 rounded-md border p-2 shadow-md"
-                aria-label="Ouvrir la navigation"
-            >
-                <LuMenu className="h-5 w-5" />
-            </button>
+                ariaLabel="Ouvrir la navigation"
+                icon={<LuMenu />}
+                className="p-2"
+            />
         );
     }
 
@@ -60,18 +62,10 @@ export default function Sidebar() {
                 collapsed={isEffectivelyCollapsed}
                 onToggle={handleToggle}
             />
-
-            <hr className="border-border" />
-
-            <SidebarWelcome collapsed={isEffectivelyCollapsed} />
-
             <SidebarFavorites collapsed={isEffectivelyCollapsed} />
-
             <SidebarActionButton collapsed={isEffectivelyCollapsed} />
-
             <SidebarNav collapsed={isEffectivelyCollapsed} />
-
-            <SidebarFooter collapsed={isEffectivelyCollapsed} />
+            <SidebarFooter collapsed={isEffectivelyCollapsed} isAuthenticated={!!user} />
         </>
     );
 
@@ -87,7 +81,7 @@ export default function Sidebar() {
                     aria-label="Navigation principale"
                     onKeyDown={handleKeyDown}
                     className={cn(
-                        "bg-card border-border flex flex-col gap-4 border-r p-4 transition-all duration-300",
+                        "bg-card border-border flex flex-col border-r transition-all duration-300",
                         overlayOpen
                             ? "fixed inset-y-0 left-0 z-50 w-64 shadow-lg"
                             : "sticky top-0 h-screen w-16",
@@ -110,7 +104,7 @@ export default function Sidebar() {
                 <aside
                     aria-label="Navigation principale"
                     onKeyDown={handleKeyDown}
-                    className="bg-card fixed inset-y-0 left-0 z-50 flex w-64 flex-col gap-4 p-4 shadow-lg transition-transform duration-300"
+                    className="bg-card fixed inset-y-0 left-0 z-50 flex w-64 flex-col shadow-lg transition-transform duration-300"
                 >
                     {sidebarContent}
                 </aside>
@@ -123,7 +117,7 @@ export default function Sidebar() {
         <aside
             aria-label="Navigation principale"
             className={cn(
-                "bg-card border-border sticky top-0 flex h-screen flex-col gap-4 border-r p-4 transition-all duration-300",
+                "bg-card border-border sticky top-0 flex h-screen flex-col border-r transition-all duration-300",
                 collapsed ? "w-16" : "w-64",
             )}
         >

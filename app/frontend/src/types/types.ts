@@ -2,6 +2,7 @@ import { LucideIcon } from "lucide-react";
 import { UserRole } from "./../../../backend/src/types/types";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { ReactNode } from "react";
+import { IconType } from "react-icons";
 
 export type AuthContextProps = {
     user: User | null;
@@ -421,4 +422,31 @@ export interface FavoriteBookModalProps {
     userBookId: string;
     isFavorite: boolean;
     favoriteRank: number | null;
+}
+
+export interface SidebarLink {
+    href: string;
+    label: string;
+    icon: IconType;
+    ariaLabel: string;
+}
+
+export interface SidebarHeaderProps {
+    collapsed: boolean;
+    onToggle: () => void;
+}
+
+export interface LogoProps {
+    to: string;
+}
+
+export interface SocialLink {
+    icon: IconType;
+    url: string;
+    label: string;
+}
+
+export interface SidebarFooterProps {
+    collapsed: boolean;
+    isAuthenticated: boolean;
 }
