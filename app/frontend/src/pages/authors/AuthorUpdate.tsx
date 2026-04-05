@@ -1,5 +1,5 @@
 import AuthorForm from "@/components/sections/author/AuthorForm";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export default function AuthorUpdate() {
     return (

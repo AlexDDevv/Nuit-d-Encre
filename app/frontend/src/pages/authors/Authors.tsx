@@ -5,7 +5,7 @@ import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
 import { useAuthorsData } from "@/hooks/author/useAuthorsData";
 import { hasIncompleteInfo } from "@/lib/utils";
 import { AuthorCardProps } from "@/types/types";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export default function Authors() {
     const {

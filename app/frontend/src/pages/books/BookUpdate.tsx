@@ -1,5 +1,5 @@
 import BookForm from "@/components/sections/book/BookForm";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 export default function BookUpdate() {
     return (

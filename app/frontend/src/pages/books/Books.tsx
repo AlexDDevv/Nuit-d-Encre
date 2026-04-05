@@ -4,7 +4,7 @@ import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/sections/book/SelectCategory";
 import { useBooksData } from "@/hooks/book/useBooksData";
 import { BookCardProps } from "@/types/types";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 
 export default function Books() {
