@@ -2,11 +2,14 @@ FROM node:23-alpine3.21
 
 WORKDIR /app
 
+# Enable pnpm via corepack (built into Node.js)
+RUN corepack enable pnpm
+
 # COPY only necessary files
 COPY package.json ./
 
 # Install dependencies
-RUN npm install
+RUN pnpm install
 
 # COPY tsconfig files
 COPY tsconfig.json tsconfig.app.json tsconfig.node.json ./
@@ -24,4 +27,4 @@ COPY src ./src
 # Expose port
 EXPOSE 5173
 
-CMD ["npm", "run", "dev", "--host"]
+CMD ["pnpm", "run", "dev", "--host"]

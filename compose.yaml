@@ -11,7 +11,7 @@ services:
             - ./app/frontend/src:/app/src
             - ./app/frontend/public:/app/public
             - ./app/frontend/vite.config.ts:/app/vite.config.ts
-        command: ["npm", "run", "dev", "--host"]   
+        command: ["pnpm", "run", "dev", "--host"]   
         networks:
             - frontend_network # To be configured if a specific network is required 
 
@@ -30,7 +30,7 @@ services:
             - ./app/backend/.env # Loads environment variables from a file
         volumes:
             - ./app/backend/src:/app/src
-        command: ["npm", "start"] # Start the Express.js server (hot reload enabled with nodemon if configured)
+        command: ["pnpm", "start"] # Start the Express.js server (hot reload enabled with nodemon if configured)
         depends_on:
             db:
                 condition: service_healthy
