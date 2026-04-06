@@ -88,3 +88,18 @@ export interface GoogleBooksVolume {
 export interface GoogleBooksResponse {
     items?: GoogleBooksVolume[];
 }
+
+export interface OpenLibraryWork {
+    title: string;
+    author_name?: string[];
+    isbn?: string[];
+    publisher?: string[];
+    first_publish_year?: number;
+    language?: string[];
+    number_of_pages_median?: number;
+}
+
+export interface OpenLibrarySearchResponse {
+    numFound: number;
+    docs: OpenLibraryWork[];
+}
