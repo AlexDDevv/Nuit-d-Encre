@@ -133,6 +133,30 @@ export type BookCardProps = {
     isInAuthorPage?: boolean;
 };
 
+export interface BookSearchResult {
+    id?: string;
+    title: string;
+    author?: string;
+    isbn13?: string;
+    year?: number;
+    publisher?: string;
+    language?: string;
+    coverUrl?: string;
+    isInDatabase: boolean;
+    source?: "open_library" | "google_books";
+}
+
+export interface BookSearchResultsProps {
+    dbResults: BookSearchResult[];
+    externalResults: BookSearchResult[];
+    isSearching: boolean;
+}
+
+export interface BookSearchResultCardProps {
+    result: BookSearchResult;
+    className?: string;
+}
+
 export interface Book {
     id: string;
     title: string;
@@ -146,6 +170,7 @@ export interface Book {
     category: CategoryBook;
     isbn10?: string;
     isbn13: string;
+    coverUrl?: string;
     user: User;
     averageRating?: number;
     reviewCount?: number;
