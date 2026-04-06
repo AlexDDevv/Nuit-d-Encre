@@ -200,6 +200,15 @@ export class Book extends BaseEntity {
     coverUrl?: string;
 
     /**
+     * Imported flag
+     * @description
+     * True if the book was imported from an external source (Open Library or Google Books).
+     */
+    @Field()
+    @Column({ default: false })
+    isImported!: boolean;
+
+    /**
      * The user who added the book
      * @description
      * Many-to-one relationship with the User entity.

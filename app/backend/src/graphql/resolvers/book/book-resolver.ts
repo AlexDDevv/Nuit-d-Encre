@@ -35,6 +35,16 @@ import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
 import { BookReview } from "../../../database/entities/book/bookReview"
 import { BookRecommendation } from "../../../database/entities/book/bookRecommendation"
 
+const IMPORTED_SUMMARY_PLACEHOLDER = "Importé depuis une source externe.";
+
+function isImportedBookIncomplete(book: Book): boolean {
+    return (
+        book.summary === IMPORTED_SUMMARY_PLACEHOLDER ||
+        book.pageCount === 0 ||
+        book.category.name === "Autre"
+    );
+}
+
 /**
  * Book Resolver
  * @description
@@ -337,9 +347,18 @@ export class BooksResolver {
                 book.author = authorEntity;
             }
 
+            const wasIncomplete = book.isImported && isImportedBookIncomplete(book);
+
             Object.assign(book, updateData);
 
             await book.save();
+
+            if (wasIncomplete && !isImportedBookIncomplete(book)) {
+                await grantXpService(user, UserActionType.BOOK_COMPLETED, {
+                    targetId: book.id.toString(),
+                    metadata: { title: book.title },
+                });
+            }
 
             return book;
         } catch (error) {

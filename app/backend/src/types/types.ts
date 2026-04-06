@@ -27,6 +27,8 @@ export enum UserActionType {
     DETAILED_REVIEW_BONUS = "DETAILED_REVIEW_BONUS",
     REVIEW_VOTED_HELPFUL = "REVIEW_VOTED_HELPFUL",
     BOOK_IMPORTED = "BOOK_IMPORTED",
+    BOOK_COMPLETED = "BOOK_COMPLETED",
+    AUTHOR_COMPLETED = "AUTHOR_COMPLETED",
 }
 
 export type XPResultType = {
@@ -76,6 +78,7 @@ interface GoogleBooksVolumeInfo {
     publishedDate?: string;
     publisher?: string;
     pageCount?: number;
+    description?: string;
     language?: string;
     imageLinks?: { thumbnail?: string };
     industryIdentifiers?: GoogleBooksIdentifier[];

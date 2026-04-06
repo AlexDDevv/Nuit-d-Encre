@@ -26,6 +26,12 @@ export class BookSearchResult {
     @Field({ nullable: true })
     coverUrl?: string;
 
+    @Field(() => Int, { nullable: true })
+    pageCount?: number;
+
+    @Field({ nullable: true })
+    description?: string;
+
     @Field()
     isInDatabase!: boolean;
 

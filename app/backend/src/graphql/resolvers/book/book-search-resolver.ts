@@ -193,9 +193,9 @@ export class BookSearchResolver {
 
         const book = Book.create({
             title: result.title,
-            summary: "Importé depuis une source externe.",
+            summary: result.description ?? "Importé depuis une source externe.",
             isbn13,
-            pageCount: 0,
+            pageCount: result.pageCount ?? 0,
             publishedYear: result.year ?? 0,
             language: result.language ?? "fr",
             publisher: result.publisher ?? "Inconnu",
@@ -204,6 +204,7 @@ export class BookSearchResolver {
             author,
             category,
             user,
+            isImported: true,
         });
 
         try {

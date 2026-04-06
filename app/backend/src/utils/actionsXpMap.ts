@@ -10,4 +10,6 @@ export const ActionXPMap: Record<UserActionType, number> = {
     [UserActionType.DETAILED_REVIEW_BONUS]: 50,
     [UserActionType.REVIEW_VOTED_HELPFUL]: 20,
     [UserActionType.BOOK_IMPORTED]: 30,
+    [UserActionType.BOOK_COMPLETED]: 50,
+    [UserActionType.AUTHOR_COMPLETED]: 50,
 };

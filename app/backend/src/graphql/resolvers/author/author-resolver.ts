@@ -16,7 +16,8 @@ import {
     Resolver,
 } from "type-graphql"
 import { AppError } from "../../../middlewares/error-handler"
-import { Context, Roles } from "../../../types/types"
+import { Context, Roles, UserActionType } from "../../../types/types"
+import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { Brackets } from "typeorm"
 import { Author } from "../../../database/entities/author/author"
 import { CreateAuthorInput } from "../../inputs/create/author/create-author-input"
@@ -24,6 +25,15 @@ import { UpdateAuthorInput } from "../../inputs/update/author/update-author-inpu
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { AuthorsResult } from "../../../database/filteredResults/authors/authors-result"
 import { AuthorsQueryInput } from "../../queries/authors/authors-query-input"
+
+function isAuthorIncomplete(author: Author): boolean {
+    return (
+        !author.birthDate ||
+        !author.nationality ||
+        !author.wikipediaUrl ||
+        !author.biography
+    );
+}
 
 /**
  * Author Resolver
@@ -242,11 +252,21 @@ export class AuthorsResolver {
                 )
             }
 
+            const wasIncomplete = isAuthorIncomplete(author);
+
             const { id, ...updateData } = data
 
             Object.assign(author, updateData)
 
             await author.save()
+
+            if (wasIncomplete && !isAuthorIncomplete(author)) {
+                await grantXpService(user, UserActionType.AUTHOR_COMPLETED, {
+                    targetId: author.id.toString(),
+                    metadata: { firstname: author.firstname, lastname: author.lastname },
+                });
+            }
+
             return author
         } catch (error) {
             if (error instanceof AppError) throw error;
