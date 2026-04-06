@@ -11,6 +11,7 @@ export type ButtonVariant =
     | "iconUnderlined"
     | "card"
     | "bookCard"
+    | "authorCard"
     | "underlineText"
     | "nav"
     | "layout"
@@ -29,6 +30,7 @@ export type ButtonSize =
     | "icon"
     | "card"
     | "bookCard"
+    | "authorCard"
     | "searchResultCard";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

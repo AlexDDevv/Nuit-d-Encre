@@ -7,7 +7,7 @@ import {
     sizeClasses,
     variantClasses,
 } from '@/components/UI/Button/Button.styles'
-import type { ButtonProps } from '@/components/UI/Button/Button.types'
+import type { ButtonProps, ButtonVariant } from '@/components/UI/Button/Button.types'
 
 /**
  * Button component
@@ -72,7 +72,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                 {!loading && leftIcon && <span className="mr-3">{leftIcon}</span>}
 
                 <div
-                    className={cn('min-w-0 overflow-hidden', variant === 'checkable' && 'w-4/6 flex justify-start', variant === 'bookCard' && 'contents', variant === "searchResultCard" && 'contents')}
+                    className={cn('min-w-0 overflow-hidden', variant === 'checkable' && 'w-4/6 flex justify-start', (['bookCard', 'searchResultCard', 'authorCard'] as ButtonVariant[]).includes(variant) && 'contents')}
                 >
                     {!loading && icon && (
                         <span className={cn(IconClasses[variant], className)}>

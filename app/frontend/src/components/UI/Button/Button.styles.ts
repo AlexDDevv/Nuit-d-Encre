@@ -39,7 +39,9 @@ export const variantClasses: Record<ButtonVariant, string> = {
     hamburger:
         "justify-center bg-card border-border text-card-foreground fixed top-5 left-5 z-50 rounded-md border p-2 shadow-md w-10",
     searchResultCard:
-        "flex items-end justify-between rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out w-full",
+        "items-end justify-between rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out w-full",
+    authorCard:
+        "group relative overflow-hidden items-center justify-center gap-4 rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out hover:scale-105",
 };
 
 export const IconClasses: Record<ButtonVariant, string> = {
@@ -60,6 +62,7 @@ export const IconClasses: Record<ButtonVariant, string> = {
     social: "",
     hamburger: "",
     searchResultCard: "",
+    authorCard: "",
 };
 
 /**
@@ -76,4 +79,5 @@ export const sizeClasses: Record<ButtonSize, string> = {
     card: "h-15 py-4",
     bookCard: "h-80 p-5",
     searchResultCard: "p-4",
+    authorCard: "w-64 px-10 py-4",
 };
