@@ -129,6 +129,7 @@ export type BookCardProps = {
         firstname: string;
         lastname: string;
     };
+    isImported?: boolean;
     className?: string;
     isInAuthorPage?: boolean;
 };
@@ -171,6 +172,7 @@ export interface Book {
     isbn10?: string;
     isbn13: string;
     coverUrl?: string;
+    isImported?: boolean;
     user: User;
     averageRating?: number;
     reviewCount?: number;

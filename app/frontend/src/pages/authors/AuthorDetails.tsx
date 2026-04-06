@@ -1,5 +1,6 @@
 import AuthorInfos from "@/components/sections/author/AuthorInfos";
 import BooksBibliography from "@/components/sections/book/BooksBibliography";
+import Banner from "@/components/UI/Banner/Banner";
 import Button from "@/components/UI/Button/Button";
 import Links from "@/components/UI/Links";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
@@ -7,6 +8,7 @@ import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
 import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
 import { useToast } from "@/hooks/toast/useToast";
+import { hasIncompleteInfo } from "@/lib/utils";
 import { User } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -52,6 +54,8 @@ export default function AuthorDetails() {
     const canEdit = !!user && (isOwner || isAdmin);
     const canDelete = !!user && isAdmin;
 
+    const showCompletionBanner = !!isOwner && hasIncompleteInfo(author);
+
     const handleDeleteAuthor = async () => {
         try {
             await deleteAuthor(author.id);
@@ -95,6 +99,19 @@ export default function AuthorDetails() {
 
     return (
         <div className="flex flex-col gap-20">
+            {showCompletionBanner && (
+                <Banner
+                    variant="completion"
+                    title="Les informations de cet auteur sont incomplètes."
+                    action={{
+                        label: "Compléter",
+                        to: `/authors/update/${author.id}`,
+                        ariaLabel: `Modifier les informations de l'auteur ${author.firstname} ${author.lastname} pour compléter son profil`,
+                    }}
+                >
+                    <span className="font-semibold">Complète-les pour gagner 50 XP !</span>
+                </Banner>
+            )}
             <div className="flex gap-10">
                 <div className="border-border flex h-40 w-40 items-center justify-center rounded-lg border-2">
                     <User className="text-foreground h-32 w-32 stroke-1" />

@@ -1,4 +1,5 @@
 import Button from "@/components/UI/Button/Button";
+import Banner from "@/components/UI/Banner/Banner";
 import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import BookInfos from "@/components/sections/book/BookInfos";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
@@ -7,7 +8,7 @@ import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useBooksByCategory } from "@/hooks/book/category/useBooksByCategory";
 import BooksBibliography from "@/components/sections/book/BooksBibliography";
-import { slugify } from "@/lib/utils";
+import { slugify, hasIncompleteBookInfo } from "@/lib/utils";
 import { useState } from "react";
 import { UserBookStatus } from "@/types/types";
 import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
@@ -106,12 +107,27 @@ export default function BookDetails() {
         }
     };
 
+    const showCompletionBanner = !!isOwner && hasIncompleteBookInfo(book);
+
     return (
         <div className="flex flex-col gap-20">
+            {showCompletionBanner && (
+                <Banner
+                    variant="completion"
+                    title="Ce livre a été importé automatiquement et certaines informations sont manquantes."
+                    action={{
+                        label: "Compléter",
+                        to: `/books/update/${book.id}`,
+                        ariaLabel: `Modifier le livre ${book.title} pour compléter ses informations`,
+                    }}
+                >
+                    <span className="font-semibold">Complète-les pour gagner 50 XP !</span>
+                </Banner>
+            )}
             <div className="flex gap-10">
-                <div className="max-w-3xs max-h-96">
+                <div className="max-w-3xs max-h-96 rounded-lg overflow-hidden">
                     <img
-                        src="/images/bookCover.svg"
+                        src={book.coverUrl || "/images/bookCover.svg"}
                         alt="Couverture d'un livre"
                         className="h-full w-full"
                     />

@@ -44,6 +44,7 @@ export default function BooksBibliography({
                     id={book.id}
                     title={book.title}
                     author={author}
+                    isImported={book.isImported}
                     className="w-60"
                     isInAuthorPage={fromAuthorPage}
                 />

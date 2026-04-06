@@ -6,6 +6,7 @@ export const GET_BOOKS = gql`
             allBooks {
                 id
                 title
+                isImported
                 author {
                     id
                     firstname
@@ -33,6 +34,7 @@ export const GET_BOOK = gql`
                 books {
                     id
                     title
+                    isImported
                 }
             }
             category {
@@ -42,6 +44,7 @@ export const GET_BOOK = gql`
             isbn10
             isbn13
             coverUrl
+            isImported
             pageCount
             publishedYear
             language

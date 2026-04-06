@@ -39,6 +39,7 @@ export default function BooksByCategory({
                     id={book.id}
                     title={book.title}
                     author={book.author}
+                    isImported={book.isImported}
                     className="w-60"
                     isInAuthorPage={false}
                 />

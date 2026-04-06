@@ -108,6 +108,7 @@ export default function Books() {
                                             id={book.id}
                                             title={book.title}
                                             author={book.author}
+                                            isImported={book.isImported}
                                             className="w-72 hover:scale-105"
                                         />
                                     ))}

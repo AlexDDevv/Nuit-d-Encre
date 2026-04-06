@@ -7,6 +7,7 @@ export default function BookCard({
     id,
     title,
     author,
+    isImported,
     className,
     isInAuthorPage = false,
 }: BookCardProps) {
@@ -41,6 +42,13 @@ export default function BookCard({
             category="Livre"
             className={className}
         >
+            {isImported && (
+                <div className="bg-secondary absolute -left-5 top-2.5 flex -rotate-45 items-center justify-center px-3 py-0.5 shadow-md">
+                    <span className="text-secondary-foreground text-xs">
+                        Incomplet
+                    </span>
+                </div>
+            )}
             <div className="w-32">
                 <img
                     src="/images/bookCover.svg"
