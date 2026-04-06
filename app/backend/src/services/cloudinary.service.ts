@@ -14,8 +14,11 @@ export class CloudinaryService {
     async uploadFromUrl(sourceUrl: string, folder: string): Promise<string | null> {
         try {
             const headRes = await fetch(sourceUrl, { method: "HEAD" });
-            const contentLength = parseInt(headRes.headers.get("content-length") ?? "0", 10);
-            if (contentLength < MIN_COVER_SIZE_BYTES) return null;
+            const contentLengthHeader = headRes.headers.get("content-length");
+            if (contentLengthHeader !== null) {
+                const contentLength = parseInt(contentLengthHeader, 10);
+                if (contentLength < MIN_COVER_SIZE_BYTES) return null;
+            }
 
             const result = await cloudinary.uploader.upload(sourceUrl, { folder });
             return result.secure_url;
