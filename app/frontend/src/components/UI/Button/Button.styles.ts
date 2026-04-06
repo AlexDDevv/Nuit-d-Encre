@@ -21,7 +21,7 @@ export const variantClasses: Record<ButtonVariant, string> = {
         "justify-center rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary active:bg-primary-foreground active:text-primary font-[Switzer-medium]",
     card: "justify-center border border-border hover:border-foreground rounded-lg bg-card text-card-foreground hover:text-foreground focus-visible:ring-primary active:bg-accent active:text-accent-foreground font-[Switzer-regular] text-xs group",
     bookCard:
-        "flex-col items-center justify-center gap-5 rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out",
+        "relative overflow-hidden flex-col items-center justify-center gap-5 rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out",
     underlineText:
         "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer font-[Switzer-SemiBold]",
     text: "text-foreground underline-offset-4 hover:bg-muted active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer font-[Switzer-regular] bg-transparent rounded-lg px-0 disabled:bg-transparent disabled:text-muted-foreground/50",

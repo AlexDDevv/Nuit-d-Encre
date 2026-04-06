@@ -72,7 +72,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                 {!loading && leftIcon && <span className="mr-3">{leftIcon}</span>}
 
                 <div
-                    className={cn('min-w-0 overflow-hidden', variant === 'checkable' && 'w-4/6 flex justify-start', variant === 'bookCard' || variant === "searchResultCard" && 'contents')}
+                    className={cn('min-w-0 overflow-hidden', variant === 'checkable' && 'w-4/6 flex justify-start', variant === 'bookCard' && 'contents', variant === "searchResultCard" && 'contents')}
                 >
                     {!loading && icon && (
                         <span className={cn(IconClasses[variant], className)}>
