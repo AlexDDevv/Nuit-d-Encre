@@ -15,7 +15,7 @@ export const Roles = {
 
 export type UserRole = (typeof Roles)[keyof typeof Roles];
 
-export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket"
+export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket";
 
 export enum UserActionType {
     BOOK_ADDED = "BOOK_ADDED",
@@ -25,7 +25,8 @@ export enum UserActionType {
     BOOK_RECOMMENDED = "BOOK_RECOMMENDED",
     REVIEW_CREATED = "REVIEW_CREATED",
     DETAILED_REVIEW_BONUS = "DETAILED_REVIEW_BONUS",
-    REVIEW_VOTED_HELPFUL = "REVIEW_VOTED_HELPFUL"
+    REVIEW_VOTED_HELPFUL = "REVIEW_VOTED_HELPFUL",
+    BOOK_IMPORTED = "BOOK_IMPORTED",
 }
 
 export type XPResultType = {
@@ -64,4 +65,26 @@ registerEnumType(BookReviewSortBy, {
     description: "Sort options for book reviews",
 });
 
+interface GoogleBooksIdentifier {
+    type: string;
+    identifier: string;
+}
 
+interface GoogleBooksVolumeInfo {
+    title: string;
+    authors?: string[];
+    publishedDate?: string;
+    publisher?: string;
+    pageCount?: number;
+    language?: string;
+    imageLinks?: { thumbnail?: string };
+    industryIdentifiers?: GoogleBooksIdentifier[];
+}
+
+export interface GoogleBooksVolume {
+    volumeInfo: GoogleBooksVolumeInfo;
+}
+
+export interface GoogleBooksResponse {
+    items?: GoogleBooksVolume[];
+}
