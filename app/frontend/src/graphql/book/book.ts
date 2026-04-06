@@ -41,6 +41,7 @@ export const GET_BOOK = gql`
             }
             isbn10
             isbn13
+            coverUrl
             pageCount
             publishedYear
             language
