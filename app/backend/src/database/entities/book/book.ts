@@ -175,12 +175,12 @@ export class Book extends BaseEntity {
     /**
      * Book format
      * @description
-     * The physical format of the book.  
-     * For example:  
-     * - "hardcover"  
-     * - "paperback"  
-     * - "softcover"  
-     *  
+     * The physical format of the book.
+     * For example:
+     * - "hardcover"
+     * - "paperback"
+     * - "softcover"
+     *
      * This field is required and limited to these values.
      */
     @Field()
@@ -189,6 +189,15 @@ export class Book extends BaseEntity {
         enum: ["hardcover", "paperback", "softcover", "pocket"],
     })
     format!: string;
+
+    /**
+     * Cover URL
+     * @description
+     * URL pointing to the cover image of the book (optional).
+     */
+    @Field({ nullable: true })
+    @Column({ nullable: true })
+    coverUrl?: string;
 
     /**
      * The user who added the book
