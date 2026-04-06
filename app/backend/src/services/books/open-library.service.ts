@@ -3,11 +3,29 @@ import { OpenLibrarySearchResponse, OpenLibraryWork } from "../../types/types";
 
 const BASE_URL = "https://openlibrary.org";
 const FIELDS =
-    "title,author_name,isbn,publisher,first_publish_year,language,number_of_pages_median";
+    "title,author_name,isbn,publisher,first_publish_year,language,number_of_pages_median,cover_i";
+
+// Open Library uses ISO 639-2 codes; normalize to ISO 639-1
+const LANG_MAP: Record<string, string> = {
+    eng: "en",
+    fre: "fr",
+    spa: "es",
+    deu: "de",
+    ita: "it",
+    por: "pt",
+    nld: "nl",
+    rus: "ru",
+    jpn: "ja",
+    zho: "zh",
+    ara: "ar",
+};
 
 function normalize(work: OpenLibraryWork): BookSearchResult | null {
     const isbn13 = work.isbn?.find((i) => i.length === 13);
     if (!isbn13) return null;
+
+    const rawLang = work.language?.[0];
+    const language = rawLang ? (LANG_MAP[rawLang] ?? rawLang) : undefined;
 
     return {
         title: work.title,
@@ -15,8 +33,10 @@ function normalize(work: OpenLibraryWork): BookSearchResult | null {
         isbn13,
         year: work.first_publish_year,
         publisher: work.publisher?.[0],
-        language: work.language?.[0],
-        coverUrl: `https://covers.openlibrary.org/b/isbn/${isbn13}-M.jpg`,
+        language,
+        coverUrl: work.cover_i
+            ? `https://covers.openlibrary.org/b/id/${work.cover_i}-M.jpg`
+            : undefined,
         isInDatabase: false,
         source: "open_library",
     };

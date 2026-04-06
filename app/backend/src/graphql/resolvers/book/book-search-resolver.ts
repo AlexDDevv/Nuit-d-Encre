@@ -30,7 +30,9 @@ export class BookSearchResolver {
 
         // 1. DB search
         const dbBooks = await Book.createQueryBuilder("book")
-            .leftJoinAndSelect("book.author", "author")
+            .select(["book.id", "book.title", "book.isbn13", "book.publishedYear", "book.publisher", "book.language", "book.coverUrl"])
+            .leftJoin("book.author", "author")
+            .addSelect(["author.firstname", "author.lastname"])
             .where(
                 new Brackets((qb) => {
                     qb.where("unaccent(book.title) ILIKE unaccent(:q)", {
@@ -141,7 +143,7 @@ export class BookSearchResolver {
 
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => Book)
-    async importFromOpenLibrary(
+    async importBook(
         @Arg("isbn13") isbn13: string,
         @Ctx() ctx: Context,
     ): Promise<Book> {

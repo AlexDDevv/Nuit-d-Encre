@@ -35,8 +35,8 @@ export const PREVIEW_BOOK = gql`
 `;
 
 export const IMPORT_BOOK = gql`
-    mutation ImportFromOpenLibrary($isbn13: String!) {
-        importFromOpenLibrary(isbn13: $isbn13) {
+    mutation ImportBook($isbn13: String!) {
+        importBook(isbn13: $isbn13) {
             id
             title
         }

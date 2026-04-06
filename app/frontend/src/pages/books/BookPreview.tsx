@@ -36,7 +36,7 @@ export default function BookPreview() {
         if (!isbn13) return;
         try {
             const result = await importBook({ variables: { isbn13 } });
-            const imported = result.data?.importFromOpenLibrary;
+            const imported = result.data?.importBook;
             if (!imported) return;
 
             showToast({

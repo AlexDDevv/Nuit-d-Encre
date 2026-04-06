@@ -97,6 +97,7 @@ export interface OpenLibraryWork {
     first_publish_year?: number;
     language?: string[];
     number_of_pages_median?: number;
+    cover_i?: number;
 }
 
 export interface OpenLibrarySearchResponse {

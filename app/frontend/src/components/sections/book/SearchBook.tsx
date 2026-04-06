@@ -25,31 +25,24 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
     const debouncedSearchValue = useDebounce(searchValue, 300);
 
     useEffect(() => {
-        // If isInLibrary, get automatic search with debounce
         if (isInLibrary) {
-            const newParams = new URLSearchParams(searchParams);
-
-            if (debouncedSearchValue.trim()) {
-                newParams.set("search", debouncedSearchValue.trim());
-            } else {
-                newParams.delete("search");
-            }
-
-            setSearchParams(newParams);
-        } else {
-            if (searchValue === "") {
-                const newParams = new URLSearchParams(searchParams);
-                newParams.delete("search");
-                setSearchParams(newParams);
-            }
+            setSearchParams((prev) => {
+                const param = new URLSearchParams(prev);
+                if (debouncedSearchValue.trim()) {
+                    param.set("search", debouncedSearchValue.trim());
+                } else {
+                    param.delete("search");
+                }
+                return param;
+            });
+        } else if (searchValue === "") {
+            setSearchParams((prev) => {
+                const param = new URLSearchParams(prev);
+                param.delete("search");
+                return param;
+            });
         }
-    }, [
-        debouncedSearchValue,
-        isInLibrary,
-        searchParams,
-        setSearchParams,
-        searchValue,
-    ]);
+    }, [debouncedSearchValue, isInLibrary, searchValue, setSearchParams]);
 
     const onSubmit = (data: FormValues) => {
         const newParams = new URLSearchParams(searchParams);
