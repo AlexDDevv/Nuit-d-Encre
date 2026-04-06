@@ -14,6 +14,7 @@ import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
+import BookPreviewSkeleton from "@/components/UI/skeleton/BookPreviewSkeleton";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 
 /**
@@ -24,6 +25,7 @@ import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleto
  */
 const Auth = lazy(() => import("@/pages/Auth"));
 const BookDetails = lazy(() => import("@/pages/books/BookDetails"));
+const BookPreview = lazy(() => import("@/pages/books/BookPreview"));
 const BookScribe = lazy(() => import("@/pages/books/BookScribe"));
 const BookUpdate = lazy(() => import("@/pages/books/BookUpdate"));
 const Authors = lazy(() => import("@/pages/authors/Authors"));
@@ -78,6 +80,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<BookPageSkeleton />}>
                         <Books />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "books/preview/:isbn13",
+                element: (
+                    <Suspense fallback={<BookPreviewSkeleton />}>
+                        <BookPreview />
                     </Suspense>
                 ),
             },
