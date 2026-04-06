@@ -20,6 +20,7 @@ import { BookReviewVotesResolver } from "./graphql/resolvers/book/book-review-vo
 import { BookRecommendationsResolver } from "./graphql/resolvers/book/book-recommendation-resolver";
 import { ProfileResolver } from "./graphql/resolvers/user/profile-resolver";
 import { TitleResolver } from "./graphql/resolvers/gamification/title-resolver";
+import { BookSearchResolver } from "./graphql/resolvers/book/book-search-resolver";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -59,7 +60,7 @@ if (!process.env.APP_PORT) {
                 BookRecommendationsResolver,
                 ProfileResolver,
                 TitleResolver,
-                /* your resolvers here */
+                BookSearchResolver,
             ],
             validate: true, // Activate validation for input fields
             authChecker: customAuthChecker,
