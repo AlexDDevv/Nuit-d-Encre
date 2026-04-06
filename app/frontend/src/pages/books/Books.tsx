@@ -1,13 +1,20 @@
+import { useSearchParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import BookCard from "@/components/sections/book/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
+import BookSearchResults from "@/components/sections/book/BookSearchResults";
 import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/sections/book/SelectCategory";
 import { useBooksData } from "@/hooks/book/useBooksData";
+import { useBookSearch } from "@/hooks/book/useBookSearch";
 import { BookCardProps } from "@/types/types";
-import { Helmet } from "react-helmet-async";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 
 export default function Books() {
+    const [searchParams] = useSearchParams();
+    const query = (searchParams.get("search") ?? "").trim();
+    const isSearchMode = query.length >= 3;
+
     const {
         books,
         isLoadingBooks,
@@ -16,9 +23,11 @@ export default function Books() {
         currentPage,
         setCurrentPage,
         PER_PAGE,
-    } = useBooksData({ mode: "home" });
+    } = useBooksData({ mode: "home", skip: isSearchMode });
 
-    if (!books && booksError) {
+    const { dbResults, externalResults, isSearching } = useBookSearch(query);
+
+    if (!isSearchMode && !books && booksError) {
         const isNotFoundError = booksError.graphQLErrors.some((error) =>
             error.message.includes("Books not found"),
         );
@@ -27,17 +36,15 @@ export default function Books() {
             throw new Response("Books not found", { status: 404 });
         }
 
-        // Pour les autres erreurs GraphQL
         throw new Response("Failed to fetch books", { status: 500 });
     }
 
-    if (!isLoadingBooks && !books) {
+    if (!isSearchMode && !isLoadingBooks && !books) {
         throw new Response("Books not found", { status: 404 });
     }
 
     return (
         <>
-            {/* Update of the metadata */}
             <Helmet>
                 <title>Livres disponibles sur Nuit d'Encre</title>
                 <meta
@@ -45,7 +52,6 @@ export default function Books() {
                     content="Page des livres disponibles sur le site Nuit d'Encre."
                 />
                 <meta name="robots" content="noindex, nofollow" />
-                {/* Open Graph */}
                 <meta
                     property="og:title"
                     content="Livres disponibles sur Nuit d'Encre"
@@ -55,7 +61,6 @@ export default function Books() {
                     content="Page des livres disponibles sur le site Nuit d'Encre."
                 />
                 <meta property="og:type" content="website" />
-                {/* Twitter Card */}
                 <meta name="twitter:card" content="summary" />
                 <meta
                     name="twitter:title"
@@ -66,7 +71,8 @@ export default function Books() {
                     content="Page des livres disponibles sur le site Nuit d'Encre."
                 />
             </Helmet>
-            {isLoadingBooks ? (
+
+            {!isSearchMode && isLoadingBooks ? (
                 <BookPageSkeleton />
             ) : (
                 <section className="flex min-h-dvh flex-col items-center justify-center gap-20">
@@ -76,35 +82,46 @@ export default function Books() {
                         </h1>
                         <div className="flex items-center justify-center gap-5">
                             <SearchBook />
-                            <SelectCategory />
+                            {!isSearchMode && <SelectCategory />}
                         </div>
                     </div>
-                    {totalCount === 0 ? (
-                        <div className="flex w-full items-center justify-center">
-                            <p className="text-foreground text-xl font-medium">
-                                Aucun livre n'a encore été enregistré...
-                            </p>
-                        </div>
+
+                    {isSearchMode ? (
+                        <BookSearchResults
+                            dbResults={dbResults}
+                            externalResults={externalResults}
+                            isSearching={isSearching}
+                        />
                     ) : (
-                        <div className="flex w-full flex-wrap items-center justify-center gap-20">
-                            {books.map((book: BookCardProps) => (
-                                <BookCard
-                                    key={book.id}
-                                    id={book.id}
-                                    title={book.title}
-                                    author={book.author}
-                                    className="w-72 hover:scale-105"
-                                />
-                            ))}
-                        </div>
+                        <>
+                            {totalCount === 0 ? (
+                                <div className="flex w-full items-center justify-center">
+                                    <p className="text-foreground text-xl font-medium">
+                                        Aucun livre n'a encore été enregistré...
+                                    </p>
+                                </div>
+                            ) : (
+                                <div className="flex w-full flex-wrap items-center justify-center gap-20">
+                                    {books.map((book: BookCardProps) => (
+                                        <BookCard
+                                            key={book.id}
+                                            id={book.id}
+                                            title={book.title}
+                                            author={book.author}
+                                            className="w-72 hover:scale-105"
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                            <Pagination
+                                className="mx-auto my-0 w-max"
+                                currentPage={currentPage}
+                                totalCount={totalCount}
+                                perPage={PER_PAGE.home}
+                                onPageChange={setCurrentPage}
+                            />
+                        </>
                     )}
-                    <Pagination
-                        className="mx-auto my-0 w-max"
-                        currentPage={currentPage}
-                        totalCount={totalCount}
-                        perPage={PER_PAGE.home}
-                        onPageChange={setCurrentPage}
-                    />
                 </section>
             )}
         </>
