@@ -1,4 +1,4 @@
-import { Author, RequiredAuthorFields } from "@/types/types";
+import { Author, Book, RequiredAuthorFields } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -31,6 +31,17 @@ export function slugify(text: string): string {
         .replace(/\s+/g, "-")
         .replace(/-+/g, "-");
 }
+
+export const hasIncompleteBookInfo = (book: Book): boolean => {
+    if (!book.isImported) return false;
+
+    return (
+        book.summary === "Importé depuis une source externe." ||
+        book.pageCount === 0 ||
+        book.category.name === "Autre" ||
+        !book.coverUrl
+    );
+};
 
 export const hasIncompleteInfo = (author: Author): boolean => {
     const requiredFields: RequiredAuthorFields[] = [
