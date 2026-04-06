@@ -20,6 +20,8 @@ export const variantClasses: Record<ButtonVariant, string> = {
     outline:
         "justify-center rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary active:bg-primary-foreground active:text-primary font-[Switzer-medium]",
     card: "justify-center border border-border hover:border-foreground rounded-lg bg-card text-card-foreground hover:text-foreground focus-visible:ring-primary active:bg-accent active:text-accent-foreground font-[Switzer-regular] text-xs group",
+    bookCard:
+        "flex-col items-center justify-center gap-5 rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out",
     underlineText:
         "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer font-[Switzer-SemiBold]",
     text: "text-foreground underline-offset-4 hover:bg-muted active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer font-[Switzer-regular] bg-transparent rounded-lg px-0 disabled:bg-transparent disabled:text-muted-foreground/50",
@@ -36,6 +38,8 @@ export const variantClasses: Record<ButtonVariant, string> = {
     social: "justify-center rounded-sm border border-popover-foreground/50 text-popover-foreground/50 hover:text-popover-foreground hover:border-popover-foreground w-10",
     hamburger:
         "justify-center bg-card border-border text-card-foreground fixed top-5 left-5 z-50 rounded-md border p-2 shadow-md w-10",
+    searchResultCard:
+        "flex items-end justify-between rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out w-full",
 };
 
 export const IconClasses: Record<ButtonVariant, string> = {
@@ -45,6 +49,7 @@ export const IconClasses: Record<ButtonVariant, string> = {
     secondary: "",
     outline: "",
     card: "cursor-pointer w-4 h-4 text-card-foreground group-hover:text-foreground text-lg",
+    bookCard: "",
     underlineText: "",
     text: "",
     checkable: "",
@@ -54,6 +59,7 @@ export const IconClasses: Record<ButtonVariant, string> = {
     ghost: "",
     social: "",
     hamburger: "",
+    searchResultCard: "",
 };
 
 /**
@@ -68,4 +74,6 @@ export const sizeClasses: Record<ButtonSize, string> = {
     xl: "h-14 px-8 py-4 text-xl",
     icon: "h-4 px-1 mt-1 pb-2 text-lg",
     card: "h-15 py-4",
+    bookCard: "h-80 p-5",
+    searchResultCard: "p-4",
 };

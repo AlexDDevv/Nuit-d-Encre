@@ -1,6 +1,7 @@
+import Button from "@/components/UI/Button/Button";
 import { buildBookAriaLabel, slugify } from "@/lib/utils";
 import { BookCardProps } from "@/types/types";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function BookCard({
     id,
@@ -31,12 +32,14 @@ export default function BookCard({
     };
 
     return (
-        <Link
+        <Button
+            variant="bookCard"
+            size="bookCard"
             to={bookPath}
             aria-current={isCurrent ? "page" : undefined}
-            aria-label={ariaLabel}
-            data-category="Livre"
-            className={`border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring flex h-80 flex-col items-center justify-center gap-5 rounded-xl border-2 px-6 py-5 transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${className}`}
+            ariaLabel={ariaLabel}
+            category="Livre"
+            className={className}
         >
             <div className="w-32">
                 <img
@@ -65,6 +68,6 @@ export default function BookCard({
                     </span>
                 )}
             </div>
-        </Link>
+        </Button>
     );
 }

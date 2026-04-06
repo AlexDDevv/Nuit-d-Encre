@@ -33,10 +33,10 @@ export default function BookSearchResults({
         <div className="flex w-full max-w-2xl flex-col gap-8">
             {dbResults.length > 0 && (
                 <section>
-                    <h2 className="text-foreground mb-3 text-lg font-semibold">
+                    <h2 className="text-foreground mb-4 text-lg font-semibold">
                         Dans Nuit d'Encre
                     </h2>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-4">
                         {dbResults.map((result, i) => (
                             <BookSearchResultCard
                                 key={result.id ?? result.isbn13 ?? i}
@@ -48,10 +48,10 @@ export default function BookSearchResults({
             )}
             {externalResults.length > 0 && (
                 <section>
-                    <h2 className="text-foreground mb-3 text-lg font-semibold">
+                    <h2 className="text-foreground mb-4 text-lg font-semibold">
                         Résultats externes
                     </h2>
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-4">
                         {externalResults.map((result, i) => (
                             <BookSearchResultCard
                                 key={result.isbn13 ?? i}

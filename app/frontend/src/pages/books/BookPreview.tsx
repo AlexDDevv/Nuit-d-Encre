@@ -76,21 +76,23 @@ export default function BookPreview() {
                         />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <h1 className="text-foreground text-2xl font-bold">{book.title}</h1>
-                        {book.author && (
-                            <p className="text-card-foreground text-lg">{book.author}</p>
-                        )}
+                        <div>
+                            <h1 className="text-foreground text-2xl font-bold">{book.title}</h1>
+                            {book.author && (
+                                <p className="text-card-foreground font-semibold italic">{book.author}</p>
+                            )}
+                        </div>
                         {book.year && (
-                            <p className="text-muted-foreground text-sm">Publié en {book.year}</p>
+                            <p className="text-secondary-foreground text-sm">Publié en {book.year}</p>
                         )}
                         {book.publisher && (
-                            <p className="text-muted-foreground text-sm">{book.publisher}</p>
+                            <p className="text-secondary-foreground text-sm">{book.publisher}</p>
                         )}
                         {book.language && (
-                            <p className="text-muted-foreground text-sm">Langue : {book.language}</p>
+                            <p className="text-secondary-foreground text-sm">Langue : {book.language}</p>
                         )}
                         {book.isbn13 && (
-                            <p className="text-muted-foreground text-sm">ISBN : {book.isbn13}</p>
+                            <p className="text-secondary-foreground text-sm">ISBN : {book.isbn13}</p>
                         )}
                     </div>
                 </div>
@@ -111,7 +113,7 @@ export default function BookPreview() {
                         ariaLabel="Connexion requise pour importer un livre"
                         title="Connectez-vous pour importer ce livre"
                     >
-                        Connexion requise pour importer
+                        Connexion requise pour importer dans Nuit d'Encre
                     </Button>
                 )}
             </div>

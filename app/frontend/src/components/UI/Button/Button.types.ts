@@ -10,12 +10,14 @@ export type ButtonVariant =
     | "icon"
     | "iconUnderlined"
     | "card"
+    | "bookCard"
     | "underlineText"
     | "nav"
     | "layout"
     | "ghost"
     | "social"
-    | "hamburger";
+    | "hamburger"
+    | "searchResultCard";
 
 export type ButtonSize =
     | "xxs"
@@ -25,7 +27,9 @@ export type ButtonSize =
     | "lg"
     | "xl"
     | "icon"
-    | "card";
+    | "card"
+    | "bookCard"
+    | "searchResultCard";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     /**
