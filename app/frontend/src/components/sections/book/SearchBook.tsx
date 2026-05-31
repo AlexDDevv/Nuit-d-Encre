@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
-import { Search } from "lucide-react";
+import { CiSearch } from "react-icons/ci";
 import { Label } from "@/components/UI/form/Label";
 import { Input } from "@/components/UI/form/Input";
 import Button from "@/components/UI/Button/Button";
@@ -80,7 +80,7 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
                 ariaLabel="Rechercher un livre"
                 className="absolute right-1.5 h-fit p-1.5"
             >
-                <Search className="text-primary-foreground h-4 w-4" />
+                <CiSearch className="text-primary-foreground h-4 w-4" />
             </Button>
         </form>
     );

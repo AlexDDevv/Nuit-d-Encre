@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useSearchParams } from "react-router-dom"
-import { Search } from "lucide-react"
+import { CiSearch } from "react-icons/ci";
 import { Label } from "@/components/UI/form/Label"
 import { Input } from "@/components/UI/form/Input"
 import { Button } from "@/components/UI/Button"
@@ -62,7 +62,7 @@ export default function SearchAuthor() {
                 ariaLabel="Rechercher un auteur"
                 className="absolute right-1.5 p-1.5"
             >
-                <Search className="h-4 w-4 text-primary-foreground" />
+                <CiSearch className="h-4 w-4 text-primary-foreground" />
             </Button>
         </form>
     )

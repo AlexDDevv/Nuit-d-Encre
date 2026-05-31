@@ -3,7 +3,7 @@
  * @module AdminRequired
  */
 
-import { Lock } from "lucide-react";
+import { HiLockClosed } from "react-icons/hi";
 import Button from "@/components/UI/Button/Button";
 
 /**
@@ -20,7 +20,7 @@ export default function AdminRequired() {
 		<div className="mx-auto flex max-w-md items-center justify-center">
 			<div className="bg-card border-border flex w-full flex-col gap-6 rounded-xl border p-8 text-center">
 				<div className="flex justify-center">
-					<Lock className="text-card-foreground h-12 w-12" />
+					<HiLockClosed className="text-card-foreground h-12 w-12" />
 				</div>
 				<div className="flex flex-col gap-2">
 					<h1 className="text-card-foreground text-2xl font-bold">
