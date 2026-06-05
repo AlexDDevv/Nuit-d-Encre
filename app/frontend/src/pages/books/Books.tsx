@@ -25,7 +25,8 @@ export default function Books() {
         PER_PAGE,
     } = useBooksData({ mode: "home", skip: isSearchMode });
 
-    const { dbResults, externalResults, isSearching } = useBookSearch(query);
+    const { dbResults, externalResults, isSearching, searchError } =
+        useBookSearch(query);
 
     if (!isSearchMode && !books && booksError) {
         const isNotFoundError = booksError.graphQLErrors.some((error) =>
@@ -91,6 +92,7 @@ export default function Books() {
                             dbResults={dbResults}
                             externalResults={externalResults}
                             isSearching={isSearching}
+                            hasError={Boolean(searchError)}
                         />
                     ) : (
                         <>

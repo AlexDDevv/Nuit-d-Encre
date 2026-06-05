@@ -6,6 +6,7 @@ export default function BookSearchResults({
     dbResults,
     externalResults,
     isSearching,
+    hasError,
 }: BookSearchResultsProps) {
     if (isSearching) {
         return (
@@ -13,6 +14,16 @@ export default function BookSearchResults({
                 {Array.from({ length: 4 }).map((_, i) => (
                     <BookSearchResultSkeleton key={i} />
                 ))}
+            </div>
+        );
+    }
+
+    if (hasError) {
+        return (
+            <div className="flex w-full items-center justify-center py-10">
+                <p className="text-destructive text-xl font-medium">
+                    La recherche a échoué. Réessayez dans un instant.
+                </p>
             </div>
         );
     }

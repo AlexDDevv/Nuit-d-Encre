@@ -151,6 +151,7 @@ export interface BookSearchResultsProps {
     dbResults: BookSearchResult[];
     externalResults: BookSearchResult[];
     isSearching: boolean;
+    hasError?: boolean;
 }
 
 export interface BookSearchResultCardProps {
