@@ -1,8 +1,11 @@
 import { LucideIcon } from "lucide-react";
-import { UserRole } from "./../../../backend/src/types/types";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
+
+// Miroir de l'enum backend (ne pas importer depuis app/backend :
+// cela aspire les entités TypeORM décorées dans la compilation frontend).
+export type UserRole = "user" | "moderator" | "admin";
 
 export type AuthContextProps = {
     user: User | null;
