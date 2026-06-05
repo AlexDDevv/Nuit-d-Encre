@@ -13,7 +13,9 @@ import { getOrCreateAuthorByFullName } from "../../../utils/author-factory";
 
 const DB_THRESHOLD = 5;
 const EXTERNAL_LIMIT = 5;
-const EXTERNAL_TIMEOUT_MS = 3000;
+// Open Library répond régulièrement en 4-8s : un timeout trop court
+// avorte la quasi-totalité des recherches externes.
+const EXTERNAL_TIMEOUT_MS = 8000;
 
 @Resolver()
 export class BookSearchResolver {
@@ -27,6 +29,10 @@ export class BookSearchResolver {
     ): Promise<BookSearchResult[]> {
         const trimmed = query.trim();
         if (trimmed.length < 3) return [];
+
+        // Les ISBN sont stockés sans séparateurs : normaliser la saisie
+        // "978-2-07-036822-8" → "9782070368228" pour le matching.
+        const isbnQuery = trimmed.replace(/[-\s]/g, "");
 
         // 1. DB search
         const dbBooks = await Book.createQueryBuilder("book")
@@ -46,7 +52,9 @@ export class BookSearchResolver {
                             "unaccent(author.lastname) ILIKE unaccent(:q)",
                             { q: `%${trimmed}%` },
                         )
-                        .orWhere("book.isbn13 ILIKE :q", { q: `%${trimmed}%` });
+                        .orWhere("book.isbn13 ILIKE :isbnQ", {
+                            isbnQ: `%${isbnQuery}%`,
+                        });
                 }),
             )
             .limit(10)

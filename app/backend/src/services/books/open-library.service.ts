@@ -51,12 +51,24 @@ export class OpenLibraryService {
         try {
             const url = `${BASE_URL}/search.json?q=${encodeURIComponent(query)}&limit=${limit}&fields=${FIELDS}`;
             const res = await fetch(url, { signal });
-            if (!res.ok) return [];
+            if (!res.ok) {
+                console.error(
+                    `[OpenLibrary] search "${query}" → HTTP ${res.status}`,
+                );
+                return [];
+            }
             const data: OpenLibrarySearchResponse = await res.json();
             return data.docs
                 .map(normalize)
                 .filter((r): r is BookSearchResult => r !== null);
-        } catch {
+        } catch (error) {
+            if (signal.aborted) {
+                console.error(
+                    `[OpenLibrary] search "${query}" avortée (timeout)`,
+                );
+            } else {
+                console.error(`[OpenLibrary] search "${query}" échouée:`, error);
+            }
             return [];
         }
     }
@@ -70,7 +82,8 @@ export class OpenLibraryService {
             const work = data.docs[0];
             if (!work) return null;
             return normalize(work);
-        } catch {
+        } catch (error) {
+            console.error(`[OpenLibrary] findByIsbn ${isbn13} échouée:`, error);
             return null;
         }
     }

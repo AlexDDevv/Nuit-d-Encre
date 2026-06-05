@@ -40,12 +40,27 @@ export class GoogleBooksService {
         try {
             const url = `${BASE_URL}?q=${encodeURIComponent(query)}&maxResults=${limit}&fields=items(volumeInfo/title,volumeInfo/authors,volumeInfo/publishedDate,volumeInfo/publisher,volumeInfo/pageCount,volumeInfo/description,volumeInfo/language,volumeInfo/imageLinks,volumeInfo/industryIdentifiers)`;
             const res = await fetch(url, { signal });
-            if (!res.ok) return [];
+            if (!res.ok) {
+                console.error(
+                    `[GoogleBooks] search "${query}" → HTTP ${res.status}`,
+                );
+                return [];
+            }
             const data: GoogleBooksResponse = await res.json();
             return (data.items ?? [])
                 .map(normalize)
                 .filter((r): r is BookSearchResult => r !== null);
-        } catch {
+        } catch (error) {
+            if (signal.aborted) {
+                console.error(
+                    `[GoogleBooks] search "${query}" avortée (timeout)`,
+                );
+            } else {
+                console.error(
+                    `[GoogleBooks] search "${query}" échouée:`,
+                    error,
+                );
+            }
             return [];
         }
     }
@@ -59,7 +74,11 @@ export class GoogleBooksService {
             const volume = data.items?.[0];
             if (!volume) return null;
             return normalize(volume);
-        } catch {
+        } catch (error) {
+            console.error(
+                `[GoogleBooks] findByIsbn ${isbn13} échouée:`,
+                error,
+            );
             return null;
         }
     }
