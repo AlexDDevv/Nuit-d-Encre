@@ -39,6 +39,10 @@ if (!process.env.APP_PORT) {
         // Initialize the data source (e.g., connect to a database)
         await dataSource.initialize();
 
+        // Ensure the unaccent extension exists — required by all search queries
+        // (book, author, user library). Survives a recreated database volume.
+        await dataSource.query("CREATE EXTENSION IF NOT EXISTS unaccent");
+
         // Create Admin user if doesn't exist
         await createAdmin();
 
