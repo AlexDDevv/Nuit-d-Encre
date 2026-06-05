@@ -10,10 +10,12 @@ import {
     Arg,
     Authorized,
     Ctx,
+    FieldResolver,
     ID,
     Mutation,
     Query,
     Resolver,
+    Root,
 } from "type-graphql"
 import { AppError } from "../../../middlewares/error-handler"
 import { Context, Roles, UserActionType } from "../../../types/types"
@@ -43,6 +45,34 @@ function isAuthorIncomplete(author: Author): boolean {
 
 @Resolver(Author)
 export class AuthorsResolver {
+    /**
+     * Field Resolver: Whether the author's record is incomplete.
+     *
+     * @description
+     * Computed server-side so list queries can display the completion
+     * badge without fetching birthDate/nationality/wikipediaUrl/biography.
+     *
+     * @param author - The parent Author object from the query.
+     *
+     * @returns `true` if at least one enrichment field is missing.
+     *
+     * @example
+     * ```graphql
+     * query {
+     *   authors {
+     *     allAuthors {
+     *       firstname
+     *       isIncomplete  # Returns: true
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Boolean)
+    isIncomplete(@Root() author: Author): boolean {
+        return isAuthorIncomplete(author)
+    }
+
     /**
      * GraphQL Query to fetch all authors.
      *

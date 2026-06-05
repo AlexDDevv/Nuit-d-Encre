@@ -7,6 +7,7 @@ export const GET_AUTHORS = gql`
                 id
                 firstname
                 lastname
+                isIncomplete
             }
             totalCount
             totalCountAll

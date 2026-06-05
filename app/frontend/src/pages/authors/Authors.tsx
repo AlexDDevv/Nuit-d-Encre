@@ -3,7 +3,6 @@ import SearchAuthor from "@/components/sections/author/SearchAuthor";
 import Pagination from "@/components/UI/Pagination";
 import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
 import { useAuthorsData } from "@/hooks/author/useAuthorsData";
-import { hasIncompleteInfo } from "@/lib/utils";
 import { AuthorCardProps } from "@/types/types";
 import { Helmet } from "react-helmet-async";
 
@@ -73,7 +72,7 @@ export default function Authors() {
                                 id={author.id}
                                 firstname={author.firstname}
                                 lastname={author.lastname}
-                                isIncomplete={hasIncompleteInfo(author)}
+                                isIncomplete={author.isIncomplete}
                             />
                         ))}
                     </div>
