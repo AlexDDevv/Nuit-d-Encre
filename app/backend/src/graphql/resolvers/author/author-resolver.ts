@@ -91,8 +91,8 @@ export class AuthorsResolver {
                 const trimmedSearch = `%${search.trim()}%`;
 
                 filteredQuery.andWhere(new Brackets(qb => {
-                    qb.where("author.firstname ILIKE :search", { search: trimmedSearch })
-                        .orWhere("author.lastname ILIKE :search", { search: trimmedSearch })
+                    qb.where("unaccent(author.firstname) ILIKE unaccent(:search)", { search: trimmedSearch })
+                        .orWhere("unaccent(author.lastname) ILIKE unaccent(:search)", { search: trimmedSearch })
                 }));
             }
 
