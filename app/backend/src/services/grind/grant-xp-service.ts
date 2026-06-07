@@ -1,3 +1,4 @@
+import { dataSource } from "../../database/config/datasource";
 import { User } from "../../database/entities/user/user";
 import { UserActions } from "../../database/entities/user/user-actions";
 import { GrantXPOptions, UserActionType } from "../../types/types";
@@ -15,7 +16,6 @@ export async function grantXpService(
 
     user.xp = newXP;
     user.level = newLevel;
-    await User.save(user);
 
     const action = new UserActions();
     action.user = user;
@@ -30,5 +30,10 @@ export async function grantXpService(
         action.metadata = JSON.stringify(options.metadata);
     }
 
-    await UserActions.save(action);
+    // The XP update and its audit log must stay consistent: persist both
+    // in a single transaction so a failure can't leave one without the other.
+    await dataSource.transaction(async (manager) => {
+        await manager.save(user);
+        await manager.save(action);
+    });
 }
