@@ -19,5 +19,13 @@
     ],
     "author": "AlexDDevv",
     "license": "GPL-2.0",
-    "packageManager": "pnpm@10.33.0"
+    "packageManager": "pnpm@10.33.0",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@apollo/protobufjs",
+            "argon2",
+            "esbuild",
+            "unrs-resolver"
+        ]
+    }
 }
