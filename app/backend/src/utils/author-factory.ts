@@ -20,6 +20,11 @@ function parseFullName(fullName: string): AuthorNameParts {
 /**
  * Finds an author by first and last name, or creates a new one if not found.
  *
+ * Concurrent-safe: the insert uses ON CONFLICT DO NOTHING against the unique
+ * constraint on (firstname, lastname), so two simultaneous requests for the
+ * same author can't fail — the loser simply reads the row the winner created.
+ * No error is raised, which also keeps an enclosing transaction usable.
+ *
  * @param fullName The full name of the author (e.g., "Antoine de Saint-Exupéry")
  * @param user The user creating the author
  * @param manager Optional EntityManager to use within a transaction
@@ -35,20 +40,27 @@ export async function getOrCreateAuthorByFullName(
 
         const repo = manager ? manager.getRepository(Author) : Author.getRepository();
 
-        let author = await repo.findOne({
+        const existing = await repo.findOne({
+            where: { firstname, lastname },
+        });
+
+        if (existing) {
+            return existing;
+        }
+
+        await repo
+            .createQueryBuilder()
+            .insert()
+            .values({ firstname, lastname, user })
+            .orIgnore()
+            .execute();
+
+        const author = await repo.findOne({
             where: { firstname, lastname },
         });
 
         if (!author) {
-            author = new Author();
-            author.firstname = firstname;
-            author.lastname = lastname;
-            author.user = user;
-            if (manager) {
-                await manager.save(author);
-            } else {
-                await author.save();
-            }
+            throw new Error("Author not found after insert");
         }
 
         return author;

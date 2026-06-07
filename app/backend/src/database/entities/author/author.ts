@@ -17,6 +17,7 @@ import {
     ManyToOne,
     OneToMany,
     PrimaryGeneratedColumn,
+    Unique,
 } from "typeorm";
 import { User } from "../user/user";
 import { Book } from "../book/book";
@@ -52,6 +53,7 @@ import { Book } from "../book/book";
  */
 @ObjectType()
 @Entity({ name: "author" })
+@Unique("UQ_author_fullname", ["firstname", "lastname"])
 export class Author extends BaseEntity {
     /**
      * Unique identifier for the author
