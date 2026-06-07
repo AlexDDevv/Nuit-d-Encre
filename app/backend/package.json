@@ -12,6 +12,14 @@
     "author": "",
     "license": "ISC",
     "description": "",
+    "packageManager": "pnpm@10.33.0",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@apollo/protobufjs",
+            "argon2",
+            "unrs-resolver"
+        ]
+    },
     "dependencies": {
         "@apollo/server": "^4.13.0",
         "argon2": "^0.41.1",
