@@ -128,7 +128,17 @@ if (!process.env.APP_PORT) {
                     keys: [process.env.COOKIE_SECRET || "default-secret"],
                 });
 
-                return { cookies };
+                // Client IP for rate limiting. Behind the Vite proxy / a
+                // reverse proxy the real client is in x-forwarded-for.
+                const forwarded = req.headers["x-forwarded-for"];
+                const ip =
+                    (typeof forwarded === "string" && forwarded.length > 0
+                        ? forwarded.split(",")[0]?.trim()
+                        : undefined) ??
+                    req.socket?.remoteAddress ??
+                    "unknown";
+
+                return { cookies, ip };
             },
         });
 

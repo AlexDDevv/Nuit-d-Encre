@@ -5,6 +5,7 @@ import { registerEnumType } from "type-graphql";
 export type Context = {
     cookies: Cookies;
     user: User | null | undefined;
+    ip: string;
 };
 
 export const Roles = {

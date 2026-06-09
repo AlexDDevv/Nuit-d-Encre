@@ -10,6 +10,7 @@ import { AppError } from "../../../middlewares/error-handler";
 import { Context, Roles, UserActionType } from "../../../types/types";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory";
+import { enforceRateLimit } from "../../../middlewares/rate-limiter";
 
 const DB_THRESHOLD = 5;
 const EXTERNAL_LIMIT = 5;
@@ -155,6 +156,8 @@ export class BookSearchResolver {
         @Arg("isbn13") isbn13: string,
         @Ctx() ctx: Context,
     ): Promise<Book> {
+        enforceRateLimit("importBook", ctx.ip);
+
         const user = ctx.user;
         if (!user) throw new AppError("User not found", 404, "NotFoundError");
 

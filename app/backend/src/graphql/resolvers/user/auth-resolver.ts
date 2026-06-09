@@ -14,6 +14,7 @@ import {
     removeBanner,
 } from "../../../services/auth-service";
 import { Context, Roles } from "../../../types/types";
+import { enforceRateLimit } from "../../../middlewares/rate-limiter";
 import { LogUserInput } from "../../inputs/create/user/create-auth-input";
 import { UpdateProfileInput } from "../../inputs/update/user/update-profile-input";
 
@@ -36,8 +37,11 @@ export class AuthResolver {
     @Mutation(() => User)
     async register(
         @Arg("data") data: CreateUserInput, // Input object containing email and password
+        @Ctx() context: Context,
     ): Promise<User> {
         try {
+            enforceRateLimit("register", context.ip);
+
             const { email, password, userName } = data;
 
             return await register(email, password, userName, Roles.User);
@@ -62,6 +66,10 @@ export class AuthResolver {
         @Arg("data") data: LogUserInput, // Input object containing email and password
         @Ctx() context: Context, // Context object containing cookies
     ): Promise<LogInResponse> {
+        // Outside the try: the catch below maps everything to 401, which
+        // would otherwise mask the 429 rate-limit error.
+        enforceRateLimit("login", context.ip);
+
         try {
             const { email, password } = data;
 
