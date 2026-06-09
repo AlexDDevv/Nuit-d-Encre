@@ -13,6 +13,9 @@ export const dataSource = new DataSource({
     entities: [join(__dirname, "../entities/**/*.{ts,js}")],
     migrations: [join(__dirname, "../migrations/**/*.{ts,js}")],
     synchronize: false,
-    migrationsRun: true,
+    // Auto-run pending migrations on boot in dev for convenience. In prod,
+    // run them as an explicit deploy step (pnpm migration:run) so a failing
+    // or slow migration can't block app startup or race across instances.
+    migrationsRun: process.env.NODE_ENV !== "production",
     logging: true,
 });
