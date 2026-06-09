@@ -29,7 +29,8 @@ export function slugify(text: string): string {
         .trim()
         .replace(/[^a-z0-9\s-]/g, "")
         .replace(/\s+/g, "-")
-        .replace(/-+/g, "-");
+        .replace(/-+/g, "-")
+        .replace(/^-+|-+$/g, "");
 }
 
 export const hasIncompleteBookInfo = (book: Book): boolean => {
