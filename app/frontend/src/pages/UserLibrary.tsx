@@ -34,7 +34,6 @@ export default function UserLibrary() {
         filters,
         setFilters,
     } = useUserBooksData({ mode: "library" });
-    console.log("🚀 ~ UserLibrary ~ userBooks:", userBooks)
 
     const handleStatusChange = (statusEnum: UserBookStatus | "") => {
         setSelectedStatus(statusEnum);

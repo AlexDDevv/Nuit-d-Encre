@@ -66,7 +66,6 @@ export default function Signup() {
 
             // Handle GraphQL errors : invalid formats, email already used...
             if (err instanceof ApolloError) {
-                console.log("err.graphQLErrors", err.graphQLErrors);
                 const emailError = err.graphQLErrors.find((e) =>
                     e.message.includes("Email already exists"),
                 );
