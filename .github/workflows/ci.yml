@@ -1,0 +1,62 @@
+name: CI
+
+on:
+    push:
+        branches: [master, develop]
+    pull_request:
+
+jobs:
+    frontend:
+        name: Frontend (lint, typecheck, test)
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: app/frontend
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+              working-directory: .
+
+            - name: Lint
+              run: pnpm lint
+
+            - name: Typecheck
+              run: pnpm exec tsc -b
+
+            - name: Test
+              run: pnpm test
+
+    backend:
+        name: Backend (typecheck, test)
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: app/backend
+        steps:
+            - uses: actions/checkout@v4
+
+            - uses: pnpm/action-setup@v4
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: pnpm
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+              working-directory: .
+
+            - name: Typecheck
+              run: pnpm exec tsc --noEmit
+
+            - name: Test
+              run: pnpm test
