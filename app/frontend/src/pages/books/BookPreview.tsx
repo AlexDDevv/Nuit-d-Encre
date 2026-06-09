@@ -1,5 +1,5 @@
 import { useParams, Navigate, useNavigate } from "react-router-dom";
-import { useQuery } from "@apollo/client";
+import { ApolloError, useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
 import { PREVIEW_BOOK } from "@/graphql/book/book-search";
 import { BookSearchResult } from "@/types/types";
@@ -46,8 +46,10 @@ export default function BookPreview() {
             });
 
             navigate(`/books/${imported.id}-${slugify(imported.title)}`);
-        } catch (err: any) {
-            const message = err?.graphQLErrors?.[0]?.message ?? "Erreur lors de l'import.";
+        } catch (err) {
+            const message =
+                (err instanceof ApolloError && err.graphQLErrors[0]?.message) ||
+                "Erreur lors de l'import.";
 
             showToast({
                 type: message.includes("déjà") ? "info" : "error",

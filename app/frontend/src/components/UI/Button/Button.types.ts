@@ -92,11 +92,6 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     category?: string;
 
     /**
-     * Fonction de clic sur le bouton
-     */
-    handleClick?: React.MouseEventHandler<HTMLButtonElement>;
-
-    /**
      * Fonction de clic sur l'icône de droite (état coché)
      */
     handleCheck?: React.MouseEventHandler<HTMLButtonElement>;

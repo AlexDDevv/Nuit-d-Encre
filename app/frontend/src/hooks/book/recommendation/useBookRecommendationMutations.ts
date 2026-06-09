@@ -75,7 +75,7 @@ export function useBookRecommendationMutations() {
 
     const toggleBookRecommendation = async (
         bookId: string,
-    ): Promise<{ recommendation: any; action: string } | undefined> => {
+    ): Promise<{ recommendation: unknown; action: string } | undefined> => {
         const result = await toggleBookRecommendationMutation({
             variables: { data: { bookId } },
         });

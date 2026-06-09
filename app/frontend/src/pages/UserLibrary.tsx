@@ -75,7 +75,7 @@ export default function UserLibrary() {
                 description:
                     "La modification du statut de votre livre a bien été prise en compte !",
             });
-        } catch (error) {
+        } catch {
             showToast({
                 type: "error",
                 title: "Erreur",

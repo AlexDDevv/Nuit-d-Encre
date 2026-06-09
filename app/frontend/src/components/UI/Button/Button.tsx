@@ -36,7 +36,6 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
             size = 'md',
             fullWidth = false,
             disabled = false,
-            handleClick: _handleClick,
             handleCheck,
             loading = false,
             isChecked,
