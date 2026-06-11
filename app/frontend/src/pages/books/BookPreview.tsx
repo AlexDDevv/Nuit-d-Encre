@@ -7,6 +7,7 @@ import { useImportBook } from "@/hooks/book/useImportBook";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
 import { slugify } from "@/lib/utils";
+import BookCover from "@/components/sections/book/BookCover";
 import Button from "@/components/UI/Button/Button";
 import BookPreviewSkeleton from "@/components/UI/skeleton/BookPreviewSkeleton";
 
@@ -67,16 +68,12 @@ export default function BookPreview() {
             </Helmet>
             <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-10">
                 <div className="flex gap-8">
-                    <div className="h-56 w-40 shrink-0 overflow-hidden rounded-lg">
-                        <img
-                            src={book.coverUrl ?? "/images/bookCover.svg"}
-                            alt={`Couverture de ${book.title}`}
-                            className="h-full w-full object-cover"
-                            onError={(e) => {
-                                (e.target as HTMLImageElement).src = "/images/bookCover.svg";
-                            }}
-                        />
-                    </div>
+                    <BookCover
+                        coverUrl={book.coverUrl}
+                        title={book.title}
+                        author={book.author ?? ""}
+                        className="h-56 w-40 shrink-0 rounded-lg"
+                    />
                     <div className="flex flex-col gap-2">
                         <div>
                             <h1 className="text-foreground text-2xl font-bold">{book.title}</h1>

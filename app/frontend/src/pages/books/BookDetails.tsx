@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import { parseGraphQLError } from "@/utils/graphql-error";
 import BooksByCategory from "@/components/sections/book/BooksByCategory";
+import BookCover from "@/components/sections/book/BookCover";
 import BookStats from "@/components/sections/book/BookStats";
 import BookReviews from "@/components/sections/book/BookReviews";
 
@@ -125,13 +126,12 @@ export default function BookDetails() {
                 </Banner>
             )}
             <div className="flex gap-10">
-                <div className="max-w-3xs max-h-96 rounded-lg overflow-hidden">
-                    <img
-                        src={book.coverUrl || "/images/bookCover.svg"}
-                        alt="Couverture d'un livre"
-                        className="h-full w-full"
-                    />
-                </div>
+                <BookCover
+                    coverUrl={book.coverUrl}
+                    title={book.title}
+                    author={`${book.author.firstname} ${book.author.lastname}`}
+                    className="aspect-[2/3] w-64 shrink-0 rounded-lg"
+                />
                 <div className="flex flex-col gap-5">
                     <div>
                         <h1 className="text-foreground text-4xl font-bold">
