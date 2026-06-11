@@ -15,6 +15,18 @@ export const formatShortLabelMap: Record<BookFormat, string> = {
     pocket: "Poche",
 };
 
+/** Libellé lisible des sources externes (chip de la carte d'import). */
+export const sourceLabelMap: Record<string, string> = {
+    open_library: "Open Library",
+    google_books: "Google Books",
+};
+
+/** Renvoie le libellé d'une source externe, ou « Source externe » par défaut. */
+export function getSourceLabel(source?: string): string {
+    if (!source) return "Source externe";
+    return sourceLabelMap[source] ?? source;
+}
+
 export const languageLabelMap: Record<string, string> = {
     fr: "Français",
     en: "Anglais",

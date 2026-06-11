@@ -6,6 +6,13 @@ export const SEARCH_BOOKS = gql`
             id
             title
             author
+            authorId
+            category
+            format
+            averageRating
+            reviewCount
+            isInLibrary
+            isImported
             isbn13
             year
             publisher
