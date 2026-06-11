@@ -2,6 +2,7 @@ import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import { cn } from "@/lib/utils";
 import { BookCardLibraryProps, UserBookStatus } from "@/types/types";
 import UserBookInfo from "@/components/sections/library/UserBookInfo";
+import BookCover from "@/components/sections/book/BookCover";
 import Button from "@/components/UI/Button/Button";
 import FavoriteBook from "@/components/sections/library/FavoriteBook";
 
@@ -41,15 +42,13 @@ export default function BookCardLibrary({
                 />
             </div>
             <div className="flex gap-8">
-                <div className="w-32 shrink-0">
-                    <img
-                        src="/images/bookCover.svg"
-                        alt={`Couverture du livre ${book.title} de ${book.author.firstname} ${book.author.lastname}`}
-                        width="128"
-                        height="192"
-                        loading="lazy"
-                    />
-                </div>
+                <BookCover
+                    coverUrl={book.coverUrl}
+                    title={book.title}
+                    author={`${book.author.firstname} ${book.author.lastname}`}
+                    compact
+                    className="aspect-[2/3] w-32 shrink-0 rounded-md"
+                />
                 <div className="flex flex-col gap-5">
                     <header className="text-card-foreground flex flex-col">
                         <h2

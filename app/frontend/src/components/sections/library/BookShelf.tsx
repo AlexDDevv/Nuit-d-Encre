@@ -6,6 +6,7 @@ import {
 } from "@/components/UI/Tooltip";
 import { BookShelfProps } from "@/types/types";
 import UserBookInfo from "./UserBookInfo";
+import BookCover from "@/components/sections/book/BookCover";
 
 export default function BookShelf({
     book,
@@ -17,13 +18,12 @@ export default function BookShelf({
                 <TooltipTrigger asChild>
                     <article className="border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring relative flex items-center justify-center overflow-hidden rounded-xl border-2 px-6 py-5 transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
                         <div className="relative w-28">
-                            <img
-                                src="/images/bookCover.svg"
-                                alt={`Couverture du livre ${book.title}`}
-                                width="112"
-                                height="140"
-                                loading="lazy"
-                                className="rounded-md shadow-lg transition-shadow group-hover:shadow-xl"
+                            <BookCover
+                                coverUrl={book.coverUrl}
+                                title={book.title}
+                                author={`${book.author.firstname} ${book.author.lastname}`}
+                                compact
+                                className="aspect-[4/5] w-full rounded-md shadow-lg transition-shadow group-hover:shadow-xl"
                             />
                             <div className="bg-secondary absolute -left-10 -top-4 flex min-w-16 -rotate-45 items-center justify-center px-3 py-0.5 shadow-md">
                                 <span className="text-secondary-foreground text-xs">

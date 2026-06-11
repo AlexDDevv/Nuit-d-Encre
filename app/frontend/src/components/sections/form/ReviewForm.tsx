@@ -8,6 +8,7 @@ import { Sparkles } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
+import BookCover from "@/components/sections/book/BookCover";
 import { parseGraphQLError } from "@/utils/graphql-error";
 
 interface ReviewFormProps {
@@ -108,13 +109,13 @@ export default function ReviewForm({
             {/* Book info (only in modal variant) */}
             {variant === "modal" && (
                 <div className="flex items-center gap-4">
-                    <div className="h-16 w-12 shrink-0">
-                        <img
-                            src="/images/bookCover.svg"
-                            alt={book.title}
-                            className="h-full w-full rounded-sm object-cover"
-                        />
-                    </div>
+                    <BookCover
+                        coverUrl={book.coverUrl}
+                        title={book.title}
+                        author={`${book.author.firstname} ${book.author.lastname}`}
+                        compact
+                        className="h-16 w-12 shrink-0 rounded-sm"
+                    />
                     <div>
                         <h3 className="text-foreground font-semibold">
                             {book.title}
