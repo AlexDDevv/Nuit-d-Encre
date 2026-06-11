@@ -1,8 +1,11 @@
 import { Arg, Authorized, Ctx, Mutation, Query, Resolver } from "type-graphql";
 import { Brackets } from "typeorm";
 import { Book } from "../../../database/entities/book/book";
+import { BookReview } from "../../../database/entities/book/bookReview";
+import { UserBook } from "../../../database/entities/user/user-book";
 import { Category } from "../../../database/entities/category/category";
 import { BookSearchResult } from "../../types/book-search-result";
+import { whoami } from "../../../services/auth-service";
 import { OpenLibraryService } from "../../../services/books/open-library.service";
 import { GoogleBooksService } from "../../../services/books/google-books.service";
 import { CloudinaryService } from "../../../services/cloudinary.service";
@@ -27,6 +30,7 @@ export class BookSearchResolver {
     @Query(() => [BookSearchResult])
     async searchBooks(
         @Arg("query") query: string,
+        @Ctx() context: Context,
     ): Promise<BookSearchResult[]> {
         const trimmed = query.trim();
         if (trimmed.length < 3) return [];
@@ -37,9 +41,11 @@ export class BookSearchResolver {
 
         // 1. DB search
         const dbBooks = await Book.createQueryBuilder("book")
-            .select(["book.id", "book.title", "book.isbn13", "book.publishedYear", "book.publisher", "book.language", "book.coverUrl"])
+            .select(["book.id", "book.title", "book.isbn13", "book.publishedYear", "book.publisher", "book.language", "book.coverUrl", "book.format", "book.isImported"])
             .leftJoin("book.author", "author")
-            .addSelect(["author.firstname", "author.lastname"])
+            .addSelect(["author.id", "author.firstname", "author.lastname"])
+            .leftJoin("book.category", "category")
+            .addSelect(["category.name"])
             .where(
                 new Brackets((qb) => {
                     qb.where("unaccent(book.title) ILIKE unaccent(:q)", {
@@ -61,17 +67,68 @@ export class BookSearchResolver {
             .limit(10)
             .getMany();
 
-        const dbResults: BookSearchResult[] = dbBooks.map((b) => ({
-            id: b.id,
-            title: b.title,
-            author: `${b.author.firstname} ${b.author.lastname}`.trim(),
-            isbn13: b.isbn13,
-            year: b.publishedYear,
-            publisher: b.publisher,
-            language: b.language,
-            coverUrl: b.coverUrl,
-            isInDatabase: true,
-        }));
+        // Agrégats note + appartenance bibliothèque pour enrichir les cartes
+        // internes (harmonisées avec l'accueil), en requêtes groupées (pas de N+1).
+        const bookIds = dbBooks.map((b) => b.id);
+        const ratingsById = new Map<number, { avg: number; count: number }>();
+        const librarySet = new Set<number>();
+
+        if (bookIds.length) {
+            const ratingRows = await BookReview.createQueryBuilder("review")
+                .select("review.bookId", "bookId")
+                .addSelect("AVG(review.rating)", "avg")
+                .addSelect("COUNT(*)", "count")
+                .where("review.bookId IN (:...bookIds)", { bookIds })
+                .groupBy("review.bookId")
+                .getRawMany();
+            for (const r of ratingRows) {
+                ratingsById.set(Number(r.bookId), {
+                    avg: parseFloat(Number(r.avg).toFixed(2)),
+                    count: Number(r.count),
+                });
+            }
+
+            // La query n'est pas @Authorized : on résout l'utilisateur via le
+            // cookie pour pouvoir exposer isInLibrary sur les résultats.
+            let user = context.user;
+            if (!user) {
+                try {
+                    user = (await whoami(context.cookies)) ?? undefined;
+                } catch {
+                    user = undefined;
+                }
+            }
+            if (user) {
+                const libRows = await UserBook.createQueryBuilder("ub")
+                    .select("ub.bookId", "bookId")
+                    .where("ub.userId = :userId", { userId: user.id })
+                    .andWhere("ub.bookId IN (:...bookIds)", { bookIds })
+                    .getRawMany();
+                for (const r of libRows) librarySet.add(Number(r.bookId));
+            }
+        }
+
+        const dbResults: BookSearchResult[] = dbBooks.map((b) => {
+            const rating = ratingsById.get(b.id);
+            return {
+                id: b.id,
+                title: b.title,
+                author: `${b.author.firstname} ${b.author.lastname}`.trim(),
+                authorId: b.author.id,
+                category: b.category?.name,
+                format: b.format,
+                averageRating: rating ? rating.avg : undefined,
+                reviewCount: rating ? rating.count : 0,
+                isInLibrary: librarySet.has(b.id),
+                isImported: b.isImported,
+                isbn13: b.isbn13,
+                year: b.publishedYear,
+                publisher: b.publisher,
+                language: b.language,
+                coverUrl: b.coverUrl,
+                isInDatabase: true,
+            };
+        });
 
         // 2. Si DB suffisante, retour immédiat — zéro appel externe
         if (dbResults.length >= DB_THRESHOLD) return dbResults;

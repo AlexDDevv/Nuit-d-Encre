@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType } from "type-graphql";
+import { Field, Float, ID, Int, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class BookSearchResult {
@@ -10,6 +10,29 @@ export class BookSearchResult {
 
     @Field({ nullable: true })
     author?: string;
+
+    // ── Champs enrichis pour les résultats DB (cartes harmonisées avec
+    // l'accueil) ; restent nuls pour les résultats externes. ──
+    @Field(() => ID, { nullable: true })
+    authorId?: number;
+
+    @Field({ nullable: true })
+    category?: string;
+
+    @Field({ nullable: true })
+    format?: string;
+
+    @Field(() => Float, { nullable: true })
+    averageRating?: number;
+
+    @Field(() => Int, { nullable: true })
+    reviewCount?: number;
+
+    @Field({ nullable: true })
+    isInLibrary?: boolean;
+
+    @Field({ nullable: true })
+    isImported?: boolean;
 
     @Field({ nullable: true })
     isbn13?: string;
