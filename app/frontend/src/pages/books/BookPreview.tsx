@@ -1,14 +1,18 @@
-import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { ApolloError, useQuery } from "@apollo/client";
 import { Helmet } from "react-helmet-async";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { PREVIEW_BOOK } from "@/graphql/book/book-search";
 import { BookSearchResult } from "@/types/types";
 import { useImportBook } from "@/hooks/book/useImportBook";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
 import { slugify } from "@/lib/utils";
-import BookCover from "@/components/sections/book/BookCover";
 import Button from "@/components/UI/Button/Button";
+import { Glyph } from "@/components/sections/book/preview/Glyph";
+import { sourceInfo } from "@/components/sections/book/preview/previewLabels";
+import { ArrivingCover } from "@/components/sections/book/preview/ArrivingCover";
+import { PreviewDetails } from "@/components/sections/book/preview/PreviewDetails";
+import { PreviewNotice } from "@/components/sections/book/preview/PreviewNotice";
 import BookPreviewSkeleton from "@/components/UI/skeleton/BookPreviewSkeleton";
 
 export default function BookPreview() {
@@ -18,20 +22,23 @@ export default function BookPreview() {
     const { showToast } = useToast();
     const { importBook, isImporting } = useImportBook();
 
-    const { data, loading } = useQuery<{ previewBook: BookSearchResult | null }>(
-        PREVIEW_BOOK,
-        { variables: { isbn13 }, skip: !isbn13 }
-    );
+    const { data, loading } = useQuery<{ previewBook: BookSearchResult | null }>(PREVIEW_BOOK, {
+        variables: { isbn13 },
+        skip: !isbn13,
+    });
 
     if (loading) return <BookPreviewSkeleton />;
 
     const book = data?.previewBook;
     if (!book) return <Navigate to="/books" replace />;
 
-    // Livre déjà en DB → redirection directe vers sa page
+    // Déjà en base → on file directement sur sa fiche.
     if (book.isInDatabase && book.id) {
         return <Navigate to={`/books/${book.id}-${slugify(book.title)}`} replace />;
     }
+
+    const { label: source } = sourceInfo(book.source);
+    const loginHref = `/connexion?redirect=${encodeURIComponent(`/books/preview/${isbn13}`)}`;
 
     const handleImport = async () => {
         if (!isbn13) return;
@@ -39,19 +46,16 @@ export default function BookPreview() {
             const result = await importBook({ variables: { isbn13 } });
             const imported = result.data?.importBook;
             if (!imported) return;
-
             showToast({
                 type: "success",
                 title: "Livre ajouté",
-                description: `"${imported.title}" est maintenant dans la bibliothèque.`,
+                description: `« ${imported.title} » a rejoint vos rayons.`,
             });
-
             navigate(`/books/${imported.id}-${slugify(imported.title)}`);
         } catch (err) {
             const message =
                 (err instanceof ApolloError && err.graphQLErrors[0]?.message) ||
                 "Erreur lors de l'import.";
-
             showToast({
                 type: message.includes("déjà") ? "info" : "error",
                 title: message.includes("déjà") ? "Déjà disponible" : "Erreur",
@@ -66,55 +70,59 @@ export default function BookPreview() {
                 <title>{book.title} — Aperçu sur Nuit d'Encre</title>
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet>
-            <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-10">
-                <div className="flex gap-8">
-                    <BookCover
-                        coverUrl={book.coverUrl}
-                        title={book.title}
-                        author={book.author ?? ""}
-                        className="h-56 w-40 shrink-0 rounded-lg"
+
+            <div className="mx-auto w-full max-w-5xl px-5 pb-24 pt-7 sm:px-8">
+                <Button
+                    variant="underlineText"
+                    size="sm"
+                    to="/books"
+                    ariaLabel="Retourner à la recherche"
+                    leftIcon={<Glyph name="arrowL" size={14} />}
+                >
+                    Recherche
+                </Button>
+
+                <div className="mb-7 mt-8 flex items-center gap-3">
+                    <span
+                        className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.24em]"
+                        style={{ color: "hsl(43 30% 60%)" }}
+                    >
+                        <Glyph name="external" size={12} /> Venu d'ailleurs — pas encore dans vos
+                        rayons
+                    </span>
+                    <span
+                        className="h-px flex-1"
+                        style={{
+                            backgroundImage:
+                                "repeating-linear-gradient(to right, hsl(43 59% 81% / 0.35) 0 6px, transparent 6px 12px)",
+                        }}
                     />
-                    <div className="flex flex-col gap-2">
-                        <div>
-                            <h1 className="text-foreground text-2xl font-bold">{book.title}</h1>
-                            {book.author && (
-                                <p className="text-card-foreground font-semibold italic">{book.author}</p>
-                            )}
-                        </div>
-                        {book.year && (
-                            <p className="text-secondary-foreground text-sm">Publié en {book.year}</p>
-                        )}
-                        {book.publisher && (
-                            <p className="text-secondary-foreground text-sm">{book.publisher}</p>
-                        )}
-                        {book.language && (
-                            <p className="text-secondary-foreground text-sm">Langue : {book.language}</p>
-                        )}
-                        {book.isbn13 && (
-                            <p className="text-secondary-foreground text-sm">ISBN : {book.isbn13}</p>
-                        )}
-                    </div>
+                    <span
+                        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 font-mono text-[10.5px] tracking-wide"
+                        style={{
+                            borderColor: "hsl(43 59% 81% / 0.3)",
+                            color: "hsl(43 59% 81% / 0.9)",
+                            background: "hsl(20 3% 12% / 0.6)",
+                        }}
+                    >
+                        <Glyph name="external" size={11} /> {source}
+                    </span>
                 </div>
 
-                {user ? (
-                    <Button
-                        onClick={handleImport}
-                        disabled={isImporting}
-                        fullWidth
-                        ariaLabel="Ajouter ce livre à la bibliothèque Nuit d'Encre"
-                    >
-                        {isImporting ? "Import en cours..." : "Ajouter à la bibliothèque Nuit d'Encre"}
-                    </Button>
-                ) : (
-                    <Button
-                        disabled
-                        fullWidth
-                        ariaLabel="Connexion requise pour importer un livre"
-                        title="Connectez-vous pour importer ce livre"
-                    >
-                        Connexion requise pour importer dans Nuit d'Encre
-                    </Button>
-                )}
+                <div className="grid gap-10 sm:gap-12 md:grid-cols-[300px_1fr] md:items-start">
+                    <div className="md:pt-2">
+                        <ArrivingCover book={book} />
+                    </div>
+                    <PreviewDetails
+                        book={book}
+                        isAuthenticated={!!user}
+                        isImporting={isImporting}
+                        onImport={handleImport}
+                        loginHref={loginHref}
+                    />
+                </div>
+
+                <PreviewNotice book={book} />
             </div>
         </>
     );

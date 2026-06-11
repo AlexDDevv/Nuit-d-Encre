@@ -30,11 +30,15 @@ export const PREVIEW_BOOK = gql`
             id
             title
             author
+            authorId
+            authorBookCount
             isbn13
             year
             publisher
             language
             coverUrl
+            pageCount
+            description
             isInDatabase
             source
         }

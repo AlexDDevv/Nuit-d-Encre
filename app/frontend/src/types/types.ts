@@ -155,6 +155,8 @@ export interface BookSearchResult {
     author?: string;
     // Champs enrichis pour les résultats déjà en base (cartes harmonisées) :
     authorId?: string;
+    // Nombre d'ouvrages de l'auteur déjà en base (signal « auteur connu » à l'import) :
+    authorBookCount?: number;
     category?: string;
     format?: BookFormat;
     averageRating?: number;
@@ -166,6 +168,8 @@ export interface BookSearchResult {
     publisher?: string;
     language?: string;
     coverUrl?: string;
+    pageCount?: number;
+    description?: string;
     isInDatabase: boolean;
     source?: "open_library" | "google_books";
 }
