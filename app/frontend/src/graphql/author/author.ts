@@ -8,6 +8,8 @@ export const GET_AUTHORS = gql`
                 firstname
                 lastname
                 isIncomplete
+                nationality
+                bookCount
             }
             totalCount
             totalCountAll
@@ -31,6 +33,17 @@ export const GET_AUTHOR = gql`
             books {
                 id
                 title
+                isImported
+                coverUrl
+                publishedYear
+                format
+                category {
+                    id
+                    name
+                }
+                averageRating
+                reviewCount
+                isInLibrary
             }
             user {
                 id

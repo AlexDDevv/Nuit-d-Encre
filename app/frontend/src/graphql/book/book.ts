@@ -7,6 +7,16 @@ export const GET_BOOKS = gql`
                 id
                 title
                 isImported
+                coverUrl
+                publishedYear
+                format
+                category {
+                    id
+                    name
+                }
+                averageRating
+                reviewCount
+                isInLibrary
                 author {
                     id
                     firstname
