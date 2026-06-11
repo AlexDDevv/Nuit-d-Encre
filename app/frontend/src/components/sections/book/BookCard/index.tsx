@@ -4,7 +4,7 @@ import { formatShortLabelMap } from "@/lib/filterMaps";
 import { interactiveCardShell } from "@/components/UI/cardShell";
 import IncompleteChip from "@/components/UI/IncompleteChip";
 import { BookCardProps } from "@/types/types";
-import FallbackCover from "./FallbackCover";
+import FallbackCover from "../FallbackCover";
 import LibraryMark from "./LibraryMark";
 import BookCardMeta from "./BookCardMeta";
 import BookCardRating from "./BookCardRating";

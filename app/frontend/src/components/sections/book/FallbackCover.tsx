@@ -4,16 +4,51 @@ import { cn } from "@/lib/utils";
 type FallbackCoverProps = {
     title: string;
     author: string;
+    /**
+     * Variante condensée (dégradé + plume seule, sans texte) pour les petites
+     * vignettes (< ~150px) où le titre/auteur seraient illisibles.
+     */
+    compact?: boolean;
 };
+
+const gradient =
+    "bg-[radial-gradient(125%_85%_at_50%_0%,hsl(43_30%_21%)_0%,hsl(20_3%_14%)_52%,hsl(20_3%_10%)_100%)]";
 
 /**
  * Couverture de substitution stylée « Nuit d'Encre », affichée quand `coverUrl`
  * est absent. Dégradé sombre/doré, cadre intérieur, titre en serif et plume —
  * jamais une icône générique de livre.
  */
-export default function FallbackCover({ title, author }: FallbackCoverProps) {
+export default function FallbackCover({
+    title,
+    author,
+    compact = false,
+}: FallbackCoverProps) {
+    if (compact) {
+        return (
+            <div
+                className={cn(
+                    "absolute inset-0 grid place-items-center",
+                    gradient,
+                )}
+            >
+                <div className="border-foreground/20 pointer-events-none absolute inset-1.5 rounded-md border" />
+                <FaFeatherPointed
+                    className="text-primary opacity-60"
+                    size={26}
+                    aria-hidden="true"
+                />
+            </div>
+        );
+    }
+
     return (
-        <div className="absolute inset-0 flex flex-col items-center justify-between bg-[radial-gradient(125%_85%_at_50%_0%,hsl(43_30%_21%)_0%,hsl(20_3%_14%)_52%,hsl(20_3%_10%)_100%)] px-4 py-5 text-center">
+        <div
+            className={cn(
+                "absolute inset-0 flex flex-col items-center justify-between px-4 py-5 text-center",
+                gradient,
+            )}
+        >
             <div className="border-foreground/20 pointer-events-none absolute inset-2.5 rounded-md border" />
             <div className="text-foreground/55 font-quote text-[9.5px] uppercase tracking-[0.32em]">
                 Nuit d'Encre
