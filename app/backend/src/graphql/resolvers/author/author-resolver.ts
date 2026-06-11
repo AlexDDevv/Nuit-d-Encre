@@ -12,6 +12,7 @@ import {
     Ctx,
     FieldResolver,
     ID,
+    Int,
     Mutation,
     Query,
     Resolver,
@@ -27,6 +28,7 @@ import { UpdateAuthorInput } from "../../inputs/update/author/update-author-inpu
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { AuthorsResult } from "../../../database/filteredResults/authors/authors-result"
 import { AuthorsQueryInput } from "../../queries/authors/authors-query-input"
+import { Book } from "../../../database/entities/book/book"
 
 function isAuthorIncomplete(author: Author): boolean {
     return (
@@ -71,6 +73,41 @@ export class AuthorsResolver {
     @FieldResolver(() => Boolean)
     isIncomplete(@Root() author: Author): boolean {
         return isAuthorIncomplete(author)
+    }
+
+    /**
+     * Field Resolver: Number of books associated with the author.
+     *
+     * @description
+     * Computed server-side so list queries (e.g. the authors catalogue cards)
+     * can display the book count without fetching the full books relation.
+     *
+     * @param author - The parent Author object from the query.
+     *
+     * @returns The count of books linked to this author as an integer.
+     *
+     * @example
+     * ```graphql
+     * query {
+     *   authors {
+     *     allAuthors {
+     *       firstname
+     *       bookCount  # Returns: 7
+     *     }
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Int)
+    async bookCount(@Root() author: Author): Promise<number> {
+        try {
+            return await Book.count({
+                where: { author: { id: author.id } }
+            })
+        } catch (error) {
+            console.error("Error counting author books:", error)
+            return 0
+        }
     }
 
     /**

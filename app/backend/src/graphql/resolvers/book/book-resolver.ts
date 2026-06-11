@@ -34,6 +34,8 @@ import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
 import { BookReview } from "../../../database/entities/book/bookReview"
 import { BookRecommendation } from "../../../database/entities/book/bookRecommendation"
+import { UserBook } from "../../../database/entities/user/user-book"
+import { whoami } from "../../../services/auth-service"
 
 const IMPORTED_SUMMARY_PLACEHOLDER = "Importé depuis une source externe.";
 
@@ -633,6 +635,69 @@ export class BooksResolver {
             return !!recommendation;
         } catch (error) {
             console.error("Error checking user recommendation:", error);
+            return false;
+        }
+    }
+
+    /**
+     * Field Resolver: Check if the book is in the current user's library
+     *
+     * @description
+     * Returns true if the authenticated user has this book in their personal
+     * library (a UserBook entry links them), false otherwise. Returns false for
+     * unauthenticated users.
+     *
+     * @param book - The parent Book object from the query.
+     * @param context - GraphQL context containing the authenticated user.
+     *
+     * @returns Boolean indicating if the book is in the user's library.
+     *
+     * @example
+     * ```graphql
+     * query {
+     *   book(id: 1) {
+     *     title
+     *     isInLibrary  # Returns: true or false
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Boolean)
+    async isInLibrary(
+        @Root() book: Book,
+        @Ctx() context: Context
+    ): Promise<boolean> {
+        try {
+            // `context.user` n'est renseigné que par customAuthChecker, donc
+            // seulement sur les resolvers @Authorized. La liste des livres
+            // (catalogue public) ne l'est pas : on résout alors l'utilisateur
+            // directement depuis le cookie pour pouvoir afficher le marqueur
+            // « Dans ma bibliothèque » même sur ces écrans.
+            let user = context.user;
+
+            if (!user) {
+                try {
+                    user = (await whoami(context.cookies)) ?? undefined;
+                } catch {
+                    // Aucun token / token invalide : visiteur anonyme.
+                    user = undefined;
+                }
+            }
+
+            if (!user) {
+                return false;
+            }
+
+            const userBook = await UserBook.findOne({
+                where: {
+                    book: { id: book.id },
+                    user: { id: user.id }
+                }
+            });
+
+            return !!userBook;
+        } catch (error) {
+            console.error("Error checking user library:", error);
             return false;
         }
     }
