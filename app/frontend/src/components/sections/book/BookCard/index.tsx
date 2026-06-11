@@ -4,7 +4,7 @@ import { formatShortLabelMap } from "@/lib/filterMaps";
 import { interactiveCardShell } from "@/components/UI/cardShell";
 import IncompleteChip from "@/components/UI/IncompleteChip";
 import { BookCardProps } from "@/types/types";
-import FallbackCover from "../FallbackCover";
+import BookCover from "../BookCover";
 import LibraryMark from "./LibraryMark";
 import BookCardMeta from "./BookCardMeta";
 import BookCardRating from "./BookCardRating";
@@ -51,18 +51,13 @@ export default function BookCard({
             className={cn(interactiveCardShell, "aspect-[2/3]", className)}
         >
             {/* couverture plein cadre */}
-            <div className="bg-background absolute inset-0">
-                {book.coverUrl ? (
-                    <img
-                        src={book.coverUrl}
-                        alt={`Couverture de ${book.title}`}
-                        loading="lazy"
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
-                    />
-                ) : (
-                    <FallbackCover title={book.title} author={author} />
-                )}
-            </div>
+            <BookCover
+                coverUrl={book.coverUrl}
+                title={book.title}
+                author={author}
+                className="bg-background absolute inset-0"
+                imgClassName="transition-transform duration-500 group-hover:scale-[1.06]"
+            />
 
             {/* voile dégradé pour la lisibilité du texte */}
             <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_top,hsl(20_3%_7%/0.96)_0%,hsl(20_3%_7%/0.78)_26%,hsl(20_3%_7%/0.18)_52%,transparent_72%)]" />
