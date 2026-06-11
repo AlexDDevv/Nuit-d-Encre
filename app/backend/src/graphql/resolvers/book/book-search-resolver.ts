@@ -12,7 +12,11 @@ import { CloudinaryService } from "../../../services/cloudinary.service";
 import { AppError } from "../../../middlewares/error-handler";
 import { Context, Roles, UserActionType } from "../../../types/types";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
-import { getOrCreateAuthorByFullName } from "../../../utils/author-factory";
+import {
+    getOrCreateAuthorByFullName,
+    parseFullName,
+} from "../../../utils/author-factory";
+import { Author } from "../../../database/entities/author/author";
 import { enforceRateLimit } from "../../../middlewares/rate-limiter";
 
 const DB_THRESHOLD = 5;
@@ -200,11 +204,46 @@ export class BookSearchResolver {
             };
         }
 
-        // OL d'abord, Google Books en fallback
-        const olResult = await this.olService.findByIsbn(isbn13);
-        if (olResult) return olResult;
+        // Livre externe : interroger OL + Google Books en parallèle et fusionner
+        // pour maximiser les champs (OL fournit souvent la couverture, Google
+        // Books le résumé et le nombre de pages).
+        const [ol, gb] = await Promise.all([
+            this.olService.findByIsbn(isbn13),
+            this.gbService.findByIsbn(isbn13),
+        ]);
 
-        return this.gbService.findByIsbn(isbn13);
+        if (!ol && !gb) return null;
+
+        const merged: BookSearchResult = {
+            title: ol?.title ?? gb!.title,
+            author: ol?.author ?? gb?.author,
+            isbn13: ol?.isbn13 ?? gb?.isbn13 ?? isbn13,
+            year: ol?.year ?? gb?.year,
+            publisher: ol?.publisher ?? gb?.publisher,
+            language: ol?.language ?? gb?.language,
+            coverUrl: ol?.coverUrl ?? gb?.coverUrl,
+            description: ol?.description ?? gb?.description,
+            pageCount: ol?.pageCount ?? gb?.pageCount,
+            source: ol?.source ?? gb?.source,
+            isInDatabase: false,
+        };
+
+        // Signal « auteur déjà dans la maison » : l'auteur existe-t-il déjà en
+        // BDD (même découpage prénom/nom que celui utilisé à l'import) ?
+        if (merged.author) {
+            const { firstname, lastname } = parseFullName(merged.author);
+            const knownAuthor = await Author.findOne({
+                where: { firstname, lastname },
+            });
+            if (knownAuthor) {
+                merged.authorId = knownAuthor.id;
+                merged.authorBookCount = await Book.count({
+                    where: { author: { id: knownAuthor.id } },
+                });
+            }
+        }
+
+        return merged;
     }
 
     @Authorized(Roles.User, Roles.Admin)

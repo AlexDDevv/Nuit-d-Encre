@@ -7,7 +7,7 @@ import { AuthorNameParts } from "../types/types";
  * Parses the full name into first name and last name.
  * (Adjust as needed; here we split on the last space)
  */
-function parseFullName(fullName: string): AuthorNameParts {
+export function parseFullName(fullName: string): AuthorNameParts {
     const parts = fullName.trim().split(" ");
     if (parts.length === 1) {
         return { firstname: parts[0], lastname: "" };
