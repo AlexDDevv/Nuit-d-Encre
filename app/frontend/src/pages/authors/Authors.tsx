@@ -65,7 +65,7 @@ export default function Authors() {
                         </p>
                     </div>
                 ) : (
-                    <div className="flex w-full flex-wrap items-center justify-center gap-20">
+                    <div className="grid w-full grid-cols-[repeat(auto-fit,16rem)] justify-center gap-10">
                         {authors.map((author: AuthorCardProps) => (
                             <AuthorCard
                                 key={author.id}
@@ -73,6 +73,8 @@ export default function Authors() {
                                 firstname={author.firstname}
                                 lastname={author.lastname}
                                 isIncomplete={author.isIncomplete}
+                                nationality={author.nationality}
+                                bookCount={author.bookCount}
                             />
                         ))}
                     </div>
