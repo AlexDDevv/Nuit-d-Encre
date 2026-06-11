@@ -1,9 +1,27 @@
 import { Author, Book, RequiredAuthorFields } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { KeyboardEvent } from "react";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
+}
+
+/**
+ * Gestionnaire `onKeyDown` qui déclenche `action` sur Entrée/Espace.
+ * Rend activables au clavier les éléments `role="link"` / `role="button"`.
+ *
+ * @param action - Fonction à exécuter à l'activation.
+ * @param stopPropagation - Stoppe la propagation (ex. lien imbriqué dans une carte).
+ */
+export function activateOnKey(action: () => void, stopPropagation = false) {
+    return (e: KeyboardEvent) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            if (stopPropagation) e.stopPropagation();
+            action();
+        }
+    };
 }
 
 export function buildBookAriaLabel(
