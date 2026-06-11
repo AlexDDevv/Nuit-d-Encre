@@ -48,7 +48,7 @@ export default function BookCard({
             data-category="Livre"
             onClick={openBook}
             onKeyDown={activateOnKey(openBook)}
-            className={cn(interactiveCardShell, "aspect-[2/3]", className)}
+            className={cn(interactiveCardShell, "aspect-2/3", className)}
         >
             {/* couverture plein cadre */}
             <BookCover

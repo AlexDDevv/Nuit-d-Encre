@@ -130,7 +130,7 @@ export default function BookDetails() {
                     coverUrl={book.coverUrl}
                     title={book.title}
                     author={`${book.author.firstname} ${book.author.lastname}`}
-                    className="aspect-[2/3] w-64 shrink-0 rounded-lg"
+                    className="aspect-2/3 w-64 shrink-0 rounded-lg"
                 />
                 <div className="flex flex-col gap-5">
                     <div>

@@ -47,7 +47,7 @@ export default function BookCardLibrary({
                     title={book.title}
                     author={`${book.author.firstname} ${book.author.lastname}`}
                     compact
-                    className="aspect-[2/3] w-32 shrink-0 rounded-md"
+                    className="aspect-2/3 w-32 shrink-0 rounded-md"
                 />
                 <div className="flex flex-col gap-5">
                     <header className="text-card-foreground flex flex-col">

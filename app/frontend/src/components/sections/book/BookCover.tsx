@@ -8,7 +8,7 @@ type BookCoverProps = {
     author: string;
     /** Variante condensée du repli pour les petites vignettes (< ~150px). */
     compact?: boolean;
-    /** Classes de dimension/forme appliquées au cadre (ex. "w-64 aspect-[2/3] rounded-lg"). */
+    /** Classes de dimension/forme appliquées au cadre (ex. "w-64 aspect-2/3 rounded-lg"). */
     className?: string;
     /** Classes additionnelles pour l'image réelle. */
     imgClassName?: string;
