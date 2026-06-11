@@ -61,7 +61,7 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
             onSubmit={handleSubmit(onSubmit)}
             className={cn(
                 "relative flex items-center justify-center",
-                isInLibrary ? "min-w-60" : "min-w-sm",
+                isInLibrary ? "min-w-60" : "min-w-md",
             )}
         >
             <Label htmlFor="search" className="sr-only">
@@ -70,17 +70,18 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
             <Input
                 id="search"
                 type="search"
-                placeholder="Rechercher un livre..."
+                placeholder="Titre, auteur, ISBN…"
                 errorMessage=""
                 {...register("search")}
-                className="text-ellipsis whitespace-nowrap pr-10"
+                className="text-ellipsis whitespace-nowrap pl-10"
             />
             <Button
                 type="submit"
+                variant="ghost"
                 ariaLabel="Rechercher un livre"
-                className="absolute right-1.5 h-fit p-1.5"
+                className="absolute left-1.5 h-fit p-1.5"
             >
-                <CiSearch className="text-primary-foreground h-4 w-4" />
+                <CiSearch className="text-muted-foreground h-4 w-4" />
             </Button>
         </form>
     );

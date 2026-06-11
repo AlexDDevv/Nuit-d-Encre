@@ -52,17 +52,18 @@ export default function SearchAuthor() {
             <Input
                 id="search"
                 type="search"
-                placeholder="Rechercher un auteur..."
+                placeholder="Nom ou prénom…"
                 errorMessage=""
                 {...register("search")}
-                className="pr-10 text-ellipsis whitespace-nowrap"
+                className="pl-10 text-ellipsis whitespace-nowrap"
             />
             <Button
                 type="submit"
+                variant="ghost"
                 ariaLabel="Rechercher un auteur"
-                className="absolute right-1.5 p-1.5"
+                className="absolute left-1.5 p-1.5"
             >
-                <CiSearch className="h-4 w-4 text-primary-foreground" />
+                <CiSearch className="h-4 w-4 text-muted-foreground" />
             </Button>
         </form>
     )
