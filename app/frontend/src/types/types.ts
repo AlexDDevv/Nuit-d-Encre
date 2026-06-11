@@ -93,6 +93,7 @@ export interface Author {
     wikipediaUrl?: string;
     officialWebsite?: string;
     books: Book[];
+    bookCount?: number;
     user: User;
 }
 
@@ -124,7 +125,7 @@ export type InputIsbnProps = Pick<BookInputsProps, "register" | "errors"> & {
 export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket";
 export type FormatInputProps = Pick<CategoryInputProps, "control" | "errors">;
 
-export type BookCardProps = {
+export type BookCardData = {
     id: string;
     title: string;
     author: {
@@ -133,6 +134,17 @@ export type BookCardProps = {
         lastname: string;
     };
     isImported?: boolean;
+    coverUrl?: string;
+    publishedYear?: number;
+    format?: BookFormat;
+    category?: CategoryBook;
+    averageRating?: number;
+    reviewCount?: number;
+    isInLibrary?: boolean;
+};
+
+export type BookCardProps = {
+    book: BookCardData;
     className?: string;
     isInAuthorPage?: boolean;
 };
@@ -183,6 +195,7 @@ export interface Book {
     recommendationCount?: number;
     hasUserReviewed?: boolean;
     hasUserRecommended?: boolean;
+    isInLibrary?: boolean;
 }
 
 export interface BookInfoProps {
@@ -199,6 +212,8 @@ export type AuthorCardProps = {
     firstname: string;
     lastname: string;
     isIncomplete?: boolean;
+    nationality?: string;
+    bookCount?: number;
 };
 
 export type RequiredAuthorFields =

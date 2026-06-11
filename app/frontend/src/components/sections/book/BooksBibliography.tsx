@@ -1,4 +1,4 @@
-import { BookCardProps, BooksBibliographyProps } from "@/types/types";
+import { Book, BooksBibliographyProps } from "@/types/types";
 import BookCard from "@/components/sections/book/BookCard";
 import { slugify } from "@/lib/utils";
 import BooksSectionLayout from "@/components/sections/book/BookSectionLayout";
@@ -38,14 +38,11 @@ export default function BooksBibliography({
                     : "justify-start gap-10"
             }
         >
-            {displayedBooks.map((book: BookCardProps) => (
+            {displayedBooks.map((book: Book) => (
                 <BookCard
                     key={book.id}
-                    id={book.id}
-                    title={book.title}
-                    author={author}
-                    isImported={book.isImported}
-                    className="w-60"
+                    book={{ ...book, author }}
+                    className="w-52"
                     isInAuthorPage={fromAuthorPage}
                 />
             ))}

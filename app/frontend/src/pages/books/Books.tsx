@@ -7,7 +7,7 @@ import Pagination from "@/components/UI/Pagination";
 import SelectCategory from "@/components/sections/book/SelectCategory";
 import { useBooksData } from "@/hooks/book/useBooksData";
 import { useBookSearch } from "@/hooks/book/useBookSearch";
-import { BookCardProps } from "@/types/types";
+import { BookCardData } from "@/types/types";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 
 export default function Books() {
@@ -103,15 +103,12 @@ export default function Books() {
                                     </p>
                                 </div>
                             ) : (
-                                <div className="flex w-full flex-wrap items-center justify-center gap-20">
-                                    {books.map((book: BookCardProps) => (
+                                <div className="grid w-full grid-cols-[repeat(auto-fit,14rem)] justify-center gap-10">
+                                    {books.map((book: BookCardData) => (
                                         <BookCard
                                             key={book.id}
-                                            id={book.id}
-                                            title={book.title}
-                                            author={book.author}
-                                            isImported={book.isImported}
-                                            className="w-72 hover:scale-105"
+                                            book={book}
+                                            className="w-56"
                                         />
                                     ))}
                                 </div>

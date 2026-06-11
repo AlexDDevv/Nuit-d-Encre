@@ -1,4 +1,4 @@
-import { BookCardProps, BooksByCategoryProps } from "@/types/types";
+import { Book, BooksByCategoryProps } from "@/types/types";
 import BookCard from "@/components/sections/book/BookCard";
 import BooksSectionLayout from "@/components/sections/book/BookSectionLayout";
 
@@ -33,14 +33,11 @@ export default function BooksByCategory({
                     : "justify-start gap-10"
             }
         >
-            {filteredBooks.map((book: BookCardProps) => (
+            {filteredBooks.map((book: Book) => (
                 <BookCard
                     key={book.id}
-                    id={book.id}
-                    title={book.title}
-                    author={book.author}
-                    isImported={book.isImported}
-                    className="w-60"
+                    book={book}
+                    className="w-52"
                     isInAuthorPage={false}
                 />
             ))}
