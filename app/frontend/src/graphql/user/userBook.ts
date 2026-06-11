@@ -10,6 +10,7 @@ export const GET_USER_BOOKS = gql`
                 book {
                     id
                     title
+                    coverUrl
                     author {
                         id
                         firstname
