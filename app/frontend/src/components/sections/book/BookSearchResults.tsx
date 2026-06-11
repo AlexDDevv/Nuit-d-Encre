@@ -1,19 +1,58 @@
-import { BookSearchResultsProps } from "@/types/types";
-import BookSearchResultCard from "@/components/sections/book/BookSearchResultCard";
-import BookSearchResultSkeleton from "@/components/UI/skeleton/BookSearchResultSkeleton";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import {
+    BookCardData,
+    BookSearchResult,
+    BookSearchResultsProps,
+} from "@/types/types";
+import BookCard from "@/components/sections/book/BookCard";
+import ImportCard from "@/components/sections/book/search/ImportCard";
+import SearchSectionHeading from "@/components/sections/book/search/SearchSectionHeading";
+
+const GRID =
+    "grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5";
+
+/** Adapte un résultat DB (plat) vers la forme attendue par la carte d'accueil. */
+function toBookCardData(result: BookSearchResult): BookCardData {
+    const [firstname, ...rest] = (result.author ?? "").trim().split(" ");
+    return {
+        id: result.id ?? "",
+        title: result.title,
+        author: {
+            id: result.authorId ?? "",
+            firstname: firstname ?? "",
+            lastname: rest.join(" "),
+        },
+        isImported: result.isImported,
+        coverUrl: result.coverUrl,
+        publishedYear: result.year,
+        format: result.format,
+        category: result.category
+            ? { id: "", name: result.category }
+            : undefined,
+        averageRating: result.averageRating,
+        reviewCount: result.reviewCount,
+        isInLibrary: result.isInLibrary,
+    };
+}
 
 export default function BookSearchResults({
     dbResults,
     externalResults,
     isSearching,
     hasError,
+    query,
 }: BookSearchResultsProps) {
     if (isSearching) {
         return (
-            <div className="flex w-full max-w-2xl flex-col gap-3">
-                {Array.from({ length: 4 }).map((_, i) => (
-                    <BookSearchResultSkeleton key={i} />
-                ))}
+            <div className="mx-auto w-full max-w-[1320px]">
+                <div className={GRID}>
+                    {Array.from({ length: 10 }).map((_, i) => (
+                        <div
+                            key={i}
+                            className="bg-card border-border aspect-2/3 animate-pulse rounded-xl border-2"
+                        />
+                    ))}
+                </div>
             </div>
         );
     }
@@ -32,39 +71,60 @@ export default function BookSearchResults({
 
     if (!hasResults) {
         return (
-            <div className="flex w-full items-center justify-center py-10">
-                <p className="text-foreground text-xl font-medium">
-                    Aucun résultat trouvé.
+            <div className="mx-auto max-w-md py-20 text-center">
+                <span className="bg-muted/50 ring-primary/20 mx-auto mb-5 grid h-14 w-14 place-items-center rounded-full ring-1">
+                    <FaMagnifyingGlass
+                        size={20}
+                        className="text-primary/60"
+                        aria-hidden="true"
+                    />
+                </span>
+                <h2 className="text-foreground font-title text-[22px] font-bold">
+                    Aucun ouvrage trouvé
+                </h2>
+                <p className="text-muted-foreground mt-2 font-quote text-[15px] italic">
+                    {query
+                        ? `Rien pour « ${query} », ni dans vos rayons ni au-dehors.`
+                        : "Aucun résultat, ni dans vos rayons ni au-dehors."}
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="flex w-full max-w-2xl flex-col gap-8">
+        <div className="mx-auto w-full max-w-[1320px]">
             {dbResults.length > 0 && (
-                <section>
-                    <h2 className="text-foreground mb-4 text-lg font-semibold">
-                        Dans Nuit d'Encre
-                    </h2>
-                    <div className="flex flex-col gap-4">
+                <section className="mb-16">
+                    <SearchSectionHeading
+                        kicker="Déjà dans vos rayons"
+                        title="Dans Nuit d'Encre"
+                        count={`${dbResults.length} ouvrage${
+                            dbResults.length > 1 ? "s" : ""
+                        }`}
+                    />
+                    <div className={GRID}>
                         {dbResults.map((result, i) => (
-                            <BookSearchResultCard
+                            <BookCard
                                 key={result.id ?? result.isbn13 ?? i}
-                                result={result}
+                                book={toBookCardData(result)}
+                                className="w-full"
                             />
                         ))}
                     </div>
                 </section>
             )}
+
             {externalResults.length > 0 && (
                 <section>
-                    <h2 className="text-foreground mb-4 text-lg font-semibold">
-                        Résultats externes
-                    </h2>
-                    <div className="flex flex-col gap-4">
+                    <SearchSectionHeading
+                        kicker="Trouvés au-dehors"
+                        title="Résultats externes"
+                        count={`${externalResults.length} à importer`}
+                        note="Ces ouvrages ne figurent pas encore dans Nuit d'Encre. Importez-les depuis nos sources partenaires pour les ajouter à votre catalogue."
+                    />
+                    <div className={GRID}>
                         {externalResults.map((result, i) => (
-                            <BookSearchResultCard
+                            <ImportCard
                                 key={result.isbn13 ?? i}
                                 result={result}
                             />

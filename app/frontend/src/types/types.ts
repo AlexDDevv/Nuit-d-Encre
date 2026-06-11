@@ -153,6 +153,14 @@ export interface BookSearchResult {
     id?: string;
     title: string;
     author?: string;
+    // Champs enrichis pour les résultats déjà en base (cartes harmonisées) :
+    authorId?: string;
+    category?: string;
+    format?: BookFormat;
+    averageRating?: number;
+    reviewCount?: number;
+    isInLibrary?: boolean;
+    isImported?: boolean;
     isbn13?: string;
     year?: number;
     publisher?: string;
@@ -167,11 +175,7 @@ export interface BookSearchResultsProps {
     externalResults: BookSearchResult[];
     isSearching: boolean;
     hasError?: boolean;
-}
-
-export interface BookSearchResultCardProps {
-    result: BookSearchResult;
-    className?: string;
+    query?: string;
 }
 
 export interface Book {

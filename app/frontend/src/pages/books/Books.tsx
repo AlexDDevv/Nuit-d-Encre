@@ -77,11 +77,16 @@ export default function Books() {
                 <BookPageSkeleton />
             ) : (
                 <section className="flex min-h-dvh flex-col items-center justify-center gap-20">
-                    <div className="flex flex-col items-center justify-center gap-10">
+                    <div className="flex flex-col items-center justify-center gap-6">
                         <h1 className="text-foreground text-4xl font-bold">
                             Rechercher un livre
                         </h1>
-                        <div className="flex items-center justify-center gap-5">
+                        <p className="font-quote text-muted-foreground max-w-md text-center text-base italic">
+                            Fouillez d'abord la maison, puis le vaste monde, et
+                            faites entrer de nouveaux ouvrages dans votre
+                            bibliothèque.
+                        </p>
+                        <div className="mt-4 flex items-center justify-center gap-5">
                             <SearchBook />
                             {!isSearchMode && <SelectCategory />}
                         </div>
@@ -93,6 +98,7 @@ export default function Books() {
                             externalResults={externalResults}
                             isSearching={isSearching}
                             hasError={Boolean(searchError)}
+                            query={query}
                         />
                     ) : (
                         <>
