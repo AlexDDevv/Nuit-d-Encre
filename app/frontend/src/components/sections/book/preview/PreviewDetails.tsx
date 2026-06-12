@@ -36,13 +36,13 @@ export function PreviewDetails({
 
     return (
         <div className="min-w-0">
-            <p className="mb-3 font-quote text-[15px] italic" style={{ color: "hsl(43 30% 64%)" }}>
+            <p className="mb-3 font-quote text-sm italic" style={{ color: "hsl(43 30% 64%)" }}>
                 {knownAuthor
                     ? "D'un auteur que vous connaissez déjà"
                     : "Une découverte hors de vos murs"}
             </p>
             <h1
-                className="text-foreground font-quote leading-[1.04] [text-wrap:balance]"
+                className="text-foreground font-quote leading-[1.04] text-balance"
                 style={{
                     fontSize: book.title.length > 44 ? 34 : 46,
                     letterSpacing: "-0.005em",
@@ -52,7 +52,7 @@ export function PreviewDetails({
             </h1>
 
             <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
-                <span className="text-foreground/90 font-body text-[15px]">
+                <span className="text-foreground/90 font-body text-sm">
                     par <span className="font-bold">{author}</span>
                 </span>
                 {knownAuthor ? (
@@ -105,18 +105,18 @@ export function PreviewDetails({
 
             {meta.length > 0 && (
                 <div
-                    className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-[13px]"
+                    className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-sm"
                     style={{ color: "hsl(20 12% 70%)" }}
                 >
                     {meta.flatMap((node, i) =>
                         i === 0
                             ? [node]
                             : [
-                                  <span key={`sep-${i}`} style={{ color: "hsl(43 59% 81% / 0.4)" }}>
-                                      ◆
-                                  </span>,
-                                  node,
-                              ],
+                                <span key={`sep-${i}`} style={{ color: "hsl(43 59% 81% / 0.4)" }}>
+                                    ◆
+                                </span>,
+                                node,
+                            ],
                     )}
                 </div>
             )}

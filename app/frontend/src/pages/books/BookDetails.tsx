@@ -5,7 +5,7 @@ import Button from "@/components/UI/Button/Button";
 import Banner from "@/components/UI/Banner/Banner";
 import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import BookReviews from "@/components/sections/book/BookReviews";
-import BookCard from "@/components/sections/book/BookCard";
+import BookCard from "@/components/sections/book/BookCard/BookCard";
 import EstablishedCover from "@/components/sections/book/detail/EstablishedCover";
 import BookNotice from "@/components/sections/book/detail/BookNotice";
 import BookStatChips from "@/components/sections/book/detail/BookStatChips";
@@ -164,13 +164,13 @@ export default function BookDetails() {
 
                 <div className="flex min-w-0 flex-col gap-6">
                     <div className="flex flex-col gap-3">
-                        <p className="font-quote text-[15px] italic text-[hsl(43_30%_64%)]">
+                        <p className="font-quote text-sm italic text-[hsl(43_30%_64%)]">
                             Un ouvrage de notre bibliothèque
                         </p>
                         <h1 className="text-foreground font-quote text-4xl leading-[1.04] text-balance">
                             {book.title}
                         </h1>
-                        <p className="text-foreground/90 font-body text-[15px]">
+                        <p className="text-foreground/90 font-body text-sm">
                             par{" "}
                             <Link
                                 to={authorPath}
@@ -189,14 +189,14 @@ export default function BookDetails() {
                             className="text-primary absolute -left-1 -top-1 opacity-40"
                             aria-hidden="true"
                         />
-                        <p className="text-foreground/85 font-quote pl-7 text-[16.5px] italic leading-[1.6]">
+                        <p className="text-foreground/85 font-quote pl-7 italic">
                             {isExcerpt
                                 ? `${book.summary.substring(0, 200)}… `
                                 : `${book.summary} `}
                             {isExcerpt && (
                                 <a
                                     href="#summary"
-                                    className="text-primary hover:text-foreground focus-visible:ring-ring rounded font-body text-[13px] font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                    className="text-primary hover:text-foreground focus-visible:ring-ring rounded font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
                                 >
                                     Lire la suite
                                 </a>
@@ -205,7 +205,7 @@ export default function BookDetails() {
                     </div>
 
                     {/* méta en ligne */}
-                    <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-[13px]">
+                    <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-sm">
                         <span className="font-quote italic text-[hsl(43_30%_64%)]">
                             {book.category.name}
                         </span>
@@ -245,7 +245,7 @@ export default function BookDetails() {
             >
                 <section className="flex flex-col gap-4">
                     <div className="flex items-center gap-2.5">
-                        <span className="font-quote text-[13px] italic text-[hsl(43_30%_62%)]">
+                        <span className="font-quote text-sm italic text-[hsl(43_30%_62%)]">
                             Le résumé
                         </span>
                         <span className="bg-primary/20 h-px flex-1" />

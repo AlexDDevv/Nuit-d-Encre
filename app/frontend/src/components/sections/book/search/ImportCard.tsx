@@ -20,9 +20,8 @@ export default function ImportCard({ result }: ImportCardProps) {
     const to = `/books/preview/${result.isbn13}`;
     const author = result.author ?? "";
     const source = getSourceLabel(result.source);
-    const ariaLabel = `Importer ${result.title}${
-        author ? ` par ${author}` : ""
-    } — résultat externe via ${source}`;
+    const ariaLabel = `Importer ${result.title}${author ? ` par ${author}` : ""
+        } — résultat externe via ${source}`;
 
     return (
         <Link
@@ -56,7 +55,7 @@ export default function ImportCard({ result }: ImportCardProps) {
             )}
 
             {/* chip source */}
-            <span className="text-primary/90 border-primary/30 absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border bg-[hsl(20_3%_9%/0.82)] px-2 py-[3px] font-body text-[10px] font-bold tracking-wide whitespace-nowrap backdrop-blur-sm">
+            <span className="text-primary/90 border-primary/30 absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border bg-[hsl(20_3%_9%/0.82)] px-2 py-0.75 font-body text-[10px] font-bold tracking-wide whitespace-nowrap backdrop-blur-sm">
                 <FaArrowUpRightFromSquare size={9} aria-hidden="true" />
                 {source}
             </span>
@@ -64,7 +63,7 @@ export default function ImportCard({ result }: ImportCardProps) {
             {/* contenu en bas */}
             <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-3.5">
                 <h3
-                    className="text-foreground font-title line-clamp-2 text-[16px] font-medium leading-snug [text-shadow:0_1px_8px_hsl(20_3%_5%/0.8)]"
+                    className="text-foreground font-title line-clamp-2 font-medium leading-snug [text-shadow:0_1px_8px_hsl(20_3%_5%/0.8)]"
                     title={result.title}
                 >
                     {result.title}

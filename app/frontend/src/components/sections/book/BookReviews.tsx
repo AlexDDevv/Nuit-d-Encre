@@ -104,12 +104,12 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
             <div className="border-border bg-card/40 mb-6 flex flex-wrap items-center justify-between gap-5 rounded-xl border-2 px-5 py-4">
                 <div className="flex items-center gap-4">
                     <div className="flex items-baseline gap-2">
-                        <span className="text-foreground font-quote text-[40px] leading-none">
+                        <span className="text-foreground font-quote text-4xl leading-none">
                             {avgRating != null
                                 ? avgRating.toFixed(1).replace(".", ",")
                                 : "—"}
                         </span>
-                        <span className="text-muted-foreground font-body text-[14px]">
+                        <span className="text-muted-foreground font-body text-sm">
                             / 5
                         </span>
                     </div>
@@ -117,11 +117,11 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                         {avgRating != null ? (
                             <RatingStars value={avgRating} readOnly size="sm" />
                         ) : (
-                            <span className="text-muted-foreground font-quote text-[13px] italic">
+                            <span className="text-muted-foreground font-quote text-xs italic">
                                 Aucune note pour l'instant
                             </span>
                         )}
-                        <span className="text-muted-foreground font-body text-[12.5px]">
+                        <span className="text-muted-foreground font-body text-xs">
                             d'après {reviewCount} critique
                             {reviewCount > 1 ? "s" : ""}
                         </span>
@@ -139,7 +139,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                                 isLoadingBookRecommendation
                             }
                         />
-                        <span className="text-muted-foreground font-body text-[11.5px]">
+                        <span className="text-muted-foreground font-body text-xs">
                             Conseillez cet ouvrage à la communauté.
                         </span>
                     </div>
@@ -156,10 +156,10 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                             aria-hidden="true"
                         />
                     </span>
-                    <p className="text-foreground/85 font-quote text-[18px] italic">
+                    <p className="text-foreground/85 font-quote text-lg italic">
                         Aucune critique pour l'instant.
                     </p>
-                    <p className="text-muted-foreground max-w-[40ch] font-body text-[13px]">
+                    <p className="text-muted-foreground max-w-80 font-body text-xs">
                         Cet ouvrage attend sa première veillée.{" "}
                         {user
                             ? "Soyez la première plume à en parler."
@@ -182,7 +182,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                 <div
                     className="border-primary/30 mb-6 flex flex-col items-start gap-3 rounded-xl border-2 border-dashed bg-[hsl(20_3%_14%/0.5)] px-5 py-5 sm:flex-row sm:items-center sm:justify-between"
                 >
-                    <p className="text-foreground/85 font-quote inline-flex items-center gap-2.5 text-[15px] italic">
+                    <p className="text-foreground/85 font-quote inline-flex items-center gap-2.5 italic">
                         <FaLock
                             size={15}
                             className="text-primary/70"

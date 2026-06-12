@@ -28,7 +28,7 @@ export default function RecommendToggle({
                 on ? "Retirer ma recommandation" : "Recommander cet ouvrage"
             }
             className={cn(
-                "group focus-visible:ring-ring focus-visible:ring-offset-background inline-flex items-center gap-2.5 whitespace-nowrap rounded-xl border-2 px-4 py-3 font-body text-[14px] font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-60",
+                "group focus-visible:ring-ring focus-visible:ring-offset-background inline-flex items-center gap-2.5 whitespace-nowrap rounded-xl border-2 px-4 py-3 font-body text-sm font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-60",
                 on
                     ? "border-primary/70 text-primary bg-[hsl(43_30%_25%/0.45)]"
                     : "border-border text-muted-foreground hover:border-primary/50",

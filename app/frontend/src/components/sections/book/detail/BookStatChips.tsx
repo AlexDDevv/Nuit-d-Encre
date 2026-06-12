@@ -12,7 +12,7 @@ function StatChip({
 }) {
     return (
         <span
-            className="border-border inline-flex items-center gap-2 rounded-full border-2 bg-[hsl(20_3%_14%/0.6)] px-3.5 py-2 font-body text-[13px]"
+            className="border-border inline-flex items-center gap-2 rounded-full border-2 bg-[hsl(20_3%_14%/0.6)] px-3.5 py-2 font-body text-xs"
             title={title}
         >
             {children}
@@ -49,12 +49,12 @@ export default function BookStatChips({ book }: { book: Book }) {
                         <span className="text-foreground font-body font-bold">
                             {book.averageRating!.toFixed(1).replace(".", ",")}
                         </span>
-                        <span className="text-muted-foreground font-body text-[12px]">
+                        <span className="text-muted-foreground font-body text-xs">
                             / 5
                         </span>
                     </>
                 ) : (
-                    <span className="text-muted-foreground font-quote text-[13px] italic">
+                    <span className="text-muted-foreground font-quote text-xs italic">
                         Pas encore noté
                     </span>
                 )}
@@ -69,7 +69,7 @@ export default function BookStatChips({ book }: { book: Book }) {
                 <span className="text-foreground font-body font-bold">
                     {reviewCount}
                 </span>
-                <span className="text-muted-foreground font-body text-[12px]">
+                <span className="text-muted-foreground font-body text-xs">
                     critique{reviewCount > 1 ? "s" : ""}
                 </span>
             </StatChip>
@@ -83,7 +83,7 @@ export default function BookStatChips({ book }: { book: Book }) {
                 <span className="text-foreground font-body font-bold">
                     {recCount}
                 </span>
-                <span className="text-muted-foreground font-body text-[12px]">
+                <span className="text-muted-foreground font-body text-xs">
                     recommandation{recCount > 1 ? "s" : ""}
                 </span>
             </StatChip>

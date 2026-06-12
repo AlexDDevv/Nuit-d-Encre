@@ -1,4 +1,4 @@
-import AuthorCard from "@/components/sections/author/AuthorCard";
+import AuthorCard from "@/components/sections/author/AuthorCard/AuthorCard";
 import SearchAuthor from "@/components/sections/author/SearchAuthor";
 import Pagination from "@/components/UI/Pagination";
 import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";

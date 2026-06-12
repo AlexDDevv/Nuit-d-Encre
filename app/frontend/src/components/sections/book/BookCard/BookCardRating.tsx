@@ -18,7 +18,7 @@ export default function BookCardRating({
 
     if (!hasRating) {
         return (
-            <span className="text-foreground/60 font-quote text-[12px] italic">
+            <span className="text-foreground/60 font-quote text-xs italic">
                 Pas encore de critique
             </span>
         );
@@ -27,10 +27,10 @@ export default function BookCardRating({
     return (
         <span className="flex items-center gap-1.5">
             <RatingStars value={averageRating!} readOnly size="sm" />
-            <span className="text-foreground font-body text-[12px] font-bold">
+            <span className="text-foreground font-body text-xs font-bold">
                 {averageRating!.toFixed(1).replace(".", ",")}
             </span>
-            <span className="text-foreground/60 font-body text-[11px]">
+            <span className="text-foreground/60 font-body text-[10px]">
                 ({reviewCount})
             </span>
         </span>

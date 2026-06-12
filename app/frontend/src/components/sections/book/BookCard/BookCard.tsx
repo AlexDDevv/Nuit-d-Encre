@@ -56,7 +56,7 @@ export default function BookCard({
                 title={book.title}
                 author={author}
                 className="bg-background absolute inset-0"
-                imgClassName="transition-transform duration-500 group-hover:scale-[1.06]"
+                imgClassName="transition-transform duration-500 group-hover:scale-105"
             />
 
             {/* voile dégradé pour la lisibilité du texte */}
@@ -76,7 +76,7 @@ export default function BookCard({
             {/* contenu en bas */}
             <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-3.5">
                 <h2
-                    className="text-foreground font-title line-clamp-2 text-[16px] font-medium leading-snug [text-shadow:0_1px_8px_hsl(20_3%_5%/0.8)]"
+                    className="text-foreground font-title line-clamp-2 font-medium leading-snug [text-shadow:0_1px_8px_hsl(20_3%_5%/0.8)]"
                     title={book.title}
                 >
                     {book.title}

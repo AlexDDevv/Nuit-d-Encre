@@ -33,7 +33,7 @@ export default function BookCardMeta({
     if (parts.length === 0) return null;
 
     return (
-        <p className="text-foreground/60 font-body flex items-center gap-1.5 truncate text-[11.5px]">
+        <p className="text-foreground/60 font-body flex items-center gap-1.5 truncate text-xs">
             {parts.map((part, i) => (
                 <span
                     key={part.key}

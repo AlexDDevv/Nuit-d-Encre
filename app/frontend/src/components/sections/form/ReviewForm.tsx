@@ -143,7 +143,7 @@ export default function ReviewForm({
                 placeholder="Qu'avez-vous ressenti à la lecture de cet ouvrage ?"
                 maxLength={5000}
                 counter
-                className="font-quote min-h-32 text-[15px] leading-relaxed"
+                className="font-quote min-h-32"
                 errorMessage={errors.reviewText?.message}
                 {...register("reviewText", {
                     maxLength: {

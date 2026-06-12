@@ -43,14 +43,14 @@ export default function AuthorCard({
             onKeyDown={activateOnKey(openAuthor)}
             className={cn(
                 interactiveCardShell,
-                "w-64 flex-col items-center gap-3.5 px-5 pb-5 pt-7 text-center flex",
+                "w-64 flex-col items-center gap-4 p-5 text-center flex",
             )}
         >
             {/* halo doré discret au survol */}
             <div className="pointer-events-none absolute inset-x-8 top-0 h-px bg-[linear-gradient(to_right,transparent,hsl(43_59%_81%/0.5),transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
 
             {isIncomplete && (
-                <div className="absolute right-2.5 top-2.5 z-10">
+                <div className="absolute right-2 top-2 z-10">
                     <IncompleteChip />
                 </div>
             )}
@@ -59,12 +59,12 @@ export default function AuthorCard({
 
             <div className="flex flex-col items-center gap-1">
                 <h2
-                    className="text-foreground font-title line-clamp-2 flex min-h-[2.4em] items-center justify-center text-[16.5px] font-medium leading-tight"
+                    className="text-foreground font-title line-clamp-2 flex items-center justify-center font-medium"
                     title={name}
                 >
                     {name}
                 </h2>
-                <div className="text-muted-foreground font-body flex items-center gap-2.5 text-[12px]">
+                <div className="text-muted-foreground font-body flex items-center gap-2.5 text-xs">
                     {country && (
                         <>
                             <span className="inline-flex items-center gap-1">

@@ -20,7 +20,7 @@ export default function SectionLead({ kicker, title, right }: SectionLeadProps) 
             <div>
                 <div className="mb-2 flex items-center gap-2.5">
                     <span className="bg-primary/50 h-px w-8" />
-                    <span className="font-quote text-[13px] italic tracking-wide whitespace-nowrap text-[hsl(43_30%_62%)]">
+                    <span className="font-quote text-sm italic tracking-wide whitespace-nowrap text-[hsl(43_30%_62%)]">
                         {kicker}
                     </span>
                 </div>

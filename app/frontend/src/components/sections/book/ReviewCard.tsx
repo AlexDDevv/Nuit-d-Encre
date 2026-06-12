@@ -56,14 +56,14 @@ export default function ReviewCard({
                             {review.user.userName}
                         </span>
                         {isOwnReview && (
-                            <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-[9px] uppercase tracking-[0.16em]">
+                            <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-[10px] uppercase tracking-[0.16em]">
                                 Votre critique
                             </span>
                         )}
                     </div>
                     <div className="mt-1 flex items-center gap-2.5">
                         <RatingStars value={review.rating} readOnly size="sm" />
-                        <span className="text-muted-foreground font-body text-[11.5px]">
+                        <span className="text-muted-foreground font-body text-xs">
                             {timeAgo}
                         </span>
                     </div>
@@ -99,7 +99,7 @@ export default function ReviewCard({
             </div>
 
             {review.reviewText && (
-                <p className="text-foreground/85 font-quote text-[15.5px] italic leading-[1.62] whitespace-pre-wrap">
+                <p className="text-foreground/85 font-quote italic whitespace-pre-wrap">
                     {review.reviewText}
                 </p>
             )}

@@ -1,5 +1,5 @@
 import { Book, BooksBibliographyProps } from "@/types/types";
-import BookCard from "@/components/sections/book/BookCard";
+import BookCard from "@/components/sections/book/BookCard/BookCard";
 import { slugify } from "@/lib/utils";
 import BooksSectionLayout from "@/components/sections/book/BookSectionLayout";
 

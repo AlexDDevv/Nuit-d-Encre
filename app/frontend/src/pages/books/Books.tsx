@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import BookCard from "@/components/sections/book/BookCard";
+import BookCard from "@/components/sections/book/BookCard/BookCard";
 import SearchBook from "@/components/sections/book/SearchBook";
 import BookSearchResults from "@/components/sections/book/BookSearchResults";
 import Pagination from "@/components/UI/Pagination";

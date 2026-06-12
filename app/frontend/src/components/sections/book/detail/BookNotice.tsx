@@ -17,15 +17,14 @@ function NoticeRow({
 }) {
     return (
         <div
-            className={`flex items-baseline justify-between gap-4 py-2.5 ${
-                last ? "" : "border-b border-dashed border-[hsl(0_0%_100%/0.07)]"
-            }`}
+            className={`flex items-baseline justify-between gap-4 py-2.5 ${last ? "" : "border-b border-dashed border-[hsl(0_0%_100%/0.07)]"
+                }`}
         >
-            <span className="inline-flex shrink-0 items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.14em] text-[hsl(20_12%_56%)]">
+            <span className="inline-flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[hsl(20_12%_56%)]">
                 {icon}
                 {label}
             </span>
-            <span className="text-foreground/90 text-right font-mono text-[12.5px]">
+            <span className="text-foreground/90 text-right font-mono text-xs">
                 {value}
             </span>
         </div>
@@ -33,7 +32,7 @@ function NoticeRow({
 }
 
 const Missing = () => (
-    <span className="font-mono text-[12.5px] italic text-[hsl(25_80%_60%)]">
+    <span className="font-mono text-xs italic text-[hsl(25_80%_60%)]">
         manquant
     </span>
 );
@@ -49,7 +48,7 @@ export default function BookNotice({ book }: { book: Book }) {
     return (
         <section className="border-border bg-card/60 self-start rounded-xl border-2 p-6">
             <div className="mb-3 flex items-center gap-2.5">
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-[hsl(43_30%_62%)]">
+                <span className="font-mono text-xs uppercase tracking-[0.2em] text-[hsl(43_30%_62%)]">
                     Informations complémentaires
                 </span>
                 <span className="bg-primary/20 h-px flex-1" />

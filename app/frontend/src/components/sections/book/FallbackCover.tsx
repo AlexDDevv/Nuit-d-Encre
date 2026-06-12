@@ -50,15 +50,15 @@ export default function FallbackCover({
             )}
         >
             <div className="border-foreground/20 pointer-events-none absolute inset-2.5 rounded-md border" />
-            <div className="text-foreground/55 font-quote text-[9.5px] uppercase tracking-[0.32em]">
+            <div className="text-foreground/55 font-quote text-[10px] uppercase tracking-[0.32em]">
                 Nuit d'Encre
             </div>
             <div className="flex flex-col items-center gap-3">
                 <span className="bg-foreground/40 h-px w-7" />
                 <h4
                     className={cn(
-                        "text-foreground font-quote leading-[1.18]",
-                        title.length > 40 ? "text-[15px]" : "text-[19px]",
+                        "text-foreground font-quote",
+                        title.length > 40 ? "text-base" : "text-xl",
                     )}
                 >
                     {title}

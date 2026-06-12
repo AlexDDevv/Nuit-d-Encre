@@ -4,7 +4,7 @@ import {
     BookSearchResult,
     BookSearchResultsProps,
 } from "@/types/types";
-import BookCard from "@/components/sections/book/BookCard";
+import BookCard from "@/components/sections/book/BookCard/BookCard";
 import ImportCard from "@/components/sections/book/search/ImportCard";
 import SearchSectionHeading from "@/components/sections/book/search/SearchSectionHeading";
 
@@ -44,7 +44,7 @@ export default function BookSearchResults({
 }: BookSearchResultsProps) {
     if (isSearching) {
         return (
-            <div className="mx-auto w-full max-w-[1320px]">
+            <div className="w-full">
                 <div className={GRID}>
                     {Array.from({ length: 10 }).map((_, i) => (
                         <div
@@ -79,10 +79,10 @@ export default function BookSearchResults({
                         aria-hidden="true"
                     />
                 </span>
-                <h2 className="text-foreground font-title text-[22px] font-bold">
+                <h2 className="text-foreground font-title text-xl font-bold">
                     Aucun ouvrage trouvé
                 </h2>
-                <p className="text-muted-foreground mt-2 font-quote text-[15px] italic">
+                <p className="text-muted-foreground mt-2 font-quote italic">
                     {query
                         ? `Rien pour « ${query} », ni dans vos rayons ni au-dehors.`
                         : "Aucun résultat, ni dans vos rayons ni au-dehors."}
@@ -92,15 +92,14 @@ export default function BookSearchResults({
     }
 
     return (
-        <div className="mx-auto w-full max-w-[1320px]">
+        <div className=" w-full">
             {dbResults.length > 0 && (
                 <section className="mb-16">
                     <SearchSectionHeading
                         kicker="Déjà dans vos rayons"
                         title="Dans Nuit d'Encre"
-                        count={`${dbResults.length} ouvrage${
-                            dbResults.length > 1 ? "s" : ""
-                        }`}
+                        count={`${dbResults.length} ouvrage${dbResults.length > 1 ? "s" : ""
+                            }`}
                     />
                     <div className={GRID}>
                         {dbResults.map((result, i) => (
