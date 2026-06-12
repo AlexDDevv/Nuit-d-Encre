@@ -16,6 +16,7 @@ import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 import BookPreviewSkeleton from "@/components/UI/skeleton/BookPreviewSkeleton";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
+import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
 
 /**
  *  Using lazy loading for pages
@@ -122,7 +123,7 @@ const router = createBrowserRouter([
             {
                 path: "authors",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense fallback={<AuthorCardSkeleton />}>
                         <Authors />
                     </Suspense>
                 ),
