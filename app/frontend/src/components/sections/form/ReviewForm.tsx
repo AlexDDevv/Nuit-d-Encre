@@ -1,14 +1,13 @@
+import { Sparkles } from "lucide-react";
+import { FaFeatherPointed } from "react-icons/fa6";
+import { useForm, Controller } from "react-hook-form";
 import Button from "@/components/UI/Button/Button";
 import { Textarea } from "@/components/UI/form/Textarea";
-import { Label } from "@/components/UI/form/Label";
 import FormWrapper from "@/components/UI/form/FormWrapper";
+import RatingStars from "@/components/sections/library/UI/RatingStars";
 import { Book, BookReview } from "@/types/types";
 import { useToast } from "@/hooks/toast/useToast";
-import { Sparkles } from "lucide-react";
-import { useForm, Controller } from "react-hook-form";
 import { useBookReviewMutations } from "@/hooks/book/review/useBookReviewMutations";
-import RatingStars from "@/components/sections/library/UI/RatingStars";
-import BookCover from "@/components/sections/book/BookCover";
 import { parseGraphQLError } from "@/utils/graphql-error";
 
 interface ReviewFormProps {
@@ -16,7 +15,6 @@ interface ReviewFormProps {
     existingReview?: BookReview;
     onSuccess?: () => void;
     onCancel?: () => void;
-    variant?: "inline" | "modal";
 }
 
 type ReviewFormData = {
@@ -24,12 +22,13 @@ type ReviewFormData = {
     reviewText: string;
 };
 
+const DETAILED_THRESHOLD = 200;
+
 export default function ReviewForm({
     book,
     existingReview,
     onSuccess,
     onCancel,
-    variant = "modal",
 }: ReviewFormProps) {
     const { showToast } = useToast();
     const { createReview, isCreatingReview, updateReview, isUpdatingReview } =
@@ -51,9 +50,8 @@ export default function ReviewForm({
 
     const isLoading = isCreatingReview || isUpdatingReview;
     const isEditing = !!existingReview;
-
-    // Watch reviewText to show XP bonus hints
     const reviewTextValue = watch("reviewText") || "";
+    const isDetailed = reviewTextValue.length >= DETAILED_THRESHOLD;
 
     const onSubmit = async (formData: ReviewFormData) => {
         if (formData.rating === 0) {
@@ -71,7 +69,6 @@ export default function ReviewForm({
                     rating: formData.rating,
                     reviewText: formData.reviewText.trim() || undefined,
                 });
-
                 showToast({
                     type: "success",
                     title: "Critique modifiée !",
@@ -83,17 +80,14 @@ export default function ReviewForm({
                     rating: formData.rating,
                     reviewText: formData.reviewText.trim() || undefined,
                 });
-
                 showToast({
                     type: "success",
                     title: "Critique publiée !",
-                    description:
-                        formData.reviewText.length > 200
-                            ? "Vous avez reçu un bonus d'XP pour votre critique détaillée !"
-                            : "Merci d'avoir partagé votre avis !",
+                    description: isDetailed
+                        ? "Vous avez reçu un bonus d'XP pour votre critique détaillée !"
+                        : "Merci d'avoir partagé votre avis !",
                 });
             }
-
             onSuccess?.();
         } catch (error) {
             const { title, description } = parseGraphQLError(
@@ -105,106 +99,83 @@ export default function ReviewForm({
     };
 
     return (
-        <div className="flex flex-col gap-6">
-            {/* Book info (only in modal variant) */}
-            {variant === "modal" && (
-                <div className="flex items-center gap-4">
-                    <BookCover
-                        coverUrl={book.coverUrl}
-                        title={book.title}
-                        author={`${book.author.firstname} ${book.author.lastname}`}
-                        compact
-                        className="h-16 w-12 shrink-0 rounded-sm"
-                    />
-                    <div>
-                        <h3 className="text-foreground font-semibold">
-                            {book.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm">
-                            par {book.author.firstname} {book.author.lastname}
-                        </p>
-                    </div>
-                </div>
-            )}
-
-            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-                {/* Rating */}
-                <div className="flex flex-col gap-2">
-                    <Label htmlFor="rating" required>
-                        Votre note
-                    </Label>
-                    <Controller
-                        name="rating"
-                        control={control}
-                        rules={{
-                            required: "Veuillez sélectionner une note",
-                            min: {
-                                value: 1,
-                                message: "La note doit être d'au moins 1 étoile",
-                            },
-                        }}
-                        render={({ field }) => (
-                            <RatingStars
-                                value={field.value}
-                                onChange={field.onChange}
-                                size="lg"
-                                showValue
-                            />
-                        )}
-                    />
-                    {errors.rating && (
-                        <p className="text-destructive text-xs font-medium">
-                            {errors.rating.message}
-                        </p>
-                    )}
-                </div>
-
-                {/* Review text */}
-                <div className="flex flex-col gap-4">
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="reviewText">Votre critique (optionnel)</Label>
-                        <Textarea
-                            id="reviewText"
-                            placeholder="Partagez votre avis sur ce livre..."
-                            maxLength={5000}
-                            counter
-                            className="min-h-32"
-                            errorMessage={errors.reviewText?.message}
-                            {...register("reviewText", {
-                                maxLength: {
-                                    value: 5000,
-                                    message:
-                                        "La critique ne peut pas dépasser 5000 caractères",
+        <FormWrapper onSubmit={handleSubmit(onSubmit)} className="border-primary/30 border-2 mb-6">
+            {/* note */}
+            <div className="flex flex-col gap-1 items-end">
+                <div className="flex items-center justify-between w-full">
+                    <p className="text-foreground font-title font-bold">
+                        Écrire ma critique
+                    </p>
+                    <div className="flex flex-wrap items-center gap-2">
+                        <Controller
+                            name="rating"
+                            control={control}
+                            rules={{
+                                required: "Veuillez sélectionner une note",
+                                min: {
+                                    value: 1,
+                                    message: "La note doit être d'au moins 1 étoile",
                                 },
-                            })}
+                            }}
+                            render={({ field }) => (
+                                <RatingStars
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    size="sm"
+                                />
+                            )}
                         />
+                        <span className="text-foreground font-body text-xs font-medium">
+                            Votre note
+                        </span>
                     </div>
-
-                    {/* XP bonus hint */}
-                    {reviewTextValue.length < 200 && (
-                        <div className="bg-muted border-border flex items-center justify-center gap-2 rounded-md border p-3">
-                            <Sparkles className="text-primary h-4 w-4 shrink-0" />
-                            <p className="text-muted-foreground text-xs">
-                                <span className="font-medium">Astuce :</span> Les
-                                critiques de plus de 200 caractères donnent un
-                                bonus d'XP !
-                            </p>
-                        </div>
-                    )}
-
-                    {reviewTextValue.length >= 200 && (
-                        <div className="bg-primary/10 border-primary/20 flex items-center justify-center gap-2 rounded-md border p-3">
-                            <Sparkles className="text-primary h-4 w-4 shrink-0" />
-                            <p className="text-primary text-xs font-medium">
-                                Vous recevrez un bonus d'XP pour cette critique
-                                détaillée !
-                            </p>
-                        </div>
-                    )}
                 </div>
+                {errors.rating && (
+                    <p className="text-destructive text-xs font-medium">
+                        {errors.rating.message}
+                    </p>
+                )}
+            </div>
 
-                {/* Actions */}
-                <div className="flex gap-4">
+            {/* texte */}
+            <Textarea
+                id="reviewText"
+                placeholder="Qu'avez-vous ressenti à la lecture de cet ouvrage ?"
+                maxLength={5000}
+                counter
+                className="font-quote min-h-32 text-[15px] leading-relaxed"
+                errorMessage={errors.reviewText?.message}
+                {...register("reviewText", {
+                    maxLength: {
+                        value: 5000,
+                        message:
+                            "La critique ne peut pas dépasser 5000 caractères",
+                    },
+                })}
+            />
+            <div className="flex items-center gap-4">
+                {/* astuce / bonus XP */}
+                {isDetailed ? (
+                    <div className="bg-primary/10 border-primary/20 flex items-center justify-center gap-2 rounded-md border p-3 flex-1">
+                        <Sparkles className="text-primary h-4 w-4 shrink-0" />
+                        <p className="text-primary text-xs font-medium">
+                            Vous recevrez un bonus d'XP pour cette critique
+                            détaillée !
+                        </p>
+                    </div>
+                ) : (
+                    <div className="bg-muted border-border flex items-center justify-center gap-2 rounded-md border p-3 flex-1">
+                        <Sparkles className="text-primary h-4 w-4 shrink-0" />
+                        <p className="text-muted-foreground text-xs">
+                            <span className="font-medium">Astuce :</span> Les
+                            critiques de plus de 200 caractères donnent un bonus
+                            d'XP !
+                        </p>
+                    </div>
+                )}
+
+                {/* actions */}
+                <div className="flex justify-end gap-3">
                     {onCancel && (
                         <Button
                             type="button"
@@ -226,14 +197,12 @@ export default function ReviewForm({
                                 ? "Modifier ma critique"
                                 : "Publier ma critique"
                         }
-                        className="flex-1"
+                        leftIcon={<FaFeatherPointed className="h-4 w-4" />}
                     >
-                        {isEditing
-                            ? "Modifier ma critique"
-                            : "Publier ma critique"}
+                        {isEditing ? "Modifier" : "Publier"}
                     </Button>
                 </div>
-            </FormWrapper>
-        </div>
+            </div>
+        </FormWrapper>
     );
 }

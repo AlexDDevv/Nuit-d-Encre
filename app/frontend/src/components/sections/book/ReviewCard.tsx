@@ -1,13 +1,13 @@
-import { BookReview } from "@/types/types";
-import ReviewVoteButtons from "@/components/sections/book/ReviewVoteButtons";
-import { useAuthContext } from "@/hooks/auth/useAuthContext";
-import Button from "@/components/UI/Button/Button";
+import { useMemo } from "react";
 import { Pencil, Trash2 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import { BookReview } from "@/types/types";
+import ReviewVoteButtons from "@/components/sections/book/ReviewVoteButtons";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
-import { getRatingClasses } from "@/lib/utils";
-import { useMemo } from "react";
+import Button from "@/components/UI/Button/Button";
+import { cn } from "@/lib/utils";
+import { useAuthContext } from "@/hooks/auth/useAuthContext";
 
 interface ReviewCardProps {
     review: BookReview;
@@ -25,6 +25,7 @@ export default function ReviewCard({
     const { user } = useAuthContext();
     const isOwnReview = user?.id === review.user.id;
 
+    const initials = review.user.userName.slice(0, 2).toUpperCase();
     const timeAgo = useMemo(
         () =>
             formatDistanceToNow(new Date(review.createdAt), {
@@ -36,25 +37,40 @@ export default function ReviewCard({
 
     return (
         <article
-            className={`bg-card border-2 border-border rounded-xl transition-all duration-200 flex flex-col gap-4 p-5 border-l-4 ${getRatingClasses(review.rating)}`}
+            className={cn(
+                "flex flex-col gap-3.5 rounded-xl border-2 p-5 transition-colors duration-200",
+                isOwnReview
+                    ? "border-primary/45 bg-[hsl(43_30%_25%/0.18)]"
+                    : "border-border bg-card/60 hover:border-primary/40",
+            )}
         >
-            <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
-                    <div className="bg-secondary flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
-                        <span className="text-secondary-foreground text-sm font-semibold">
-                            {review.user.userName.charAt(0).toUpperCase()}
+            <div className="flex items-start gap-3.5">
+                {/* monogramme */}
+                <span className="text-primary font-quote grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[radial-gradient(circle_at_32%_26%,hsl(43_30%_31%),hsl(20_3%_13%)_82%)] text-lg shadow-[inset_0_0_0_1px_hsl(43_59%_81%/0.28)]">
+                    {initials}
+                </span>
+
+                <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+                        <span className="text-foreground font-title text-sm font-medium">
+                            {review.user.userName}
+                        </span>
+                        {isOwnReview && (
+                            <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-[9px] uppercase tracking-[0.16em]">
+                                Votre critique
+                            </span>
+                        )}
+                    </div>
+                    <div className="mt-1 flex items-center gap-2.5">
+                        <RatingStars value={review.rating} readOnly size="sm" />
+                        <span className="text-muted-foreground font-body text-[11.5px]">
+                            {timeAgo}
                         </span>
                     </div>
-                    <div>
-                        <p className="text-foreground font-semibold">
-                            {review.user.userName}
-                        </p>
-                        <p className="text-muted-foreground text-xs">
-                            {timeAgo}
-                        </p>
-                    </div>
                 </div>
-                {isOwnReview && (
+
+                {/* actions propriétaire */}
+                {isOwnReview && (onEdit || onDelete) && (
                     <div className="flex items-center gap-2">
                         {onEdit && (
                             <Button
@@ -81,13 +97,14 @@ export default function ReviewCard({
                     </div>
                 )}
             </div>
-            <RatingStars value={review.rating} readOnly size="sm" />
+
             {review.reviewText && (
-                <p className="font-quote italic text-base text-card-foreground whitespace-pre-wrap leading-relaxed">
+                <p className="text-foreground/85 font-quote text-[15.5px] italic leading-[1.62] whitespace-pre-wrap">
                     {review.reviewText}
                 </p>
             )}
-            <div className="border-t border-border -mx-5 -mb-5 px-5 py-4 bg-muted/40 rounded-b-xl">
+
+            <div className="mt-0.5">
                 <ReviewVoteButtons
                     reviewId={review.id}
                     initialHelpfulCount={review.helpfulCount || 0}

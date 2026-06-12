@@ -13,7 +13,7 @@ export default function FormWrapper({
         <form
             onSubmit={onSubmit}
             role="form"
-            className={`border-border bg-card flex w-full flex-col gap-6 rounded-lg border p-8 ${className}`}
+            className={`border-border bg-card flex w-full flex-col gap-6 rounded-xl border p-8 ${className}`}
         >
             {children}
         </form>
