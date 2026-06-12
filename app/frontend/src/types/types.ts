@@ -204,6 +204,7 @@ export interface Book {
     hasUserReviewed?: boolean;
     hasUserRecommended?: boolean;
     isInLibrary?: boolean;
+    createdAt?: string;
 }
 
 export interface BookInfoProps {
