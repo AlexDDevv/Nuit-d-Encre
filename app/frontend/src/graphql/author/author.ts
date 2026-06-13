@@ -30,6 +30,7 @@ export const GET_AUTHOR = gql`
             nationality
             wikipediaUrl
             officialWebsite
+            createdAt
             books {
                 id
                 title

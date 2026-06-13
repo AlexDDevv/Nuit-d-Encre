@@ -94,6 +94,7 @@ export interface Author {
     officialWebsite?: string;
     books: Book[];
     bookCount?: number;
+    createdAt?: string;
     user: User;
 }
 
