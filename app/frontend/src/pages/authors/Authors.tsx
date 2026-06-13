@@ -48,11 +48,15 @@ export default function Authors() {
                 />
             </Helmet>
             <section className="flex min-h-dvh flex-col items-center justify-center gap-20">
-                <div className="flex flex-col items-center justify-center gap-10">
+                <div className="flex flex-col items-center justify-center gap-6">
                     <h1 className="text-foreground text-4xl font-bold">
                         Rechercher un auteur
                     </h1>
-                    <div className="flex items-center justify-center gap-5">
+                    <p className="font-quote text-muted-foreground max-w-xl text-center text-base italic">
+                        Derrière chaque ouvrage veille une plume. Partez à la
+                        rencontre de celles et ceux qui habitent la maison.
+                    </p>
+                    <div className="mt-4 flex items-center justify-center gap-5">
                         <SearchAuthor />
                     </div>
                 </div>
