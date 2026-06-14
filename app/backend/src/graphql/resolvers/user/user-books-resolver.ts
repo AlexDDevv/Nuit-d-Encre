@@ -31,6 +31,7 @@ import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { UserBooksResult } from "../../../database/filteredResults/user/user-books-result"
+import { UserBookStatusCounts } from "../../../database/filteredResults/user/user-book-status-counts"
 import { UserBooksQueryInput } from "../../queries/user/user-books-input"
 import { UserBook } from "../../../database/entities/user/user-book"
 import { CreateUserBookInput } from "../../inputs/create/user/create-user-book-input"
@@ -177,6 +178,46 @@ export class UserBooksResolver {
                 "InternalServerError"
             )
         }
+    }
+
+    /**
+     * Query returning the count of the authenticated user's library books per
+     * reading status (across the whole collection, ignoring pagination/filters).
+     * Powers the "Vos rayons" header stats and the status filter segments.
+     */
+    @Authorized(Roles.User, Roles.Admin)
+    @Query(() => UserBookStatusCounts)
+    async userBookStatusCounts(
+        @Ctx() context: Context
+    ): Promise<UserBookStatusCounts> {
+        const user = context.user
+        if (!user) {
+            throw new AppError("User not found", 404, "NotFoundError")
+        }
+
+        const rows = await UserBook.createQueryBuilder("ub")
+            .select("ub.status", "status")
+            .addSelect("COUNT(*)", "count")
+            .where("ub.userId = :userId", { userId: user.id })
+            .groupBy("ub.status")
+            .getRawMany()
+
+        const counts: UserBookStatusCounts = {
+            total: 0,
+            toRead: 0,
+            reading: 0,
+            read: 0,
+            paused: 0,
+        }
+        for (const row of rows) {
+            const n = Number(row.count)
+            counts.total += n
+            if (row.status === ReadingStatus.TO_READ) counts.toRead = n
+            else if (row.status === ReadingStatus.READING) counts.reading = n
+            else if (row.status === ReadingStatus.READ) counts.read = n
+            else if (row.status === ReadingStatus.PAUSED) counts.paused = n
+        }
+        return counts
     }
 
     /**
