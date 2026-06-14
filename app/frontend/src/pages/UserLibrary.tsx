@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
 import BookCardLibrary from "@/components/sections/library/BookCardLibrary";
+import LibraryGridCard from "@/components/sections/library/LibraryGridCard";
 import BookShelf from "@/components/sections/library/BookShelf";
 import LayoutButtons from "@/components/sections/library/UI/LayoutButtons";
 import StatusFilterSegments from "@/components/sections/library/UI/StatusFilterSegments";
@@ -201,22 +202,37 @@ export default function UserLibrary() {
                 </div>
             </div>
 
-            <div
-                className={cn(
-                    layout === "shelf"
-                        ? "grid auto-rows-min grid-cols-[repeat(5,max-content)] items-start justify-center gap-10 max-xl:grid-cols-[repeat(4,max-content)] max-lg:grid-cols-[repeat(3,max-content)] max-md:grid-cols-[repeat(2,max-content)] max-sm:grid-cols-[repeat(1,max-content)]"
-                        : "flex flex-wrap items-center justify-center gap-20",
-                )}
-            >
-                {layout === "shelf"
-                    ? userBooks.map((userBook: BookCardLibraryProps) => (
+            {layout === "shelf" ? (
+                <div className="grid auto-rows-min grid-cols-[repeat(5,max-content)] items-start justify-center gap-10 max-xl:grid-cols-[repeat(4,max-content)] max-lg:grid-cols-[repeat(3,max-content)] max-md:grid-cols-[repeat(2,max-content)] max-sm:grid-cols-[repeat(1,max-content)]">
+                    {userBooks.map((userBook: BookCardLibraryProps) => (
                         <BookShelf
                             key={userBook.id}
                             book={userBook.book}
                             statusLabel={statusLabelMap[userBook.status]}
                         />
-                    ))
-                    : userBooks.map((userBook: BookCardLibraryProps) => (
+                    ))}
+                </div>
+            ) : layout === "grid" ? (
+                <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-6 lg:grid-cols-4 xl:grid-cols-5">
+                    {userBooks.map((userBook: BookCardLibraryProps) => (
+                        <LibraryGridCard
+                            key={userBook.id}
+                            id={userBook.id}
+                            book={userBook.book}
+                            status={userBook.status}
+                            isFavorite={userBook.isFavorite}
+                            favoriteRank={userBook.favoriteRank}
+                            layout={layout}
+                            onStatusChange={handleStatusBookChange}
+                            isUpdatingUserBook={isUpdatingUserBook}
+                            handleDeleteUserBook={handleDeleteUserBook}
+                            isDeletingUserBook={deletingUserBookId === userBook.id}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="flex flex-wrap items-center justify-center gap-20">
+                    {userBooks.map((userBook: BookCardLibraryProps) => (
                         <BookCardLibrary
                             key={userBook.id}
                             id={userBook.id}
@@ -233,7 +249,8 @@ export default function UserLibrary() {
                             }
                         />
                     ))}
-            </div>
+                </div>
+            )}
             <Pagination
                 className="mx-auto my-0 w-max"
                 currentPage={currentPage}
