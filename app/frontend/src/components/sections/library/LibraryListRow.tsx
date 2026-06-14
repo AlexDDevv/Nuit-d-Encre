@@ -162,6 +162,7 @@ export default function LibraryListRow({
                 isOpen={favOpen}
                 onClose={() => setFavOpen(false)}
                 userBookId={id}
+                book={book}
                 isFavorite={isFavorite}
                 favoriteRank={favoriteRank}
             />

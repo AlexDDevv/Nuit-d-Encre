@@ -482,6 +482,7 @@ export interface FavoriteBookModalProps {
     isOpen: boolean;
     onClose: () => void;
     userBookId: string;
+    book: Book;
     isFavorite: boolean;
     favoriteRank: number | null;
 }
