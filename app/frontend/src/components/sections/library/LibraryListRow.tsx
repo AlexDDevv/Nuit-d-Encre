@@ -56,10 +56,10 @@ export default function LibraryListRow({
                 />
                 {isFavorite && (
                     <span
-                        className="bg-primary text-primary-foreground absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full font-mono text-[9px] font-medium shadow"
+                        className="bg-primary text-primary-foreground absolute -right-1 -top-1 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-[9px] font-medium shadow"
                         title={`Favori · rang ${favoriteRank}`}
                     >
-                        {favoriteRank}
+                        <FaStar size={9} aria-hidden="true" /> {favoriteRank}
                     </span>
                 )}
             </Link>
@@ -87,64 +87,66 @@ export default function LibraryListRow({
                     · {book.publishedYear}
                 </p>
             </div>
+            <div className="flex items-center gap-20">
+                {/* catégorie (md+) */}
+                <span className="font-quote hidden shrink-0 truncate text-xs italic text-[hsl(43_30%_64%)] md:block">
+                    {book.category?.name}
+                </span>
+                <div className="flex items-center gap-5">
+                    {/* note (lg+) */}
+                    <div className="hidden shrink-0 lg:block">
+                        <BookCardRating
+                            averageRating={book.averageRating}
+                            reviewCount={book.reviewCount}
+                        />
+                    </div>
 
-            {/* catégorie (md+) */}
-            <span className="font-quote hidden w-30 shrink-0 truncate text-[12.5px] italic text-[hsl(43_30%_64%)] md:block">
-                {book.category?.name}
-            </span>
+                    {/* statut (sm+) */}
+                    <div className="hidden shrink-0 sm:block">
+                        <SelectBookStatus
+                            value={status}
+                            onChange={(newStatus) =>
+                                onStatusChange?.({
+                                    userBookId: id,
+                                    bookId: book.id,
+                                    status: newStatus,
+                                })
+                            }
+                            disabled={isUpdatingUserBook}
+                            colored
+                            className="h-8 w-full min-w-37.5 text-xs rounded-md"
+                        />
+                    </div>
 
-            {/* note (lg+) */}
-            <div className="hidden w-32 shrink-0 lg:block">
-                <BookCardRating
-                    averageRating={book.averageRating}
-                    reviewCount={book.reviewCount}
-                />
-            </div>
-
-            {/* statut (sm+) */}
-            <div className="hidden w-36 shrink-0 sm:block">
-                <SelectBookStatus
-                    value={status}
-                    onChange={(newStatus) =>
-                        onStatusChange?.({
-                            userBookId: id,
-                            bookId: book.id,
-                            status: newStatus,
-                        })
-                    }
-                    disabled={isUpdatingUserBook}
-                    colored
-                    className="h-8 w-full min-w-0 py-1 text-xs"
-                />
-            </div>
-
-            {/* actions */}
-            <div className="flex shrink-0 items-center gap-1.5">
-                <button
-                    type="button"
-                    onClick={() => setFavOpen(true)}
-                    aria-label={
-                        isFavorite
-                            ? `Favori, rang ${favoriteRank}. Gérer les favoris`
-                            : "Ajouter aux favoris"
-                    }
-                    className={cn(
-                        "focus-visible:ring-ring grid h-8 w-8 cursor-pointer place-items-center rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2",
-                        isFavorite
-                            ? "border-primary/50 text-primary bg-primary/14"
-                            : "border-border text-muted-foreground hover:text-primary hover:border-primary/40",
-                    )}
-                >
-                    <FaStar size={13} aria-hidden="true" />
-                </button>
-                <button
-                    type="button"
-                    onClick={() => setConfirming(true)}
-                    aria-label="Retirer de vos rayons"
-                    className="border-border text-muted-foreground hover:border-destructive/60 hover:text-[hsl(3_84%_62%)] focus-visible:ring-ring grid h-8 w-8 cursor-pointer place-items-center rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2"
-                >
-                    <FaTrashCan size={14} aria-hidden="true" />
-                </button>
+                    {/* actions */}
+                    <div className="flex shrink-0 items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setFavOpen(true)}
+                            aria-label={
+                                isFavorite
+                                    ? `Favori, rang ${favoriteRank}. Gérer les favoris`
+                                    : "Ajouter aux favoris"
+                            }
+                            className={cn(
+                                "focus-visible:ring-ring grid h-8 w-8 cursor-pointer place-items-center rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2",
+                                isFavorite
+                                    ? "border-primary/50 text-primary bg-primary/14"
+                                    : "border-border text-muted-foreground hover:text-primary hover:border-primary/40",
+                            )}
+                        >
+                            <FaStar size={13} aria-hidden="true" />
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setConfirming(true)}
+                            aria-label="Retirer de vos rayons"
+                            className="border-border text-muted-foreground hover:border-destructive/60 hover:text-[hsl(3_84%_62%)] focus-visible:ring-ring grid h-8 w-8 cursor-pointer place-items-center rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2"
+                        >
+                            <FaTrashCan size={14} aria-hidden="true" />
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {confirming && (

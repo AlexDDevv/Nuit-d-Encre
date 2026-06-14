@@ -383,7 +383,9 @@ export type BookCardLibraryProps = {
 
 export type BookShelfProps = {
     book: Book;
-    statusLabel: string;
+    status: UserBookStatus;
+    isFavorite?: boolean;
+    favoriteRank?: number | null;
 };
 
 export type UserBookInfoProps = {

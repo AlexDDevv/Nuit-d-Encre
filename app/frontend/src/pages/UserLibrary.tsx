@@ -208,7 +208,9 @@ export default function UserLibrary() {
                         <BookShelf
                             key={userBook.id}
                             book={userBook.book}
-                            statusLabel={statusLabelMap[userBook.status]}
+                            status={userBook.status}
+                            isFavorite={userBook.isFavorite}
+                            favoriteRank={userBook.favoriteRank}
                         />
                     ))}
                 </div>

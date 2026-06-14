@@ -23,6 +23,7 @@ export const GET_USER_BOOKS = gql`
                     pageCount
                     publishedYear
                     publisher
+                    format
                     averageRating
                     recommendationCount
                     reviewCount
