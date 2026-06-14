@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { FaXmark } from "react-icons/fa6";
-import BookCardLibrary from "@/components/sections/library/BookCardLibrary";
 import LibraryGridCard from "@/components/sections/library/LibraryGridCard";
+import LibraryListRow from "@/components/sections/library/LibraryListRow";
 import BookShelf from "@/components/sections/library/BookShelf";
 import LayoutButtons from "@/components/sections/library/UI/LayoutButtons";
 import StatusFilterSegments from "@/components/sections/library/UI/StatusFilterSegments";
@@ -231,9 +231,9 @@ export default function UserLibrary() {
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-wrap items-center justify-center gap-20">
+                <div className="flex flex-col gap-3">
                     {userBooks.map((userBook: BookCardLibraryProps) => (
-                        <BookCardLibrary
+                        <LibraryListRow
                             key={userBook.id}
                             id={userBook.id}
                             book={userBook.book}

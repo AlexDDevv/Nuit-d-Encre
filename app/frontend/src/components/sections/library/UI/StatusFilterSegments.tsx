@@ -17,7 +17,7 @@ type StatusFilterSegmentsProps = {
 };
 
 const SEG_BASE =
-    "focus-visible:ring-ring inline-flex items-center gap-2 whitespace-nowrap rounded-md border-2 px-3 py-1.5 font-body text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2";
+    "focus-visible:ring-ring inline-flex items-center gap-2 whitespace-nowrap rounded-md border-2 px-3 py-1.5 font-body text-xs font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 cursor-pointer";
 const ACTIVE = "border-primary/60 bg-[hsl(43_30%_25%/0.45)] text-primary";
 const INACTIVE = "border-border text-muted-foreground hover:text-primary";
 
