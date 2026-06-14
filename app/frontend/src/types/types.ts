@@ -356,6 +356,10 @@ export type SelectBookStatusProps = {
     value?: UserBookStatus;
     onChange?: (status: UserBookStatus) => void;
     disabled?: boolean;
+    /** Colore le déclencheur selon le statut courant (utilisé dans la bibliothèque). */
+    colored?: boolean;
+    /** Classes supplémentaires pour le déclencheur (ex. largeur). */
+    className?: string;
 };
 
 export type LayoutOptionsValue = "grid" | "list" | "shelf";

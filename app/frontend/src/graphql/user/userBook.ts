@@ -36,6 +36,18 @@ export const GET_USER_BOOKS = gql`
     }
 `;
 
+export const GET_USER_BOOK_STATUS_COUNTS = gql`
+    query UserBookStatusCounts {
+        userBookStatusCounts {
+            total
+            toRead
+            reading
+            read
+            paused
+        }
+    }
+`;
+
 export const GET_USER_BOOK = gql`
     query UserBook($userBookId: ID!) {
         userBook(id: $userBookId) {
