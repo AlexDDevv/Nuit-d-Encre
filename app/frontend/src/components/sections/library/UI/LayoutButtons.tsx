@@ -28,7 +28,7 @@ export default function LayoutButtons({
         <div
             role="group"
             aria-label="Disposition de la bibliothèque"
-            className="border-border inline-flex items-center gap-1 rounded-md border-2 bg-[hsl(20_3%_16%/0.5)] p-1"
+            className="border-border inline-flex items-center gap-1 rounded-md border-2 bg-[hsl(20_3%_16%/0.5)] p-1 h-10"
         >
             {LAYOUT_OPTIONS.map(({ icon: Icon, label, value }) => {
                 const active = activeLayout === value;
