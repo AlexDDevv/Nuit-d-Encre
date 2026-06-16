@@ -10,6 +10,7 @@ export const GET_USER_PROFILE = gql`
             bio
             level
             xp
+            createdAt
             title {
                 id
                 label
@@ -17,6 +18,17 @@ export const GET_USER_PROFILE = gql`
                 iconKey
                 ornamentKey
             }
+        }
+    }
+`;
+
+export const GET_USER_ACTIONS = gql`
+    query UserActionsByUser($id: ID!) {
+        userActionsByUser(id: $id) {
+            type
+            xp
+            createdAt
+            metadata
         }
     }
 `;
@@ -29,6 +41,7 @@ export const GET_USER_FAVORITE_BOOKS = gql`
             book {
                 id
                 title
+                coverUrl
                 author {
                     id
                     firstname

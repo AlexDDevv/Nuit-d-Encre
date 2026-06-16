@@ -22,12 +22,33 @@ export interface User {
     role: UserRole;
     created_at: string;
     updated_at: string;
+    createdAt?: string;
     level: number;
     xp: number;
     avatar: string | null;
     banner: string | null;
     bio: string | null;
     title: Title | null;
+}
+
+export type UserActionType =
+    | "BOOK_ADDED"
+    | "AUTHOR_ADDED"
+    | "BOOK_ADDED_TO_LIBRARY"
+    | "BOOK_FINISHED"
+    | "BOOK_RECOMMENDED"
+    | "REVIEW_CREATED"
+    | "DETAILED_REVIEW_BONUS"
+    | "REVIEW_VOTED_HELPFUL"
+    | "BOOK_IMPORTED"
+    | "BOOK_COMPLETED"
+    | "AUTHOR_COMPLETED";
+
+export interface UserAction {
+    type: UserActionType;
+    xp: number;
+    createdAt: string;
+    metadata: string | null;
 }
 
 export interface LinksType {

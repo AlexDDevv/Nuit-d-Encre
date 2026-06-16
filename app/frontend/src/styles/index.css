@@ -40,3 +40,119 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+/* ── Profil : ornements et animations « Nuit d'Encre » ── */
+.text-gradient-gold {
+    color: hsl(43 62% 84%);
+    text-shadow: 0 1px 0 hsl(20 30% 8% / 0.25);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+@keyframes xpShimmer {
+    0% {
+        transform: translateX(-120%);
+    }
+    100% {
+        transform: translateX(320%);
+    }
+}
+.xp-shimmer::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(
+        100deg,
+        transparent,
+        hsl(43 80% 90% / 0.55),
+        transparent
+    );
+    animation: xpShimmer 2.6s ease-in-out infinite;
+}
+
+@keyframes fadeUp {
+    from {
+        transform: translateY(8px);
+    }
+    to {
+        transform: none;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .fade-up {
+        animation: fadeUp 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+    }
+}
+
+@keyframes nodeGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 14px 2px hsl(43 59% 81% / 0.35);
+    }
+    50% {
+        box-shadow: 0 0 22px 5px hsl(43 59% 81% / 0.55);
+    }
+}
+.node-glow {
+    animation: nodeGlow 3s ease-in-out infinite;
+}
+
+/* Entrée modale + overlay + feuille mobile */
+@keyframes overlayIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes modalIn {
+    from {
+        transform: translateY(14px) scale(0.98);
+        opacity: 0;
+    }
+    to {
+        transform: none;
+        opacity: 1;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .overlay-in {
+        animation: overlayIn 0.2s ease;
+    }
+    .modal-in {
+        animation: modalIn 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+}
+
+/* Spinner doré (voile d'envoi, états de chargement) */
+@keyframes spinGold {
+    to {
+        transform: rotate(360deg);
+    }
+}
+.spin-gold {
+    animation: spinGold 0.85s linear infinite;
+}
+
+/* Grain papier sur les surfaces lourdes (bannière, hero) */
+.grain {
+    position: relative;
+}
+.grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}

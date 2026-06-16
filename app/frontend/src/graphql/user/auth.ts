@@ -30,6 +30,7 @@ export const WHOAMI = gql`
             avatar
             banner
             bio
+            createdAt
             title {
                 id
                 label

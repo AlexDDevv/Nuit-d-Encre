@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
-import { GET_USER_PROFILE } from "@/graphql/user/profile";
+import { GET_USER_PROFILE, GET_USER_ACTIONS } from "@/graphql/user/profile";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
-import ProfileHeader from "@/components/sections/profile/ProfileHeader";
-import LevelCard from "@/components/sections/profile/LevelCard";
-import FavoriteBooksSection from "@/components/sections/profile/FavoriteBooksSection";
-import EditProfileForm from "@/components/sections/form/EditProfileForm";
-import ChangePasswordForm from "@/components/sections/form/ChangePasswordForm";
+import { computeStats } from "@/lib/profileActivity";
+import { User, UserAction } from "@/types/types";
+import ProfileHero from "@/components/sections/profile/ProfileHero";
+import ProfileProgression from "@/components/sections/profile/ProfileProgression";
+import ProfileStats from "@/components/sections/profile/ProfileStats";
+import FavoriteBooks from "@/components/sections/profile/FavoriteBooks";
+import ProfileActivity from "@/components/sections/profile/ProfileActivity";
+import EditProfileModal from "@/components/sections/profile/EditProfileModal";
+import { Ornament } from "@/components/sections/profile/ProfileUI";
 
 export default function UserProfile() {
     const { id } = useParams<{ id: string }>();
@@ -16,53 +20,87 @@ export default function UserProfile() {
     const profileId = id ?? currentUser?.id;
     const isOwner = !id || id === currentUser?.id;
 
-    const [activeTab, setActiveTab] = useState<"profil" | "securite">("profil");
+    const [editOpen, setEditOpen] = useState(false);
 
-    const { data, loading, error } = useQuery(GET_USER_PROFILE, {
+    const { data: profileData, loading } = useQuery(GET_USER_PROFILE, {
         variables: { id: profileId },
         skip: !profileId || isOwner,
     });
 
-    const profileUser = isOwner && currentUser ? currentUser : data?.getUserProfile;
+    const { data: actionsData } = useQuery(GET_USER_ACTIONS, {
+        variables: { id: profileId },
+        skip: !profileId,
+    });
 
-    if (loading) return <div className="p-8 text-center text-muted-foreground">Chargement...</div>;
-    if (error || !profileUser) return <div className="p-8 text-center text-destructive">Profil introuvable</div>;
+    const profileUser: User | undefined =
+        isOwner && currentUser ? currentUser : profileData?.getUserProfile;
+
+    const actions: UserAction[] = useMemo(
+        () => actionsData?.userActionsByUser ?? [],
+        [actionsData],
+    );
+    const stats = useMemo(() => computeStats(actions), [actions]);
+
+    if (loading) {
+        return (
+            <div className="text-muted-foreground p-8 text-center">
+                Chargement…
+            </div>
+        );
+    }
+    if (!profileUser) {
+        return (
+            <div className="text-destructive p-8 text-center">
+                Profil introuvable
+            </div>
+        );
+    }
 
     return (
-        <div className="max-w-3xl mx-auto py-8 space-y-6">
-            <ProfileHeader user={profileUser} isOwner={isOwner} />
-            <LevelCard user={profileUser} />
-            <FavoriteBooksSection userId={profileUser.id} isOwner={isOwner} />
-
-            {isOwner && (
-                <div className="bg-card rounded-lg p-4 border border-border">
-                    <div className="flex gap-4 mb-4 border-b border-border">
-                        <button
-                            onClick={() => setActiveTab("profil")}
-                            className={`pb-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
-                                activeTab === "profil"
-                                    ? "border-primary text-primary"
-                                    : "border-transparent text-muted-foreground hover:text-foreground"
-                            }`}
-                        >
-                            Informations
-                        </button>
-                        <button
-                            onClick={() => setActiveTab("securite")}
-                            className={`pb-2 text-sm font-medium border-b-2 -mb-px transition-colors ${
-                                activeTab === "securite"
-                                    ? "border-primary text-primary"
-                                    : "border-transparent text-muted-foreground hover:text-foreground"
-                            }`}
-                        >
-                            Sécurité
-                        </button>
-                    </div>
-
-                    {activeTab === "profil" && <EditProfileForm user={profileUser} />}
-                    {activeTab === "securite" && <ChangePasswordForm />}
+        <section className="mx-auto w-full max-w-5xl">
+            {!isOwner && (
+                <div className="text-muted-foreground mb-4 flex items-center justify-center gap-3 text-[12px] tracking-[0.22em] uppercase">
+                    <Ornament width="w-8" />
+                    Lecture seule · vous visitez ce profil
+                    <Ornament width="w-8" />
                 </div>
             )}
-        </div>
+
+            <div className="flex flex-col gap-6 md:gap-7">
+                <ProfileHero
+                    user={profileUser}
+                    isOwner={isOwner}
+                    onOpenEdit={() => setEditOpen(true)}
+                />
+
+                <ProfileProgression user={profileUser} />
+
+                <ProfileStats stats={stats} />
+
+                <div className="grid grid-cols-1 gap-6 md:gap-7 lg:grid-cols-[1.05fr_1fr]">
+                    <FavoriteBooks
+                        userId={profileUser.id}
+                        isOwner={isOwner}
+                        editing={isOwner}
+                    />
+                    <ProfileActivity actions={actions} />
+                </div>
+            </div>
+
+            <footer className="mt-12 flex flex-col items-center gap-3 pb-6 text-center">
+                <Ornament />
+                <p className="text-muted-foreground/70 max-w-md font-quote text-[15px] italic">
+                    « On n'habite pas un pays, on habite une langue. » — et, la
+                    nuit venue, une bibliothèque.
+                </p>
+            </footer>
+
+            {editOpen && isOwner && (
+                <EditProfileModal
+                    user={profileUser}
+                    onClose={() => setEditOpen(false)}
+                />
+            )}
+        </section>
     );
 }

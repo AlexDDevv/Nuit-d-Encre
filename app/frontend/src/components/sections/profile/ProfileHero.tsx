@@ -1,0 +1,295 @@
+import { useRef, useState } from "react";
+import { useMutation } from "@apollo/client";
+import {
+    FaPen,
+    FaCamera,
+    FaRegCalendar,
+    FaQuoteLeft,
+    FaTrash,
+} from "react-icons/fa6";
+import Button from "@/components/UI/Button/Button";
+import {
+    UPDATE_AVATAR,
+    UPDATE_BANNER,
+    REMOVE_BANNER,
+} from "@/graphql/user/profile";
+import { WHOAMI } from "@/graphql/user/auth";
+import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import { titleAt } from "@/constants/titles";
+import { User } from "@/types/types";
+import { Card, Pill, Ornament, MoonMedallion } from "./ProfileUI";
+
+interface ProfileHeroProps {
+    user: User;
+    isOwner: boolean;
+    onOpenEdit: () => void;
+}
+
+const initials = (name: string) =>
+    name
+        .split(" ")
+        .map((p) => p[0])
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+const memberSince = (iso?: string) => {
+    if (!iso) return null;
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return null;
+    return new Intl.DateTimeFormat("fr-FR", {
+        month: "long",
+        year: "numeric",
+    }).format(date);
+};
+
+// — Voile « envoi en cours » doré —
+function UploadVeil({ rounded = "rounded-full" }: { rounded?: string }) {
+    return (
+        <div
+            className={`bg-background/72 text-primary absolute inset-0 z-20 grid place-items-center ${rounded}`}
+            aria-live="polite"
+        >
+            <span className="flex flex-col items-center gap-1.5">
+                <svg
+                    width={26}
+                    height={26}
+                    viewBox="0 0 24 24"
+                    className="spin-gold"
+                    aria-hidden="true"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeOpacity="0.25"
+                        strokeWidth="3"
+                    />
+                    <path
+                        d="M12 3a9 9 0 0 1 9 9"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                    />
+                </svg>
+                <span className="font-body text-[11px] font-bold tracking-[0.2em] uppercase">
+                    Envoi…
+                </span>
+            </span>
+        </div>
+    );
+}
+
+function TitlePlate({ level, title }: { level: number; title: string }) {
+    return (
+        <div className="flex flex-col items-center gap-2 text-center md:items-start md:text-left">
+            <Pill tone="gold">Titre · Niveau {level}</Pill>
+            <div className="flex items-center gap-3">
+                <MoonMedallion />
+                <span className="text-gradient-gold font-quote text-[27px] leading-none font-semibold tracking-wide whitespace-nowrap md:text-[31px]">
+                    {title}
+                </span>
+            </div>
+            <Ornament width="w-12" />
+        </div>
+    );
+}
+
+export default function ProfileHero({
+    user,
+    isOwner,
+    onOpenEdit,
+}: ProfileHeroProps) {
+    const avatarInput = useRef<HTMLInputElement>(null);
+    const bannerInput = useRef<HTMLInputElement>(null);
+    const [busy, setBusy] = useState<"avatar" | "banner" | null>(null);
+
+    const refetch = [{ query: WHOAMI }];
+    const [updateAvatar] = useMutation(UPDATE_AVATAR, { refetchQueries: refetch });
+    const [updateBanner] = useMutation(UPDATE_BANNER, { refetchQueries: refetch });
+    const [removeBanner] = useMutation(REMOVE_BANNER, { refetchQueries: refetch });
+
+    const handleUpload = async (
+        kind: "avatar" | "banner",
+        e: React.ChangeEvent<HTMLInputElement>,
+    ) => {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+        if (!file) return;
+        setBusy(kind);
+        try {
+            const folder = kind === "avatar" ? "user/avatar" : "user/banner";
+            const url = await uploadImageToCloudinary(file, folder);
+            if (!url) return;
+            if (kind === "avatar") await updateAvatar({ variables: { url } });
+            else await updateBanner({ variables: { url } });
+        } finally {
+            setBusy(null);
+        }
+    };
+
+    const title = user.title?.label ?? titleAt(user.level);
+    const since = memberSince(user.createdAt);
+
+    return (
+        <Card glow={false} className="grain fade-up overflow-hidden">
+            {/* Bannière éditable en place */}
+            <div className="group/banner relative h-32 sm:h-44 md:h-52">
+                {user.banner ? (
+                    <img
+                        src={user.banner}
+                        alt="Bannière"
+                        className="absolute inset-0 h-full w-full object-cover"
+                    />
+                ) : (
+                    <>
+                        <div className="absolute inset-0 bg-[radial-gradient(120%_140%_at_20%_-20%,hsl(43_38%_34%)_0%,hsl(28_24%_18%)_45%,hsl(20_3%_15%)_100%)]" />
+                        <div className="grain absolute inset-0 opacity-50" />
+                    </>
+                )}
+                <div className="via-primary/45 absolute inset-x-0 bottom-0 z-10 h-px bg-gradient-to-r from-transparent to-transparent" />
+
+                {isOwner && busy !== "banner" && (
+                    <div className="absolute top-3 right-3 z-10 flex items-center gap-2 opacity-0 transition-opacity duration-200 group-hover/banner:opacity-100 focus-within:opacity-100">
+                        <button
+                            type="button"
+                            onClick={() => bannerInput.current?.click()}
+                            className="border-primary/70 bg-background/55 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-[13px] font-bold whitespace-nowrap backdrop-blur-sm transition-colors focus:outline-none cursor-pointer"
+                        >
+                            <FaCamera size={14} /> Changer la bannière
+                        </button>
+                        {user.banner && (
+                            <button
+                                type="button"
+                                onClick={() => removeBanner()}
+                                className="border-destructive/60 bg-background/55 text-destructive hover:bg-destructive inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-[13px] font-bold whitespace-nowrap backdrop-blur-sm transition-colors hover:text-white focus:outline-none"
+                            >
+                                <FaTrash size={14} /> Retirer
+                            </button>
+                        )}
+                    </div>
+                )}
+                {busy === "banner" && <UploadVeil rounded="rounded-none" />}
+            </div>
+
+            <input
+                ref={avatarInput}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => handleUpload("avatar", e)}
+            />
+            <input
+                ref={bannerInput}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => handleUpload("banner", e)}
+            />
+
+            {/* Corps */}
+            <div className="relative px-5 pb-6 md:px-8">
+                {/* Avatar chevauchant, éditable en place */}
+                <div className="absolute -top-12 left-1/2 -translate-x-1/2 md:-top-14 md:left-8 md:translate-x-0">
+                    <div className="group/av relative">
+                        <div className="ring-primary/70 relative h-24 w-24 overflow-hidden rounded-full shadow-[0_8px_30px_-6px_hsl(0_0%_0%/0.6)] ring-2 md:h-28 md:w-28">
+                            {user.avatar ? (
+                                <img
+                                    src={user.avatar}
+                                    alt={user.userName}
+                                    className="h-full w-full object-cover"
+                                />
+                            ) : (
+                                <div className="grid h-full w-full place-items-center bg-gradient-to-br from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] font-title text-3xl font-black text-[hsl(43_59%_21%)] md:text-4xl">
+                                    {initials(user.userName)}
+                                </div>
+                            )}
+                            {isOwner && busy !== "avatar" && (
+                                <button
+                                    type="button"
+                                    aria-label="Changer la photo de profil"
+                                    onClick={() => avatarInput.current?.click()}
+                                    className="bg-background/65 text-primary absolute inset-0 z-10 grid place-items-center rounded-full opacity-0 transition-opacity duration-200 hover:opacity-100 focus:opacity-100 focus:outline-none cursor-pointer"
+                                >
+                                    <FaCamera size={22} />
+                                    <span className="mt-1 text-[10px] font-bold tracking-wider uppercase">
+                                        Changer
+                                    </span>
+                                </button>
+                            )}
+                            {busy === "avatar" && (
+                                <UploadVeil rounded="rounded-full" />
+                            )}
+                        </div>
+                        <span className="ring-background pointer-events-none absolute inset-0 rounded-full ring-4" />
+                        {/* Pastille appareil photo (indice d'éditabilité) */}
+                        {isOwner && (
+                            <span className="border-background bg-primary text-primary-foreground pointer-events-none absolute -right-0.5 -bottom-0.5 z-30 grid h-8 w-8 place-items-center rounded-full border-2 shadow-md transition-transform duration-200 group-hover/av:scale-110">
+                                <FaCamera size={14} />
+                            </span>
+                        )}
+                    </div>
+                </div>
+
+                <div className="flex flex-col items-center pt-16 text-center md:flex-row md:items-end md:justify-between md:pt-4 md:pl-40 md:text-left">
+                    {/* Identité */}
+                    <div className="flex flex-col items-center gap-3 md:items-start">
+                        <h1 className="text-foreground font-title text-[26px] leading-tight font-black md:text-[34px]">
+                            {user.userName}
+                        </h1>
+                        {since && (
+                            <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm md:justify-start">
+                                <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
+                                    <FaRegCalendar
+                                        size={13}
+                                        className="text-primary/60"
+                                    />
+                                    Membre depuis {since}
+                                </span>
+                            </div>
+                        )}
+                        <div className="mt-1">
+                            <TitlePlate level={user.level} title={title} />
+                        </div>
+                    </div>
+
+                    {/* Action principale : ouvre la modale */}
+                    {isOwner && (
+                        <div className="mt-5 flex shrink-0 items-center gap-2 md:mt-0 md:self-start md:pt-1">
+                            <Button
+                                variant="primary"
+                                size="md"
+                                onClick={onOpenEdit}
+                                leftIcon={<FaPen size={14} />}
+                            >
+                                Modifier le profil
+                            </Button>
+                        </div>
+                    )}
+                </div>
+
+                {/* Bio */}
+                <div className="mt-5 md:pl-40">
+                    {user.bio ? (
+                        <p className="text-foreground/85 max-w-2xl font-quote text-[17px] leading-relaxed italic md:text-[18px]">
+                            <FaQuoteLeft
+                                size={13}
+                                className="text-primary/50 mr-1.5 -mt-1 inline-block"
+                            />
+                            {user.bio}
+                        </p>
+                    ) : (
+                        <p className="text-muted-foreground/70 max-w-xl font-quote text-[16px] italic">
+                            {isOwner
+                                ? "Vous n'avez pas encore écrit votre préface."
+                                : "Ce lecteur n'a pas encore écrit sa préface."}
+                        </p>
+                    )}
+                </div>
+            </div>
+        </Card>
+    );
+}
