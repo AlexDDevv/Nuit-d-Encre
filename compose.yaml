@@ -11,7 +11,8 @@ services:
             - ./app/frontend/src:/app/src
             - ./app/frontend/public:/app/public
             - ./app/frontend/vite.config.ts:/app/vite.config.ts
-        command: ["pnpm", "run", "dev", "--host"]   
+            - ./app/frontend/.env:/app/.env
+        command: ["pnpm", "run", "dev", "--host"]
         networks:
             - frontend_network # To be configured if a specific network is required 
 
