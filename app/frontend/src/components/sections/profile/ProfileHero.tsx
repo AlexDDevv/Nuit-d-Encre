@@ -14,7 +14,8 @@ import {
     REMOVE_BANNER,
 } from "@/graphql/user/profile";
 import { WHOAMI } from "@/graphql/user/auth";
-import { uploadImageToCloudinary } from "@/lib/cloudinary";
+import { fileToDataUrl, MAX_IMAGE_BYTES } from "@/lib/image";
+import { useToast } from "@/hooks/toast/useToast";
 import { titleAt } from "@/constants/titles";
 import { User } from "@/types/types";
 import { Card, Pill, Ornament, MoonMedallion } from "./ProfileUI";
@@ -106,6 +107,7 @@ export default function ProfileHero({
     const avatarInput = useRef<HTMLInputElement>(null);
     const bannerInput = useRef<HTMLInputElement>(null);
     const [busy, setBusy] = useState<"avatar" | "banner" | null>(null);
+    const { showToast } = useToast();
 
     const refetch = [{ query: WHOAMI }];
     const [updateAvatar] = useMutation(UPDATE_AVATAR, { refetchQueries: refetch });
@@ -119,13 +121,25 @@ export default function ProfileHero({
         const file = e.target.files?.[0];
         e.target.value = "";
         if (!file) return;
+        if (file.size > MAX_IMAGE_BYTES) {
+            showToast({
+                type: "error",
+                title: "Image trop lourde",
+                description: "Choisissez une image de moins de 8 Mo.",
+            });
+            return;
+        }
         setBusy(kind);
         try {
-            const folder = kind === "avatar" ? "user/avatar" : "user/banner";
-            const url = await uploadImageToCloudinary(file, folder);
-            if (!url) return;
-            if (kind === "avatar") await updateAvatar({ variables: { url } });
-            else await updateBanner({ variables: { url } });
+            const data = await fileToDataUrl(file);
+            if (kind === "avatar") await updateAvatar({ variables: { data } });
+            else await updateBanner({ variables: { data } });
+        } catch {
+            showToast({
+                type: "error",
+                title: "Échec de l'envoi",
+                description: "L'image n'a pas pu être envoyée.",
+            });
         } finally {
             setBusy(null);
         }

@@ -69,8 +69,8 @@ export const CHANGE_PASSWORD = gql`
 `;
 
 export const UPDATE_AVATAR = gql`
-    mutation UpdateAvatar($url: String!) {
-        updateAvatar(url: $url) {
+    mutation UpdateAvatar($data: String!) {
+        updateAvatar(data: $data) {
             id
             avatar
         }
@@ -78,8 +78,8 @@ export const UPDATE_AVATAR = gql`
 `;
 
 export const UPDATE_BANNER = gql`
-    mutation UpdateBanner($url: String!) {
-        updateBanner(url: $url) {
+    mutation UpdateBanner($data: String!) {
+        updateBanner(data: $data) {
             id
             banner
         }
