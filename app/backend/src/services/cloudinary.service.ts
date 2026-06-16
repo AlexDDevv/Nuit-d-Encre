@@ -26,4 +26,36 @@ export class CloudinaryService {
             return null;
         }
     }
+
+    // Upload signé d'une image fournie en data URI (base64). `publicId` est
+    // déterministe (ex. "users/42/avatar") : `overwrite` remplace l'ancien
+    // fichier et `invalidate` purge le cache CDN. `asset_folder` (parent du
+    // public_id) reproduit l'arborescence dans la vue « Folders » des comptes
+    // en mode dossiers dynamiques, où elle ne dérive pas du public_id.
+    async uploadImage(dataUri: string, publicId: string): Promise<string | null> {
+        try {
+            const slash = publicId.lastIndexOf("/");
+            const assetFolder = slash > 0 ? publicId.slice(0, slash) : undefined;
+            const result = await cloudinary.uploader.upload(dataUri, {
+                public_id: publicId,
+                asset_folder: assetFolder,
+                overwrite: true,
+                invalidate: true,
+                resource_type: "image",
+            });
+            return result.secure_url;
+        } catch {
+            return null;
+        }
+    }
+
+    // Suppression best-effort d'un asset par son public_id (nettoyage au
+    // retrait d'un avatar / d'une bannière).
+    async deleteImage(publicId: string): Promise<void> {
+        try {
+            await cloudinary.uploader.destroy(publicId, { invalidate: true });
+        } catch {
+            // Le retrait en base reste prioritaire : on ignore l'échec CDN.
+        }
+    }
 }

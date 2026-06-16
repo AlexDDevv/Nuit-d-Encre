@@ -17,6 +17,11 @@ import { Context, Roles } from "../../../types/types";
 import { enforceRateLimit } from "../../../middlewares/rate-limiter";
 import { LogUserInput } from "../../inputs/create/user/create-auth-input";
 import { UpdateProfileInput } from "../../inputs/update/user/update-profile-input";
+import { CloudinaryService } from "../../../services/cloudinary.service";
+
+// Accepte une data URI d'image base64 (ex. "data:image/png;base64,...").
+const isImageDataUri = (value: string): boolean =>
+    /^data:image\/[a-zA-Z0-9.+-]+;base64,/.test(value);
 
 /**
  * AuthResolver handles all authentication-related GraphQL mutations and queries.
@@ -24,6 +29,8 @@ import { UpdateProfileInput } from "../../inputs/update/user/update-profile-inpu
 
 @Resolver(User)
 export class AuthResolver {
+    private cloudinaryService = new CloudinaryService();
+
     /**
      * Mutation for user registration.
      *
@@ -196,7 +203,7 @@ export class AuthResolver {
     @Authorized()
     @Mutation(() => User)
     async updateAvatar(
-        @Arg("url") url: string,
+        @Arg("data") data: string,
         @Ctx() context: Context,
     ): Promise<User> {
         try {
@@ -204,6 +211,21 @@ export class AuthResolver {
 
             if (!user)
                 throw new AppError("User not found", 404, "NotFoundError");
+
+            if (!isImageDataUri(data))
+                throw new AppError("Invalid image", 400, "ValidationError");
+
+            const url = await this.cloudinaryService.uploadImage(
+                data,
+                `users/${user.id}/avatar`,
+            );
+
+            if (!url)
+                throw new AppError(
+                    "Failed to upload avatar",
+                    502,
+                    "InternalServerError",
+                );
 
             return await updateAvatar(user.id, url);
         } catch (error) {
@@ -219,7 +241,7 @@ export class AuthResolver {
     @Authorized()
     @Mutation(() => User)
     async updateBanner(
-        @Arg("url") url: string,
+        @Arg("data") data: string,
         @Ctx() context: Context,
     ): Promise<User> {
         try {
@@ -227,6 +249,21 @@ export class AuthResolver {
 
             if (!user)
                 throw new AppError("User not found", 404, "NotFoundError");
+
+            if (!isImageDataUri(data))
+                throw new AppError("Invalid image", 400, "ValidationError");
+
+            const url = await this.cloudinaryService.uploadImage(
+                data,
+                `users/${user.id}/banner`,
+            );
+            
+            if (!url)
+                throw new AppError(
+                    "Failed to upload banner",
+                    502,
+                    "InternalServerError",
+                );
 
             return await updateBanner(user.id, url);
         } catch (error) {
@@ -248,6 +285,7 @@ export class AuthResolver {
             if (!user)
                 throw new AppError("User not found", 404, "NotFoundError");
 
+            await this.cloudinaryService.deleteImage(`users/${user.id}/avatar`);
             return await removeAvatar(user.id);
         } catch (error) {
             if (error instanceof AppError) throw error;
@@ -268,6 +306,7 @@ export class AuthResolver {
             if (!user)
                 throw new AppError("User not found", 404, "NotFoundError");
 
+            await this.cloudinaryService.deleteImage(`users/${user.id}/banner`);
             return await removeBanner(user.id);
         } catch (error) {
             if (error instanceof AppError) throw error;
