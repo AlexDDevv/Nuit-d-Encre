@@ -101,7 +101,7 @@ export default function ReviewVoteButtons({
                 }
                 setCurrentVote(isHelpful);
                 await voteOnReview({
-                    reviewId: Number(reviewId),
+                    reviewId,
                     isHelpful,
                 });
             }

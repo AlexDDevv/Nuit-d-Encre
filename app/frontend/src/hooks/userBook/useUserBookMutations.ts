@@ -91,7 +91,7 @@ export function useUserBookMutations() {
             variables: {
                 data: {
                     ...rest,
-                    bookId: parseInt(bookId),
+                    bookId,
                 },
             },
         });
@@ -134,7 +134,7 @@ export function useUserBookMutations() {
             variables: {
                 data: {
                     ...rest,
-                    ...(id && { id: parseInt(id) }),
+                    ...(id && { id }),
                 },
             },
         });

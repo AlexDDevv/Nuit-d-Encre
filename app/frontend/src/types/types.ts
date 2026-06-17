@@ -99,10 +99,10 @@ export type CreateBookInput = {
     language: string;
     publisher?: string;
     format: BookFormat | undefined;
-    category: number | string;
+    category: string;
 };
 
-export type UpdateBookInput = Partial<CreateBookInput> & { id: number };
+export type UpdateBookInput = Partial<CreateBookInput> & { id: string };
 
 export interface Author {
     id: string;
@@ -121,7 +121,7 @@ export interface Author {
 
 export type CreateAuthorInput = Author;
 
-export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: number };
+export type UpdateAuthorInput = Partial<CreateAuthorInput> & { id: string };
 
 export type BookInputsProps = {
     register: UseFormRegister<CreateBookInput>;
@@ -330,13 +330,13 @@ export interface BookReviewsResult {
 }
 
 export type CreateBookReviewInput = {
-    bookId: number;
+    bookId: string;
     rating: number;
     reviewText?: string;
 };
 
 export type UpdateBookReviewInput = {
-    id: number;
+    id: string;
     rating?: number;
     reviewText?: string;
 };
@@ -369,7 +369,7 @@ export interface BookReviewVoteResult {
 }
 
 export type CreateBookReviewVoteInput = {
-    reviewId: number;
+    reviewId: string;
     isHelpful: boolean;
 };
 

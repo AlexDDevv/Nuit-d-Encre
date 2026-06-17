@@ -40,7 +40,7 @@ export default function AuthorDetails() {
         throw new Response("Author not found", { status: 404 });
     }
 
-    const [idStr] = slug.split("-");
+    const idStr = slug.slice(0, 36);
     const id = idStr;
 
     const { author, isLoadingAuthor, authorError } = useAuthorData(id);

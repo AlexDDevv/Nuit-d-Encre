@@ -148,7 +148,7 @@ export function useUserBooksData({ mode }: UseBooksMode) {
                 page: currentPage,
                 limit,
                 search: searchParams.get("search") || "",
-                categoryIds: categoryId ? [parseInt(categoryId, 10)] : [],
+                categoryIds: categoryId ? [categoryId] : [],
                 format: selectedFormat.map(
                     (label) =>
                         Object.entries(formatLabelMap).find(

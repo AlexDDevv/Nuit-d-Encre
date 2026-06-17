@@ -30,7 +30,7 @@ export function useBooksByCategory(categoryId?: string, limit: number = 6) {
     } = useQuery<{ books: { allBooks: Book[] } }>(GET_BOOKS, {
         variables: {
             filters: {
-                categoryIds: categoryId ? [parseInt(categoryId, 10)] : [],
+                categoryIds: categoryId ? [categoryId] : [],
                 limit,
             },
         },

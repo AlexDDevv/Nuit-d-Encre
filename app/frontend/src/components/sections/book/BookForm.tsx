@@ -92,7 +92,7 @@ export default function BookForm() {
                 language: book.language,
                 publisher: book.publisher,
                 format: book.format,
-                category: book.category.id.toString(),
+                category: book.category.id,
             });
         }
     }, [book, categories, isEdit, reset]);

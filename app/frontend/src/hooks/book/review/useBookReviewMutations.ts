@@ -106,7 +106,7 @@ export function useBookReviewMutations() {
             variables: {
                 data: {
                     ...review,
-                    id: Number(id),
+                    id,
                 },
             },
         });

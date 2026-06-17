@@ -45,7 +45,7 @@ export function useAuthorsMutations() {
             await Promise.all(
                 selectedAuthorIds.map((id) =>
                     deleteAuthorMutation({
-                        variables: { authorId: id.toString() },
+                        variables: { authorId: id },
                     }),
                 ),
             );

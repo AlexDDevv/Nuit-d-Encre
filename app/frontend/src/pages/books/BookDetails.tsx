@@ -40,7 +40,7 @@ export default function BookDetails() {
         throw new Response("Book not found", { status: 404 });
     }
 
-    const [idStr] = slug.split("-");
+    const idStr = slug.slice(0, 36);
     const id = idStr;
 
     const { book, isLoadingBook, bookError } = useBookData(id);

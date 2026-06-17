@@ -76,7 +76,7 @@ export default function ReviewForm({
                 });
             } else {
                 await createReview({
-                    bookId: Number(book.id),
+                    bookId: book.id,
                     rating: formData.rating,
                     reviewText: formData.reviewText.trim() || undefined,
                 });

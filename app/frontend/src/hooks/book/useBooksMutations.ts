@@ -43,7 +43,7 @@ export function useBooksMutations() {
             await Promise.all(
                 selectedBookIds.map((id) =>
                     deleteBooksMutation({
-                        variables: { bookId: id.toString() },
+                        variables: { bookId: id },
                     }),
                 ),
             );
