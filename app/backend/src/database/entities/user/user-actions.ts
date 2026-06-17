@@ -29,7 +29,7 @@ import { User } from "./user";
 @ObjectType()
 @Entity()
 export class UserActions extends BaseEntity {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn("uuid")
     id!: string;
 
     @ManyToOne(() => User, user => user.actions)

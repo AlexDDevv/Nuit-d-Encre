@@ -5,6 +5,7 @@ import { DataSource } from "typeorm";
 
 export const dataSource = new DataSource({
     type: "postgres",
+    uuidExtension: "pgcrypto",
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT || "5432"),
     username: process.env.POSTGRES_USER,

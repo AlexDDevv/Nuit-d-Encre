@@ -91,8 +91,8 @@ export class UserBook extends BaseEntity {
    * Auto-generated primary key.
    */
   @Field(() => ID)
-  @PrimaryGeneratedColumn()
-  id!: number;
+  @PrimaryGeneratedColumn("uuid")
+  id!: string;
 
   /**
    * The user who owns this library entry

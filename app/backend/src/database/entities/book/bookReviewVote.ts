@@ -66,8 +66,8 @@ export class BookReviewVote extends BaseEntity {
      * Auto-generated primary key.
      */
     @Field(() => ID)
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
     /**
      * Indicates if the vote is helpful

@@ -61,8 +61,8 @@ export class Author extends BaseEntity {
      * Auto-generated primary key.
      */
     @Field(() => ID)
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
     /**
      * First name of the author

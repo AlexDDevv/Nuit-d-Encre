@@ -42,8 +42,8 @@ import { Title } from "../gamification/title";
 @Entity({ name: "user" })
 export class User extends BaseEntity {
     @Field(() => ID)
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
     @Field()
     @Column({ length: 254, unique: true })

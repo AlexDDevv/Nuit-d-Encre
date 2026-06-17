@@ -63,8 +63,8 @@ export class BookRecommendation extends BaseEntity {
      * Auto-generated primary key.
      */
     @Field(() => ID)
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
     /**
      * The user who made the recommendation

@@ -10,8 +10,8 @@ import {
 @Entity({ name: "title" })
 export class Title extends BaseEntity {
     @Field(() => ID)
-    @PrimaryGeneratedColumn()
-    id!: number;
+    @PrimaryGeneratedColumn("uuid")
+    id!: string;
 
     @Field()
     @Column({ type: "varchar", length: 100 })

@@ -59,8 +59,8 @@ export class Category extends BaseEntity {
 	 * Auto-generated primary key.
 	 */
 	@Field(() => ID)
-	@PrimaryGeneratedColumn()
-	id!: number
+	@PrimaryGeneratedColumn("uuid")
+	id!: string
 
 	/**
 	 * Name of the book category
