@@ -8,6 +8,18 @@
     --font-quote: "EB Garamond", serif;
     --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
+    /* animations */
+    --animate-fadeIn: fadeIn 0.15s ease-out;
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
     /* colors */
     --color-background: hsl(20 3% 19%);
     --color-foreground: hsl(43 59% 81%);
