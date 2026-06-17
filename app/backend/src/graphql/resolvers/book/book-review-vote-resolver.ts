@@ -62,7 +62,7 @@ export class BookReviewVotesResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Query(() => BookReviewVote, { nullable: true })
     async myVoteOnReview(
-        @Arg("reviewId", () => ID) reviewId: number,
+        @Arg("reviewId", () => ID) reviewId: string,
         @Ctx() context: Context
     ): Promise<BookReviewVote | null> {
         try {
@@ -206,7 +206,7 @@ export class BookReviewVotesResolver {
                         review.user,
                         UserActionType.REVIEW_VOTED_HELPFUL,
                         {
-                            targetId: review.id.toString(),
+                            targetId: review.id,
                             metadata: {
                                 voterId: user.id,
                                 voterName: user.userName || "Unknown",
@@ -259,7 +259,7 @@ export class BookReviewVotesResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookReviewVote, { nullable: true })
     async removeVoteOnReview(
-        @Arg("reviewId", () => ID) reviewId: number,
+        @Arg("reviewId", () => ID) reviewId: string,
         @Ctx() context: Context
     ): Promise<BookReviewVote | null> {
         try {
@@ -338,7 +338,7 @@ export class BookReviewVotesResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookReviewVoteResult)
     async toggleHelpfulVote(
-        @Arg("reviewId", () => ID) reviewId: number,
+        @Arg("reviewId", () => ID) reviewId: string,
         @Ctx() context: Context
     ): Promise<BookReviewVoteResult> {
         try {
@@ -385,7 +385,7 @@ export class BookReviewVotesResolver {
                 review.user,
                 UserActionType.REVIEW_VOTED_HELPFUL,
                 {
-                    targetId: review.id.toString(),
+                    targetId: review.id,
                     metadata: {
                         voterId: user.id,
                         voterName: user.userName || "Unknown",

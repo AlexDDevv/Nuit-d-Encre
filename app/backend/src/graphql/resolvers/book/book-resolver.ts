@@ -180,7 +180,7 @@ export class BooksResolver {
      * @throws AppError - If the book is not found or if a server error occurs.
      */
     @Query(() => Book, { nullable: true })
-    async book(@Arg("id", () => ID) id: number): Promise<Book | null> {
+    async book(@Arg("id", () => ID) id: string): Promise<Book | null> {
         try {
             const book = await Book.findOne({
                 where: { id },
@@ -259,7 +259,7 @@ export class BooksResolver {
             });
 
             await grantXpService(user, UserActionType.BOOK_ADDED, {
-                targetId: newBook.id.toString(),
+                targetId: newBook.id,
                 metadata: { title: newBook.title }
             });
 
@@ -357,7 +357,7 @@ export class BooksResolver {
 
             if (wasIncomplete && !isImportedBookIncomplete(book)) {
                 await grantXpService(user, UserActionType.BOOK_COMPLETED, {
-                    targetId: book.id.toString(),
+                    targetId: book.id,
                     metadata: { title: book.title },
                 });
             }
@@ -388,7 +388,7 @@ export class BooksResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => Book, { nullable: true })
     async deleteBook(
-        @Arg("id", () => ID) id: number,
+        @Arg("id", () => ID) id: string,
         @Ctx() context: Context
     ): Promise<Book | null> {
         try {

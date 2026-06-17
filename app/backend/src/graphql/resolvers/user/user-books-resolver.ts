@@ -231,29 +231,38 @@ export class UserBooksResolver {
      *
      * @throws AppError - If the user book is not found or if a server error occurs.
      */
+    @Authorized(Roles.User, Roles.Admin)
     @Query(() => UserBook, { nullable: true })
-    async userBook(@Arg("id", () => ID) id: number): Promise<UserBook | null> {
+    async userBook(
+        @Arg("id", () => ID) id: string,
+        @Ctx() context: Context
+    ): Promise<UserBook | null> {
         try {
-            const userBook = await UserBook.findOne({
-                where: { id },
-                relations: {
-                    user: true,
-                    book: true
-                },
-            })
-
-            if (!userBook) {
-                throw new AppError("Book not found", 404, "NotFoundError")
+            const user = context.user;
+            if (!user) {
+                throw new AppError("Non authentifié", 401, "UnauthorizedError");
             }
 
-            return userBook
+            const userBook = await UserBook.findOne({
+                where: { id, user: { id: user.id } },
+                relations: {
+                    user: true,
+                    book: true,
+                },
+            });
+
+            if (!userBook) {
+                throw new AppError("Book not found", 404, "NotFoundError");
+            }
+
+            return userBook;
         } catch (error) {
             if (error instanceof AppError) throw error;
             throw new AppError(
                 "Failed to fetch book",
                 500,
                 "InternalServerError"
-            )
+            );
         }
     }
 
@@ -306,13 +315,13 @@ export class UserBooksResolver {
             await newUserBook.save();
 
             await grantXpService(user, UserActionType.BOOK_ADDED_TO_LIBRARY, {
-                targetId: newUserBook.id.toString(),
+                targetId: newUserBook.id,
                 metadata: { title: book.title },
             });
 
             if (newUserBook.status === ReadingStatus.READ) {
                 await grantXpService(user, UserActionType.BOOK_FINISHED, {
-                    targetId: newUserBook.id.toString(),
+                    targetId: newUserBook.id,
                     metadata: { to: newUserBook.status, title: book.title },
                 });
             }
@@ -405,7 +414,7 @@ export class UserBooksResolver {
             // Grant XP if book status changed to READ
             if (!wasRead && userBook.status === ReadingStatus.READ) {
                 await grantXpService(user, UserActionType.BOOK_FINISHED, {
-                    targetId: userBook.id.toString(),
+                    targetId: userBook.id,
                     metadata: { to: userBook.status, title: userBook.book.title },
                 });
             }
@@ -448,7 +457,7 @@ export class UserBooksResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => UserBook, { nullable: true })
     async deleteUserBook(
-        @Arg("id", () => ID) id: number,
+        @Arg("id", () => ID) id: string,
         @Ctx() context: Context
     ): Promise<UserBook | null> {
         try {

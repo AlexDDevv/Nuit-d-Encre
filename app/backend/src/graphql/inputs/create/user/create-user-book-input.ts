@@ -69,7 +69,7 @@ export class CreateUserBookInput {
    * Must reference an existing Book.
    */
   @Field(() => ID)
-  bookId!: number;
+  bookId!: string;
 
   /**
    * Initial reading status

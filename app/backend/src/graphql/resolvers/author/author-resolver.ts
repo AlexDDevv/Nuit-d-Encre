@@ -204,7 +204,7 @@ export class AuthorsResolver {
      * @throws AppError - If the author is not found or if a server error occurs.
      */
     @Query(() => Author, { nullable: true })
-    async author(@Arg("id", () => ID) id: number): Promise<Author | null> {
+    async author(@Arg("id", () => ID) id: string): Promise<Author | null> {
         try {
             const author = await Author.findOne({
                 where: { id },
@@ -329,7 +329,7 @@ export class AuthorsResolver {
 
             if (wasIncomplete && !isAuthorIncomplete(author)) {
                 await grantXpService(user, UserActionType.AUTHOR_COMPLETED, {
-                    targetId: author.id.toString(),
+                    targetId: author.id,
                     metadata: { firstname: author.firstname, lastname: author.lastname },
                 });
             }
@@ -360,7 +360,7 @@ export class AuthorsResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => Author, { nullable: true })
     async deleteAuthor(
-        @Arg("id", () => ID) id: number,
+        @Arg("id", () => ID) id: string,
         @Ctx() context: Context
     ): Promise<Author | null> {
         try {

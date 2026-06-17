@@ -66,7 +66,7 @@ import { EndAfterStart } from "../../../helpers/endAfterStart";
 export class UpdateUserBookInput {
   /** Target by UserBook primary key (preferred) */
   @Field(() => ID)
-  id!: number
+  id!: string
 
   /** Reading status */
   @Field(() => ReadingStatus, { nullable: true })

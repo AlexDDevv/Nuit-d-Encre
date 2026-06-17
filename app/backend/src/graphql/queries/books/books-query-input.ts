@@ -1,5 +1,5 @@
 import { IsOptional, IsInt, Min, IsArray, IsString } from "class-validator"
-import { Field, InputType, Int } from "type-graphql"
+import { Field, ID, InputType, Int } from "type-graphql"
 import { BookFormat } from "../../../types/types"
 
 /**
@@ -28,11 +28,10 @@ export class BooksQueryInput {
 	@IsString()
 	search?: string
 
-	@Field(() => [Int], { nullable: true })
+	@Field(() => [ID], { nullable: true })
 	@IsOptional()
 	@IsArray()
-	@IsInt({ each: true })
-	categoryIds?: number[]
+	categoryIds?: string[]
 
 	@Field(() => [String], { nullable: true })
 	@IsOptional()

@@ -3,7 +3,7 @@ import { Field, Float, ID, Int, ObjectType } from "type-graphql";
 @ObjectType()
 export class BookSearchResult {
     @Field(() => ID, { nullable: true })
-    id?: number;
+    id?: string;
 
     @Field()
     title!: string;
@@ -14,7 +14,7 @@ export class BookSearchResult {
     // ── Champs enrichis pour les résultats DB (cartes harmonisées avec
     // l'accueil) ; restent nuls pour les résultats externes. ──
     @Field(() => ID, { nullable: true })
-    authorId?: number;
+    authorId?: string;
 
     // Nombre d'ouvrages de cet auteur déjà présents en BDD — alimente le signal
     // « auteur déjà dans la maison » sur la page d'import.

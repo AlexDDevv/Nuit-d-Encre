@@ -74,8 +74,8 @@ export class BookSearchResolver {
         // Agrégats note + appartenance bibliothèque pour enrichir les cartes
         // internes (harmonisées avec l'accueil), en requêtes groupées (pas de N+1).
         const bookIds = dbBooks.map((b) => b.id);
-        const ratingsById = new Map<number, { avg: number; count: number }>();
-        const librarySet = new Set<number>();
+        const ratingsById = new Map<string, { avg: number; count: number }>();
+        const librarySet = new Set<string>();
 
         if (bookIds.length) {
             const ratingRows = await BookReview.createQueryBuilder("review")
@@ -86,7 +86,7 @@ export class BookSearchResolver {
                 .groupBy("review.bookId")
                 .getRawMany();
             for (const r of ratingRows) {
-                ratingsById.set(Number(r.bookId), {
+                ratingsById.set(String(r.bookId), {
                     avg: parseFloat(Number(r.avg).toFixed(2)),
                     count: Number(r.count),
                 });
@@ -108,7 +108,7 @@ export class BookSearchResolver {
                     .where("ub.userId = :userId", { userId: user.id })
                     .andWhere("ub.bookId IN (:...bookIds)", { bookIds })
                     .getRawMany();
-                for (const r of libRows) librarySet.add(Number(r.bookId));
+                for (const r of libRows) librarySet.add(String(r.bookId));
             }
         }
 
@@ -339,7 +339,7 @@ export class BookSearchResolver {
         }
 
         await grantXpService(user, UserActionType.BOOK_IMPORTED, {
-            targetId: book.id.toString(),
+            targetId: book.id,
             metadata: { title: book.title },
         });
 

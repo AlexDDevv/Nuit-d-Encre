@@ -33,7 +33,7 @@ import { Field, ID, InputType } from "type-graphql";
 @InputType()
 export class UpdateAuthorInput {
     @Field(() => ID)
-    id!: number
+    id!: string
 
     @Field({ nullable: true })
     @IsOptional()

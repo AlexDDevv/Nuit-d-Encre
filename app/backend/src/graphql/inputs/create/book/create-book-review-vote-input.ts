@@ -41,7 +41,7 @@ export class CreateBookReviewVoteInput {
      * The unique identifier of the review to vote on.
      */
     @Field(() => ID)
-    reviewId!: number;
+    reviewId!: string;
 
     /**
      * Whether the vote is helpful

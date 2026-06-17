@@ -40,7 +40,7 @@ export class UpdateBookReviewInput {
      * The unique identifier of the review being modified.
      */
     @Field(() => ID)
-    id!: number;
+    id!: string;
 
     /**
      * Updated numerical rating

@@ -63,7 +63,7 @@ export class CategoryResolver {
 	 * This query retrieves a specific book category by its ID, along with its associated books.
 	 */
 	@Query(() => Category, { nullable: true })
-	async category(@Arg("id") id: number): Promise<Category | null> {
+	async category(@Arg("id", () => ID) id: string): Promise<Category | null> {
 		try {
 			const category = await Category.findOne({
 				where: { id },
@@ -141,7 +141,7 @@ export class CategoryResolver {
 	@Authorized(Roles.Admin)
 	@Mutation(() => Category, { nullable: true })
 	async updateCategory(
-		@Arg("id", () => ID) id: number,
+		@Arg("id", () => ID) id: string,
 		@Arg("data", () => UpdateCategoryInput)
 		data: UpdateCategoryInput,
 		@Ctx() context: Context
@@ -189,7 +189,7 @@ export class CategoryResolver {
 	@Authorized(Roles.Admin)
 	@Mutation(() => Category, { nullable: true })
 	async deleteCategory(
-		@Arg("id", () => ID) id: number,
+		@Arg("id", () => ID) id: string,
 		@Ctx() context: Context
 	): Promise<Category | null> {
 		try {

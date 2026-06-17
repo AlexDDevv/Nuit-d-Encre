@@ -127,7 +127,7 @@ export const whoami = async (cookies: Cookies): Promise<User | null> => {
 
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET!) as {
-            id: number;
+            id: string;
         };
 
         // Find the user by id
@@ -148,7 +148,7 @@ export const whoami = async (cookies: Cookies): Promise<User | null> => {
 };
 
 export const updateProfile = async (
-    userId: number,
+    userId: string,
     data: { userName?: string; bio?: string }
 ): Promise<User> => {
     const userRepository = dataSource.getRepository(User);
@@ -178,7 +178,7 @@ export const updateProfile = async (
 };
 
 export const changePassword = async (
-    userId: number,
+    userId: string,
     currentPassword: string,
     newPassword: string
 ): Promise<boolean> => {
@@ -215,7 +215,7 @@ const isValidHttpsUrl = (url: string): boolean => {
 };
 
 export const updateAvatar = async (
-    userId: number,
+    userId: string,
     url: string
 ): Promise<User> => {
     if (!isValidHttpsUrl(url)) {
@@ -233,7 +233,7 @@ export const updateAvatar = async (
 };
 
 export const updateBanner = async (
-    userId: number,
+    userId: string,
     url: string
 ): Promise<User> => {
     if (!isValidHttpsUrl(url)) {
@@ -250,7 +250,7 @@ export const updateBanner = async (
     return user;
 };
 
-export const removeAvatar = async (userId: number): Promise<User> => {
+export const removeAvatar = async (userId: string): Promise<User> => {
     const userRepository = dataSource.getRepository(User);
     const user = await userRepository.findOne({ where: { id: userId } });
 
@@ -261,7 +261,7 @@ export const removeAvatar = async (userId: number): Promise<User> => {
     return user;
 };
 
-export const removeBanner = async (userId: number): Promise<User> => {
+export const removeBanner = async (userId: string): Promise<User> => {
     const userRepository = dataSource.getRepository(User);
     const user = await userRepository.findOne({ where: { id: userId } });
 

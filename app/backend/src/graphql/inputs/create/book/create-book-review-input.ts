@@ -39,7 +39,7 @@ export class CreateBookReviewInput {
      * The unique identifier of the book for which the review is being written.
      */
     @Field(() => ID)
-    bookId!: number;
+    bookId!: string;
 
     /**
      * Numerical rating for the book

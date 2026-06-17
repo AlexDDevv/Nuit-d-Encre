@@ -17,7 +17,7 @@ import { Context, Roles } from "../types/types"
  * ```
  */
 export function isOwnerOrAdmin(
-	ownerId: number,
+	ownerId: string,
 	currentUser: Context["user"]
 ): boolean {
 	if (!currentUser) return false

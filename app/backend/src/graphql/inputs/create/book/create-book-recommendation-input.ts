@@ -35,5 +35,5 @@ export class CreateBookRecommendationInput {
      * This is the only required field as the user is derived from context.
      */
     @Field(() => ID)
-    bookId!: number;
+    bookId!: string;
 }

@@ -75,5 +75,5 @@ export class CreateBookInput {
     format!: string
 
     @Field(() => ID)
-    category!: number
+    category!: string
 }

@@ -28,7 +28,7 @@ export class ProfileResolver {
 
     @Query(() => User, { nullable: true })
     async getUserProfile(
-        @Arg("id", () => ID) id: number
+        @Arg("id", () => ID) id: string
     ): Promise<User | null> {
         try {
             const user = await User.findOne({ where: { id } });
@@ -42,7 +42,7 @@ export class ProfileResolver {
 
     @Query(() => [UserBook])
     async getUserFavoriteBooks(
-        @Arg("userId", () => ID) userId: number
+        @Arg("userId", () => ID) userId: string
     ): Promise<UserBook[]> {
         try {
             return UserBook.createQueryBuilder("userBook")
@@ -62,7 +62,7 @@ export class ProfileResolver {
     @Authorized()
     @Mutation(() => UserBook)
     async setFavoriteBook(
-        @Arg("userBookId", () => ID) userBookId: number,
+        @Arg("userBookId", () => ID) userBookId: string,
         @Arg("rank", () => Int) rank: number,
         @Ctx() context: Context
     ): Promise<UserBook> {
@@ -107,7 +107,7 @@ export class ProfileResolver {
     @Authorized()
     @Mutation(() => UserBook)
     async removeFavoriteBook(
-        @Arg("userBookId", () => ID) userBookId: number,
+        @Arg("userBookId", () => ID) userBookId: string,
         @Ctx() context: Context
     ): Promise<UserBook> {
         try {

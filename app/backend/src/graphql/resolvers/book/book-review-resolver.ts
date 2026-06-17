@@ -70,7 +70,7 @@ export class BookReviewsResolver {
      */
     @Query(() => BookReview, { nullable: true })
     async bookReview(
-        @Arg("id", () => ID) id: number,
+        @Arg("id", () => ID) id: string,
     ): Promise<BookReview | null> {
         try {
             const review = await BookReview.findOne({
@@ -130,7 +130,7 @@ export class BookReviewsResolver {
      */
     @Query(() => BookReviewsResult)
     async bookReviews(
-        @Arg("bookId", () => ID) bookId: number,
+        @Arg("bookId", () => ID) bookId: string,
         @Arg("page", () => Int, { defaultValue: 1 }) page: number,
         @Arg("limit", () => Int, { defaultValue: 10 }) limit: number,
         @Arg("sortBy", () => BookReviewSortBy, {
@@ -165,7 +165,7 @@ export class BookReviewsResolver {
                     .offset((page - 1) * limit)
                     .getRawMany();
 
-                const ids: number[] = rawIds.map((r: any) => Number(r.id));
+                const ids: string[] = rawIds.map((r: any) => String(r.id));
 
                 // Step 2 — fetch full entities for those IDs (no skip/take = no DISTINCT pagination).
                 if (ids.length === 0) {
@@ -250,7 +250,7 @@ export class BookReviewsResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Query(() => BookReview, { nullable: true })
     async myBookReview(
-        @Arg("bookId", () => ID) bookId: number,
+        @Arg("bookId", () => ID) bookId: string,
         @Ctx() context: Context,
     ): Promise<BookReview | null> {
         try {
@@ -360,7 +360,7 @@ export class BookReviewsResolver {
 
             // Grant XP for writing a review
             await grantXpService(user, UserActionType.REVIEW_CREATED, {
-                targetId: newReview.id.toString(),
+                targetId: newReview.id,
                 metadata: {
                     bookTitle: book.title,
                     rating: data.rating,
@@ -373,7 +373,7 @@ export class BookReviewsResolver {
                     user,
                     UserActionType.DETAILED_REVIEW_BONUS,
                     {
-                        targetId: newReview.id.toString(),
+                        targetId: newReview.id,
                         metadata: {
                             bookTitle: book.title,
                             textLength: data.reviewText.length,
@@ -509,7 +509,7 @@ export class BookReviewsResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookReview)
     async deleteBookReview(
-        @Arg("id", () => ID) id: number,
+        @Arg("id", () => ID) id: string,
         @Ctx() context: Context,
     ): Promise<BookReview> {
         try {

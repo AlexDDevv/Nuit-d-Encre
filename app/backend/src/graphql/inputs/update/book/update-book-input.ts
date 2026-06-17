@@ -12,7 +12,7 @@ import { Field, ID, InputType } from "type-graphql"
 @InputType()
 export class UpdateBookInput {
     @Field(() => ID)
-    id!: number
+    id!: string
 
     @Field({ nullable: true })
     @Length(1, 255, { message: "Title must be between 1 and 255 characters" })
@@ -71,5 +71,5 @@ export class UpdateBookInput {
 
     @Field(() => ID, { nullable: true })
     @IsOptional()
-    category?: number
+    category?: string
 }

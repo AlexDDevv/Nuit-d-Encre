@@ -60,7 +60,7 @@ export class BookRecommendationsResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Query(() => BookRecommendation, { nullable: true })
     async bookRecommendation(
-        @Arg("bookId", () => ID) bookId: number,
+        @Arg("bookId", () => ID) bookId: string,
         @Ctx() context: Context
     ): Promise<BookRecommendation | null> {
         try {
@@ -179,7 +179,7 @@ export class BookRecommendationsResolver {
 
             // Grant XP for recommending a book
             await grantXpService(user, UserActionType.BOOK_RECOMMENDED, {
-                targetId: book.id.toString(),
+                targetId: book.id,
                 metadata: { title: book.title },
             });
 
@@ -225,7 +225,7 @@ export class BookRecommendationsResolver {
     @Authorized(Roles.User, Roles.Admin)
     @Mutation(() => BookRecommendation, { nullable: true })
     async deleteBookRecommendation(
-        @Arg("bookId", () => ID) bookId: number,
+        @Arg("bookId", () => ID) bookId: string,
         @Ctx() context: Context
     ): Promise<BookRecommendation | null> {
         try {
