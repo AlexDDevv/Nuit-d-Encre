@@ -5,6 +5,7 @@ import {
     LuBookOpen,
     LuFeather,
     LuLayoutDashboard,
+    LuMegaphone,
     LuMessageSquareQuote,
     LuShield,
     LuTags,
@@ -22,6 +23,7 @@ import { BooksTab } from "@/components/sections/admin/BooksTab";
 import { AuthorsTab } from "@/components/sections/admin/AuthorsTab";
 import { CategoriesTab } from "@/components/sections/admin/CategoriesTab";
 import { ReviewsTab } from "@/components/sections/admin/ReviewsTab";
+import { BannersTab } from "@/components/sections/admin/BannersTab";
 
 type AdminTab = {
     value: string;
@@ -36,6 +38,7 @@ const TABS: AdminTab[] = [
     { value: "authors", label: "Auteurs", icon: LuFeather },
     { value: "categories", label: "Catégories", icon: LuTags },
     { value: "reviews", label: "Critiques", icon: LuMessageSquareQuote },
+    { value: "banners", label: "Bannières", icon: LuMegaphone },
 ];
 
 const TAB_CONFIG: TabConfiguration[] = TABS.map((t) => ({
@@ -127,6 +130,9 @@ export default function Admin() {
                     </TabsContent>
                     <TabsContent value="reviews" className="pt-7">
                         <ReviewsTab />
+                    </TabsContent>
+                    <TabsContent value="banners" className="pt-7">
+                        <BannersTab />
                     </TabsContent>
                 </Tabs>
 
