@@ -1,4 +1,4 @@
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { LuThumbsUp, LuThumbsDown } from "react-icons/lu";
 import { cn } from "@/lib/utils";
 import Button from "@/components/UI/Button/Button";
 import { useState, useEffect } from "react";
@@ -128,7 +128,7 @@ export default function ReviewVoteButtons({
                     "bg-primary border-primary text-primary-foreground",
                     "hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
                 )}
-                leftIcon={<ThumbsUp className="h-4 w-4" />}
+                leftIcon={<LuThumbsUp className="h-4 w-4" />}
             >
                 <span>{helpfulCount}</span>
             </Button>
@@ -142,7 +142,7 @@ export default function ReviewVoteButtons({
                     "bg-destructive border-destructive text-destructive-foreground",
                     "hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
                 )}
-                leftIcon={<ThumbsDown className="h-4 w-4" />}
+                leftIcon={<LuThumbsDown className="h-4 w-4" />}
             >
                 <span>{notHelpfulCount}</span>
             </Button>

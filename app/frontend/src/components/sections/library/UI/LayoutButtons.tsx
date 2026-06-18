@@ -1,20 +1,20 @@
 import { cn } from "@/lib/utils";
 import { LayoutButtonsProps, LayoutOptions } from "@/types/types";
-import { Sheet, LayoutList, LibraryBig } from "lucide-react";
+import { LuSheet, LuLayoutList, LuLibraryBig } from "react-icons/lu";
 
 const LAYOUT_OPTIONS: LayoutOptions[] = [
     {
-        icon: Sheet,
+        icon: LuSheet,
         label: "Disposer votre bibliothèque personnelle en grille",
         value: "grid",
     },
     {
-        icon: LayoutList,
+        icon: LuLayoutList,
         label: "Disposer votre bibliothèque personnelle en liste",
         value: "list",
     },
     {
-        icon: LibraryBig,
+        icon: LuLibraryBig,
         label: "Disposer votre bibliothèque personnelle en étagère",
         value: "shelf",
     },

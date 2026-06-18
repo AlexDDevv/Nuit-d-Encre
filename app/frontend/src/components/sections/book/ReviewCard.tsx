@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { LuPencil, LuTrash2 } from "react-icons/lu";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { BookReview } from "@/types/types";
@@ -79,7 +79,7 @@ export default function ReviewCard({
                                 onClick={() => onEdit(review)}
                                 ariaLabel="Modifier ma critique"
                                 className="h-8 w-8 p-0"
-                                icon={<Pencil className="h-4 w-4" />}
+                                icon={<LuPencil className="h-4 w-4" />}
                             />
                         )}
                         {onDelete && (
@@ -91,7 +91,7 @@ export default function ReviewCard({
                                 disabled={isDeletingReview}
                                 ariaLabel="Supprimer ma critique"
                                 className="h-8 w-8 p-0"
-                                icon={<Trash2 className="h-4 w-4" />}
+                                icon={<LuTrash2 className="h-4 w-4" />}
                             />
                         )}
                     </div>

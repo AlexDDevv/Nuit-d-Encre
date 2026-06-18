@@ -1,4 +1,4 @@
-import { Star } from "lucide-react";
+import { LuStar } from "react-icons/lu";
 import { cn } from "@/lib/utils";
 import Button from "@/components/UI/Button/Button";
 
@@ -53,7 +53,7 @@ export default function RatingStars({
                             readOnly && "cursor-default",
                         )}
                     >
-                        <Star
+                        <LuStar
                             className={cn(
                                 sizeClasses[size],
                                 isFilled

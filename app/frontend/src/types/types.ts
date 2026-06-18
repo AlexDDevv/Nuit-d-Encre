@@ -1,4 +1,3 @@
-import { LucideIcon } from "lucide-react";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
@@ -57,7 +56,7 @@ export interface LinksType {
     label: string;
     category: string;
     ariaLabel: string;
-    Icon?: LucideIcon;
+    Icon?: IconType;
 }
 
 export interface UserAuth {
@@ -305,7 +304,7 @@ export interface UpdateUserBookInput {
 export type UserBookStatus = "TO_READ" | "READING" | "READ" | "PAUSED";
 
 export type UserBookStatusConfig = {
-    icon: LucideIcon;
+    icon: IconType;
     label: string;
     value: UserBookStatus;
 };
@@ -420,7 +419,7 @@ export type UserBookInfoProps = {
 };
 
 export type LayoutOptions = {
-    icon: LucideIcon;
+    icon: IconType;
     label: string;
     value: LayoutOptionsValue;
 };

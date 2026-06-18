@@ -2,7 +2,7 @@ import {
     Indicator as CheckboxIndicator,
     Root as CheckboxRoot,
 } from "@radix-ui/react-checkbox";
-import { CheckIcon } from "lucide-react";
+import { LuCheck } from "react-icons/lu";
 import { cn } from "@/lib/utils";
 import type { ComponentProps } from "react";
 
@@ -23,7 +23,7 @@ function Checkbox({ className, ...props }: CheckboxProps) {
                 data-slot="checkbox-indicator"
                 className="flex items-center justify-center text-current transition-none"
             >
-                <CheckIcon className="size-3.5" />
+                <LuCheck className="size-3.5" />
             </CheckboxIndicator>
         </CheckboxRoot>
     );

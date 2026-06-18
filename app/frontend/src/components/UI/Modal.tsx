@@ -1,4 +1,4 @@
-import { X } from "lucide-react";
+import { LuX } from "react-icons/lu";
 import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import Button from "@/components/UI/Button/Button";
@@ -74,7 +74,7 @@ export default function Modal({
                         size="sm"
                         onClick={onClose}
                         ariaLabel="Fermer la modale"
-                        icon={<X />}
+                        icon={<LuX />}
                         className="text-muted-foreground hover:text-foreground [&_svg]:h-5 [&_svg]:w-5"
                     />
                 </div>

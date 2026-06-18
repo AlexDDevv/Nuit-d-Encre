@@ -1,4 +1,4 @@
-import { Sparkles } from "lucide-react";
+import { LuSparkles } from "react-icons/lu";
 import { FaFeatherPointed } from "react-icons/fa6";
 import { useForm, Controller } from "react-hook-form";
 import Button from "@/components/UI/Button/Button";
@@ -157,7 +157,7 @@ export default function ReviewForm({
                 {/* astuce / bonus XP */}
                 {isDetailed ? (
                     <div className="bg-primary/10 border-primary/20 flex items-center justify-center gap-2 rounded-md border p-3 flex-1">
-                        <Sparkles className="text-primary h-4 w-4 shrink-0" />
+                        <LuSparkles className="text-primary h-4 w-4 shrink-0" />
                         <p className="text-primary text-xs font-medium">
                             Vous recevrez un bonus d'XP pour cette critique
                             détaillée !
@@ -165,7 +165,7 @@ export default function ReviewForm({
                     </div>
                 ) : (
                     <div className="bg-muted border-border flex items-center justify-center gap-2 rounded-md border p-3 flex-1">
-                        <Sparkles className="text-primary h-4 w-4 shrink-0" />
+                        <LuSparkles className="text-primary h-4 w-4 shrink-0" />
                         <p className="text-muted-foreground text-xs">
                             <span className="font-medium">Astuce :</span> Les
                             critiques de plus de 200 caractères donnent un bonus

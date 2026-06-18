@@ -1,5 +1,10 @@
 import { UserBookStatus, UserBookStatusConfig } from "@/types/types";
-import { BookmarkPlus, BookOpenCheck, Pause, BookCheck } from "lucide-react";
+import {
+    LuBookmarkPlus,
+    LuBookOpenCheck,
+    LuPause,
+    LuBookCheck,
+} from "react-icons/lu";
 
 /**
  * Couleurs par statut de lecture (classes Tailwind), pour colorer le sélecteur
@@ -30,22 +35,22 @@ export const STATUS_COLORS: Record<
 
 export const BOOK_STATES: readonly UserBookStatusConfig[] = [
     {
-        icon: BookmarkPlus,
+        icon: LuBookmarkPlus,
         label: "À lire",
         value: "TO_READ",
     },
     {
-        icon: BookOpenCheck,
+        icon: LuBookOpenCheck,
         label: "En cours",
         value: "READING",
     },
     {
-        icon: Pause,
+        icon: LuPause,
         label: "En pause",
         value: "PAUSED",
     },
     {
-        icon: BookCheck,
+        icon: LuBookCheck,
         label: "Lu",
         value: "READ",
     },

@@ -1,4 +1,4 @@
-import { Heart } from "lucide-react"
+import { LuHeart } from "react-icons/lu"
 import { Chipset } from "@/components/UI/Chipset"
 import { cn } from "@/lib/utils"
 import { RecommendationCountProps } from "@/types/types"
@@ -35,7 +35,7 @@ export function RecommendationCount({
             ariaLabel={`${count} recommandation${count !== 1 ? "s" : ""} pour ce livre`}
             className={cn("gap-2", className)}
         >
-            {showIcon && <Heart className="size-3" fill="currentColor" />}
+            {showIcon && <LuHeart className="size-3" fill="currentColor" />}
             <span className="font-semibold">{count}</span>
             <span className="hidden sm:inline">
                 {count !== 1 ? "recommandations" : "recommandation"}
