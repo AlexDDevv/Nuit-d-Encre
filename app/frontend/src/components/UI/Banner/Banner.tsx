@@ -82,6 +82,20 @@ function BannerActionButton({
         );
     }
 
+    if (action.href) {
+        return (
+            <a
+                href={action.href}
+                target="_blank"
+                rel="noreferrer"
+                onClick={action.onClick}
+                {...sharedProps}
+            >
+                {content}
+            </a>
+        );
+    }
+
     return (
         <button type="button" onClick={action.onClick} {...sharedProps}>
             {content}

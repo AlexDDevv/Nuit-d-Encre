@@ -10,6 +10,10 @@ export type BannerVariant =
 export interface BannerAction {
     label: string;
     to?: string;
+    /**
+     * Lien externe — rendu en `<a target="_blank">`. Priorité : `to` > `href` > `button`.
+     */
+    href?: string;
     onClick?: () => void;
     ariaLabel: string;
     /**
