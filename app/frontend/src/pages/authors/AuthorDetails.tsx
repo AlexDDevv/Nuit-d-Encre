@@ -10,6 +10,7 @@ import {
 } from "react-icons/fa6";
 import Button from "@/components/UI/Button/Button";
 import Banner from "@/components/UI/Banner/Banner";
+import XpPill from "@/components/UI/Banner/XpPill";
 import BookCard from "@/components/sections/book/BookCard/BookCard";
 import EstablishedCover from "@/components/sections/book/detail/EstablishedCover";
 import SectionLead from "@/components/sections/book/detail/SectionLead";
@@ -158,11 +159,11 @@ export default function AuthorDetails() {
                         label: "Compléter",
                         to: `/authors/update/${author.id}`,
                         ariaLabel: `Modifier les informations de l'auteur ${name} pour compléter son profil`,
+                        xp: 50,
                     }}
                 >
-                    <span className="font-semibold">
-                        Complète-les pour gagner 50 XP !
-                    </span>
+                    Complète-les pour gagner <XpPill amount={50} /> et enrichir
+                    la fiche de cet auteur.
                 </Banner>
             )}
 

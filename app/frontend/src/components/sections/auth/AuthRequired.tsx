@@ -1,65 +1,72 @@
 /**
- * @fileoverview Authentication required component that displays when a user needs to be authenticated
+ * @fileoverview Écran « Authentification requise » — cartouche scellé affiché
+ * lorsqu'un visiteur tente d'ouvrir une page réservée aux membres.
  * @module AuthRequired
  */
 
-import Button from "@/components/UI/Button/Button";
 import { Link, useLocation } from "react-router-dom";
-import { HiLockClosed } from "react-icons/hi";
+import Icon from "@/components/UI/Icon/Icon";
+import SealedAccessCard, {
+    AuthButton,
+} from "@/components/sections/auth/SealedAccessCard";
 
 /**
- * AuthRequired Component
- *
- * Displays a message when authentication is required to access a page.
- * Provides buttons for login and registration, and a link to return to the home page.
- *
- * @component
- * @returns {JSX.Element} The rendered AuthRequired component
+ * AuthRequired — cartouche centré façon sceau de bibliothèque, avec actions de
+ * connexion / inscription préservant la redirection vers la page demandée.
  */
 export default function AuthRequired() {
     const location = useLocation();
+    const redirect = location.pathname;
+    const redirectParam = encodeURIComponent(redirect);
 
     return (
-        <div className="mx-auto flex max-w-md items-center justify-center">
-            <div className="bg-card border-border flex w-full flex-col gap-6 rounded-xl border p-8 text-center">
-                <div className="flex justify-center">
-                    <HiLockClosed className="text-card-foreground h-12 w-12" />
-                </div>
-                <div className="flex flex-col gap-2">
-                    <h1 className="text-card-foreground text-2xl font-bold">
-                        Authentification requise
-                    </h1>
-                    <p className="text-card-foreground">
-                        Vous devez être connecté pour accéder à cette page.
-                        Veuillez vous connecter ou créer un compte pour
-                        continuer.
-                    </p>
-                </div>
-                <nav className="flex flex-col gap-4">
-                    <Button
-                        to={`/register?redirect=${encodeURIComponent(location.pathname)}`}
-                        variant="primary"
-                        fullWidth
-                        ariaLabel="S'inscrire"
-                    >
-                        S'inscrire
-                    </Button>
-                    <Button
-                        to={`/connexion?redirect=${encodeURIComponent(location.pathname)}`}
-                        variant="secondary"
-                        fullWidth
-                        ariaLabel="Se connecter"
-                    >
-                        Se connecter
-                    </Button>
-                    <Link
-                        to="/"
-                        className="text-card-foreground hover:underline"
-                    >
-                        Retour à l'accueil
-                    </Link>
-                </nav>
+        <SealedAccessCard
+            eyebrow="Accès scellé"
+            title="Authentification requise"
+            titleId="auth-title"
+            description="Vous devez être connecté pour accéder à cette page. Connectez-vous ou créez un compte pour continuer."
+        >
+            <nav className="mt-7 flex flex-col gap-3">
+                <AuthButton
+                    kind="primary"
+                    to={`/register?redirect=${redirectParam}`}
+                    ariaLabel="S'inscrire"
+                >
+                    <Icon name="userPlus" size={17} /> S'inscrire
+                </AuthButton>
+                <AuthButton
+                    kind="secondary"
+                    to={`/connexion?redirect=${redirectParam}`}
+                    ariaLabel="Se connecter"
+                >
+                    <Icon name="login" size={17} /> Se connecter
+                </AuthButton>
+            </nav>
+
+            <p
+                className="mt-5 inline-flex max-w-full items-center gap-1.5 font-mono text-[10.5px]"
+                style={{ color: "hsl(20 12% 56%)" }}
+            >
+                <Icon
+                    name="arrowRight"
+                    size={11}
+                    style={{ color: "hsl(43 30% 60%)" }}
+                />
+                <span className="truncate">
+                    après connexion, retour à&nbsp;
+                    <span style={{ color: "hsl(43 30% 72%)" }}>{redirect}</span>
+                </span>
+            </p>
+
+            <div className="mt-5">
+                <Link
+                    to="/"
+                    className="hover:text-foreground focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded text-[12.5px] underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    style={{ color: "hsl(20 12% 68%)" }}
+                >
+                    <Icon name="arrowLeft" size={12} /> Retour à l'accueil
+                </Link>
             </div>
-        </div>
+        </SealedAccessCard>
     );
 }

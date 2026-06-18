@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaArrowLeftLong, FaBook, FaFeatherPointed, FaQuoteLeft } from "react-icons/fa6";
 import Button from "@/components/UI/Button/Button";
 import Banner from "@/components/UI/Banner/Banner";
+import XpPill from "@/components/UI/Banner/XpPill";
 import SelectBookStatus from "@/components/sections/book/SelectBookStatus";
 import BookReviews from "@/components/sections/book/BookReviews";
 import BookCard from "@/components/sections/book/BookCard/BookCard";
@@ -125,11 +126,11 @@ export default function BookDetails() {
                         label: "Compléter",
                         to: `/books/update/${book.id}`,
                         ariaLabel: `Modifier le livre ${book.title} pour compléter ses informations`,
+                        xp: 50,
                     }}
                 >
-                    <span className="font-semibold">
-                        Complète-les pour gagner 50 XP !
-                    </span>
+                    Complète-les pour gagner <XpPill amount={50} /> et faire
+                    entrer cet ouvrage dans la collection.
                 </Banner>
             )}
             {/* retour */}

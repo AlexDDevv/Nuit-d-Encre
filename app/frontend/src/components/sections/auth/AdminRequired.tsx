@@ -1,46 +1,47 @@
 /**
- * @fileoverview Admin role required component that displays when a user try to access to admin panel
+ * @fileoverview Écran « Accès refusé » — cartouche scellé affiché lorsqu'un
+ * membre sans rôle administrateur tente d'ouvrir le panneau d'administration.
  * @module AdminRequired
  */
 
-import { HiLockClosed } from "react-icons/hi";
-import Button from "@/components/UI/Button/Button";
+import { Link } from "react-router-dom";
+import Icon from "@/components/UI/Icon/Icon";
+import SealedAccessCard, {
+    AuthButton,
+} from "@/components/sections/auth/SealedAccessCard";
 
 /**
- * AdminRequired Component
- *
- * Displays a message when a simple user try to acces to admin panel.
- * Provides a link to return to the home page.
- *
- * @component
- * @returns {JSX.Element} The rendered AdminRequired component
+ * AdminRequired — cartouche centré façon sceau de bibliothèque indiquant qu'un
+ * rôle administrateur est requis, avec retour vers les espaces accessibles.
  */
 export default function AdminRequired() {
-	return (
-		<div className="mx-auto flex max-w-md items-center justify-center">
-			<div className="bg-card border-border flex w-full flex-col gap-6 rounded-xl border p-8 text-center">
-				<div className="flex justify-center">
-					<HiLockClosed className="text-card-foreground h-12 w-12" />
-				</div>
-				<div className="flex flex-col gap-2">
-					<h1 className="text-card-foreground text-2xl font-bold">
-						Accès refusé
-					</h1>
-					<p className="text-card-foreground">
-						Vous ne disposez pas des droits administrateur pour accéder à
-						cette page.
-					</p>
-				</div>
-				<nav className="flex items-center justify-center">
-					<Button
-						to="/books"
-						ariaLabel="Retourner à la page d'accueil"
-						role="link"
-					>
-						Retour à l'accueil
-					</Button>
-				</nav>
-			</div>
-		</div>
-	);
+    return (
+        <SealedAccessCard
+            eyebrow="Accès restreint"
+            title="Accès refusé"
+            titleId="admin-denied-title"
+            description="Vous ne disposez pas des droits administrateur pour accéder à cette page."
+        >
+            <nav className="mt-7 flex flex-col gap-3">
+                <AuthButton
+                    kind="primary"
+                    to="/"
+                    ariaLabel="Retourner à la page d'accueil"
+                >
+                    <Icon name="arrowLeft" size={17} /> Retour à l'accueil
+                </AuthButton>
+            </nav>
+
+            <div className="mt-5">
+                <Link
+                    to="/library"
+                    className="hover:text-foreground focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded text-[12.5px] underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    style={{ color: "hsl(20 12% 68%)" }}
+                >
+                    <Icon name="arrowRight" size={12} /> Consulter ma
+                    bibliothèque
+                </Link>
+            </div>
+        </SealedAccessCard>
+    );
 }

@@ -142,6 +142,104 @@ body {
     animation: spinGold 0.85s linear infinite;
 }
 
+/* ── Bannière contextuelle & écran « accès scellé » ── */
+
+/* Filet doré (ornement signature : séparateur et liseré latéral) */
+.filet {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        hsl(43 59% 81% / 0.5),
+        transparent
+    );
+}
+
+/* Balayage doré de la variante XP/complétion */
+@keyframes xpSweep {
+    0% {
+        transform: translateX(-130%);
+    }
+    60%,
+    100% {
+        transform: translateX(360%);
+    }
+}
+.xp-sweep::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: inherit;
+    width: 45%;
+    background: linear-gradient(
+        105deg,
+        transparent 30%,
+        hsl(43 59% 81% / 0.16) 50%,
+        transparent 70%
+    );
+    animation: xpSweep 3.4s ease-in-out infinite;
+}
+
+/* Étincelles d'encre dorée */
+@keyframes twinkle {
+    0%,
+    100% {
+        opacity: 0.25;
+        transform: scale(0.7);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+.twinkle {
+    animation: twinkle 2.4s ease-in-out infinite;
+}
+
+/* Vacillement de la chandelle (icône XP, sceau) */
+@keyframes candle {
+    0%,
+    100% {
+        opacity: 0.85;
+        transform: scale(1);
+    }
+    45% {
+        opacity: 1;
+        transform: scale(1.08);
+    }
+    70% {
+        opacity: 0.9;
+        transform: scale(0.97);
+    }
+}
+.candle {
+    transform-origin: center bottom;
+    animation: candle 2.8s ease-in-out infinite;
+}
+
+/* Lueur du sceau lunaire */
+@keyframes sealGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 hsl(43 59% 81% / 0);
+    }
+    50% {
+        box-shadow: 0 0 26px 2px hsl(43 59% 81% / 0.18);
+    }
+}
+.seal-glow {
+    animation: sealGlow 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .xp-sweep::after,
+    .twinkle,
+    .candle,
+    .seal-glow {
+        animation: none !important;
+    }
+}
+
 /* Grain papier sur les surfaces lourdes (bannière, hero) */
 .grain {
     position: relative;
