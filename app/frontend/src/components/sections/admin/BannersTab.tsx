@@ -10,6 +10,7 @@ import {
     LuRotateCcw,
     LuSend,
     LuType,
+    LuUsers,
 } from "react-icons/lu";
 import Banner from "@/components/UI/Banner/Banner";
 import Button from "@/components/UI/Button/Button";
@@ -18,6 +19,9 @@ import { Switch } from "@/components/UI/Switch/Switch";
 import { Label } from "@/components/UI/form/Label";
 import { Ornament } from "@/components/sections/admin/ui/chips";
 import { useToast } from "@/hooks/toast/useToast";
+import { useSiteBanners } from "@/hooks/admin/useSiteBanners";
+import { toBannerVariant, toSiteBannerVariant } from "@/lib/banner";
+import type { SiteBanner } from "@/types/types";
 import {
     Field,
     StateSelector,
@@ -28,111 +32,82 @@ import {
     type SavedBanner,
 } from "@/components/sections/admin/ui/bannerEditor";
 
-/** Bannières fictives (le câblage GraphQL viendra avec les tâches backend). */
-const SEED_SAVED: SavedBanner[] = [
-    {
-        id: "b-xp",
-        variant: "success",
-        title: "Vous avez gagné 50 points d'expérience !",
-        content:
-            "Trois chroniques publiées cette semaine — votre plume gagne en éclat. Continuez ainsi.",
-        dismissible: true,
-        action: { label: "Voir ma progression", target: "/profil" },
-        date: "14 juin 2026",
-    },
-    {
-        id: "b-maint",
-        variant: "warning",
-        title: "Maintenance nocturne prévue",
-        content:
-            "La bibliothèque fermera ses portes le 21 juin de 2h à 4h pour entretien des archives.",
-        dismissible: true,
-        action: null,
-        date: "9 juin 2026",
-    },
-    {
-        id: "b-club",
-        variant: "info",
-        title: "Le Cercle de Minuit ouvre ses inscriptions",
-        content:
-            "Rejoignez la lecture commune des « Chroniques du Crépuscule » dès le 1ᵉʳ juillet.",
-        dismissible: true,
-        action: { label: "Découvrir le cercle", target: "/cercles" },
-        date: "2 juin 2026",
-    },
-    {
-        id: "b-cgu",
-        variant: "error",
-        title: "Action requise : confirmez votre adresse",
-        content:
-            "Certains comptes n'ont pas validé leur courriel et seront suspendus sous 30 jours.",
-        dismissible: false,
-        action: { label: "Confirmer", target: "/compte/verification" },
-        date: "28 mai 2026",
-    },
-];
+/** Formate une date ISO en libellé court français (« 14 juin 2026 »). */
+const formatDate = (iso: string) =>
+    new Date(iso).toLocaleDateString("fr-FR", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+
+/** Projette une bannière GraphQL vers la forme attendue par la liste d'historique. */
+const toRow = (b: SiteBanner): SavedBanner => ({
+    id: b.id,
+    variant: toBannerVariant(b.variant),
+    title: b.title,
+    content: b.message ?? "",
+    audience: b.audience,
+    dismissible: b.dismissible,
+    action:
+        b.actionLabel && b.actionUrl
+            ? { label: b.actionLabel, target: b.actionUrl }
+            : null,
+    date: formatDate(b.createdAt),
+});
 
 /** Onglet « Bannières » : éditeur, aperçu en direct épinglé, historique. */
 export function BannersTab() {
     const { showToast } = useToast();
-    const [draft, setDraft] = useState<BannerDraft>({
-        variant: "success",
-        title: "Vous avez gagné 50 points d'expérience !",
-        content:
-            "Trois chroniques publiées cette semaine — votre plume gagne en éclat. Continuez ainsi.",
-        hasAction: true,
-        actionLabel: "Voir ma progression",
-        actionTarget: "/profil",
-        dismissible: true,
-    });
-    const [saved, setSaved] = useState<SavedBanner[]>(SEED_SAVED);
-    const [activeId, setActiveId] = useState<string | null>("b-xp");
-    const [publishing, setPublishing] = useState(false);
+    const { banners, createBanner, updateBanner, deleteBanner, isMutating } =
+        useSiteBanners();
+    const [draft, setDraft] = useState<BannerDraft>(blankDraft);
     const [previewKey, setPreviewKey] = useState(0);
     const [previewDismissed, setPreviewDismissed] = useState(false);
 
     const set = (patch: Partial<BannerDraft>) =>
         setDraft((d) => ({ ...d, ...patch }));
-    const activeBanner = saved.find((s) => s.id === activeId) ?? null;
+
+    // La bannière active est celle dont `isActive` est vrai (au plus une).
+    const activeBanner = banners.find((b) => b.isActive) ?? null;
+    const activeId = activeBanner?.id ?? null;
+    const saved = banners.map(toRow);
 
     const action =
         draft.hasAction && draft.actionLabel
             ? { label: draft.actionLabel, ariaLabel: draft.actionLabel }
             : undefined;
 
-    const publish = () => {
-        if (publishing) return;
-        setPublishing(true);
-        window.setTimeout(() => {
-            const id = "b-" + Date.now().toString(36);
-            const entry: SavedBanner = {
-                id,
-                variant: draft.variant,
+    const publish = async () => {
+        if (isMutating) return;
+        try {
+            await createBanner({
                 title: draft.title.trim() || "Bannière sans titre",
-                content: draft.content.trim(),
+                message: draft.content.trim() || null,
+                variant: toSiteBannerVariant(draft.variant),
+                audience: draft.audience,
                 dismissible: draft.dismissible,
-                action:
+                actionLabel:
                     draft.hasAction && draft.actionLabel.trim()
-                        ? {
-                            label: draft.actionLabel.trim(),
-                            target: draft.actionTarget.trim() || "/",
-                        }
+                        ? draft.actionLabel.trim()
                         : null,
-                date: new Date().toLocaleDateString("fr-FR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                }),
-            };
-            setSaved((s) => [entry, ...s]);
-            setActiveId(id);
-            setPublishing(false);
+                actionUrl:
+                    draft.hasAction && draft.actionLabel.trim()
+                        ? draft.actionTarget.trim() || "/"
+                        : null,
+                isActive: true,
+            });
             showToast({
                 type: "success",
                 title: "Bannière publiée",
                 description: "Elle est désormais visible par les lecteurs.",
             });
-        }, 1100);
+        } catch (error) {
+            showToast({
+                type: "error",
+                title: "Publication impossible",
+                description: (error as Error).message,
+            });
+        }
     };
 
     const reset = () => {
@@ -142,9 +117,18 @@ export function BannersTab() {
         showToast({ type: "info", title: "Éditeur réinitialisé" });
     };
 
-    const deactivate = () => {
-        setActiveId(null);
-        showToast({ type: "info", title: "Bannière retirée du site" });
+    const deactivate = async () => {
+        if (!activeId) return;
+        try {
+            await updateBanner(activeId, { isActive: false });
+            showToast({ type: "info", title: "Bannière retirée du site" });
+        } catch (error) {
+            showToast({
+                type: "error",
+                title: "Désactivation impossible",
+                description: (error as Error).message,
+            });
+        }
     };
 
     const loadFrom = (item: SavedBanner) => {
@@ -152,6 +136,7 @@ export function BannersTab() {
             variant: item.variant,
             title: item.title,
             content: item.content || "",
+            audience: item.audience,
             hasAction: !!item.action,
             actionLabel: item.action?.label || "",
             actionTarget: item.action?.target || "",
@@ -162,9 +147,30 @@ export function BannersTab() {
         showToast({ type: "info", title: "Bannière chargée dans l'éditeur" });
     };
 
-    const reactivate = (item: SavedBanner) => {
-        setActiveId(item.id);
-        showToast({ type: "success", title: "Bannière réactivée" });
+    const reactivate = async (item: SavedBanner) => {
+        try {
+            await updateBanner(item.id, { isActive: true });
+            showToast({ type: "success", title: "Bannière réactivée" });
+        } catch (error) {
+            showToast({
+                type: "error",
+                title: "Réactivation impossible",
+                description: (error as Error).message,
+            });
+        }
+    };
+
+    const remove = async (item: SavedBanner) => {
+        try {
+            await deleteBanner(item.id);
+            showToast({ type: "success", title: "Bannière supprimée" });
+        } catch (error) {
+            showToast({
+                type: "error",
+                title: "Suppression impossible",
+                description: (error as Error).message,
+            });
+        }
     };
 
     return (
@@ -325,6 +331,43 @@ export function BannersTab() {
 
                         <div className="h-px bg-border/70" />
 
+                        {/* Audience */}
+                        <div className="flex items-center justify-between gap-3">
+                            <div className="flex items-center gap-2">
+                                <LuUsers
+                                    size={14}
+                                    className="text-primary/70"
+                                />
+                                <div>
+                                    <Label
+                                        htmlFor="b-audience"
+                                        className="font-body text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+                                    >
+                                        Réserver aux membres connectés
+                                    </Label>
+                                    <p className="mt-0.5 font-body text-[11.5px] text-muted-foreground/55">
+                                        Si activé, seuls les lecteurs connectés
+                                        voient la bannière ; sinon elle est
+                                        visible par tous.
+                                    </p>
+                                </div>
+                            </div>
+                            <Switch
+                                id="b-audience"
+                                checked={draft.audience === "AUTHENTICATED"}
+                                onCheckedChange={(restricted) =>
+                                    set({
+                                        audience: restricted
+                                            ? "AUTHENTICATED"
+                                            : "ALL",
+                                    })
+                                }
+                                aria-label="Réserver la bannière aux membres connectés"
+                            />
+                        </div>
+
+                        <div className="h-px bg-border/70" />
+
                         {/* Fermable */}
                         <div className="flex items-center justify-between gap-3">
                             <div className="flex items-center gap-2">
@@ -378,8 +421,8 @@ export function BannersTab() {
                                 <Button
                                     variant="primary"
                                     onClick={publish}
-                                    disabled={publishing}
-                                    loading={publishing}
+                                    disabled={isMutating}
+                                    loading={isMutating}
                                     leftIcon={<LuSend size={15} />}
                                     className="px-5"
                                 >
@@ -467,6 +510,7 @@ export function BannersTab() {
                                     isActive={item.id === activeId}
                                     onReactivate={() => reactivate(item)}
                                     onLoad={() => loadFrom(item)}
+                                    onDelete={() => remove(item)}
                                 />
                             ))}
                         </div>

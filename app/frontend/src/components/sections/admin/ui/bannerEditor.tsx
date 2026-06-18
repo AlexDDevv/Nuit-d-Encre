@@ -1,19 +1,21 @@
 import { useRef } from "react";
 import type { IconType } from "react-icons";
-import { LuPencil, LuPower } from "react-icons/lu";
+import { LuPencil, LuPower, LuTrash2 } from "react-icons/lu";
 import Icon from "@/components/UI/Icon/Icon";
 import { Label } from "@/components/UI/form/Label";
 import { variantConfig } from "@/components/UI/Banner/Banner.styles";
+import type { SiteBannerAudience } from "@/types/types";
 
 /** Variantes éditables d'une bannière de site (hors `completion`, réservée à la gamification). */
 export type BannerEditorVariant = "info" | "success" | "warning" | "error";
 
-/** Bannière enregistrée (données fictives tant que le backend n'est pas câblé). */
+/** Bannière enregistrée, projetée pour la liste d'historique. */
 export interface SavedBanner {
     id: string;
     variant: BannerEditorVariant;
     title: string;
     content: string;
+    audience: SiteBannerAudience;
     dismissible: boolean;
     action: { label: string; target: string } | null;
     date: string;
@@ -24,6 +26,7 @@ export interface BannerDraft {
     variant: BannerEditorVariant;
     title: string;
     content: string;
+    audience: SiteBannerAudience;
     hasAction: boolean;
     actionLabel: string;
     actionTarget: string;
@@ -34,6 +37,7 @@ export const blankDraft = (): BannerDraft => ({
     variant: "info",
     title: "",
     content: "",
+    audience: "ALL",
     hasAction: false,
     actionLabel: "",
     actionTarget: "",
@@ -199,11 +203,13 @@ export function SavedBannerRow({
     isActive,
     onReactivate,
     onLoad,
+    onDelete,
 }: {
     item: SavedBanner;
     isActive: boolean;
     onReactivate: () => void;
     onLoad: () => void;
+    onDelete: () => void;
 }) {
     const v = variantConfig[item.variant];
     const meta = VARIANT_META[item.variant];
@@ -256,6 +262,13 @@ export function SavedBannerRow({
                         className="inline-flex items-center gap-1.5 rounded-md border-2 border-border bg-transparent px-2.5 py-1 font-body text-[11.5px] font-bold text-muted-foreground transition-colors hover:border-primary/55 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                     >
                         <LuPencil size={12} /> Charger
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onDelete}
+                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-destructive/45 bg-transparent px-2.5 py-1 font-body text-[11.5px] font-bold text-destructive transition-colors hover:bg-destructive hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40"
+                    >
+                        <LuTrash2 size={12} /> Supprimer
                     </button>
                     {!isActive && (
                         <button
