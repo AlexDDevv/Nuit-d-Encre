@@ -133,31 +133,76 @@ const TabsTriggerComponent: React.FC<TabsTriggerProps> = ({
     }
   }
 
+  const isActive = activeTab === value
+
   // Déterminer les classes d'état
   const getActiveClasses = () => {
-    if (activeTab === value) return stateButtonClass[variant].active
+    if (isActive) return stateButtonClass[variant].active
     if (disabled) return stateButtonClass[variant].disabled
     return stateButtonClass[variant].default
   }
 
-  const trigger = (
-    <div className={cn(TabsTriggerClass[variant], fullWidth && 'w-full')}>
-      {stepLabel && <div className={cn(labelClassName)}>{stepLabel}</div>}
-      <div>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === value}
-          className={cn(TabsButtonClass[variant], getActiveClasses())}
-          onClick={handleClick}
-          {...props}
+  // La variante `panel` rend une barre d'onglets plate : bouton sans habillage,
+  // icône colorée indépendamment du texte et soulignement doré absolu (glow).
+  const panelTrigger = (
+    <button
+      type="button"
+      role="tab"
+      aria-selected={isActive}
+      disabled={disabled}
+      onClick={handleClick}
+      className={cn(
+        'group relative flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-3 font-body text-[14px] font-bold tracking-wide transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-default disabled:opacity-40 cursor-pointer',
+        isActive
+          ? 'text-foreground'
+          : 'text-muted-foreground hover:text-foreground/85',
+      )}
+      {...props}
+    >
+      {icon && (
+        <span
+          className={
+            isActive
+              ? 'text-primary'
+              : 'text-muted-foreground/70 group-hover:text-primary/70'
+          }
         >
-          {icon && <span>{React.createElement(icon, { size: 14 })}</span>}
-          <span className={cn(TabsLabelTextClass[variant])}>{children}</span>
-        </button>
-      </div>
-    </div>
+          {React.createElement(icon, { size: 16 })}
+        </span>
+      )}
+      {children}
+      <span
+        className={cn(
+          'absolute inset-x-2 -bottom-0.5 h-[3px] rounded-full transition-all duration-200',
+          isActive
+            ? 'bg-primary shadow-[0_0_12px_hsl(43_59%_70%/0.6)]'
+            : 'bg-transparent',
+        )}
+      />
+    </button>
   )
+
+  const trigger =
+    variant === 'panel' ? (
+      panelTrigger
+    ) : (
+      <div className={cn(TabsTriggerClass[variant], fullWidth && 'w-full')}>
+        {stepLabel && <div className={cn(labelClassName)}>{stepLabel}</div>}
+        <div>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={isActive}
+            className={cn(TabsButtonClass[variant], getActiveClasses())}
+            onClick={handleClick}
+            {...props}
+          >
+            {icon && <span>{React.createElement(icon, { size: 14 })}</span>}
+            <span className={cn(TabsLabelTextClass[variant])}>{children}</span>
+          </button>
+        </div>
+      </div>
+    )
 
   if (tooltip) {
     return (

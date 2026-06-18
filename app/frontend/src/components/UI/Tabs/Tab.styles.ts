@@ -9,7 +9,8 @@ export const TabsWrapperClass: Record<TabsVariant, string> = {
   white:
     'inline-flex h-10 items-center justify-center rounded-md border border-border bg-muted p-1 text-muted-foreground',
   step: 'px-0 flex flex-auto items-center gap-7',
-  panel: 'flex flex-wrap items-center min-h-10 gap-y-1 font-body',
+  panel:
+    'flex w-full items-center gap-1 overflow-x-auto no-scrollbar border-b-2 border-border font-body',
 }
 
 /**
