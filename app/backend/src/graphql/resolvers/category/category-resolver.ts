@@ -153,10 +153,7 @@ export class CategoryResolver {
 				throw new AppError("User not found", 404, "NotFoundError")
 			}
 
-			const category = await Category.findOneBy({
-				id,
-				createdBy: { id: user.id },
-			})
+			const category = await Category.findOneBy({ id })
 
 			if (!category) {
 				throw new AppError("Category not found", 404, "NotFoundError")
@@ -199,10 +196,7 @@ export class CategoryResolver {
 				throw new AppError("User not found", 404, "NotFoundError")
 			}
 
-			const category = await Category.findOneBy({
-				id,
-				createdBy: { id: user.id },
-			})
+			const category = await Category.findOneBy({ id })
 
 			if (!category) {
 				throw new AppError("Category not found", 404, "NotFoundError")

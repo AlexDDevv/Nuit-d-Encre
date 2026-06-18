@@ -399,10 +399,7 @@ export class BooksResolver {
             }
 
             const book = await Book.findOne({
-                where: {
-                    id,
-                    user: { id: user.id },
-                },
+                where: { id },
                 relations: {
                     user: true
                 },
