@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "sonner";
 import Sidebar from "@/components/sections/sidebar/Sidebar";
+import SiteBannerHost from "@/components/sections/banner/SiteBannerHost";
 
 function App() {
     return (
@@ -9,6 +10,7 @@ function App() {
             <div className="flex min-h-screen">
                 <Sidebar />
                 <main className="flex flex-1 flex-col gap-20 p-10">
+                    <SiteBannerHost />
                     <Outlet />
                 </main>
             </div>
