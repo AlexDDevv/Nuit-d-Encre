@@ -1,179 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import {
-    FaXmark,
-    FaStar,
-    FaCrown,
-    FaTrashCan,
-    FaCheck,
-    FaCircleInfo,
-    FaArrowRightArrowLeft,
-} from "react-icons/fa6";
+import { FaXmark, FaStar, FaTrashCan, FaCheck } from "react-icons/fa6";
 import {
     SET_FAVORITE_BOOK,
     REMOVE_FAVORITE_BOOK,
     GET_USER_FAVORITE_BOOKS,
 } from "@/graphql/user/profile";
-import BookCover from "@/components/sections/book/BookCover";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
-import { cn } from "@/lib/utils";
 import { FavoriteBookModalProps } from "@/types/types";
-
-type Rank = 1 | 2 | 3;
-
-const ORDINAL: Record<Rank, string> = { 1: "ʳᵉ", 2: "ᵉ", 3: "ᵉ" };
-const PLACE_LABEL: Record<Rank, string> = {
-    1: "1ʳᵉ place",
-    2: "2ᵉ place",
-    3: "3ᵉ place",
-};
-
-/** Occupant courant d'un socle (ou null si la place est libre). */
-type Slot = { userBookId: string; title: string } | null;
-
-/** Dégradés parchemin/or — hiérarchie par luminosité, jamais or/argent/bronze. */
-const BASE_GRADIENT: Record<Rank, string> = {
-    1: "bg-[linear-gradient(180deg,hsl(43_34%_31%)_0%,hsl(43_30%_21%)_55%,hsl(20_4%_16%)_100%)]",
-    2: "bg-[linear-gradient(180deg,hsl(43_27%_27%)_0%,hsl(43_24%_19%)_55%,hsl(20_4%_16%)_100%)]",
-    3: "bg-[linear-gradient(180deg,hsl(43_21%_23%)_0%,hsl(43_18%_18%)_55%,hsl(20_3%_16%)_100%)]",
-};
-const SELECTED_GRADIENT =
-    "bg-[linear-gradient(180deg,hsl(43_46%_44%)_0%,hsl(43_38%_30%)_55%,hsl(43_32%_22%)_100%)]";
-
-const HEIGHT: Record<Rank, string> = { 1: "h-37.5", 2: "h-29", 3: "h-23" };
-const NUMERAL_COLOR: Record<Rank, string> = {
-    1: "text-primary",
-    2: "text-[hsl(43_50%_72%)]",
-    3: "text-[hsl(43_40%_62%)]",
-};
-
-// ── Un socle du podium ────────────────────────────────────────────────────────
-function Socle({
-    rank,
-    selected,
-    current,
-    occupant,
-    bookTitle,
-    onPick,
-}: {
-    rank: Rank;
-    selected: boolean;
-    current: boolean;
-    occupant: Slot;
-    bookTitle: string;
-    onPick: (rank: Rank) => void;
-}) {
-    const occName =
-        occupant && !selected ? occupant.title : null;
-    const numColor = selected ? "text-[hsl(43_59%_21%)]" : NUMERAL_COLOR[rank];
-
-    return (
-        <div className="flex w-full flex-col items-center">
-            {/* libellé de l'occupant (au-dessus) */}
-            <div className="mb-2 flex h-9 flex-col items-center justify-end text-center">
-                {selected ? (
-                    <span className="border-primary/50 text-primary inline-flex items-center gap-1 whitespace-nowrap rounded-full border bg-[hsl(43_59%_81%/0.16)] px-2 py-0.75 font-body text-[10.5px] font-bold">
-                        <FaCheck size={10} aria-hidden="true" /> Ce livre
-                    </span>
-                ) : occName ? (
-                    <span
-                        className="max-w-32.5 truncate font-quote text-[11px] italic leading-tight text-[hsl(20_12%_58%)]"
-                        title={`Occupée par « ${occName} »`}
-                    >
-                        occupée par
-                        <br />
-                        <span className="font-body text-[10.5px] not-italic text-[hsl(43_30%_64%)]">
-                            « {occName} »
-                        </span>
-                    </span>
-                ) : (
-                    <span className="font-quote text-[11px] italic text-[hsl(20_12%_46%)]">
-                        libre
-                    </span>
-                )}
-            </div>
-
-            <button
-                type="button"
-                onClick={() => onPick(rank)}
-                aria-pressed={selected}
-                aria-label={`Placer « ${bookTitle} » en ${PLACE_LABEL[rank]}${
-                    current ? " (position actuelle)" : ""
-                }${
-                    occName
-                        ? `. Occupée par ${occName}, qui quittera vos favoris`
-                        : ""
-                }`}
-                className={cn(
-                    "focus-visible:ring-primary focus-visible:ring-offset-[hsl(20_3%_16%)] group relative flex w-full cursor-pointer flex-col items-center justify-start gap-2 overflow-hidden rounded-t-xl border-2 pt-4 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
-                    HEIGHT[rank],
-                    selected
-                        ? cn(
-                              SELECTED_GRADIENT,
-                              "border-t-primary border-x-[hsl(43_59%_81%/0.6)] border-b-transparent shadow-[0_-2px_30px_-6px_hsl(43_59%_60%/0.55),inset_0_1px_0_hsl(43_59%_81%/0.4)]",
-                          )
-                        : cn(
-                              BASE_GRADIENT[rank],
-                              "border-[hsl(0_0%_24%)] shadow-[inset_0_1px_0_hsl(43_59%_81%/0.08)] hover:border-t-primary hover:border-x-[hsl(43_59%_81%/0.6)] hover:shadow-[0_-2px_22px_-10px_hsl(43_59%_60%/0.45),inset_0_1px_0_hsl(43_59%_81%/0.12)]",
-                          ),
-                )}
-            >
-                {/* emblème */}
-                <span
-                    className={cn(
-                        "grid place-items-center transition-transform duration-200 group-hover:-translate-y-0.5",
-                        numColor,
-                    )}
-                >
-                    {rank === 1 ? (
-                        <FaCrown size={24} aria-hidden="true" />
-                    ) : (
-                        <FaStar size={17} aria-hidden="true" />
-                    )}
-                </span>
-                {/* numéral ordinal */}
-                <span
-                    className={cn(
-                        "font-title flex items-start font-black leading-none",
-                        rank === 1 ? "text-[40px]" : "text-[34px]",
-                        numColor,
-                    )}
-                >
-                    {rank}
-                    <span className="font-quote mt-0.5 text-[14px] font-medium">
-                        {ORDINAL[rank]}
-                    </span>
-                </span>
-                {/* badge « actuel » */}
-                {current && (
-                    <span
-                        className={cn(
-                            "absolute left-1/2 top-1 -translate-x-1/2 rounded-full border bg-[hsl(20_3%_9%/0.55)] px-2 py-px font-mono text-[8.5px] font-medium uppercase tracking-wider",
-                            selected
-                                ? "border-[hsl(43_59%_21%/0.5)] text-[hsl(43_59%_21%)]"
-                                : "border-primary/40 text-primary",
-                        )}
-                    >
-                        actuel
-                    </span>
-                )}
-                {/* veinure de la marche */}
-                <span className="pointer-events-none absolute inset-x-0 bottom-0 h-5 bg-[linear-gradient(to_top,hsl(20_3%_6%/0.5),transparent)]" />
-            </button>
-
-            {/* libellé de la place (sous le socle) */}
-            <p
-                className={cn(
-                    "font-quote mt-3 text-center text-[14px]",
-                    selected ? "text-primary" : "text-[hsl(20_12%_72%)]",
-                )}
-            >
-                {PLACE_LABEL[rank]}
-            </p>
-        </div>
-    );
-}
+import { Rank, Slot, PLACE_LABEL } from "./favoriteBook/podium";
+import Socle from "./favoriteBook/Socle";
+import FavoriteBookReminder from "./favoriteBook/FavoriteBookReminder";
+import FavoriteMoveNote from "./favoriteBook/FavoriteMoveNote";
 
 // ── La modale ───────────────────────────────────────────────────────────────
 export default function FavoriteBookModal({
@@ -310,7 +149,6 @@ export default function FavoriteBookModal({
 
     if (!isOpen) return null;
 
-    const author = `${book.author.firstname} ${book.author.lastname}`;
     const changed = selectedRank !== (favoriteRank ?? null);
     const moved =
         selectedRank != null &&
@@ -375,35 +213,7 @@ export default function FavoriteBookModal({
                     </div>
 
                     {/* rappel du livre */}
-                    <div className="mx-auto mt-6 flex max-w-sm items-center gap-3.5 rounded-xl border border-[hsl(0_0%_24%)] bg-[hsl(20_3%_14%/0.6)] px-3.5 py-3">
-                        <BookCover
-                            coverUrl={book.coverUrl}
-                            title={book.title}
-                            author={author}
-                            className="aspect-2/3 w-15 shrink-0 rounded-md border border-[hsl(0_0%_24%)] shadow-[0_10px_22px_-10px_hsl(20_3%_3%/0.9)] sm:w-17"
-                        />
-                        <div className="min-w-0 flex-1">
-                            <p className="text-primary/55 font-mono text-[9.5px] uppercase tracking-[0.18em]">
-                                Ouvrage à épingler
-                            </p>
-                            <h3 className="text-foreground font-quote mt-1 text-[19px] leading-tight">
-                                {book.title}
-                            </h3>
-                            <p className="mt-0.5 font-body text-[12.5px] text-[hsl(20_12%_72%)]">
-                                {author}
-                            </p>
-                            {(book.category?.name || book.publishedYear) && (
-                                <p className="font-quote mt-0.5 text-[12px] italic text-[hsl(43_30%_62%)]">
-                                    {[
-                                        book.category?.name,
-                                        book.publishedYear,
-                                    ]
-                                        .filter(Boolean)
-                                        .join(" · ")}
-                                </p>
-                            )}
-                        </div>
-                    </div>
+                    <FavoriteBookReminder book={book} />
 
                     {/* podium */}
                     <div className="mt-7 rounded-xl border border-[hsl(0_0%_24%)] bg-[radial-gradient(120%_90%_at_50%_0%,hsl(43_18%_17%/0.55),hsl(20_3%_15%/0.2)_70%)] px-3 pb-3 pt-2 sm:px-5">
@@ -429,66 +239,13 @@ export default function FavoriteBookModal({
                     </div>
 
                     {/* note de déplacement / aide */}
-                    <div className="mt-4 flex items-start justify-center gap-2 text-center">
-                        {moved || displaced ? (
-                            <FaArrowRightArrowLeft
-                                size={13}
-                                className="text-primary/55 mt-px shrink-0"
-                                aria-hidden="true"
-                            />
-                        ) : (
-                            <FaCircleInfo
-                                size={13}
-                                className="text-primary/55 mt-px shrink-0"
-                                aria-hidden="true"
-                            />
-                        )}
-                        <p className="font-body text-[12px] leading-snug text-[hsl(20_12%_64%)]">
-                            {selectedRank == null ? (
-                                isFavorite ? (
-                                    <>Ce livre ne figurera plus dans vos favoris.</>
-                                ) : (
-                                    <>
-                                        Touchez un socle pour épingler ce livre.
-                                        Une place occupée fera quitter l'autre
-                                        ouvrage.
-                                    </>
-                                )
-                            ) : displaced ? (
-                                <>
-                                    Prendra la{" "}
-                                    <span className="text-primary">
-                                        {PLACE_LABEL[selectedRank]}
-                                    </span>{" "}
-                                    — «{" "}
-                                    <span className="text-primary">
-                                        {displaced}
-                                    </span>{" "}
-                                    » quittera vos favoris.
-                                </>
-                            ) : moved ? (
-                                <>
-                                    Sera déplacé de la{" "}
-                                    <span className="text-primary">
-                                        {PLACE_LABEL[favoriteRank as Rank]}
-                                    </span>{" "}
-                                    vers la{" "}
-                                    <span className="text-primary">
-                                        {PLACE_LABEL[selectedRank]}
-                                    </span>
-                                    .
-                                </>
-                            ) : (
-                                <>
-                                    Épinglé en{" "}
-                                    <span className="text-primary">
-                                        {PLACE_LABEL[selectedRank]}
-                                    </span>
-                                    . Touchez un autre socle pour le déplacer.
-                                </>
-                            )}
-                        </p>
-                    </div>
+                    <FavoriteMoveNote
+                        selectedRank={selectedRank}
+                        isFavorite={isFavorite}
+                        displaced={displaced}
+                        moved={moved}
+                        favoriteRank={favoriteRank}
+                    />
 
                     {/* actions */}
                     <div className="mt-6 flex flex-wrap items-center justify-end gap-2.5 border-t border-dashed border-[hsl(0_0%_100%/0.08)] pt-5">
