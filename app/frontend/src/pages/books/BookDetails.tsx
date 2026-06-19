@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
-import { FaArrowLeftLong, FaBook, FaFeatherPointed, FaQuoteLeft } from "react-icons/fa6";
+import { FaArrowLeftLong, FaBook, FaQuoteLeft } from "react-icons/fa6";
 import Button from "@/components/UI/Button/Button";
 import Banner from "@/components/UI/Banner/Banner";
 import XpPill from "@/components/UI/Banner/XpPill";
@@ -13,6 +13,9 @@ import BookStatChips from "@/components/sections/book/detail/BookStatChips";
 import SectionLead from "@/components/sections/book/detail/SectionLead";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import Diamond from "@/components/UI/Diamond";
+import CollectionSeam from "@/components/sections/shared/CollectionSeam";
+import SectionHairline from "@/components/sections/shared/SectionHairline";
+import FicheManagementBar from "@/components/sections/shared/FicheManagementBar";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
@@ -141,16 +144,10 @@ export default function BookDetails() {
             </Button>
 
             {/* couture « chez nous » */}
-            <div className="-mt-10 flex items-center gap-3">
-                <span className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.24em] text-[hsl(43_30%_62%)]">
-                    <FaBook size={12} aria-hidden="true" /> Dans la collection — chez
-                    nous
-                </span>
-                <span className="h-px flex-1 bg-[linear-gradient(to_right,hsl(43_59%_81%/0.55),hsl(43_59%_81%/0.1))]" />
-                <span className="text-primary/90 border-primary/30 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border bg-[hsl(20_3%_12%/0.6)] px-3 py-1 font-mono text-[10.5px] tracking-wide">
-                    <FaFeatherPointed size={11} aria-hidden="true" /> Nuit d'Encre
-                </span>
-            </div>
+            <CollectionSeam
+                icon={<FaBook size={12} aria-hidden="true" />}
+                label="Dans la collection — chez nous"
+            />
 
             {/* HÉRO */}
             <div className="grid gap-10 sm:gap-12 md:grid-cols-[300px_1fr] md:items-start">
@@ -240,12 +237,7 @@ export default function BookDetails() {
                 className="grid scroll-mt-20 gap-8 md:grid-cols-[1fr_0.78fr]"
             >
                 <section className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2.5">
-                        <span className="font-quote text-sm italic text-[hsl(43_30%_62%)]">
-                            Le résumé
-                        </span>
-                        <span className="bg-primary/20 h-px flex-1" />
-                    </div>
+                    <SectionHairline label="Le résumé" />
                     <p className="text-foreground/88 font-quote text-[17.5px] leading-[1.72]">
                         {book.summary}
                     </p>
@@ -280,37 +272,16 @@ export default function BookDetails() {
             {/* DÉCOUVERTE — « Dans la même catégorie » : à traiter ultérieurement. */}
 
             {/* GESTION DE LA FICHE (propriétaire / admin) */}
-            {(canEdit || canDelete) && (
-                <section className="flex items-center justify-between border-t border-[hsl(0_0%_100%/0.06)] pt-6">
-                    <span className="text-muted-foreground font-mono text-[10px] uppercase tracking-[0.2em]">
-                        Gestion de la fiche · propriétaire ou administrateur
-                    </span>
-                    <div className="flex flex-wrap gap-3">
-                        {canEdit && (
-                            <Button
-                                ariaLabel={`Modifier le livre ${book.title} de ${author}`}
-                                to={`/books/update/${book.id}`}
-                                variant="outline"
-                                size="sm"
-                            >
-                                Modifier le livre
-                            </Button>
-                        )}
-                        {canDelete && (
-                            <Button
-                                ariaLabel={`Supprimer le livre ${book.title} de ${author} en tant qu'administrateur`}
-                                variant="destructive"
-                                size="sm"
-                                onClick={handleDeleteBook}
-                                loading={isDeletingBook}
-                                disabled={isDeletingBook}
-                            >
-                                Supprimer
-                            </Button>
-                        )}
-                    </div>
-                </section>
-            )}
+            <FicheManagementBar
+                canEdit={!!canEdit}
+                canDelete={!!canDelete}
+                editTo={`/books/update/${book.id}`}
+                editLabel="Modifier le livre"
+                editAriaLabel={`Modifier le livre ${book.title} de ${author}`}
+                onDelete={handleDeleteBook}
+                isDeleting={isDeletingBook}
+                deleteAriaLabel={`Supprimer le livre ${book.title} de ${author} en tant qu'administrateur`}
+            />
         </div>
     );
 }

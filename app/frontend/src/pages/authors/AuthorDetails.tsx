@@ -18,6 +18,10 @@ import AuthorNotice from "@/components/sections/author/detail/AuthorNotice";
 import ExternalLinkChip from "@/components/sections/author/detail/ExternalLinkChip";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 import Diamond from "@/components/UI/Diamond";
+import CollectionSeam from "@/components/sections/shared/CollectionSeam";
+import SectionHairline from "@/components/sections/shared/SectionHairline";
+import EmptyStateCard from "@/components/UI/EmptyStateCard";
+import FicheManagementBar from "@/components/sections/shared/FicheManagementBar";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
 import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
@@ -175,16 +179,10 @@ export default function AuthorDetails() {
             </Button>
 
             {/* couture « une plume de la maison » */}
-            <div className="-mt-10 flex items-center gap-3">
-                <span className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.24em] text-[hsl(43_30%_62%)]">
-                    <FaFeatherPointed size={12} aria-hidden="true" /> Une plume de
-                    la maison
-                </span>
-                <span className="h-px flex-1 bg-[linear-gradient(to_right,hsl(43_59%_81%/0.55),hsl(43_59%_81%/0.1))]" />
-                <span className="text-primary/90 border-primary/30 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border bg-[hsl(20_3%_12%/0.6)] px-3 py-1 font-mono text-[10.5px] tracking-wide">
-                    <FaFeatherPointed size={11} aria-hidden="true" /> Nuit d'Encre
-                </span>
-            </div>
+            <CollectionSeam
+                icon={<FaFeatherPointed size={12} aria-hidden="true" />}
+                label="Une plume de la maison"
+            />
 
             {/* HÉRO */}
             <div className="grid gap-10 sm:gap-12 md:grid-cols-[300px_1fr] md:items-start">
@@ -316,12 +314,7 @@ export default function AuthorDetails() {
                 className="grid scroll-mt-20 gap-8 md:grid-cols-[1fr_0.78fr]"
             >
                 <section className="flex flex-col gap-4">
-                    <div className="flex items-center gap-2.5">
-                        <span className="font-quote text-[13px] italic text-[hsl(43_30%_62%)]">
-                            La biographie
-                        </span>
-                        <span className="bg-primary/20 h-px flex-1" />
-                    </div>
+                    <SectionHairline label="La biographie" textClass="text-[13px]" />
                     {bio ? (
                         <div className="flex flex-col gap-4">
                             {bio.split("\n\n").map((para, i) => (
@@ -339,25 +332,27 @@ export default function AuthorDetails() {
                             )}
                         </div>
                     ) : (
-                        <div className="border-border flex flex-col items-start gap-3 rounded-xl border-2 border-dashed bg-[hsl(20_3%_14%/0.4)] px-6 py-12">
-                            <span className="ring-primary/25 grid h-11 w-11 place-items-center rounded-full bg-[hsl(43_30%_25%/0.3)] ring-1">
+                        <EmptyStateCard
+                            align="start"
+                            iconSize="sm"
+                            icon={
                                 <FaFeatherPointed
                                     size={18}
                                     className="text-primary/70"
                                     aria-hidden="true"
                                 />
-                            </span>
-                            <p className="text-foreground/85 font-quote text-[18px] italic leading-snug">
-                                Aucune biographie pour l'instant.
-                            </p>
-                            <p className="text-muted-foreground max-w-[46ch] font-body text-[13.5px]">
-                                La maison rassemble peu à peu ce que l'on sait de
-                                ses auteurs.
-                                {canEdit
-                                    ? " Vous pouvez enrichir cette fiche dès maintenant."
-                                    : ""}
-                            </p>
-                        </div>
+                            }
+                            title="Aucune biographie pour l'instant."
+                            description={
+                                <>
+                                    La maison rassemble peu à peu ce que l'on
+                                    sait de ses auteurs.
+                                    {canEdit
+                                        ? " Vous pouvez enrichir cette fiche dès maintenant."
+                                        : ""}
+                                </>
+                            }
+                        />
                     )}
                 </section>
 
@@ -389,56 +384,34 @@ export default function AuthorDetails() {
                         ))}
                     </div>
                 ) : (
-                    <div className="border-border flex flex-col items-center gap-3 rounded-xl border-2 border-dashed bg-[hsl(20_3%_14%/0.4)] px-6 py-16 text-center">
-                        <span className="ring-primary/25 grid h-12 w-12 place-items-center rounded-full bg-[hsl(43_30%_25%/0.3)] ring-1">
+                    <EmptyStateCard
+                        align="center"
+                        iconSize="md"
+                        icon={
                             <FaBook
                                 size={20}
                                 className="text-primary/70"
                                 aria-hidden="true"
                             />
-                        </span>
-                        <p className="text-foreground/85 font-quote text-[18px] italic">
-                            Aucun ouvrage au catalogue.
-                        </p>
-                        <p className="text-muted-foreground max-w-[44ch] font-body text-[13px]">
-                            Cet auteur n'a pas encore d'ouvrage dans la maison.
-                        </p>
-                    </div>
+                        }
+                        title="Aucun ouvrage au catalogue."
+                        description="Cet auteur n'a pas encore d'ouvrage dans la maison."
+                    />
                 )}
             </section>
 
             {/* GESTION DE LA FICHE (propriétaire / admin) */}
-            {(canEdit || canDelete) && (
-                <section className="flex items-center justify-between gap-2.5 border-t border-[hsl(0_0%_100%/0.06)] pt-6">
-                    <span className="text-muted-foreground font-mono text-[10px] uppercase tracking-[0.2em]">
-                        Gestion de la fiche · propriétaire ou administrateur
-                    </span>
-                    <div className="flex flex-wrap gap-3">
-                        {canEdit && (
-                            <Button
-                                ariaLabel={`Modifier les informations de l'auteur ${name}`}
-                                to={`/authors/update/${author.id}`}
-                                variant="outline"
-                                size="sm"
-                            >
-                                Modifier l'auteur
-                            </Button>
-                        )}
-                        {canDelete && (
-                            <Button
-                                ariaLabel={`Supprimer l'auteur ${name} en tant qu'administrateur`}
-                                variant="destructive"
-                                size="sm"
-                                onClick={handleDeleteAuthor}
-                                loading={isDeletingAuthor}
-                                disabled={isDeletingAuthor}
-                            >
-                                Supprimer
-                            </Button>
-                        )}
-                    </div>
-                </section>
-            )}
+            <FicheManagementBar
+                className="gap-2.5"
+                canEdit={!!canEdit}
+                canDelete={!!canDelete}
+                editTo={`/authors/update/${author.id}`}
+                editLabel="Modifier l'auteur"
+                editAriaLabel={`Modifier les informations de l'auteur ${name}`}
+                onDelete={handleDeleteAuthor}
+                isDeleting={isDeletingAuthor}
+                deleteAriaLabel={`Supprimer l'auteur ${name} en tant qu'administrateur`}
+            />
         </div>
     );
 }
