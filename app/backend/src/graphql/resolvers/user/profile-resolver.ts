@@ -19,11 +19,11 @@ import { Context } from "../../../types/types";
 @Resolver(() => User)
 export class ProfileResolver {
     @FieldResolver(() => Title, { nullable: true })
-    async title(@Root() user: User): Promise<Title | null> {
-        return Title.createQueryBuilder("title")
-            .where("title.minLevel <= :level", { level: user.level })
-            .orderBy("title.minLevel", "DESC")
-            .getOne();
+    async title(
+        @Root() user: User,
+        @Ctx() context: Context,
+    ): Promise<Title | null> {
+        return context.loaders.title.load(user.level);
     }
 
     @Query(() => User, { nullable: true })

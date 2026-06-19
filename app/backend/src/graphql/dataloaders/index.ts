@@ -6,6 +6,7 @@ import {
     batchReviewCount,
     batchRecommendationCount,
 } from "./book-aggregate-loaders";
+import { batchTitles } from "./title-loader";
 
 export type Loaders = {
     averageRating: DataLoader<string, number | null>;
@@ -33,7 +34,7 @@ export function createLoaders(
         recommendationCount: new DataLoader((ids) =>
             batchRecommendationCount(ids),
         ),
-        title: new DataLoader(async (levels) => levels.map(() => null)),
+        title: new DataLoader((levels) => batchTitles(levels)),
         hasUserReviewed: new DataLoader(async (ids) => ids.map(() => false)),
         hasUserRecommended: new DataLoader(async (ids) =>
             ids.map(() => false),
