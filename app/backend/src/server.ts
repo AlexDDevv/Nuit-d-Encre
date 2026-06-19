@@ -23,6 +23,9 @@ import { TitleResolver } from "./graphql/resolvers/gamification/title-resolver";
 import { BookSearchResolver } from "./graphql/resolvers/book/book-search-resolver";
 import { AdminResolver } from "./graphql/resolvers/admin/admin-resolver";
 import { SiteBannersResolver } from "./graphql/resolvers/banner/site-banner-resolver";
+import { createLoaders } from "./graphql/dataloaders";
+import { whoami } from "./services/auth-service";
+import { User } from "./database/entities/user/user";
 
 dotenv.config(); // Load environment variables from .env file
 
@@ -127,7 +130,6 @@ if (!process.env.APP_PORT) {
         const { url } = await startStandaloneServer(server, {
             listen: { port: Number(process.env.APP_PORT) || 4000 },
             context: async ({ req, res }) => {
-                // Properties to the context here, like the authenticated user
                 const cookies = new Cookies(req, res, {
                     keys: [process.env.COOKIE_SECRET || "default-secret"],
                 });
@@ -142,7 +144,18 @@ if (!process.env.APP_PORT) {
                     req.socket?.remoteAddress ??
                     "unknown";
 
-                return { cookies, ip };
+                // Résolution paresseuse + mémoïsée de l'utilisateur :
+                // partagée par tous les loaders dépendant de l'utilisateur,
+                // évite N appels whoami() sur le catalogue public.
+                let userPromise: Promise<User | null | undefined> | undefined;
+                const getUser = () => {
+                    if (!userPromise) {
+                        userPromise = whoami(cookies).catch(() => null);
+                    }
+                    return userPromise;
+                };
+
+                return { cookies, ip, loaders: createLoaders(getUser) };
             },
         });
 
