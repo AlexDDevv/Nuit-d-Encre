@@ -461,19 +461,11 @@ export class BooksResolver {
      * ```
      */
     @FieldResolver(() => Float, { nullable: true })
-    async averageRating(@Root() book: Book): Promise<number | null> {
-        try {
-            const result = await BookReview
-                .createQueryBuilder("review")
-                .select("AVG(review.rating)", "avg")
-                .where("review.bookId = :bookId", { bookId: book.id })
-                .getRawOne();
-
-            return result?.avg ? parseFloat(Number(result.avg).toFixed(2)) : null;
-        } catch (error) {
-            console.error("Error calculating average rating:", error);
-            return null;
-        }
+    async averageRating(
+        @Root() book: Book,
+        @Ctx() context: Context,
+    ): Promise<number | null> {
+        return context.loaders.averageRating.load(book.id);
     }
 
     /**
@@ -497,15 +489,11 @@ export class BooksResolver {
      * ```
      */
     @FieldResolver(() => Int)
-    async reviewCount(@Root() book: Book): Promise<number> {
-        try {
-            return await BookReview.count({
-                where: { book: { id: book.id } }
-            });
-        } catch (error) {
-            console.error("Error counting reviews:", error);
-            return 0;
-        }
+    async reviewCount(
+        @Root() book: Book,
+        @Ctx() context: Context,
+    ): Promise<number> {
+        return context.loaders.reviewCount.load(book.id);
     }
 
     /**
@@ -529,15 +517,11 @@ export class BooksResolver {
      * ```
      */
     @FieldResolver(() => Int)
-    async recommendationCount(@Root() book: Book): Promise<number> {
-        try {
-            return await BookRecommendation.count({
-                where: { book: { id: book.id } }
-            });
-        } catch (error) {
-            console.error("Error counting recommendations:", error);
-            return 0;
-        }
+    async recommendationCount(
+        @Root() book: Book,
+        @Ctx() context: Context,
+    ): Promise<number> {
+        return context.loaders.recommendationCount.load(book.id);
     }
 
     /**

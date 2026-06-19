@@ -1,6 +1,11 @@
 import DataLoader from "dataloader";
 import { User } from "../../database/entities/user/user";
 import { Title } from "../../database/entities/gamification/title";
+import {
+    batchAverageRating,
+    batchReviewCount,
+    batchRecommendationCount,
+} from "./book-aggregate-loaders";
 
 export type Loaders = {
     averageRating: DataLoader<string, number | null>;
@@ -23,11 +28,11 @@ export function createLoaders(
     _getUser: () => Promise<User | null | undefined>,
 ): Loaders {
     return {
-        averageRating: new DataLoader(async (ids) =>
-            ids.map(() => null),
+        averageRating: new DataLoader((ids) => batchAverageRating(ids)),
+        reviewCount: new DataLoader((ids) => batchReviewCount(ids)),
+        recommendationCount: new DataLoader((ids) =>
+            batchRecommendationCount(ids),
         ),
-        reviewCount: new DataLoader(async (ids) => ids.map(() => 0)),
-        recommendationCount: new DataLoader(async (ids) => ids.map(() => 0)),
         title: new DataLoader(async (levels) => levels.map(() => null)),
         hasUserReviewed: new DataLoader(async (ids) => ids.map(() => false)),
         hasUserRecommended: new DataLoader(async (ids) =>
