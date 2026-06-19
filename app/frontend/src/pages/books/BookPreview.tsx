@@ -84,7 +84,7 @@ export default function BookPreview() {
 
                 <div className="mb-7 mt-8 flex items-center gap-3">
                     <span
-                        className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-[10.5px] uppercase tracking-[0.24em]"
+                        className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-xxs uppercase tracking-[0.24em]"
                         style={{ color: "hsl(43 30% 60%)" }}
                     >
                         <Glyph name="external" size={12} /> Venu d'ailleurs — pas encore dans vos
@@ -98,7 +98,7 @@ export default function BookPreview() {
                         }}
                     />
                     <span
-                        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 font-mono text-[10.5px] tracking-wide"
+                        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 font-mono text-xxs tracking-wide"
                         style={{
                             borderColor: "hsl(43 59% 81% / 0.3)",
                             color: "hsl(43 59% 81% / 0.9)",

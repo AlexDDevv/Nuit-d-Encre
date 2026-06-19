@@ -59,7 +59,7 @@ export default function UserProfile() {
     return (
         <section className="mx-auto w-full max-w-5xl">
             {!isOwner && (
-                <div className="text-muted-foreground mb-4 flex items-center justify-center gap-3 text-[12px] tracking-[0.22em] uppercase">
+                <div className="text-muted-foreground mb-4 flex items-center justify-center gap-3 text-xs tracking-[0.22em] uppercase">
                     <Ornament width="w-8" />
                     Lecture seule · vous visitez ce profil
                     <Ornament width="w-8" />
@@ -89,7 +89,7 @@ export default function UserProfile() {
 
             <footer className="mt-12 flex flex-col items-center gap-3 pb-6 text-center">
                 <Ornament />
-                <p className="text-muted-foreground/70 max-w-md font-quote text-[15px] italic">
+                <p className="text-muted-foreground/70 max-w-md font-quote text-base italic">
                     « On n'habite pas un pays, on habite une langue. » — et, la
                     nuit venue, une bibliothèque.
                 </p>

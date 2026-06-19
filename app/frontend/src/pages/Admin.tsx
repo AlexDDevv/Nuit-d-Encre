@@ -83,16 +83,16 @@ export default function Admin() {
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-3">
                             <Ornament width="w-8" />
-                            <span className="font-body text-[11px] uppercase tracking-[0.3em] text-muted-foreground">
+                            <span className="font-body text-xs uppercase tracking-[0.3em] text-muted-foreground">
                                 Salle des archives
                             </span>
                         </div>
-                        <h1 className="font-quote text-[30px] font-medium leading-tight text-foreground md:text-[36px]">
+                        <h1 className="font-quote text-3xl font-medium leading-tight text-foreground md:text-4xl">
                             Gérer la bibliothèque, veiller sur l'encre.
                         </h1>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="hidden items-center gap-2 rounded-full border-2 border-primary/40 bg-primary/10 px-3 py-1.5 font-body text-[11px] font-bold uppercase tracking-[0.14em] text-primary sm:inline-flex">
+                        <span className="hidden items-center gap-2 rounded-full border-2 border-primary/40 bg-primary/10 px-3 py-1.5 font-body text-xs font-bold uppercase tracking-[0.14em] text-primary sm:inline-flex">
                             <LuShield size={13} /> Administration
                         </span>
                     </div>
@@ -139,7 +139,7 @@ export default function Admin() {
                 {/* Épigraphe de pied */}
                 <footer className="mt-14 flex flex-col items-center gap-3 pb-6 text-center">
                     <Ornament />
-                    <p className="max-w-md font-quote text-[14px] italic text-muted-foreground/65">
+                    <p className="max-w-md font-quote text-sm italic text-muted-foreground/65">
                         « Un bibliothécaire est un veilleur : il garde la nuit
                         pour que d'autres y trouvent le jour. »
                     </p>

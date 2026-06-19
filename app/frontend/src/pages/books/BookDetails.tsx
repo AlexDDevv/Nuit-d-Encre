@@ -168,7 +168,7 @@ export default function BookDetails() {
                             <Link
                                 to={authorPath}
                                 aria-label={`Voir la fiche de ${author}`}
-                                className="text-foreground hover:text-primary decoration-primary/40 hover:decoration-primary focus-visible:ring-ring rounded font-quote text-[17px] italic underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                className="text-foreground hover:text-primary decoration-primary/40 hover:decoration-primary focus-visible:ring-ring rounded font-quote text-lg italic underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
                             >
                                 {author}
                             </Link>
@@ -238,7 +238,7 @@ export default function BookDetails() {
             >
                 <section className="flex flex-col gap-4">
                     <SectionHairline label="Le résumé" />
-                    <p className="text-foreground/88 font-quote text-[17.5px] leading-[1.72]">
+                    <p className="text-foreground/88 font-quote text-lg leading-[1.72]">
                         {book.summary}
                     </p>
                 </section>

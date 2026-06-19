@@ -200,14 +200,14 @@ export default function AuthorDetails() {
 
                 <div className="flex min-w-0 flex-col gap-6">
                     <div className="flex flex-col gap-3">
-                        <p className="font-quote text-[15px] italic text-[hsl(43_30%_64%)]">
+                        <p className="font-quote text-base italic text-[hsl(43_30%_64%)]">
                             Un auteur de notre bibliothèque
                         </p>
                         <h1 className="text-foreground font-quote text-4xl leading-[1.04] text-balance">
                             {name}
                         </h1>
                         {/* méta en ligne */}
-                        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-[13px]">
+                        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-sm">
                             {country && (
                                 <>
                                     <span className="inline-flex items-center gap-1.5">
@@ -255,21 +255,21 @@ export default function AuthorDetails() {
                             aria-hidden="true"
                         />
                         {bio ? (
-                            <p className="text-foreground/85 font-quote pl-7 text-[16.5px] italic leading-[1.6]">
+                            <p className="text-foreground/85 font-quote pl-7 text-base italic leading-[1.6]">
                                 {isExcerpt
                                     ? `${bio.substring(0, 200)}… `
                                     : `${bio} `}
                                 {isExcerpt && (
                                     <a
                                         href="#biography"
-                                        className="text-primary hover:text-foreground focus-visible:ring-ring rounded font-body text-[13px] font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                        className="text-primary hover:text-foreground focus-visible:ring-ring rounded font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
                                     >
                                         Lire la suite
                                     </a>
                                 )}
                             </p>
                         ) : (
-                            <p className="font-quote pl-7 text-[16.5px] italic leading-[1.6] text-[hsl(20_12%_60%)]">
+                            <p className="font-quote pl-7 text-base italic leading-[1.6] text-[hsl(20_12%_60%)]">
                                 La maison n'a pas encore recueilli de biographie
                                 pour {name}. Son œuvre, elle, parle déjà pour
                                 elle/lui.
@@ -297,7 +297,7 @@ export default function AuthorDetails() {
                     {/* liens externes */}
                     {hasExternal && (
                         <div className="flex flex-col gap-2">
-                            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[hsl(43_30%_60%)]">
+                            <p className="font-mono text-xxs uppercase tracking-[0.18em] text-[hsl(43_30%_60%)]">
                                 Pour aller plus loin
                             </p>
                             <div className="flex flex-wrap items-center gap-2.5">
@@ -314,13 +314,13 @@ export default function AuthorDetails() {
                 className="grid scroll-mt-20 gap-8 md:grid-cols-[1fr_0.78fr]"
             >
                 <section className="flex flex-col gap-4">
-                    <SectionHairline label="La biographie" textClass="text-[13px]" />
+                    <SectionHairline label="La biographie" textClass="text-sm" />
                     {bio ? (
                         <div className="flex flex-col gap-4">
                             {bio.split("\n\n").map((para, i) => (
                                 <p
                                     key={i}
-                                    className="text-foreground/88 font-quote text-[17.5px] leading-[1.72]"
+                                    className="text-foreground/88 font-quote text-lg leading-[1.72]"
                                 >
                                     {para}
                                 </p>
@@ -366,7 +366,7 @@ export default function AuthorDetails() {
                     title={`Les ouvrages de ${name}`}
                     right={
                         worksCount > 0 ? (
-                            <span className="text-muted-foreground hidden font-mono text-[11px] tracking-wide whitespace-nowrap sm:inline">
+                            <span className="text-muted-foreground hidden font-mono text-xs tracking-wide whitespace-nowrap sm:inline">
                                 {worksCount} titre{worksCount > 1 ? "s" : ""}
                             </span>
                         ) : undefined
