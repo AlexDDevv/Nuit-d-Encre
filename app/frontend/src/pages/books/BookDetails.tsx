@@ -12,6 +12,7 @@ import BookNotice from "@/components/sections/book/detail/BookNotice";
 import BookStatChips from "@/components/sections/book/detail/BookStatChips";
 import SectionLead from "@/components/sections/book/detail/SectionLead";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
+import Diamond from "@/components/UI/Diamond";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useUserBookMutations } from "@/hooks/userBook/useUserBookMutations";
@@ -21,12 +22,6 @@ import { hasIncompleteBookInfo, slugify } from "@/lib/utils";
 import { formatLabelMap } from "@/lib/filterMaps";
 import { parseGraphQLError } from "@/utils/graphql-error";
 import { UserBookStatus } from "@/types/types";
-
-const Diamond = () => (
-    <span className="text-primary/40" aria-hidden="true">
-        ◆
-    </span>
-);
 
 export default function BookDetails() {
     const { createUserBook, isCreatingUserBook } = useUserBookMutations();

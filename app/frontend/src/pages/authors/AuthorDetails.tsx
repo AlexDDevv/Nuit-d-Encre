@@ -17,18 +17,13 @@ import SectionLead from "@/components/sections/book/detail/SectionLead";
 import AuthorNotice from "@/components/sections/author/detail/AuthorNotice";
 import ExternalLinkChip from "@/components/sections/author/detail/ExternalLinkChip";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
+import Diamond from "@/components/UI/Diamond";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
 import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
 import { useToast } from "@/hooks/toast/useToast";
 import { hasIncompleteInfo } from "@/lib/utils";
 import { getCountryLabel } from "@/lib/filterMaps";
-
-const Diamond = () => (
-    <span className="text-primary/40" aria-hidden="true">
-        ◆
-    </span>
-);
 
 export default function AuthorDetails() {
     const navigate = useNavigate();
