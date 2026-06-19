@@ -7,7 +7,7 @@ import type { AdminReviewRow } from "@/types/types";
 import Pagination from "@/components/UI/Pagination";
 import { EmptyState, SkeletonRows } from "@/components/sections/admin/ui/feedback";
 import { ConfirmDialog } from "@/components/sections/admin/ui/ConfirmDialog";
-import ReviewsTable from "./reviews/ReviewsTable";
+import ReviewsTable from "../reviews/ReviewsTable";
 
 /** Onglet Critiques : liste triée par date, dépliage inline et suppression. */
 export function ReviewsTab() {

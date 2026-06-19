@@ -18,12 +18,12 @@ import { useAdminActivity } from "@/hooks/admin/useAdminActivity";
 import { Ornament } from "@/components/sections/admin/ui/chips";
 import { AnalyticsBar } from "@/components/sections/admin/AnalyticsBar";
 import { AdminDashboard } from "@/components/sections/admin/AdminDashboard";
-import { UsersTab } from "@/components/sections/admin/UsersTab";
-import { BooksTab } from "@/components/sections/admin/BooksTab";
-import { AuthorsTab } from "@/components/sections/admin/AuthorsTab";
-import { CategoriesTab } from "@/components/sections/admin/CategoriesTab";
-import { ReviewsTab } from "@/components/sections/admin/ReviewsTab";
-import { BannersTab } from "@/components/sections/admin/BannersTab";
+import { UsersTab } from "@/components/sections/admin/tabs/UsersTab";
+import { BooksTab } from "@/components/sections/admin/tabs/BooksTab";
+import { AuthorsTab } from "@/components/sections/admin/tabs/AuthorsTab";
+import { CategoriesTab } from "@/components/sections/admin/tabs/CategoriesTab";
+import { ReviewsTab } from "@/components/sections/admin/tabs/ReviewsTab";
+import { BannersTab } from "@/components/sections/admin/tabs/BannersTab";
 
 type AdminTab = {
     value: string;

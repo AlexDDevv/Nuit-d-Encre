@@ -8,9 +8,9 @@ import {
     type BannerDraft,
     type SavedBanner,
 } from "@/components/sections/admin/ui/bannerEditor";
-import BannerTabHeader from "./banners/BannerTabHeader";
-import BannerEditorPanel from "./banners/BannerEditorPanel";
-import BannerPreviewPanel from "./banners/BannerPreviewPanel";
+import BannerTabHeader from "../banners/BannerTabHeader";
+import BannerEditorPanel from "../banners/BannerEditorPanel";
+import BannerPreviewPanel from "../banners/BannerPreviewPanel";
 
 /** Formate une date ISO en libellé court français (« 14 juin 2026 »). */
 const formatDate = (iso: string) =>

@@ -7,7 +7,7 @@ import type { AdminCategoryRow } from "@/types/types";
 import Button from "@/components/UI/Button/Button";
 import { EmptyState, SkeletonRows } from "@/components/sections/admin/ui/feedback";
 import { ConfirmDialog } from "@/components/sections/admin/ui/ConfirmDialog";
-import CategoriesTable from "./categories/CategoriesTable";
+import CategoriesTable from "../categories/CategoriesTable";
 
 /** Onglet Catégories : liste non paginée avec création et renommage inline. */
 export function CategoriesTab() {
