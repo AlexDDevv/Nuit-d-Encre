@@ -18,7 +18,9 @@ import { fileToDataUrl, MAX_IMAGE_BYTES } from "@/lib/image";
 import { useToast } from "@/hooks/toast/useToast";
 import { titleAt } from "@/constants/titles";
 import { User } from "@/types/types";
-import { Card, Pill, Ornament, MoonMedallion } from "./ProfileUI";
+import { Card } from "./ProfileUI";
+import UploadVeil from "./hero/UploadVeil";
+import TitlePlate from "./hero/TitlePlate";
 
 interface ProfileHeroProps {
     user: User;
@@ -43,61 +45,6 @@ const memberSince = (iso?: string) => {
         year: "numeric",
     }).format(date);
 };
-
-// — Voile « envoi en cours » doré —
-function UploadVeil({ rounded = "rounded-full" }: { rounded?: string }) {
-    return (
-        <div
-            className={`bg-background/72 text-primary absolute inset-0 z-20 grid place-items-center ${rounded}`}
-            aria-live="polite"
-        >
-            <span className="flex flex-col items-center gap-1.5">
-                <svg
-                    width={26}
-                    height={26}
-                    viewBox="0 0 24 24"
-                    className="spin-gold"
-                    aria-hidden="true"
-                >
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeOpacity="0.25"
-                        strokeWidth="3"
-                    />
-                    <path
-                        d="M12 3a9 9 0 0 1 9 9"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="3"
-                        strokeLinecap="round"
-                    />
-                </svg>
-                <span className="font-body text-[11px] font-bold tracking-[0.2em] uppercase">
-                    Envoi…
-                </span>
-            </span>
-        </div>
-    );
-}
-
-function TitlePlate({ level, title }: { level: number; title: string }) {
-    return (
-        <div className="flex flex-col items-center gap-2 text-center md:items-start md:text-left">
-            <Pill tone="gold">Titre · Niveau {level}</Pill>
-            <div className="flex items-center gap-3">
-                <MoonMedallion />
-                <span className="text-gradient-gold font-quote text-[27px] leading-none font-semibold tracking-wide whitespace-nowrap md:text-[31px]">
-                    {title}
-                </span>
-            </div>
-            <Ornament width="w-12" />
-        </div>
-    );
-}
 
 export default function ProfileHero({
     user,
