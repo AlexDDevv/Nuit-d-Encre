@@ -89,7 +89,7 @@ export default function BookCard({
                         onClick={handleAuthorClick}
                         onKeyDown={activateOnKey(openAuthor, true)}
                         aria-label={`Voir l'auteur ${author}`}
-                        className="text-foreground/70 hover:text-primary focus-visible:ring-ring font-body -mx-1 w-fit cursor-pointer self-start rounded px-1 text-[12.5px] transition-colors focus-visible:outline-none focus-visible:ring-2"
+                        className="text-foreground/70 hover:text-primary focus-visible:ring-ring font-body -mx-1 w-fit cursor-pointer self-start rounded px-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
                     >
                         {author}
                     </span>

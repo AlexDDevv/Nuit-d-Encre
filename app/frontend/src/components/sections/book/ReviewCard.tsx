@@ -56,7 +56,7 @@ export default function ReviewCard({
                             {review.user.userName}
                         </span>
                         {isOwnReview && (
-                            <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-[10px] uppercase tracking-[0.16em]">
+                            <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-xxs uppercase tracking-[0.16em]">
                                 Votre critique
                             </span>
                         )}

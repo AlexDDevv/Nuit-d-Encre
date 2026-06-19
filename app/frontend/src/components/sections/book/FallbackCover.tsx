@@ -50,7 +50,7 @@ export default function FallbackCover({
             )}
         >
             <div className="border-foreground/20 pointer-events-none absolute inset-2.5 rounded-md border" />
-            <div className="text-foreground/55 font-quote text-[10px] uppercase tracking-[0.32em]">
+            <div className="text-foreground/55 font-quote text-xxs uppercase tracking-[0.32em]">
                 Nuit d'Encre
             </div>
             <div className="flex flex-col items-center gap-3">
@@ -64,7 +64,7 @@ export default function FallbackCover({
                     {title}
                 </h4>
                 <span className="bg-foreground/40 h-px w-7" />
-                <p className="text-foreground/60 font-body text-[10px] uppercase tracking-[0.18em]">
+                <p className="text-foreground/60 font-body text-xxs uppercase tracking-[0.18em]">
                     {author}
                 </p>
             </div>

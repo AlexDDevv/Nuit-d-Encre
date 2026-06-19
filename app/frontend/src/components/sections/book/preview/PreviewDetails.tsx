@@ -42,11 +42,8 @@ export function PreviewDetails({
                     : "Une découverte hors de vos murs"}
             </p>
             <h1
-                className="text-foreground font-quote leading-[1.04] text-balance"
-                style={{
-                    fontSize: book.title.length > 44 ? 34 : 46,
-                    letterSpacing: "-0.005em",
-                }}
+                className={`text-foreground font-quote leading-[1.04] text-balance ${book.title.length > 44 ? "text-4xl" : "text-5xl"}`}
+                style={{ letterSpacing: "-0.005em" }}
             >
                 {book.title}
             </h1>
@@ -57,7 +54,7 @@ export function PreviewDetails({
                 </span>
                 {knownAuthor ? (
                     <span
-                        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 font-body text-[11.5px] font-bold"
+                        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 font-body text-xs font-bold"
                         style={{
                             background: "hsl(43 30% 25% / 0.5)",
                             color: GOLD,
@@ -74,7 +71,7 @@ export function PreviewDetails({
                     </span>
                 ) : (
                     <span
-                        className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-body text-[11.5px]"
+                        className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 font-body text-xs"
                         style={{
                             background: "hsl(20 12% 23% / 0.6)",
                             color: "hsl(20 12% 70%)",
@@ -94,10 +91,7 @@ export function PreviewDetails({
                         className="absolute -left-1 -top-1 opacity-40"
                         style={{ color: GOLD }}
                     />
-                    <p
-                        className="text-foreground/85 font-quote pl-7 italic leading-[1.6]"
-                        style={{ fontSize: 16.5 }}
-                    >
+                    <p className="text-foreground/85 font-quote pl-7 text-base italic leading-[1.6]">
                         {book.description}
                     </p>
                 </div>
@@ -146,7 +140,7 @@ export function PreviewDetails({
                         >
                             Connectez-vous pour l'ajouter
                         </Button>
-                        <p className="font-body text-[12.5px]" style={{ color: "hsl(43 30% 64%)" }}>
+                        <p className="font-body text-xs" style={{ color: "hsl(43 30% 64%)" }}>
                             Il faut un compte pour faire entrer un ouvrage dans Nuit d'Encre.
                         </p>
                     </div>
@@ -154,7 +148,7 @@ export function PreviewDetails({
             </div>
 
             <p
-                className="mt-4 font-body text-[12.5px] leading-relaxed"
+                className="mt-4 font-body text-xs leading-relaxed"
                 style={{ color: "hsl(20 12% 60%)" }}
             >
                 Une fois entré, l'ouvrage rejoint le catalogue : certaines informations (résumé,

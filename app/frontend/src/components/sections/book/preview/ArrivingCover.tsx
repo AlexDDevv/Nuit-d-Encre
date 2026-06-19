@@ -15,20 +15,19 @@ function AbsentCover({ title, source }: { title: string; source: string }) {
                 style={{ inset: 14, border: "1px dashed hsl(43 59% 81% / 0.22)" }}
             />
             <span
-                className="font-mono text-[10px] uppercase tracking-[0.26em]"
+                className="font-mono text-xxs uppercase tracking-[0.26em]"
                 style={{ color: "hsl(43 59% 81% / 0.4)" }}
             >
                 couverture&nbsp;absente
             </span>
             <h3
-                className="text-foreground/85 font-quote leading-[1.18]"
-                style={{ fontSize: title.length > 30 ? 21 : 27 }}
+                className={`text-foreground/85 font-quote leading-[1.18] ${title.length > 30 ? "text-xl" : "text-3xl"}`}
             >
                 {title}
             </h3>
             <span className="h-px w-10" style={{ background: "hsl(43 59% 81% / 0.35)" }} />
             <span
-                className="font-mono text-[10px] tracking-wide"
+                className="font-mono text-xxs tracking-wide"
                 style={{ color: "hsl(20 12% 55%)" }}
             >
                 numérisé&nbsp;·&nbsp;{source}
@@ -53,20 +52,20 @@ function AccessionStamp({ short, code }: { short: string; code: string }) {
                 }}
             >
                 <span
-                    className="font-mono text-[7.5px] uppercase tracking-[0.2em]"
+                    className="font-mono text-xxxs uppercase tracking-[0.2em]"
                     style={{ color: "hsl(43 59% 81% / 0.62)" }}
                 >
                     Fonds&nbsp;numérique
                 </span>
                 <span
-                    className="font-mono text-[11px] font-medium uppercase tracking-[0.12em]"
+                    className="font-mono text-xs font-medium uppercase tracking-[0.12em]"
                     style={{ color: "hsl(43 59% 81% / 0.92)" }}
                 >
                     {short}
                 </span>
                 <span className="h-px w-full" style={{ background: "hsl(43 59% 81% / 0.35)" }} />
                 <span
-                    className="font-mono text-[7.5px] tracking-[0.1em]"
+                    className="font-mono text-xxxs tracking-[0.1em]"
                     style={{ color: "hsl(43 59% 81% / 0.5)" }}
                 >
                     Nº&nbsp;{code}
@@ -128,7 +127,7 @@ export function ArrivingCover({ book }: { book: BookSearchResult }) {
                 </div>
 
                 <p
-                    className="mt-4 text-center font-mono text-[10.5px] tracking-wide"
+                    className="mt-4 text-center font-mono text-xxs tracking-wide"
                     style={{ color: "hsl(20 12% 56%)" }}
                 >
                     {book.coverUrl ? "couverture fournie par " : "aucune couverture · "}

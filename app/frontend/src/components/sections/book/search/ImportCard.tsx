@@ -55,7 +55,7 @@ export default function ImportCard({ result }: ImportCardProps) {
             )}
 
             {/* chip source */}
-            <span className="text-primary/90 border-primary/30 absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border bg-[hsl(20_3%_9%/0.82)] px-2 py-0.75 font-body text-[10px] font-bold tracking-wide whitespace-nowrap backdrop-blur-sm">
+            <span className="text-primary/90 border-primary/30 absolute left-2 top-2 z-10 inline-flex items-center gap-1 rounded-full border bg-[hsl(20_3%_9%/0.82)] px-2 py-0.75 font-body text-xxs font-bold tracking-wide whitespace-nowrap backdrop-blur-sm">
                 <FaArrowUpRightFromSquare size={9} aria-hidden="true" />
                 {source}
             </span>
@@ -69,7 +69,7 @@ export default function ImportCard({ result }: ImportCardProps) {
                     {result.title}
                 </h3>
                 {author && (
-                    <p className="text-foreground/70 font-body text-[12.5px]">
+                    <p className="text-foreground/70 font-body text-xs">
                         {author}
                     </p>
                 )}
@@ -77,7 +77,7 @@ export default function ImportCard({ result }: ImportCardProps) {
                 {result.year != null && (
                     <div className="grid grid-rows-[0fr] opacity-0 transition-all duration-300 group-hover:grid-rows-[1fr] group-hover:opacity-100 group-focus-within:grid-rows-[1fr] group-focus-within:opacity-100">
                         <div className="overflow-hidden">
-                            <p className="text-foreground/60 font-body pt-1.5 text-[11.5px]">
+                            <p className="text-foreground/60 font-body pt-1.5 text-xs">
                                 {result.year}
                             </p>
                         </div>

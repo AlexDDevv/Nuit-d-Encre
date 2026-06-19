@@ -21,14 +21,14 @@ function Stamp({ label, code }: { label: string; code: string }) {
     return (
         <div className="pointer-events-none absolute -right-3 top-5 z-20 rotate-[8deg] select-none">
             <div className="border-primary/55 flex flex-col items-center gap-1 rounded-sm border-2 border-double bg-[hsl(20_3%_10%/0.55)] px-3 py-2 shadow-[0_2px_10px_-4px_hsl(20_3%_4%/0.8)]">
-                <span className="text-primary/60 font-mono text-[7.5px] uppercase tracking-[0.2em]">
+                <span className="text-primary/60 font-mono text-xxxs uppercase tracking-[0.2em]">
                     {label}
                 </span>
-                <span className="text-primary/90 font-mono text-[11px] font-medium uppercase tracking-[0.12em]">
+                <span className="text-primary/90 font-mono text-xs font-medium uppercase tracking-[0.12em]">
                     Nuit&nbsp;d'Encre
                 </span>
                 <span className="bg-primary/35 h-px w-full" />
-                <span className="text-primary/50 font-mono text-[7.5px] tracking-widest">
+                <span className="text-primary/50 font-mono text-xxxs tracking-widest">
                     Nº&nbsp;{code}
                 </span>
             </div>
@@ -52,7 +52,7 @@ function AuthorMedallion({ author }: { author: AuthorIdentity }) {
     return (
         <div className="absolute inset-0 flex flex-col items-center justify-between bg-[radial-gradient(125%_82%_at_50%_6%,hsl(43_30%_20%)_0%,hsl(20_3%_13%)_52%,hsl(20_3%_9%)_100%)] px-6 py-7 text-center">
             <div className="border-primary/24 pointer-events-none absolute inset-2.75 rounded-sm border" />
-            <span className="text-primary/55 font-quote text-[9.5px] uppercase tracking-[0.32em]">
+            <span className="text-primary/55 font-quote text-xxs uppercase tracking-[0.32em]">
                 Nuit d'Encre
             </span>
             <div className="flex flex-col items-center gap-4">
@@ -63,7 +63,7 @@ function AuthorMedallion({ author }: { author: AuthorIdentity }) {
                     </span>
                 </div>
                 <span className="bg-primary/45 h-px w-9" />
-                <p className="text-foreground font-quote text-[19px] leading-[1.1]">
+                <p className="text-foreground font-quote text-xl leading-[1.1]">
                     {author.firstname}
                     <br />
                     {author.lastname}
@@ -106,7 +106,7 @@ export default function EstablishedCover(props: EstablishedCoverProps) {
                     <AuthorMedallion author={author} />
                     <Stamp label="Auteur de la maison" code={code} />
                 </div>
-                <p className="mt-4 text-center font-mono text-[10.5px] tracking-wide text-[hsl(20_12%_56%)]">
+                <p className="mt-4 text-center font-mono text-xxs tracking-wide text-[hsl(20_12%_56%)]">
                     à la maison
                     {since && (
                         <>
@@ -148,7 +148,7 @@ export default function EstablishedCover(props: EstablishedCoverProps) {
             </div>
 
             {/* indication : dans la collection */}
-            <p className="mt-4 text-center font-mono text-[10.5px] tracking-wide text-[hsl(20_12%_56%)]">
+            <p className="mt-4 text-center font-mono text-xxs tracking-wide text-[hsl(20_12%_56%)]">
                 dans la collection
                 {addedOn && (
                     <>

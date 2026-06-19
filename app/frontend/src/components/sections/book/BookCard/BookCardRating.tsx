@@ -30,7 +30,7 @@ export default function BookCardRating({
             <span className="text-foreground font-body text-xs font-bold">
                 {averageRating!.toFixed(1).replace(".", ",")}
             </span>
-            <span className="text-foreground/60 font-body text-[10px]">
+            <span className="text-foreground/60 font-body text-xxs">
                 ({reviewCount})
             </span>
         </span>

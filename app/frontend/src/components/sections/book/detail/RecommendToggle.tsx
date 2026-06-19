@@ -45,7 +45,7 @@ export default function RecommendToggle({
             {on ? "Je recommande" : "Recommander"}
             <span
                 className={cn(
-                    "rounded-full bg-[hsl(20_3%_10%/0.6)] px-2 py-px font-mono text-[11px]",
+                    "rounded-full bg-[hsl(20_3%_10%/0.6)] px-2 py-px font-mono text-xs",
                     on ? "text-primary" : "text-muted-foreground",
                 )}
             >

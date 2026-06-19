@@ -18,13 +18,13 @@ function NoticeRow({
             style={{ borderColor: "hsl(0 0% 100% / 0.07)" }}
         >
             <span
-                className="inline-flex shrink-0 items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.14em]"
+                className="inline-flex shrink-0 items-center gap-2 font-mono text-xxs uppercase tracking-[0.14em]"
                 style={{ color: "hsl(20 12% 56%)" }}
             >
                 {icon && <Glyph name={icon} size={12} style={{ color: "hsl(43 59% 81% / 0.55)" }} />}
                 {label}
             </span>
-            <span className="text-foreground/90 text-right font-mono text-[12.5px]">{value}</span>
+            <span className="text-foreground/90 text-right font-mono text-xs">{value}</span>
         </div>
     );
 }
@@ -37,7 +37,7 @@ export function PreviewNotice({ book }: { book: BookSearchResult }) {
         <section className="border-border bg-card/60 mt-16 rounded-xl border-2 p-6">
             <div className="mb-3 flex items-center gap-2.5">
                 <span
-                    className="font-mono text-[11px] uppercase tracking-[0.2em]"
+                    className="font-mono text-xs uppercase tracking-[0.2em]"
                     style={{ color: "hsl(43 30% 62%)" }}
                 >
                     La notice — telle qu'on l'a trouvée

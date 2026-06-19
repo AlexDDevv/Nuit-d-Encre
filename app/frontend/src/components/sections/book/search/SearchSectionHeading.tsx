@@ -29,7 +29,7 @@ export default function SearchSectionHeading({
                             {kicker}
                         </span>
                     </div>
-                    <h2 className="text-foreground font-title text-[28px] font-bold leading-none">
+                    <h2 className="text-foreground font-title text-3xl font-bold leading-none">
                         {title}
                     </h2>
                 </div>
@@ -40,7 +40,7 @@ export default function SearchSectionHeading({
                 )}
             </div>
             {note && (
-                <p className="text-muted-foreground mt-3 max-w-2xl font-body text-[12.5px] leading-relaxed">
+                <p className="text-muted-foreground mt-3 max-w-2xl font-body text-xs leading-relaxed">
                     {note}
                 </p>
             )}
