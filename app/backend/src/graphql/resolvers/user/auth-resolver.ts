@@ -99,7 +99,10 @@ export class AuthResolver {
                 cookieSet: loginResponse.cookieSet,
             };
         } catch (error) {
-            throw new AppError("Login failed", 401, "UnauthorizedError"); // Handle login errors
+            // Logger la cause réelle (identifiants invalides, indispo BDD…)
+            // sans l'exposer au client : le message reste générique (401).
+            console.error("Login failed:", error);
+            throw new AppError("Login failed", 401, "UnauthorizedError");
         }
     }
 
