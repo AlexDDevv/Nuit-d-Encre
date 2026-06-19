@@ -184,11 +184,7 @@ export class BooksResolver {
                 relations: {
                     user: true,
                     category: true,
-                    author: {
-                        books: {
-                            category: true
-                        }
-                    }
+                    author: true,
                 },
             })
 

@@ -110,6 +110,19 @@ export class AuthorsResolver {
         }
     }
 
+    @FieldResolver(() => [Book])
+    async books(
+        @Root() author: Author,
+        @Arg("limit", () => Int, { defaultValue: 12 }) limit: number,
+    ): Promise<Book[]> {
+        return Book.createQueryBuilder("book")
+            .leftJoinAndSelect("book.category", "category")
+            .where("book.authorId = :authorId", { authorId: author.id })
+            .orderBy("book.createdAt", "DESC")
+            .take(limit)
+            .getMany();
+    }
+
     /**
      * GraphQL Query to fetch all authors.
      *
