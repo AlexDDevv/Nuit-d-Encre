@@ -70,7 +70,7 @@ export default function XpJournal({
                                     <Icon size={15} />
                                 </span>
                                 <div className="min-w-0 flex-1 pt-1">
-                                    <p className="font-body text-[13.5px] leading-snug text-foreground/90">
+                                    <p className="font-body text-sm leading-snug text-foreground/90">
                                         <span className="font-bold text-foreground">
                                             {ev.userName}
                                         </span>{" "}
@@ -85,11 +85,11 @@ export default function XpJournal({
                                     </p>
                                     <div className="mt-1 flex items-center gap-2.5">
                                         {ev.xp > 0 && (
-                                            <span className="inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 font-title text-[11.5px] font-bold text-primary">
+                                            <span className="inline-flex items-center rounded-full border border-primary/40 bg-primary/10 px-2 py-0.5 font-title text-xs font-bold text-primary">
                                                 +{ev.xp} XP
                                             </span>
                                         )}
-                                        <span className="font-body text-[11.5px] text-muted-foreground/75">
+                                        <span className="font-body text-xs text-muted-foreground/75">
                                             {formatRelative(ev.createdAt)}
                                         </span>
                                     </div>

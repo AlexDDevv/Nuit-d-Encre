@@ -16,11 +16,11 @@ export function EmptyState({
                 <LuInbox size={26} />
             </span>
             <div className="flex flex-col items-center gap-2">
-                <p className="font-quote text-[18px] italic text-muted-foreground">
+                <p className="font-quote text-lg italic text-muted-foreground">
                     {message}
                 </p>
                 {hint && (
-                    <p className="font-body text-[13px] text-muted-foreground/60">
+                    <p className="font-body text-sm text-muted-foreground/60">
                         {hint}
                     </p>
                 )}

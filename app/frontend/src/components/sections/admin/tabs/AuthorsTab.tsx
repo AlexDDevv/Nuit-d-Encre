@@ -59,7 +59,7 @@ export function AuthorsTab() {
                     <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border-2 border-border bg-popover text-primary/70">
                         <LuFeather size={16} />
                     </span>
-                    <span className="font-quote text-[15px] text-foreground">
+                    <span className="font-quote text-base text-foreground">
                         {a.firstname}{" "}
                         <span className="font-medium">{a.lastname}</span>
                     </span>
@@ -71,7 +71,7 @@ export function AuthorsTab() {
             header: "Prénom",
             hideOnMobile: true,
             cell: (a) => (
-                <span className="font-body text-[13.5px] text-foreground/85">
+                <span className="font-body text-sm text-foreground/85">
                     {a.firstname}
                 </span>
             ),
@@ -81,7 +81,7 @@ export function AuthorsTab() {
             header: "Nom",
             hideOnMobile: true,
             cell: (a) => (
-                <span className="font-body text-[13.5px] font-bold text-foreground/90">
+                <span className="font-body text-sm font-bold text-foreground/90">
                     {a.lastname}
                 </span>
             ),
@@ -90,7 +90,7 @@ export function AuthorsTab() {
             key: "nat",
             header: "Nationalité",
             cell: (a) => (
-                <span className="inline-flex items-center gap-1.5 font-body text-[13px] text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5 font-body text-sm text-muted-foreground">
                     <LuGlobe size={13} className="text-primary/55" />
                     {a.nationality || "—"}
                 </span>
@@ -102,7 +102,7 @@ export function AuthorsTab() {
             thClass: "text-center",
             tdClass: "text-center",
             cell: (a) => (
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/60 bg-secondary/35 px-2.5 py-0.5 font-title text-[12.5px] font-bold text-secondary-foreground">
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/60 bg-secondary/35 px-2.5 py-0.5 font-title text-xs font-bold text-secondary-foreground">
                     <LuBookOpen size={12} /> {a.books.length}
                 </span>
             ),
@@ -111,7 +111,7 @@ export function AuthorsTab() {
             key: "par",
             header: "Ajouté par",
             cell: (a) => (
-                <span className="font-body text-[12.5px] text-muted-foreground">
+                <span className="font-body text-xs text-muted-foreground">
                     {a.user?.userName ?? "—"}
                 </span>
             ),
@@ -120,7 +120,7 @@ export function AuthorsTab() {
             key: "le",
             header: "Ajouté le",
             cell: (a) => (
-                <span className="whitespace-nowrap font-body text-[12.5px] text-muted-foreground">
+                <span className="whitespace-nowrap font-body text-xs text-muted-foreground">
                     {new Date(a.createdAt).toLocaleDateString("fr-FR")}
                 </span>
             ),

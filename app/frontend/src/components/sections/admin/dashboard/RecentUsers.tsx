@@ -19,14 +19,14 @@ export default function RecentUsers({
                     >
                         <Avatar name={u.userName} avatar={u.avatar} size={40} />
                         <div className="min-w-0 flex-1">
-                            <span className="truncate font-body text-[14.5px] font-bold text-foreground">
+                            <span className="truncate font-body text-sm font-bold text-foreground">
                                 {u.userName}
                             </span>
-                            <span className="block truncate font-body text-[12.5px] text-muted-foreground">
+                            <span className="block truncate font-body text-xs text-muted-foreground">
                                 {u.email}
                             </span>
                         </div>
-                        <span className="shrink-0 font-body text-[12px] text-muted-foreground/80">
+                        <span className="shrink-0 font-body text-xs text-muted-foreground/80">
                             {formatDate(u.createdAt)}
                         </span>
                     </li>

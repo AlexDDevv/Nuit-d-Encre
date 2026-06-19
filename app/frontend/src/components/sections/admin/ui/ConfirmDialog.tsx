@@ -35,10 +35,10 @@ export function ConfirmDialog({
                     <LuTrash2 size={20} />
                 </span>
                 <div className="flex-1">
-                    <h3 className="font-title text-[19px] font-bold text-foreground">
+                    <h3 className="font-title text-xl font-bold text-foreground">
                         {title}
                     </h3>
-                    <div className="mt-2 font-body text-[14px] leading-relaxed text-muted-foreground">
+                    <div className="mt-2 font-body text-sm leading-relaxed text-muted-foreground">
                         {children}
                     </div>
                     {warning && (
@@ -47,7 +47,7 @@ export function ConfirmDialog({
                                 size={16}
                                 className="mt-0.5 shrink-0 text-warning"
                             />
-                            <p className="font-body text-[13px] leading-snug text-[hsl(25_70%_72%)]">
+                            <p className="font-body text-sm leading-snug text-[hsl(25_70%_72%)]">
                                 {warning}
                             </p>
                         </div>

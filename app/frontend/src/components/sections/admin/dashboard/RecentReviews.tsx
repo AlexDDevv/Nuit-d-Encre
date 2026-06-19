@@ -19,10 +19,10 @@ export default function RecentReviews({
                     >
                         <div className="flex items-start justify-between gap-3">
                             <div className="min-w-0">
-                                <span className="block truncate font-quote text-[15px] text-foreground">
+                                <span className="block truncate font-quote text-base text-foreground">
                                     « {r.book.title} »
                                 </span>
-                                <span className="font-body text-[12.5px] text-muted-foreground">
+                                <span className="font-body text-xs text-muted-foreground">
                                     par{" "}
                                     <span className="text-foreground/75">
                                         {r.user.userName}
@@ -33,7 +33,7 @@ export default function RecentReviews({
                             <NoteBadge note={r.rating} />
                         </div>
                         {r.reviewText && (
-                            <p className="mt-1.5 line-clamp-2 font-body text-[13px] italic leading-snug text-muted-foreground/90">
+                            <p className="mt-1.5 line-clamp-2 font-body text-sm italic leading-snug text-muted-foreground/90">
                                 {r.reviewText}
                             </p>
                         )}

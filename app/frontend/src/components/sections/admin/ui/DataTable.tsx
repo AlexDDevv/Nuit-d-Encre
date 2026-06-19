@@ -26,7 +26,7 @@ function ViewLink({ label, href }: { label: string; href: string }) {
     return (
         <Link
             to={href}
-            className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 font-body text-[12.5px] font-bold text-muted-foreground transition-colors duration-200 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 font-body text-xs font-bold text-muted-foreground transition-colors duration-200 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
         >
             <LuEye size={14} /> {label}
         </Link>
@@ -79,14 +79,14 @@ export function DataTable<T extends { id: string }>({
                                     <th
                                         key={c.key}
                                         className={cn(
-                                            "px-4 py-3 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground",
+                                            "px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground",
                                             c.thClass,
                                         )}
                                     >
                                         {c.header}
                                     </th>
                                 ))}
-                                <th className="px-4 py-3 text-right font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                                <th className="px-4 py-3 text-right font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
                                     Actions
                                 </th>
                             </tr>
@@ -103,7 +103,7 @@ export function DataTable<T extends { id: string }>({
                                             className={cn(
                                                 "px-4 py-3 align-middle",
                                                 c.tdClass ??
-                                                    "font-body text-[13.5px] text-foreground/90",
+                                                    "font-body text-sm text-foreground/90",
                                             )}
                                         >
                                             {c.cell(row)}
@@ -142,10 +142,10 @@ export function DataTable<T extends { id: string }>({
                         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
                             {rest.map((c) => (
                                 <Fragment key={c.key}>
-                                    <dt className="font-body text-[11px] font-bold uppercase tracking-[0.1em] text-muted-foreground/70">
+                                    <dt className="font-body text-xs font-bold uppercase tracking-[0.1em] text-muted-foreground/70">
                                         {c.header}
                                     </dt>
-                                    <dd className="text-right font-body text-[13px] text-foreground/90">
+                                    <dd className="text-right font-body text-sm text-foreground/90">
                                         {c.cell(row)}
                                     </dd>
                                 </Fragment>

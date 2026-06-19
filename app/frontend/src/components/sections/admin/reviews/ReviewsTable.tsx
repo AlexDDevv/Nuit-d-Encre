@@ -35,7 +35,7 @@ export default function ReviewsTable({
                 ].map((h, i) => (
                     <span
                         key={h}
-                        className={`font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground ${
+                        className={`font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground ${
                             i === 6 ? "text-right" : ""
                         }`}
                     >
@@ -55,7 +55,7 @@ export default function ReviewsTable({
                             <div
                                 className={`hidden items-center gap-4 px-4 py-3 lg:grid ${GRID}`}
                             >
-                                <span className="truncate font-quote text-[14.5px] text-foreground">
+                                <span className="truncate font-quote text-sm text-foreground">
                                     « {r.book.title} »
                                 </span>
                                 <span className="flex min-w-0 items-center gap-2">
@@ -65,16 +65,16 @@ export default function ReviewsTable({
                                         size={26}
                                         ring={false}
                                     />
-                                    <span className="truncate font-body text-[12.5px] text-muted-foreground">
+                                    <span className="truncate font-body text-xs text-muted-foreground">
                                         {r.user.userName}
                                     </span>
                                 </span>
                                 <NoteBadge note={r.rating} />
-                                <span className="truncate font-body text-[12.5px] italic text-muted-foreground/90">
+                                <span className="truncate font-body text-xs italic text-muted-foreground/90">
                                     {r.reviewText || "—"}
                                 </span>
                                 <StatusChip />
-                                <span className="whitespace-nowrap font-body text-[12px] text-muted-foreground">
+                                <span className="whitespace-nowrap font-body text-xs text-muted-foreground">
                                     {new Date(r.createdAt).toLocaleDateString(
                                         "fr-FR",
                                     )}
@@ -85,7 +85,7 @@ export default function ReviewsTable({
                                             setExpanded(open ? null : r.id)
                                         }
                                         aria-label="Voir la critique complète"
-                                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-body text-[12.5px] font-bold text-muted-foreground transition-colors hover:text-primary"
+                                        className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-body text-xs font-bold text-muted-foreground transition-colors hover:text-primary"
                                     >
                                         <LuEye size={14} />{" "}
                                         {open ? "Réduire" : "Lire"}
@@ -97,7 +97,7 @@ export default function ReviewsTable({
                             {/* Carte mobile */}
                             <div className="flex flex-col gap-2 px-4 py-3.5 lg:hidden">
                                 <div className="flex items-start justify-between gap-3">
-                                    <span className="font-quote text-[15px] text-foreground">
+                                    <span className="font-quote text-base text-foreground">
                                         « {r.book.title} »
                                     </span>
                                     <NoteBadge note={r.rating} />
@@ -110,21 +110,21 @@ export default function ReviewsTable({
                                             size={24}
                                             ring={false}
                                         />
-                                        <span className="font-body text-[12.5px] text-muted-foreground">
+                                        <span className="font-body text-xs text-muted-foreground">
                                             {r.user.userName}
                                         </span>
                                     </span>
                                     <StatusChip />
                                 </div>
                                 <p
-                                    className={`font-body text-[13px] italic text-muted-foreground/90 ${
+                                    className={`font-body text-sm italic text-muted-foreground/90 ${
                                         open ? "" : "line-clamp-2"
                                     }`}
                                 >
                                     {r.reviewText || "—"}
                                 </p>
                                 <div className="flex items-center justify-between gap-3 pt-1">
-                                    <span className="font-body text-[12px] text-muted-foreground/80">
+                                    <span className="font-body text-xs text-muted-foreground/80">
                                         {new Date(
                                             r.createdAt,
                                         ).toLocaleDateString("fr-FR")}
@@ -134,7 +134,7 @@ export default function ReviewsTable({
                                             onClick={() =>
                                                 setExpanded(open ? null : r.id)
                                             }
-                                            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-body text-[12.5px] font-bold text-muted-foreground hover:text-primary"
+                                            className="inline-flex items-center gap-1.5 rounded-md px-2 py-1 font-body text-xs font-bold text-muted-foreground hover:text-primary"
                                         >
                                             <LuEye size={14} />{" "}
                                             {open ? "Réduire" : "Lire"}
@@ -148,14 +148,14 @@ export default function ReviewsTable({
                             {open && r.reviewText && (
                                 <div className="border-t-2 border-border/50 bg-popover/40 px-4 py-4 lg:px-6">
                                     <div className="flex items-start gap-3">
-                                        <span className="mt-0.5 text-[13px] text-primary/45">
+                                        <span className="mt-0.5 text-sm text-primary/45">
                                             “
                                         </span>
                                         <div>
-                                            <p className="font-quote text-[15.5px] italic leading-relaxed text-foreground/90 [text-wrap:pretty]">
+                                            <p className="font-quote text-base italic leading-relaxed text-foreground/90 [text-wrap:pretty]">
                                                 {r.reviewText}
                                             </p>
-                                            <p className="mt-2 font-body text-[12.5px] text-muted-foreground">
+                                            <p className="mt-2 font-body text-xs text-muted-foreground">
                                                 — {r.user.userName} sur «{" "}
                                                 {r.book.title} » de{" "}
                                                 {r.book.author.firstname}{" "}

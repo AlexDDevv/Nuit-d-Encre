@@ -24,19 +24,19 @@ export default function CategoriesTable({
             <table className="hidden w-full border-collapse text-left sm:table">
                 <thead>
                     <tr className="border-b-2 border-border bg-muted/30">
-                        <th className="px-4 py-3 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
                             Nom
                         </th>
-                        <th className="px-4 py-3 text-center font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="px-4 py-3 text-center font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
                             Livres associés
                         </th>
-                        <th className="px-4 py-3 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
                             Créée par
                         </th>
-                        <th className="px-4 py-3 font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
                             Créée le
                         </th>
-                        <th className="px-4 py-3 text-right font-body text-[11px] font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="px-4 py-3 text-right font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
                             Actions
                         </th>
                     </tr>
@@ -65,7 +65,7 @@ export default function CategoriesTable({
                                                 if (e.key === "Escape")
                                                     setEditing(null);
                                             }}
-                                            className="w-48 rounded-md border-2 border-primary/50 bg-popover px-2.5 py-1 font-quote text-[15px] text-foreground focus:outline-none"
+                                            className="w-48 rounded-md border-2 border-primary/50 bg-popover px-2.5 py-1 font-quote text-base text-foreground focus:outline-none"
                                         />
                                         <button
                                             onClick={onSaveRename}
@@ -83,7 +83,7 @@ export default function CategoriesTable({
                                         </button>
                                     </div>
                                 ) : (
-                                    <span className="inline-flex items-center gap-2 font-quote text-[16px] text-foreground">
+                                    <span className="inline-flex items-center gap-2 font-quote text-base text-foreground">
                                         <LuHash
                                             size={14}
                                             className="text-primary/50"
@@ -93,14 +93,14 @@ export default function CategoriesTable({
                                 )}
                             </td>
                             <td className="px-4 py-3 text-center">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/60 bg-secondary/35 px-2.5 py-0.5 font-title text-[12.5px] font-bold text-secondary-foreground">
+                                <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/60 bg-secondary/35 px-2.5 py-0.5 font-title text-xs font-bold text-secondary-foreground">
                                     <LuBookOpen size={12} /> {c.books.length}
                                 </span>
                             </td>
-                            <td className="px-4 py-3 font-body text-[12.5px] text-muted-foreground">
+                            <td className="px-4 py-3 font-body text-xs text-muted-foreground">
                                 {c.createdBy?.userName ?? "—"}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-3 font-body text-[12.5px] text-muted-foreground">
+                            <td className="whitespace-nowrap px-4 py-3 font-body text-xs text-muted-foreground">
                                 {new Date(c.createdAt).toLocaleDateString(
                                     "fr-FR",
                                 )}
@@ -147,7 +147,7 @@ export default function CategoriesTable({
                                                 value: e.target.value,
                                             })
                                         }
-                                        className="w-32 rounded-md border-2 border-primary/50 bg-popover px-2 py-1 font-quote text-[15px] text-foreground focus:outline-none"
+                                        className="w-32 rounded-md border-2 border-primary/50 bg-popover px-2 py-1 font-quote text-base text-foreground focus:outline-none"
                                     />
                                     <button
                                         onClick={onSaveRename}
@@ -159,10 +159,10 @@ export default function CategoriesTable({
                                 </div>
                             ) : (
                                 <>
-                                    <div className="font-quote text-[16px] text-foreground">
+                                    <div className="font-quote text-base text-foreground">
                                         {c.name}
                                     </div>
-                                    <div className="font-body text-[12px] text-muted-foreground">
+                                    <div className="font-body text-xs text-muted-foreground">
                                         {c.books.length} livre(s) ·{" "}
                                         {new Date(
                                             c.createdAt,

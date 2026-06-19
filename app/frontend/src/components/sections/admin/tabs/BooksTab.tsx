@@ -70,10 +70,10 @@ export function BooksTab() {
             primary: true,
             cell: (b) => (
                 <div className="min-w-0">
-                    <div className="truncate font-quote text-[15px] text-foreground">
+                    <div className="truncate font-quote text-base text-foreground">
                         {b.title}
                     </div>
-                    <div className="truncate font-body text-[12px] text-muted-foreground lg:hidden">
+                    <div className="truncate font-body text-xs text-muted-foreground lg:hidden">
                         {b.author.firstname} {b.author.lastname}
                     </div>
                 </div>
@@ -83,7 +83,7 @@ export function BooksTab() {
             key: "isbn",
             header: "ISBN-13",
             cell: (b) => (
-                <span className="whitespace-nowrap font-body text-[12px] tabular-nums text-muted-foreground">
+                <span className="whitespace-nowrap font-body text-xs tabular-nums text-muted-foreground">
                     {b.isbn13}
                 </span>
             ),
@@ -92,7 +92,7 @@ export function BooksTab() {
             key: "auteur",
             header: "Auteur",
             cell: (b) => (
-                <span className="font-body text-[13px] text-foreground/85">
+                <span className="font-body text-sm text-foreground/85">
                     {b.author.firstname} {b.author.lastname}
                 </span>
             ),
@@ -102,7 +102,7 @@ export function BooksTab() {
             header: "Catégorie",
             cell: (b) =>
                 b.category ? (
-                    <span className="inline-flex items-center rounded-full border border-border bg-muted/70 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="inline-flex items-center rounded-full border border-border bg-muted/70 px-2.5 py-0.5 text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground">
                         {b.category.name}
                     </span>
                 ) : (
@@ -118,7 +118,7 @@ export function BooksTab() {
             key: "par",
             header: "Ajouté par",
             cell: (b) => (
-                <span className="font-body text-[12.5px] text-muted-foreground">
+                <span className="font-body text-xs text-muted-foreground">
                     {b.user?.userName ?? "—"}
                 </span>
             ),
@@ -127,7 +127,7 @@ export function BooksTab() {
             key: "le",
             header: "Ajouté le",
             cell: (b) => (
-                <span className="whitespace-nowrap font-body text-[12.5px] text-muted-foreground">
+                <span className="whitespace-nowrap font-body text-xs text-muted-foreground">
                     {new Date(b.createdAt).toLocaleDateString("fr-FR")}
                 </span>
             ),

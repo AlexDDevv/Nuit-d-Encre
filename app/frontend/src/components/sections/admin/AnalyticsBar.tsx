@@ -41,14 +41,14 @@ export function AnalyticsBar({
                             <Icon size={20} />
                         </span>
                         <div className="min-w-0 leading-none">
-                            <div className="font-title text-[26px] font-black tracking-tight text-foreground">
+                            <div className="font-title text-3xl font-black tracking-tight text-foreground">
                                 {loading || value === undefined ? (
                                     <Skeleton className="inline-block h-6 w-12 align-middle" />
                                 ) : (
                                     value.toLocaleString("fr-FR")
                                 )}
                             </div>
-                            <div className="mt-1 font-body text-[11px] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                            <div className="mt-1 font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
                                 {stat.label}
                             </div>
                         </div>

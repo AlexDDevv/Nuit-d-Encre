@@ -65,7 +65,7 @@ export const VARIANT_META: Record<
 };
 
 export const inputCls =
-    "w-full rounded-lg border-2 border-border bg-popover/70 px-3.5 py-2.5 font-body text-[14px] text-foreground " +
+    "w-full rounded-lg border-2 border-border bg-popover/70 px-3.5 py-2.5 font-body text-sm text-foreground " +
     "placeholder:text-muted-foreground/45 transition-colors duration-200 " +
     "focus:border-primary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30";
 
@@ -89,19 +89,19 @@ export function Field({
         <div className="flex flex-col gap-2">
             <Label
                 htmlFor={htmlFor}
-                className="flex items-center gap-2 font-body text-[12px] font-bold uppercase tracking-[0.14em] text-muted-foreground"
+                className="flex items-center gap-2 font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground"
             >
                 {I && <I size={14} className="text-primary/70" />}
                 {label}
                 {optional && (
-                    <span className="font-body text-[10px] font-medium normal-case tracking-normal text-muted-foreground/55">
+                    <span className="font-body text-xxs font-medium normal-case tracking-normal text-muted-foreground/55">
                         facultatif
                     </span>
                 )}
             </Label>
             {children}
             {hint && (
-                <p className="font-body text-[11.5px] leading-snug text-muted-foreground/55">
+                <p className="font-body text-xs leading-snug text-muted-foreground/55">
                     {hint}
                 </p>
             )}
@@ -175,7 +175,7 @@ export function StateSelector({
                             <Icon name={v.icon} size={14} />
                         </span>
                         <span
-                            className="min-w-0 font-body text-[12.5px] font-bold leading-tight"
+                            className="min-w-0 font-body text-xs font-bold leading-tight"
                             style={{
                                 color: on
                                     ? "hsl(43 59% 88%)"
@@ -228,7 +228,7 @@ export function SavedBannerRow({
             <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                     <span
-                        className="rounded-full border px-2 py-px font-body text-[10px] font-bold uppercase tracking-[0.1em]"
+                        className="rounded-full border px-2 py-px font-body text-xxs font-bold uppercase tracking-[0.1em]"
                         style={{
                             borderColor: v.border,
                             color: v.accent,
@@ -238,20 +238,20 @@ export function SavedBannerRow({
                         {meta.label}
                     </span>
                     {isActive && (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-primary/45 bg-primary/12 px-2 py-px font-body text-[10px] font-bold uppercase tracking-[0.1em] text-primary">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-primary/45 bg-primary/12 px-2 py-px font-body text-xxs font-bold uppercase tracking-[0.1em] text-primary">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />{" "}
                             En ligne
                         </span>
                     )}
-                    <span className="ml-auto shrink-0 font-body text-[11px] text-muted-foreground/55">
+                    <span className="ml-auto shrink-0 font-body text-xs text-muted-foreground/55">
                         {item.date}
                     </span>
                 </div>
-                <p className="mt-1.5 truncate font-body text-[13px] font-bold text-foreground">
+                <p className="mt-1.5 truncate font-body text-sm font-bold text-foreground">
                     {item.title}
                 </p>
                 {item.content && (
-                    <p className="mt-0.5 line-clamp-2 font-body text-[12px] leading-snug text-muted-foreground">
+                    <p className="mt-0.5 line-clamp-2 font-body text-xs leading-snug text-muted-foreground">
                         {item.content}
                     </p>
                 )}
@@ -259,14 +259,14 @@ export function SavedBannerRow({
                     <button
                         type="button"
                         onClick={onLoad}
-                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-border bg-transparent px-2.5 py-1 font-body text-[11.5px] font-bold text-muted-foreground transition-colors hover:border-primary/55 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-border bg-transparent px-2.5 py-1 font-body text-xs font-bold text-muted-foreground transition-colors hover:border-primary/55 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                     >
                         <LuPencil size={12} /> Charger
                     </button>
                     <button
                         type="button"
                         onClick={onDelete}
-                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-destructive/45 bg-transparent px-2.5 py-1 font-body text-[11.5px] font-bold text-destructive transition-colors hover:bg-destructive hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40"
+                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-destructive/45 bg-transparent px-2.5 py-1 font-body text-xs font-bold text-destructive transition-colors hover:bg-destructive hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40"
                     >
                         <LuTrash2 size={12} /> Supprimer
                     </button>
@@ -274,7 +274,7 @@ export function SavedBannerRow({
                         <button
                             type="button"
                             onClick={onReactivate}
-                            className="inline-flex items-center gap-1.5 rounded-md border-2 border-primary/55 bg-primary/10 px-2.5 py-1 font-body text-[11.5px] font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                            className="inline-flex items-center gap-1.5 rounded-md border-2 border-primary/55 bg-primary/10 px-2.5 py-1 font-body text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
                         >
                             <LuPower size={12} /> Réactiver
                         </button>

@@ -24,7 +24,7 @@ export function Ornament({
                     width,
                 )}
             />
-            <span className="rotate-45 text-[8px] leading-none">◆</span>
+            <span className="rotate-45 text-xxxs leading-none">◆</span>
             <span
                 className={cn(
                     "h-px bg-gradient-to-l from-transparent to-primary/55",
@@ -35,7 +35,7 @@ export function Ornament({
     );
 }
 
-const CHIP_TEXT = "px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.1em]";
+const CHIP_TEXT = "px-2.5 py-0.5 text-xs font-bold uppercase tracking-[0.1em]";
 
 const ROLE_META: Record<
     UserRole,
@@ -66,7 +66,7 @@ export function RoleChip({ role }: { role: UserRole }) {
             variant="muted"
             className={cn(CHIP_TEXT, meta.cls)}
         >
-            {meta.diamond && <span className="text-[8px] leading-none">◆</span>}
+            {meta.diamond && <span className="text-xxxs leading-none">◆</span>}
             {meta.label}
         </Chipset>
     );
@@ -110,7 +110,7 @@ export function FormatChip({ format }: { format: string }) {
         <Chipset
             ariaLabel={`Format : ${label}`}
             variant="muted"
-            className="rounded-md bg-popover/70 px-2 py-0.5 text-[11px] font-bold tracking-wide"
+            className="rounded-md bg-popover/70 px-2 py-0.5 text-xs font-bold tracking-wide"
         >
             {label}
         </Chipset>
@@ -121,8 +121,8 @@ export function FormatChip({ format }: { format: string }) {
 export function NoteBadge({ note }: { note: number }) {
     return (
         <span className="inline-flex items-baseline gap-0.5 rounded-md border border-primary/35 bg-primary/10 px-2 py-0.5 font-title text-primary">
-            <span className="text-[15px] font-black leading-none">{note}</span>
-            <span className="text-[10px] font-bold text-primary/65">/5</span>
+            <span className="text-base font-black leading-none">{note}</span>
+            <span className="text-xxs font-bold text-primary/65">/5</span>
         </span>
     );
 }

@@ -58,7 +58,7 @@ export function UsersTab() {
                 <div className="flex items-center gap-3">
                     <Avatar name={u.userName} avatar={u.avatar} size={38} />
                     <div className="min-w-0">
-                        <div className="truncate font-body text-[14px] font-bold text-foreground">
+                        <div className="truncate font-body text-sm font-bold text-foreground">
                             {u.userName}
                         </div>
                     </div>
@@ -69,7 +69,7 @@ export function UsersTab() {
             key: "email",
             header: "Email",
             cell: (u) => (
-                <span className="font-body text-[13px] text-muted-foreground">
+                <span className="font-body text-sm text-muted-foreground">
                     {u.email}
                 </span>
             ),
@@ -85,7 +85,7 @@ export function UsersTab() {
             thClass: "text-center",
             tdClass: "text-center",
             cell: (u) => (
-                <span className="inline-grid h-7 w-7 place-items-center rounded-full border-2 border-primary/35 bg-primary/10 font-title text-[13px] font-black text-primary">
+                <span className="inline-grid h-7 w-7 place-items-center rounded-full border-2 border-primary/35 bg-primary/10 font-title text-sm font-black text-primary">
                     {u.level}
                 </span>
             ),
@@ -96,7 +96,7 @@ export function UsersTab() {
             thClass: "text-right",
             tdClass: "text-right",
             cell: (u) => (
-                <span className="font-title text-[14px] font-bold text-foreground/85">
+                <span className="font-title text-sm font-bold text-foreground/85">
                     {u.xp.toLocaleString("fr-FR")}
                 </span>
             ),
@@ -105,7 +105,7 @@ export function UsersTab() {
             key: "inscrit",
             header: "Inscrit le",
             cell: (u) => (
-                <span className="whitespace-nowrap font-body text-[12.5px] text-muted-foreground">
+                <span className="whitespace-nowrap font-body text-xs text-muted-foreground">
                     {new Date(u.createdAt).toLocaleDateString("fr-FR")}
                 </span>
             ),
