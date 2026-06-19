@@ -183,12 +183,12 @@ export default function EditProfileModal({
                         <FaXmark size={18} />
                     </button>
                     <div className="flex flex-col items-start gap-1 pr-10">
-                        <span className="text-muted-foreground font-body text-[11px] tracking-[0.28em] uppercase">
+                        <span className="text-muted-foreground font-body text-xs tracking-[0.28em] uppercase">
                             Votre profil
                         </span>
                         <h2
                             id="edit-modal-title"
-                            className="text-foreground font-quote text-[24px] leading-none font-semibold md:text-[26px]"
+                            className="text-foreground font-quote text-2xl leading-none font-semibold"
                         >
                             Modifier le profil
                         </h2>
@@ -249,14 +249,14 @@ export default function EditProfileModal({
                                                 bio: true,
                                             }))
                                         }
-                                        className={`bg-popover text-foreground/90 placeholder:text-muted-foreground/55 focus:border-primary w-full resize-none rounded-lg border-2 px-3.5 py-3 font-quote text-[16px] leading-relaxed italic transition-colors duration-200 placeholder:not-italic focus:outline-none ${
+                                        className={`bg-popover text-foreground/90 placeholder:text-muted-foreground/55 focus:border-primary w-full resize-none rounded-lg border-2 px-3.5 py-3 font-quote text-base leading-relaxed italic transition-colors duration-200 placeholder:not-italic focus:outline-none ${
                                             showI("bio") && errInfos.bio
                                                 ? "border-destructive/70"
                                                 : "border-border"
                                         }`}
                                     />
                                     <span
-                                        className={`pointer-events-none absolute right-3 bottom-2.5 font-title text-[11px] font-bold ${bioTone}`}
+                                        className={`pointer-events-none absolute right-3 bottom-2.5 font-title text-xs font-bold ${bioTone}`}
                                     >
                                         {bioLen}/300
                                     </span>
@@ -313,7 +313,7 @@ export default function EditProfileModal({
                                         }))
                                     }
                                 />
-                                <p className="text-muted-foreground/80 flex items-center gap-1.5 font-quote text-[13px] italic">
+                                <p className="text-muted-foreground/80 flex items-center gap-1.5 font-quote text-sm italic">
                                     <FaLock
                                         size={11}
                                         className="text-primary/55"

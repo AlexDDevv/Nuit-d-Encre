@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const inputBase =
-    "w-full rounded-lg border-2 bg-popover px-3.5 py-2.5 font-body text-[15px] text-foreground placeholder:text-muted-foreground/55 transition-colors duration-200 focus:outline-none focus:border-primary";
+    "w-full rounded-lg border-2 bg-popover px-3.5 py-2.5 font-body text-base text-foreground placeholder:text-muted-foreground/55 transition-colors duration-200 focus:outline-none focus:border-primary";
 
 export function TextInput({
     id,

@@ -36,7 +36,7 @@ export default function ProfileStats({ stats }: { stats: Stats }) {
                         <span className="text-foreground font-title text-3xl leading-none font-black">
                             {stats[key].toLocaleString("fr-FR")}
                         </span>
-                        <span className="text-muted-foreground text-[12px] font-bold tracking-wide uppercase">
+                        <span className="text-muted-foreground text-xs font-bold tracking-wide uppercase">
                             {label}
                         </span>
                     </Card>

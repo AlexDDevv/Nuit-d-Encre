@@ -49,7 +49,7 @@ export function Pill({
     return (
         <span
             className={cn(
-                "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-[11px] font-bold tracking-[0.12em] whitespace-nowrap uppercase",
+                "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-bold tracking-[0.12em] whitespace-nowrap uppercase",
                 tones[tone],
                 className,
             )}
@@ -81,7 +81,7 @@ export function Ornament({
                     width,
                 )}
             />
-            <span className="rotate-45 text-[8px] leading-none">◆</span>
+            <span className="rotate-45 text-xxxs leading-none">◆</span>
             <span
                 className={cn(
                     "to-primary/55 h-px bg-gradient-to-l from-transparent",
@@ -106,7 +106,7 @@ export function SectionHeading({
         <div className="mb-4 flex items-end justify-between gap-3">
             <div className="flex items-center gap-2.5">
                 {Icon && <Icon className="text-primary/80" size={18} />}
-                <h2 className="text-foreground/90 font-quote text-[20px] font-medium tracking-[0.22em] uppercase">
+                <h2 className="text-foreground/90 font-quote text-xl font-medium tracking-[0.22em] uppercase">
                     {children}
                 </h2>
             </div>

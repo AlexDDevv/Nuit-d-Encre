@@ -56,10 +56,10 @@ function EmptyCover({
             <span className="border-border text-muted-foreground/70 grid h-9 w-9 place-items-center rounded-full border-2">
                 {editable ? <FaPlus size={16} /> : <FaStar size={14} />}
             </span>
-            <span className="text-muted-foreground/70 font-quote text-[13px] italic">
+            <span className="text-muted-foreground/70 font-quote text-sm italic">
                 {editable ? "Ajouter un favori" : "Place à pourvoir"}
             </span>
-            <span className="text-muted-foreground/40 font-title text-[11px] font-bold tracking-widest uppercase">
+            <span className="text-muted-foreground/40 font-title text-xs font-bold tracking-widest uppercase">
                 Rang {rank}
             </span>
         </>
@@ -134,7 +134,7 @@ export default function FavoriteBooks({
                 icon={FaStar}
                 right={
                     editing && (
-                        <span className="text-muted-foreground font-body text-[12px] italic">
+                        <span className="text-muted-foreground font-body text-xs italic">
                             Réordonnez vos trois favoris
                         </span>
                     )

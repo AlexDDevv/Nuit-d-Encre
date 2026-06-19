@@ -118,7 +118,7 @@ export default function ProfileHero({
                         <button
                             type="button"
                             onClick={() => bannerInput.current?.click()}
-                            className="border-primary/70 bg-background/55 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-[13px] font-bold whitespace-nowrap backdrop-blur-sm transition-colors focus:outline-none cursor-pointer"
+                            className="border-primary/70 bg-background/55 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-sm font-bold whitespace-nowrap backdrop-blur-sm transition-colors focus:outline-none cursor-pointer"
                         >
                             <FaCamera size={14} /> Changer la bannière
                         </button>
@@ -126,7 +126,7 @@ export default function ProfileHero({
                             <button
                                 type="button"
                                 onClick={() => removeBanner()}
-                                className="border-destructive/60 bg-background/55 text-destructive hover:bg-destructive inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-[13px] font-bold whitespace-nowrap backdrop-blur-sm transition-colors hover:text-white focus:outline-none"
+                                className="border-destructive/60 bg-background/55 text-destructive hover:bg-destructive inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-sm font-bold whitespace-nowrap backdrop-blur-sm transition-colors hover:text-white focus:outline-none"
                             >
                                 <FaTrash size={14} /> Retirer
                             </button>
@@ -176,7 +176,7 @@ export default function ProfileHero({
                                     className="bg-background/65 text-primary absolute inset-0 z-10 grid place-items-center rounded-full opacity-0 transition-opacity duration-200 hover:opacity-100 focus:opacity-100 focus:outline-none cursor-pointer"
                                 >
                                     <FaCamera size={22} />
-                                    <span className="mt-1 text-[10px] font-bold tracking-wider uppercase">
+                                    <span className="mt-1 text-xxs font-bold tracking-wider uppercase">
                                         Changer
                                     </span>
                                 </button>
@@ -198,7 +198,7 @@ export default function ProfileHero({
                 <div className="flex flex-col items-center pt-16 text-center md:flex-row md:items-end md:justify-between md:pt-4 md:pl-40 md:text-left">
                     {/* Identité */}
                     <div className="flex flex-col items-center gap-3 md:items-start">
-                        <h1 className="text-foreground font-title text-[26px] leading-tight font-black md:text-[34px]">
+                        <h1 className="text-foreground font-title text-2xl leading-tight font-black md:text-4xl">
                             {user.userName}
                         </h1>
                         {since && (
@@ -235,7 +235,7 @@ export default function ProfileHero({
                 {/* Bio */}
                 <div className="mt-5 md:pl-40">
                     {user.bio ? (
-                        <p className="text-foreground/85 max-w-2xl font-quote text-[17px] leading-relaxed italic md:text-[18px]">
+                        <p className="text-foreground/85 max-w-2xl font-quote text-lg leading-relaxed italic">
                             <FaQuoteLeft
                                 size={13}
                                 className="text-primary/50 mr-1.5 -mt-1 inline-block"
@@ -243,7 +243,7 @@ export default function ProfileHero({
                             {user.bio}
                         </p>
                     ) : (
-                        <p className="text-muted-foreground/70 max-w-xl font-quote text-[16px] italic">
+                        <p className="text-muted-foreground/70 max-w-xl font-quote text-base italic">
                             {isOwner
                                 ? "Vous n'avez pas encore écrit votre préface."
                                 : "Ce lecteur n'a pas encore écrit sa préface."}

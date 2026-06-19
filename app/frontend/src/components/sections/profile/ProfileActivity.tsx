@@ -41,7 +41,7 @@ export default function ProfileActivity({
             </SectionHeading>
             <Card glow={false} className="p-5 md:p-6">
                 {events.length === 0 ? (
-                    <p className="text-muted-foreground/70 py-6 text-center font-quote text-[15px] italic">
+                    <p className="text-muted-foreground/70 py-6 text-center font-quote text-base italic">
                         Aucune activité pour le moment.
                     </p>
                 ) : (
@@ -60,16 +60,16 @@ export default function ProfileActivity({
                                             <Icon size={16} />
                                         </span>
                                         <div className="flex-1 pt-0.5">
-                                            <p className="text-foreground/90 font-body text-[15px] leading-snug">
+                                            <p className="text-foreground/90 font-body text-base leading-snug">
                                                 {label}
                                             </p>
                                             <div className="mt-1 flex items-center gap-2.5">
                                                 {ev.xp > 0 && (
-                                                    <span className="border-primary/40 bg-primary/10 text-primary inline-flex items-center rounded-full border px-2 py-0.5 font-title text-[12px] font-bold">
+                                                    <span className="border-primary/40 bg-primary/10 text-primary inline-flex items-center rounded-full border px-2 py-0.5 font-title text-xs font-bold">
                                                         +{ev.xp} XP
                                                     </span>
                                                 )}
-                                                <span className="text-muted-foreground text-[12px]">
+                                                <span className="text-muted-foreground text-xs">
                                                     {formatRelativeDate(
                                                         ev.createdAt,
                                                     )}

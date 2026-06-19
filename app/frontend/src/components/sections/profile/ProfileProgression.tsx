@@ -52,7 +52,7 @@ function LevelMedallion({ level, pct }: { level: number; pct: number }) {
                 </defs>
             </svg>
             <div className="flex flex-col items-center">
-                <span className="text-primary/70 font-quote text-[11px] tracking-[0.3em] uppercase">
+                <span className="text-primary/70 font-quote text-xs tracking-[0.3em] uppercase">
                     Niveau
                 </span>
                 <span className="text-foreground font-title text-5xl leading-none font-black">
@@ -122,7 +122,7 @@ function TitleFrieze({ level }: { level: number }) {
                                 )}
                             </span>
                             <span
-                                className={`mt-2 text-[11px] font-bold ${
+                                className={`mt-2 text-xs font-bold ${
                                     status === "future"
                                         ? "text-muted-foreground/55"
                                         : "text-primary/80"
@@ -131,11 +131,11 @@ function TitleFrieze({ level }: { level: number }) {
                                 {t.level}
                             </span>
                             {status === "current" && (
-                                <span className="text-foreground/90 mt-0.5 max-w-[74px] text-center font-quote text-[11px] leading-tight italic">
+                                <span className="text-foreground/90 mt-0.5 max-w-[74px] text-center font-quote text-xs leading-tight italic">
                                     {t.label}
                                 </span>
                             )}
-                            <span className="border-border bg-popover text-foreground pointer-events-none absolute -top-9 z-20 rounded-md border px-2 py-1 text-[11px] whitespace-nowrap opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
+                            <span className="border-border bg-popover text-foreground pointer-events-none absolute -top-9 z-20 rounded-md border px-2 py-1 text-xs whitespace-nowrap opacity-0 shadow-lg transition-opacity duration-150 group-hover:opacity-100">
                                 {t.label}
                             </span>
                         </div>
@@ -165,10 +165,10 @@ export default function ProfileProgression({ user }: { user: User }) {
                 <div className="w-full flex-1">
                     <div className="mb-3 flex flex-col gap-1 text-center md:flex-row md:items-end md:justify-between md:text-left">
                         <div>
-                            <div className="text-muted-foreground font-quote text-[12px] tracking-[0.25em] uppercase">
+                            <div className="text-muted-foreground font-quote text-xs tracking-[0.25em] uppercase">
                                 Titre actuel
                             </div>
-                            <div className="text-gradient-gold font-quote text-2xl font-semibold whitespace-nowrap md:text-[26px]">
+                            <div className="text-gradient-gold font-quote text-2xl font-semibold whitespace-nowrap">
                                 {title}
                             </div>
                         </div>
@@ -199,18 +199,18 @@ export default function ProfileProgression({ user }: { user: User }) {
                                     size={11}
                                     className="text-primary/60"
                                 />
-                                <span className="text-foreground/85 font-quote text-[15px] italic">
+                                <span className="text-foreground/85 font-quote text-base italic">
                                     Niveau {user.level + 1} — {nextTitle}
                                 </span>
                             </span>
                         ) : (
-                            <span className="text-primary font-quote text-[15px] italic">
+                            <span className="text-primary font-quote text-base italic">
                                 Palier ultime atteint
                             </span>
                         )}
                     </div>
                     {!isMax && (
-                        <div className="text-primary/70 mt-1.5 text-center text-[13px] md:text-left">
+                        <div className="text-primary/70 mt-1.5 text-center text-sm md:text-left">
                             Plus que{" "}
                             <span className="font-bold">
                                 {remaining.toLocaleString("fr-FR")} XP
@@ -226,7 +226,7 @@ export default function ProfileProgression({ user }: { user: User }) {
             </div>
 
             <div className="border-border/70 mt-7 border-t-2 pt-5">
-                <div className="text-muted-foreground mb-3 flex items-center gap-2 font-quote text-[12px] tracking-[0.22em] uppercase">
+                <div className="text-muted-foreground mb-3 flex items-center gap-2 font-quote text-xs tracking-[0.22em] uppercase">
                     L'échelle des dix titres
                 </div>
                 <TitleFrieze level={user.level} />

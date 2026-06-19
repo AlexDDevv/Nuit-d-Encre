@@ -12,7 +12,7 @@ export default function TitlePlate({
             <Pill tone="gold">Titre · Niveau {level}</Pill>
             <div className="flex items-center gap-3">
                 <MoonMedallion />
-                <span className="text-gradient-gold font-quote text-[27px] leading-none font-semibold tracking-wide whitespace-nowrap md:text-[31px]">
+                <span className="text-gradient-gold font-quote text-3xl leading-none font-semibold tracking-wide whitespace-nowrap">
                     {title}
                 </span>
             </div>

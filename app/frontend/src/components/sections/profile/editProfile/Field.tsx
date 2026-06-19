@@ -20,11 +20,11 @@ export default function Field({
                 htmlFor={id}
                 className="flex items-baseline justify-between gap-3"
             >
-                <span className="text-foreground/85 font-quote text-[15px] italic">
+                <span className="text-foreground/85 font-quote text-base italic">
                     {label}
                 </span>
                 {hint && (
-                    <span className="text-muted-foreground/70 font-body text-[11px] tracking-wider uppercase">
+                    <span className="text-muted-foreground/70 font-body text-xs tracking-wider uppercase">
                         {hint}
                     </span>
                 )}
@@ -33,7 +33,7 @@ export default function Field({
             {error && (
                 <p
                     role="alert"
-                    className="text-destructive flex items-center gap-1.5 font-body text-[12.5px] font-bold"
+                    className="text-destructive flex items-center gap-1.5 font-body text-xs font-bold"
                 >
                     <FaCircleExclamation size={13} /> {error}
                 </p>
