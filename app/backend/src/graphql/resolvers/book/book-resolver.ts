@@ -33,9 +33,6 @@ import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
 import { BookReview } from "../../../database/entities/book/bookReview"
-import { BookRecommendation } from "../../../database/entities/book/bookRecommendation"
-import { UserBook } from "../../../database/entities/user/user-book"
-import { whoami } from "../../../services/auth-service"
 
 const IMPORTED_SUMMARY_PLACEHOLDER = "Importé depuis une source externe.";
 
@@ -549,27 +546,9 @@ export class BooksResolver {
     @FieldResolver(() => Boolean)
     async hasUserReviewed(
         @Root() book: Book,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<boolean> {
-        try {
-            const user = context.user;
-            
-            if (!user) {
-                return false;
-            }
-
-            const review = await BookReview.findOne({
-                where: {
-                    book: { id: book.id },
-                    user: { id: user.id }
-                }
-            });
-
-            return !!review;
-        } catch (error) {
-            console.error("Error checking user review:", error);
-            return false;
-        }
+        return context.loaders.hasUserReviewed.load(book.id);
     }
 
     /**
@@ -597,27 +576,9 @@ export class BooksResolver {
     @FieldResolver(() => Boolean)
     async hasUserRecommended(
         @Root() book: Book,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<boolean> {
-        try {
-            const user = context.user;
-            
-            if (!user) {
-                return false;
-            }
-
-            const recommendation = await BookRecommendation.findOne({
-                where: {
-                    book: { id: book.id },
-                    user: { id: user.id }
-                }
-            });
-
-            return !!recommendation;
-        } catch (error) {
-            console.error("Error checking user recommendation:", error);
-            return false;
-        }
+        return context.loaders.hasUserRecommended.load(book.id);
     }
 
     /**
@@ -646,41 +607,9 @@ export class BooksResolver {
     @FieldResolver(() => Boolean)
     async isInLibrary(
         @Root() book: Book,
-        @Ctx() context: Context
+        @Ctx() context: Context,
     ): Promise<boolean> {
-        try {
-            // `context.user` n'est renseigné que par customAuthChecker, donc
-            // seulement sur les resolvers @Authorized. La liste des livres
-            // (catalogue public) ne l'est pas : on résout alors l'utilisateur
-            // directement depuis le cookie pour pouvoir afficher le marqueur
-            // « Dans ma bibliothèque » même sur ces écrans.
-            let user = context.user;
-
-            if (!user) {
-                try {
-                    user = (await whoami(context.cookies)) ?? undefined;
-                } catch {
-                    // Aucun token / token invalide : visiteur anonyme.
-                    user = undefined;
-                }
-            }
-
-            if (!user) {
-                return false;
-            }
-
-            const userBook = await UserBook.findOne({
-                where: {
-                    book: { id: book.id },
-                    user: { id: user.id }
-                }
-            });
-
-            return !!userBook;
-        } catch (error) {
-            console.error("Error checking user library:", error);
-            return false;
-        }
+        return context.loaders.isInLibrary.load(book.id);
     }
 
     /**

@@ -7,6 +7,12 @@ import {
     batchRecommendationCount,
 } from "./book-aggregate-loaders";
 import { batchTitles } from "./title-loader";
+import {
+    makeUserFlagBatch,
+    reviewedBookIds,
+    recommendedBookIds,
+    libraryBookIds,
+} from "./user-book-flag-loaders";
 
 export type Loaders = {
     averageRating: DataLoader<string, number | null>;
@@ -26,7 +32,7 @@ export type Loaders = {
  * @param getUser - résolution mémoïsée (lazy) de l'utilisateur courant.
  */
 export function createLoaders(
-    _getUser: () => Promise<User | null | undefined>,
+    getUser: () => Promise<User | null | undefined>,
 ): Loaders {
     return {
         averageRating: new DataLoader((ids) => batchAverageRating(ids)),
@@ -35,10 +41,14 @@ export function createLoaders(
             batchRecommendationCount(ids),
         ),
         title: new DataLoader((levels) => batchTitles(levels)),
-        hasUserReviewed: new DataLoader(async (ids) => ids.map(() => false)),
-        hasUserRecommended: new DataLoader(async (ids) =>
-            ids.map(() => false),
+        hasUserReviewed: new DataLoader(
+            makeUserFlagBatch(reviewedBookIds, getUser),
         ),
-        isInLibrary: new DataLoader(async (ids) => ids.map(() => false)),
+        hasUserRecommended: new DataLoader(
+            makeUserFlagBatch(recommendedBookIds, getUser),
+        ),
+        isInLibrary: new DataLoader(
+            makeUserFlagBatch(libraryBookIds, getUser),
+        ),
     };
 }
