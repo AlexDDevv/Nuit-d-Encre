@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBook, FaGlobe } from "react-icons/fa6";
 import { activateOnKey, buildAuthorAriaLabel, cn, slugify } from "@/lib/utils";
@@ -12,7 +13,7 @@ import Monogram from "./Monogram";
  * nationalité décodée et nombre de livres en métadonnées. Hover cohérent avec la
  * carte livre (bordure dorée + léger scale). La carte mène à la fiche auteur.
  */
-export default function AuthorCard({
+function AuthorCard({
     id,
     firstname,
     lastname,
@@ -82,3 +83,5 @@ export default function AuthorCard({
         </div>
     );
 }
+
+export default memo(AuthorCard);

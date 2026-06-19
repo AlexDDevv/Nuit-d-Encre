@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { activateOnKey, buildBookAriaLabel, cn, slugify } from "@/lib/utils";
 import { formatShortLabelMap } from "@/lib/filterMaps";
@@ -15,7 +16,7 @@ import BookCardRating from "./BookCardRating";
  * superposition, métadonnées et note se révélant au survol/focus. La carte mène
  * à la fiche du livre, le nom de l'auteur à la fiche auteur.
  */
-export default function BookCard({
+function BookCard({
     book,
     className,
     isInAuthorPage = false,
@@ -115,3 +116,5 @@ export default function BookCard({
         </div>
     );
 }
+
+export default memo(BookCard);
