@@ -1,4 +1,4 @@
-import { CreateBookInput, UpdateBookInput } from "@/types/types";
+import { Book, CreateBookInput, UpdateBookInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
 import {
     CREATE_BOOK,
@@ -16,11 +16,11 @@ import {
  * errors, as well as functions to reset them.
  *
  * @returns {Object} An object containing mutation functions and their states.
- * - createBook(book: CreateBookInput): Promise<{ id: string } | undefined>
+ * - createBook(book: CreateBookInput): Promise<{ id: string; title: string } | undefined>
  * - isCreatingBook: boolean
  * - createBookError: ApolloError | undefined
  * - resetCreateBookError(): void
- * - updateBook(id: string, book: Omit<UpdateBookInput, "id">): Promise<any>
+ * - updateBook(id: string, book: Omit<UpdateBookInput, "id">): Promise<Book | undefined>
  * - isUpdatingBook: boolean
  * - updateBookError: ApolloError | undefined
  * - resetUpdateBookError(): void
@@ -80,7 +80,7 @@ export function useBookMutations() {
 
     const addBook = async (
         book: CreateBookInput,
-    ): Promise<{ id: string } | undefined> => {
+    ): Promise<{ id: string; title: string } | undefined> => {
         const result = await createBookMutation({
             variables: { data: book },
         });
@@ -95,14 +95,14 @@ export function useBookMutations() {
             error: updateBookError,
             reset: resetUpdateBookError,
         },
-    ] = useMutation(UPDATE_BOOK, {
+    ] = useMutation<{ updateBook: Book }, { data: UpdateBookInput }>(UPDATE_BOOK, {
         refetchQueries: [{ query: GET_BOOKS }],
     });
 
     const updateBook = async (
         id: string,
         book: Omit<UpdateBookInput, "id">,
-    ) => {
+    ): Promise<Book | undefined> => {
         const result = await updateBookMutation({
             variables: {
                 data: {

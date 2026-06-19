@@ -1,4 +1,4 @@
-import { CreateBookReviewInput, UpdateBookReviewInput } from "@/types/types";
+import { BookReview, CreateBookReviewInput, UpdateBookReviewInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
 import {
     CREATE_BOOK_REVIEW,
@@ -20,7 +20,7 @@ import {
  * - isCreatingReview: boolean
  * - createReviewError: ApolloError | undefined
  * - resetCreateReviewError(): void
- * - updateReview(id: string, review: Omit<UpdateBookReviewInput, "id">): Promise<any>
+ * - updateReview(id: string, review: Omit<UpdateBookReviewInput, "id">): Promise<BookReview | undefined>
  * - isUpdatingReview: boolean
  * - updateReviewError: ApolloError | undefined
  * - resetUpdateReviewError(): void
@@ -94,14 +94,14 @@ export function useBookReviewMutations() {
             error: updateReviewError,
             reset: resetUpdateReviewError,
         },
-    ] = useMutation(UPDATE_BOOK_REVIEW, {
+    ] = useMutation<{ updateBookReview: BookReview }, { data: UpdateBookReviewInput }>(UPDATE_BOOK_REVIEW, {
         refetchQueries: ["BookReviews", "MyBookReview"],
     });
 
     const updateReview = async (
         id: string,
         review: Omit<UpdateBookReviewInput, "id">,
-    ) => {
+    ): Promise<BookReview | undefined> => {
         const result = await updateReviewMutation({
             variables: {
                 data: {

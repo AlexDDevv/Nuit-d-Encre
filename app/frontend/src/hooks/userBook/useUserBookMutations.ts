@@ -1,4 +1,4 @@
-import { CreateUserBookInput, UpdateUserBookInput } from "@/types/types";
+import { CreateUserBookInput, UpdateUserBookInput, UserBook } from "@/types/types";
 import { useMutation } from "@apollo/client";
 import { useToast } from "@/hooks/toast/useToast";
 import { parseGraphQLError } from "@/utils/graphql-error";
@@ -22,7 +22,7 @@ import {
  * - isCreatingBook: boolean
  * - createBookError: ApolloError | undefined
  * - resetCreateBookError(): void
- * - updateBook(id: string, book: Omit<UpdateBookInput, "id">): Promise<any>
+ * - updateUserBook(userBook: UpdateUserBookInput): Promise<UserBook | undefined>
  * - isUpdatingBook: boolean
  * - updateBookError: ApolloError | undefined
  * - resetUpdateBookError(): void
@@ -106,7 +106,7 @@ export function useUserBookMutations() {
             error: updateUserBookError,
             reset: resetUpdateUserBookError,
         },
-    ] = useMutation(UPDATE_USER_BOOK, {
+    ] = useMutation<{ updateUserBook: UserBook }, { data: UpdateUserBookInput }>(UPDATE_USER_BOOK, {
         update(cache, { data }) {
             const updated = data?.updateUserBook;
             if (!updated) return;
@@ -127,7 +127,7 @@ export function useUserBookMutations() {
 
     const editUserBook = async (
         userBook: UpdateUserBookInput,
-    ): Promise<{ id: string } | undefined> => {
+    ): Promise<UserBook | undefined> => {
         const { id, ...rest } = userBook;
 
         const result = await updateUserBookMutation({

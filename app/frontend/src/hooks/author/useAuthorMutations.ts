@@ -1,4 +1,4 @@
-import { CreateAuthorInput, UpdateAuthorInput } from "@/types/types";
+import { Author, CreateAuthorInput, UpdateAuthorInput } from "@/types/types";
 import { useMutation } from "@apollo/client";
 import {
     CREATE_AUTHOR,
@@ -16,11 +16,11 @@ import {
  * errors, as well as functions to reset them.
  *
  * @returns {Object} An object containing mutation functions and their states.
- * - createAuthor(author: CreateAuthorInput): Promise<{ id: string } | undefined>
+ * - createAuthor(author: CreateAuthorInput): Promise<{ id: string; firstname: string; lastname: string } | undefined>
  * - isCreatingAuthor: boolean
  * - createAuthorError: ApolloError | undefined
  * - resetCreateAuthorError(): void
- * - updateAuthor(id: string, author: Omit<UpdateAuthorInput, "id">): Promise<any>
+ * - updateAuthor(id: string, author: Omit<UpdateAuthorInput, "id">): Promise<Author | undefined>
  * - isUpdatingAuthor: boolean
  * - updateAuthorError: ApolloError | undefined
  * - resetUpdateAuthorError(): void
@@ -79,7 +79,7 @@ export function useAuthorMutations() {
 
     const addAuthor = async (
         author: CreateAuthorInput,
-    ): Promise<{ id: string } | undefined> => {
+    ): Promise<{ id: string; firstname: string; lastname: string } | undefined> => {
         const result = await createAuthorMutation({
             variables: { data: author },
         });
@@ -94,14 +94,14 @@ export function useAuthorMutations() {
             error: updateAuthorError,
             reset: resetUpdateAuthorError,
         },
-    ] = useMutation(UPDATE_AUTHOR, {
+    ] = useMutation<{ updateAuthor: Author }, { data: UpdateAuthorInput }>(UPDATE_AUTHOR, {
         refetchQueries: [{ query: GET_AUTHORS }],
     });
 
     const updateAuthor = async (
         id: string,
         author: Omit<UpdateAuthorInput, "id">,
-    ) => {
+    ): Promise<Author | undefined> => {
         const result = await updateAuthorMutation({
             variables: {
                 data: {
