@@ -30,7 +30,7 @@ export default function FavoriteMoveNote({
                     aria-hidden="true"
                 />
             )}
-            <p className="font-body text-[12px] leading-snug text-[hsl(20_12%_64%)]">
+            <p className="font-body text-xs leading-snug text-[hsl(20_12%_64%)]">
                 {selectedRank == null ? (
                     isFavorite ? (
                         <>Ce livre ne figurera plus dans vos favoris.</>

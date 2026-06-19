@@ -163,7 +163,7 @@ export function AuthButton({
         <Link
             to={to}
             aria-label={ariaLabel}
-            className="focus-visible:ring-primary focus-visible:ring-offset-card font-body inline-flex w-full items-center justify-center gap-2.5 whitespace-nowrap rounded-lg px-5 py-3 text-[14.5px] font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+            className="focus-visible:ring-primary focus-visible:ring-offset-card font-body inline-flex w-full items-center justify-center gap-2.5 whitespace-nowrap rounded-lg px-5 py-3 text-sm font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
             style={base}
             onMouseEnter={(e) => apply(e.currentTarget, hover)}
             onMouseLeave={(e) => apply(e.currentTarget, base)}
@@ -215,14 +215,14 @@ export default function SealedAccessCard({
             >
                 <span
                     aria-hidden="true"
-                    className="font-quote pointer-events-none absolute left-4 top-4 text-[13px]"
+                    className="font-quote pointer-events-none absolute left-4 top-4 text-sm"
                     style={{ color: "hsl(43 59% 81% / 0.45)" }}
                 >
                     ◆
                 </span>
                 <span
                     aria-hidden="true"
-                    className="font-quote pointer-events-none absolute right-4 top-4 text-[13px]"
+                    className="font-quote pointer-events-none absolute right-4 top-4 text-sm"
                     style={{ color: "hsl(43 59% 81% / 0.45)" }}
                 >
                     ◆
@@ -231,7 +231,7 @@ export default function SealedAccessCard({
                 <SealEmblem />
 
                 <p
-                    className="mt-6 font-mono text-[10px] uppercase tracking-[0.26em]"
+                    className="mt-6 font-mono text-xxs uppercase tracking-[0.26em]"
                     style={{ color: "hsl(43 30% 60%)" }}
                 >
                     {eyebrow}
@@ -239,7 +239,7 @@ export default function SealedAccessCard({
 
                 <h1
                     id={titleId}
-                    className="text-foreground font-title mt-2 text-[24px] font-bold leading-tight"
+                    className="text-foreground font-title mt-2 text-2xl font-bold leading-tight"
                 >
                     {title}
                 </h1>
@@ -250,7 +250,7 @@ export default function SealedAccessCard({
                 />
 
                 <p
-                    className="font-quote mx-auto mt-4 max-w-[32ch] text-[16px] leading-relaxed"
+                    className="font-quote mx-auto mt-4 max-w-[32ch] text-base leading-relaxed"
                     style={{ color: "hsl(20 12% 76%)" }}
                 >
                     {description}

@@ -30,7 +30,7 @@ export default function FicheManagementBar({
                 className,
             )}
         >
-            <span className="text-muted-foreground font-mono text-[10px] uppercase tracking-[0.2em]">
+            <span className="text-muted-foreground font-mono text-xxs uppercase tracking-[0.2em]">
                 Gestion de la fiche · propriétaire ou administrateur
             </span>
             <div className="flex flex-wrap gap-3">

@@ -44,7 +44,7 @@ export default function AuthRequired() {
             </nav>
 
             <p
-                className="mt-5 inline-flex max-w-full items-center gap-1.5 font-mono text-[10.5px]"
+                className="mt-5 inline-flex max-w-full items-center gap-1.5 font-mono text-xxs"
                 style={{ color: "hsl(20 12% 56%)" }}
             >
                 <Icon
@@ -61,7 +61,7 @@ export default function AuthRequired() {
             <div className="mt-5">
                 <Link
                     to="/"
-                    className="hover:text-foreground focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded text-[12.5px] underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    className="hover:text-foreground focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded text-xs underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
                     style={{ color: "hsl(20 12% 68%)" }}
                 >
                     <Icon name="arrowLeft" size={12} /> Retour à l'accueil

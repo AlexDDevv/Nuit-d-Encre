@@ -20,7 +20,7 @@ function StatusPill({ status }: { status: BookCardLibraryProps["status"] }) {
     return (
         <span
             className={cn(
-                "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 font-body text-[10.5px] font-bold backdrop-blur-sm",
+                "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 font-body text-xxs font-bold backdrop-blur-sm",
                 STATUS_COLORS[status].chip,
             )}
         >
@@ -93,7 +93,7 @@ export default function LibraryGridCard({
                 >
                     <FaStar size={12} aria-hidden="true" />
                     {isFavorite && (
-                        <span className="font-mono text-[10px] font-medium leading-none">
+                        <span className="font-mono text-xxs font-medium leading-none">
                             {favoriteRank}
                         </span>
                     )}
@@ -109,14 +109,14 @@ export default function LibraryGridCard({
             <div className="flex flex-1 flex-col gap-1.5 p-3">
                 <Link
                     to={bookPath}
-                    className="text-foreground hover:text-primary focus-visible:ring-ring font-title line-clamp-2 min-h-[2.6em] rounded text-[15px] font-medium leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    className="text-foreground hover:text-primary focus-visible:ring-ring font-title line-clamp-2 min-h-[2.6em] rounded text-base font-medium leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2"
                     title={book.title}
                 >
                     {book.title}
                 </Link>
                 <Link
                     to={authorPath}
-                    className="text-muted-foreground hover:text-primary focus-visible:ring-ring -mx-1 w-fit rounded px-1 font-body text-[12.5px] transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    className="text-muted-foreground hover:text-primary focus-visible:ring-ring -mx-1 w-fit rounded px-1 font-body text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
                     aria-label={`Voir l'auteur ${author}`}
                 >
                     {author}

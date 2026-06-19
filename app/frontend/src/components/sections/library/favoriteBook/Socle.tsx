@@ -44,22 +44,22 @@ export default function Socle({
             {/* libellé de l'occupant (au-dessus) */}
             <div className="mb-2 flex h-9 flex-col items-center justify-end text-center">
                 {selected ? (
-                    <span className="border-primary/50 text-primary inline-flex items-center gap-1 whitespace-nowrap rounded-full border bg-[hsl(43_59%_81%/0.16)] px-2 py-0.75 font-body text-[10.5px] font-bold">
+                    <span className="border-primary/50 text-primary inline-flex items-center gap-1 whitespace-nowrap rounded-full border bg-[hsl(43_59%_81%/0.16)] px-2 py-0.75 font-body text-xxs font-bold">
                         <FaCheck size={10} aria-hidden="true" /> Ce livre
                     </span>
                 ) : occName ? (
                     <span
-                        className="max-w-32.5 truncate font-quote text-[11px] italic leading-tight text-[hsl(20_12%_58%)]"
+                        className="max-w-32.5 truncate font-quote text-xs italic leading-tight text-[hsl(20_12%_58%)]"
                         title={`Occupée par « ${occName} »`}
                     >
                         occupée par
                         <br />
-                        <span className="font-body text-[10.5px] not-italic text-[hsl(43_30%_64%)]">
+                        <span className="font-body text-xxs not-italic text-[hsl(43_30%_64%)]">
                             « {occName} »
                         </span>
                     </span>
                 ) : (
-                    <span className="font-quote text-[11px] italic text-[hsl(20_12%_46%)]">
+                    <span className="font-quote text-xs italic text-[hsl(20_12%_46%)]">
                         libre
                     </span>
                 )}
@@ -107,12 +107,12 @@ export default function Socle({
                 <span
                     className={cn(
                         "font-title flex items-start font-black leading-none",
-                        rank === 1 ? "text-[40px]" : "text-[34px]",
+                        rank === 1 ? "text-4xl" : "text-3xl",
                         numColor,
                     )}
                 >
                     {rank}
-                    <span className="font-quote mt-0.5 text-[14px] font-medium">
+                    <span className="font-quote mt-0.5 text-sm font-medium">
                         {ORDINAL[rank]}
                     </span>
                 </span>
@@ -120,7 +120,7 @@ export default function Socle({
                 {current && (
                     <span
                         className={cn(
-                            "absolute left-1/2 top-1 -translate-x-1/2 rounded-full border bg-[hsl(20_3%_9%/0.55)] px-2 py-px font-mono text-[8.5px] font-medium uppercase tracking-wider",
+                            "absolute left-1/2 top-1 -translate-x-1/2 rounded-full border bg-[hsl(20_3%_9%/0.55)] px-2 py-px font-mono text-xxxs font-medium uppercase tracking-wider",
                             selected
                                 ? "border-[hsl(43_59%_21%/0.5)] text-[hsl(43_59%_21%)]"
                                 : "border-primary/40 text-primary",
@@ -136,7 +136,7 @@ export default function Socle({
             {/* libellé de la place (sous le socle) */}
             <p
                 className={cn(
-                    "font-quote mt-3 text-center text-[14px]",
+                    "font-quote mt-3 text-center text-sm",
                     selected ? "text-primary" : "text-[hsl(20_12%_72%)]",
                 )}
             >

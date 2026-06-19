@@ -20,7 +20,7 @@ export function NoticeRow({
                 !last && "border-b border-dashed border-[hsl(0_0%_100%/0.07)]",
             )}
         >
-            <span className="inline-flex shrink-0 items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-[hsl(20_12%_56%)]">
+            <span className="inline-flex shrink-0 items-center gap-2 font-mono text-xxs uppercase tracking-[0.14em] text-[hsl(20_12%_56%)]">
                 {icon}
                 {label}
             </span>

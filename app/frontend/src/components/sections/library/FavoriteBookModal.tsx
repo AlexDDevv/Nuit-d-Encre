@@ -200,13 +200,13 @@ export default function FavoriteBookModal({
                         </div>
                         <h2
                             id="fav-title"
-                            className="text-foreground font-quote text-[30px] leading-tight tracking-tight"
+                            className="text-foreground font-quote text-3xl leading-tight tracking-tight"
                         >
                             Vos favoris
                         </h2>
                         <p
                             id="fav-sub"
-                            className="mx-auto mt-2 max-w-sm font-quote text-[15px] italic leading-relaxed text-[hsl(20_12%_70%)]"
+                            className="mx-auto mt-2 max-w-sm font-quote text-base italic leading-relaxed text-[hsl(20_12%_70%)]"
                         >
                             Choisissez la place de ce livre sur votre podium.
                         </p>
@@ -254,7 +254,7 @@ export default function FavoriteBookModal({
                                 type="button"
                                 onClick={() => setSelectedRank(null)}
                                 disabled={loading}
-                                className="border-destructive/40 hover:border-destructive/70 focus-visible:ring-primary inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3.5 py-2 font-body text-[12.5px] font-bold text-[hsl(3_84%_64%)] transition-colors duration-200 hover:bg-[hsl(3_84%_51%/0.1)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+                                className="border-destructive/40 hover:border-destructive/70 focus-visible:ring-primary inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3.5 py-2 font-body text-xs font-bold text-[hsl(3_84%_64%)] transition-colors duration-200 hover:bg-[hsl(3_84%_51%/0.1)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 <FaTrashCan size={14} aria-hidden="true" />
                                 Retirer des favoris
@@ -265,7 +265,7 @@ export default function FavoriteBookModal({
                             type="button"
                             onClick={handleValidate}
                             disabled={loading || !changed}
-                            className="bg-primary text-primary-foreground focus-visible:ring-primary focus-visible:ring-offset-[hsl(20_3%_16%)] inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 font-body text-[13px] font-bold shadow-[0_14px_32px_-14px_hsl(43_59%_60%/0.6)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="bg-primary text-primary-foreground focus-visible:ring-primary focus-visible:ring-offset-[hsl(20_3%_16%)] inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 font-body text-sm font-bold shadow-[0_14px_32px_-14px_hsl(43_59%_60%/0.6)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                         >
                             <FaCheck size={14} aria-hidden="true" />
                             {loading ? "Validation…" : "Valider"}

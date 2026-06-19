@@ -44,7 +44,7 @@ export default function StatusFilterSegments({
                 className={cn(SEG_BASE, selectedStatus === "" ? ACTIVE : INACTIVE)}
             >
                 Tout
-                <span className="font-mono text-[10.5px] font-medium opacity-70">
+                <span className="font-mono text-xxs font-medium opacity-70">
                     {total}
                 </span>
             </button>
@@ -65,7 +65,7 @@ export default function StatusFilterSegments({
                             )}
                         />
                         {seg.label}
-                        <span className="font-mono text-[10.5px] font-medium opacity-70">
+                        <span className="font-mono text-xxs font-medium opacity-70">
                             {countByStatus[seg.value]}
                         </span>
                     </button>

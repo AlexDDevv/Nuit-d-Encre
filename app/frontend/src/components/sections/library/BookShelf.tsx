@@ -34,7 +34,7 @@ export default function BookShelf({
                 averageRating={book.averageRating}
                 reviewCount={book.reviewCount}
             />
-            <div className="text-muted-foreground mt-1 flex items-center gap-4 font-mono text-[10.5px]">
+            <div className="text-muted-foreground mt-1 flex items-center gap-4 font-mono text-xxs">
                 <span className="inline-flex items-center gap-1.5">
                     <FaQuoteLeft
                         size={11}
@@ -84,7 +84,7 @@ export default function BookShelf({
                         <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-end justify-center bg-[linear-gradient(to_top,hsl(20_3%_7%/0.92),transparent)] pb-2 pt-7">
                             <span
                                 className={cn(
-                                    "inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 font-body text-[10px] font-bold backdrop-blur-sm",
+                                    "inline-flex items-center gap-1 whitespace-nowrap rounded-full border px-2 py-0.5 font-body text-xxs font-bold backdrop-blur-sm",
                                     STATUS_COLORS[status].chip,
                                 )}
                             >
@@ -97,7 +97,7 @@ export default function BookShelf({
                         {/* favori */}
                         {isFavorite && (
                             <span
-                                className="bg-primary text-primary-foreground absolute right-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-[9.5px] font-medium shadow"
+                                className="bg-primary text-primary-foreground absolute right-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-xxs font-medium shadow"
                                 title={`Favori · rang ${favoriteRank}`}
                             >
                                 <FaStar size={10} aria-hidden="true" />{" "}

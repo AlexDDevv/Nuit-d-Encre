@@ -56,7 +56,7 @@ export default function LibraryListRow({
                 />
                 {isFavorite && (
                     <span
-                        className="bg-primary text-primary-foreground absolute -right-1 -top-1 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-[9px] font-medium shadow"
+                        className="bg-primary text-primary-foreground absolute -right-1 -top-1 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-xxs font-medium shadow"
                         title={`Favori · rang ${favoriteRank}`}
                     >
                         <FaStar size={9} aria-hidden="true" /> {favoriteRank}
@@ -80,7 +80,7 @@ export default function LibraryListRow({
                 >
                     {author}
                 </Link>
-                <p className="text-muted-foreground mt-0.5 font-body text-[11.5px] sm:hidden">
+                <p className="text-muted-foreground mt-0.5 font-body text-xs sm:hidden">
                     <span className="font-quote italic text-[hsl(43_30%_62%)]">
                         {book.category?.name}
                     </span>{" "}
