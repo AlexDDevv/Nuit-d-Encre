@@ -8,6 +8,10 @@
     --font-quote: "EB Garamond", serif;
     --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
+    /* font sizes (sous-standard ; 12px+ via l'échelle Tailwind) */
+    --text-xxxs: 8px;
+    --text-xxs: 10px;
+
     /* animations */
     --animate-fadeIn: fadeIn 0.15s ease-out;
 

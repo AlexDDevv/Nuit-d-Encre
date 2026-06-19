@@ -152,7 +152,7 @@ const TabsTriggerComponent: React.FC<TabsTriggerProps> = ({
       disabled={disabled}
       onClick={handleClick}
       className={cn(
-        'group relative flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-3 font-body text-[14px] font-bold tracking-wide transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-default disabled:opacity-40 cursor-pointer',
+        'group relative flex shrink-0 items-center gap-2 whitespace-nowrap px-4 py-3 font-body text-sm font-bold tracking-wide transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 disabled:cursor-default disabled:opacity-40 cursor-pointer',
         isActive
           ? 'text-foreground'
           : 'text-muted-foreground hover:text-foreground/85',

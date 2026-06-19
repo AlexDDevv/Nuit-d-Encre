@@ -34,19 +34,14 @@ export default function EmptyStateCard({
             </span>
             <p
                 className={cn(
-                    "text-foreground/85 font-quote text-[18px] italic",
+                    "text-foreground/85 font-quote text-lg italic",
                     !centered && "leading-snug",
                 )}
             >
                 {title}
             </p>
             <p
-                className={cn(
-                    "text-muted-foreground font-body",
-                    centered
-                        ? "max-w-[44ch] text-[13px]"
-                        : "max-w-[46ch] text-[13.5px]",
-                )}
+                className="text-muted-foreground font-body text-sm"
             >
                 {description}
             </p>

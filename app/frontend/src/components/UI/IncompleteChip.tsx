@@ -13,7 +13,7 @@ export default function IncompleteChip({ className }: IncompleteChipProps) {
     return (
         <span
             className={cn(
-                "font-body inline-flex items-center gap-1 rounded-full px-2 py-[3px] text-[10.5px] font-bold tracking-wide backdrop-blur-sm",
+                "font-body inline-flex items-center gap-1 rounded-full px-2 p-0.75 text-xxs font-bold tracking-wide backdrop-blur-sm",
                 className,
             )}
             style={{

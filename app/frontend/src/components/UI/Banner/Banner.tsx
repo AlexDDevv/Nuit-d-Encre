@@ -43,7 +43,7 @@ function BannerActionButton({
         Object.assign(el.style, style);
 
     const className =
-        "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 font-body text-[13.5px] font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
+        "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 py-2.5 font-body text-sm font-bold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background";
 
     const content = (
         <>
@@ -51,7 +51,7 @@ function BannerActionButton({
             {action.label}
             {action.xp != null && (
                 <span
-                    className="rounded-full px-2 py-[1px] font-mono text-[10.5px] font-medium"
+                    className="rounded-full px-2 py-[1px] font-mono text-xxs font-medium"
                     style={{
                         background: gold
                             ? "hsl(43 59% 21% / 0.18)"
@@ -213,21 +213,21 @@ const Banner = ({
                 <div className="min-w-0">
                     {v.gold && (
                         <span
-                            className="mb-1 inline-flex items-center gap-1.5 font-mono text-[9.5px] uppercase tracking-[0.18em]"
+                            className="mb-1 inline-flex items-center gap-1.5 font-mono text-xxs uppercase tracking-[0.18em]"
                             style={{ color: "hsl(43 30% 64%)" }}
                         >
                             <Icon name="sparkles" size={10} /> Récompense
                         </span>
                     )}
                     <p
-                        className="text-foreground font-body text-[14px] font-bold leading-snug"
+                        className="text-foreground font-body text-sm font-bold leading-snug"
                         style={{ textWrap: "pretty" }}
                     >
                         {title}
                     </p>
                     {children && (
                         <div
-                            className="font-body mt-1 text-[12.5px] leading-relaxed"
+                            className="font-body mt-1 text-xs leading-relaxed"
                             style={{ color: "hsl(20 12% 73%)" }}
                         >
                             {children}

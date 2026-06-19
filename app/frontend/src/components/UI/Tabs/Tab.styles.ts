@@ -41,7 +41,7 @@ export const labelClassName =
 
 /**
  * Classes du texte du label à l'intérieur du bouton.
- * Pour la variante `panel`, le label passe en `text-[10px]` quand l'écran est
+ * Pour la variante `panel`, le label passe en `text-xxs` quand l'écran est
  * petit / zoomé (breakpoints bas : xs, sm, md) et reprend sa taille originelle
  * `text-base` dès `lg`.
  */
@@ -49,7 +49,7 @@ export const TabsLabelTextClass: Record<TabsVariant, string> = {
   onglet: '',
   white: '',
   step: '',
-  panel: 'text-[8px] md:text-[10px] lg:text-sm xl:text-sm 3xl:text-sm',
+  panel: 'text-xxxs md:text-xxs lg:text-sm xl:text-sm 3xl:text-sm',
 }
 
 /**

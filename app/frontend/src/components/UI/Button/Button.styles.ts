@@ -69,7 +69,7 @@ export const IconClasses: Record<ButtonVariant, string> = {
  * Classes spécifiques aux tailles
  */
 export const sizeClasses: Record<ButtonSize, string> = {
-    xxs: "h-5 px-2 text-[10px]",
+    xxs: "h-5 px-2 text-xxs",
     xs: "h-6 px-2 text-xs",
     sm: "h-8 px-3 text-sm",
     md: "h-10 px-4 py-2 text-base",
