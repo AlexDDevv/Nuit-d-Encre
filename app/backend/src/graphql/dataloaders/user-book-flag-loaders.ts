@@ -17,10 +17,17 @@ export function makeUserFlagBatch(
     getUser: GetUser,
 ) {
     return async (bookIds: readonly string[]): Promise<boolean[]> => {
-        const user = await getUser();
-        if (!user) return bookIds.map(() => false);
-        const positives = await loadPositiveIds(user.id, bookIds);
-        return bookIds.map((id) => positives.has(id));
+        try {
+            const user = await getUser();
+            if (!user) return bookIds.map(() => false);
+            const positives = await loadPositiveIds(user.id, bookIds);
+            return bookIds.map((id) => positives.has(id));
+        } catch (error) {
+            // Dégradation gracieuse : drapeau à false plutôt qu'une erreur
+            // de champ qui casserait la requête catalogue.
+            console.error("Error batching user book flags:", error);
+            return bookIds.map(() => false);
+        }
     };
 }
 

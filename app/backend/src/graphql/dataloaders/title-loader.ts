@@ -17,6 +17,12 @@ export function resolveTitleForLevel(
 export async function batchTitles(
     levels: readonly number[],
 ): Promise<(Title | null)[]> {
-    const titles = await Title.find();
-    return levels.map((level) => resolveTitleForLevel(level, titles));
+    try {
+        const titles = await Title.find();
+        return levels.map((level) => resolveTitleForLevel(level, titles));
+    } catch (error) {
+        // Dégradation gracieuse : pas de titre plutôt qu'une erreur de champ.
+        console.error("Error batching titles:", error);
+        return levels.map(() => null);
+    }
 }
