@@ -1,182 +1,23 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
-import {
-    FaXmark,
-    FaCheck,
-    FaLock,
-    FaShieldHalved,
-    FaRegUser,
-    FaEye,
-    FaEyeSlash,
-    FaCircleExclamation,
-} from "react-icons/fa6";
+import { FaXmark, FaCheck, FaLock } from "react-icons/fa6";
 import Button from "@/components/UI/Button/Button";
 import { UPDATE_PROFILE, CHANGE_PASSWORD } from "@/graphql/user/profile";
 import { WHOAMI } from "@/graphql/user/auth";
 import { useToast } from "@/hooks/toast/useToast";
 import { User } from "@/types/types";
 import { Ornament } from "./ProfileUI";
-
-type Tab = "infos" | "security";
+import { Tab } from "./editProfile/types";
+import TabSwitch from "./editProfile/TabSwitch";
+import Field from "./editProfile/Field";
+import { TextInput, PasswordInput } from "./editProfile/Inputs";
+import { validateInfos, validateSecurity } from "./editProfile/validation";
 
 interface EditProfileModalProps {
     user: User;
     initialTab?: Tab;
     onClose: () => void;
 }
-
-// — Sélecteur d'onglets segmenté (bascule dorée) —
-function TabSwitch({ tab, setTab }: { tab: Tab; setTab: (t: Tab) => void }) {
-    const opts = [
-        { id: "infos" as const, label: "Informations", icon: FaRegUser },
-        { id: "security" as const, label: "Sécurité", icon: FaShieldHalved },
-    ];
-    return (
-        <div
-            role="tablist"
-            aria-label="Sections du profil"
-            className="border-border bg-popover grid grid-cols-2 gap-1 rounded-lg border-2 p-1"
-        >
-            {opts.map((o) => {
-                const on = tab === o.id;
-                const Icon = o.icon;
-                return (
-                    <button
-                        key={o.id}
-                        role="tab"
-                        aria-selected={on}
-                        id={`tab-${o.id}`}
-                        aria-controls={`panel-${o.id}`}
-                        onClick={() => setTab(o.id)}
-                        className={`inline-flex items-center justify-center gap-2 rounded-md px-3.5 py-2 font-body text-[13.5px] font-bold tracking-wide whitespace-nowrap transition-all duration-200 ${
-                            on
-                                ? "bg-primary text-primary-foreground shadow-sm"
-                                : "text-muted-foreground hover:text-foreground"
-                        }`}
-                    >
-                        <Icon size={14} /> {o.label}
-                    </button>
-                );
-            })}
-        </div>
-    );
-}
-
-// — Champ : étiquette ornementale + indice + erreur inline —
-function Field({
-    id,
-    label,
-    hint,
-    error,
-    children,
-}: {
-    id: string;
-    label: string;
-    hint?: string;
-    error?: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <div className="flex flex-col gap-1.5">
-            <label
-                htmlFor={id}
-                className="flex items-baseline justify-between gap-3"
-            >
-                <span className="text-foreground/85 font-quote text-[15px] italic">
-                    {label}
-                </span>
-                {hint && (
-                    <span className="text-muted-foreground/70 font-body text-[11px] tracking-wider uppercase">
-                        {hint}
-                    </span>
-                )}
-            </label>
-            {children}
-            {error && (
-                <p
-                    role="alert"
-                    className="text-destructive flex items-center gap-1.5 font-body text-[12.5px] font-bold"
-                >
-                    <FaCircleExclamation size={13} /> {error}
-                </p>
-            )}
-        </div>
-    );
-}
-
-const inputBase =
-    "w-full rounded-lg border-2 bg-popover px-3.5 py-2.5 font-body text-[15px] text-foreground placeholder:text-muted-foreground/55 transition-colors duration-200 focus:outline-none focus:border-primary";
-
-function TextInput({
-    id,
-    error,
-    ...rest
-}: { id: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-    return (
-        <input
-            id={id}
-            aria-invalid={!!error}
-            className={`${inputBase} ${error ? "border-destructive/70" : "border-border"}`}
-            {...rest}
-        />
-    );
-}
-
-function PasswordInput({
-    id,
-    error,
-    ...rest
-}: { id: string; error?: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-    const [show, setShow] = useState(false);
-    return (
-        <div className="relative">
-            <input
-                id={id}
-                type={show ? "text" : "password"}
-                aria-invalid={!!error}
-                className={`${inputBase} pr-11 ${error ? "border-destructive/70" : "border-border"}`}
-                {...rest}
-            />
-            <button
-                type="button"
-                onClick={() => setShow((v) => !v)}
-                aria-label={
-                    show ? "Masquer le mot de passe" : "Afficher le mot de passe"
-                }
-                title={show ? "Masquer" : "Afficher"}
-                className="text-muted-foreground hover:text-primary absolute top-1/2 right-1.5 grid h-8 w-8 -translate-y-1/2 place-items-center rounded-md transition-colors focus:outline-none"
-            >
-                {show ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
-            </button>
-        </div>
-    );
-}
-
-// — Validation —
-const validateInfos = ({ name, bio }: { name: string; bio: string }) => {
-    const n = name.trim();
-    const e: { name?: string; bio?: string } = {};
-    if (n.length === 0) e.name = "Le nom d'utilisateur est requis.";
-    else if (n.length < 2) e.name = "Le nom doit comporter au moins 2 caractères.";
-    else if (n.length > 100) e.name = "100 caractères maximum.";
-    if (bio.length > 300) e.bio = "La bio ne doit pas dépasser 300 caractères.";
-    return e;
-};
-const validateSecurity = ({
-    current,
-    newpw,
-    confirm,
-}: {
-    current: string;
-    newpw: string;
-    confirm: string;
-}) => {
-    const e: { current?: string; newpw?: string; confirm?: string } = {};
-    if (!current) e.current = "Saisissez votre mot de passe actuel.";
-    if (newpw.length < 8) e.newpw = "8 caractères minimum.";
-    if (confirm !== newpw) e.confirm = "Les mots de passe ne correspondent pas.";
-    return e;
-};
 
 export default function EditProfileModal({
     user,
