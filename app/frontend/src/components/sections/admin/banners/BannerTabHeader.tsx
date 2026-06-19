@@ -5,7 +5,7 @@ export default function BannerTabHeader({ active }: { active: boolean }) {
     return (
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-primary/40 bg-gradient-to-b from-primary/15 to-transparent text-primary">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border-2 border-primary/40 bg-linear-to-b from-primary/15 to-transparent text-primary">
                     <LuMegaphone size={20} />
                 </span>
                 <div>

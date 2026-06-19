@@ -173,7 +173,7 @@ export default function UserLibrary() {
             </header>
 
             {/* ── BARRE DE CONTRÔLE ── */}
-            <div className="border-border sticky top-0 z-30 -mx-4 border-y bg-[hsl(20_3%_17%/0.86)] px-4 py-4 backdrop-blur sm:mx-0 sm:rounded-xl sm:border-2 sm:px-5">
+            <div className="border-border sticky top-0 z-30 -mx-4 border-y bg-[hsl(20_3%_17%/0.86)] px-4 py-4 backdrop-blur-sm sm:mx-0 sm:rounded-xl sm:border-2 sm:px-5">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                     <StatusFilterSegments
                         selectedStatus={selectedStatus}

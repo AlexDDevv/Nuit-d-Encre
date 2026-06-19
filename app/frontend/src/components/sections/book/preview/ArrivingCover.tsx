@@ -11,7 +11,7 @@ function AbsentCover({ title, source }: { title: string; source: string }) {
             }}
         >
             <div
-                className="pointer-events-none absolute rounded"
+                className="pointer-events-none absolute rounded-sm"
                 style={{ inset: 14, border: "1px dashed hsl(43 59% 81% / 0.22)" }}
             />
             <span
@@ -65,7 +65,7 @@ function AccessionStamp({ short, code }: { short: string; code: string }) {
                 </span>
                 <span className="h-px w-full" style={{ background: "hsl(43 59% 81% / 0.35)" }} />
                 <span
-                    className="font-mono text-xxxs tracking-[0.1em]"
+                    className="font-mono text-xxxs tracking-widest"
                     style={{ color: "hsl(43 59% 81% / 0.5)" }}
                 >
                     Nº&nbsp;{code}
@@ -82,19 +82,18 @@ export function ArrivingCover({ book }: { book: BookSearchResult }) {
     return (
         <div className="relative" style={{ perspective: 1000 }}>
             <div
-                className="pointer-events-none absolute -inset-6 rounded-[28px]"
+                className="pointer-events-none absolute -inset-6 rounded-3xl opacity-45"
                 style={{
                     background:
                         "radial-gradient(60% 55% at 50% 38%, hsl(43 59% 81% / 0.12), transparent 70%)",
-                    opacity: 0.45,
                 }}
             />
             <div
-                className="relative mx-auto w-full max-w-[300px]"
+                className="relative mx-auto w-full max-w-75"
                 style={{ transform: "rotate(-2.4deg)" }}
             >
                 <div
-                    className="bg-background relative aspect-[2/3] overflow-hidden rounded-md"
+                    className="bg-background relative aspect-2/3 overflow-hidden rounded-md"
                     style={{
                         border: "2px dashed hsl(43 59% 81% / 0.4)",
                         boxShadow: "0 26px 55px -20px hsl(20 3% 3% / 0.95)",
@@ -119,7 +118,7 @@ export function ArrivingCover({ book }: { book: BookSearchResult }) {
                         }}
                     />
                     <span
-                        className="pointer-events-none absolute left-0 top-0 h-full w-[5px]"
+                        className="pointer-events-none absolute left-0 top-0 h-full w-1.25"
                         style={{ background: "hsl(20 3% 6% / 0.4)" }}
                     />
 

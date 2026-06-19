@@ -248,7 +248,7 @@ export default function AuthorDetails() {
                     </div>
 
                     {/* biographie tronquée + lire la suite */}
-                    <div className="relative max-w-[54ch]">
+                    <div className="relative max-w-125">
                         <FaQuoteLeft
                             size={18}
                             className="text-primary absolute -left-1 -top-1 opacity-40"
@@ -262,7 +262,7 @@ export default function AuthorDetails() {
                                 {isExcerpt && (
                                     <a
                                         href="#biography"
-                                        className="text-primary hover:text-foreground focus-visible:ring-ring rounded font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                        className="text-primary hover:text-foreground focus-visible:ring-ring rounded-sm font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
                                     >
                                         Lire la suite
                                     </a>

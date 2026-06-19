@@ -46,7 +46,7 @@ export default function ProfileActivity({
                     </p>
                 ) : (
                     <div className="relative">
-                        <span className="bg-border absolute top-1 bottom-1 left-[19px] w-px" />
+                        <span className="bg-border absolute top-1 bottom-1 left-5 w-px" />
                         <ul className="flex flex-col gap-5">
                             {events.map((ev, i) => {
                                 const { label, kind } = describeAction(ev);

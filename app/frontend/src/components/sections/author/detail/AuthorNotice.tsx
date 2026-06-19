@@ -17,7 +17,7 @@ export default function AuthorNotice({ author }: { author: Author }) {
     const country = getCountryLabel(author.nationality);
     const worksCount = author.books?.length ?? 0;
     const gold =
-        "text-primary rounded underline decoration-dotted underline-offset-2 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+        "text-primary rounded-sm underline decoration-dotted underline-offset-2 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 
     return (
         <NoticePanel title="Informations">

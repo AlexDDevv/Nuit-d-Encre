@@ -103,7 +103,7 @@ export function DataTable<T extends { id: string }>({
                                             className={cn(
                                                 "px-4 py-3 align-middle",
                                                 c.tdClass ??
-                                                    "font-body text-sm text-foreground/90",
+                                                "font-body text-sm text-foreground/90",
                                             )}
                                         >
                                             {c.cell(row)}
@@ -142,7 +142,7 @@ export function DataTable<T extends { id: string }>({
                         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
                             {rest.map((c) => (
                                 <Fragment key={c.key}>
-                                    <dt className="font-body text-xs font-bold uppercase tracking-[0.1em] text-muted-foreground/70">
+                                    <dt className="font-body text-xs font-bold uppercase tracking-widest text-muted-foreground/70">
                                         {c.header}
                                     </dt>
                                     <dd className="text-right font-body text-sm text-foreground/90">

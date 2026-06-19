@@ -34,7 +34,7 @@ function Cover({ fav, rank }: { fav: UserBook; rank: number }) {
                 author={author}
                 className="absolute inset-0 h-full w-full"
             />
-            <span className="border-primary/25 pointer-events-none absolute inset-1.5 rounded border" />
+            <span className="border-primary/25 pointer-events-none absolute inset-1.5 rounded-sm border" />
             <span className="border-primary/70 bg-background/80 text-primary absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full border-2 font-title text-sm font-black">
                 {rank}
             </span>

@@ -41,7 +41,7 @@ export function SkeletonRows({ rows = 6, cols = 5 }: { rows?: number; cols?: num
                     {Array.from({ length: cols - 1 }).map((_, c) => (
                         <Skeleton
                             key={c}
-                            className="h-3.5 rounded"
+                            className="h-3.5 rounded-sm"
                             style={{ width: `${widths[c % 4]}%` }}
                         />
                     ))}

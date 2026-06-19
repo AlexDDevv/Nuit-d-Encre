@@ -51,7 +51,7 @@ function BannerActionButton({
             {action.label}
             {action.xp != null && (
                 <span
-                    className="rounded-full px-2 py-[1px] font-mono text-xxs font-medium"
+                    className="rounded-full px-2 py-px font-mono text-xxs font-medium"
                     style={{
                         background: gold
                             ? "hsl(43 59% 21% / 0.18)"
@@ -145,7 +145,7 @@ const Banner = ({
         >
             <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 w-[3px]"
+                className="pointer-events-none absolute inset-y-0 left-0 w-0.75"
                 style={{
                     background: `linear-gradient(180deg, transparent, ${v.accent}, transparent)`,
                     opacity: v.gold ? 0.9 : 0.55,

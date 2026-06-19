@@ -20,14 +20,14 @@ export function Ornament({
         >
             <span
                 className={cn(
-                    "h-px bg-gradient-to-r from-transparent to-primary/55",
+                    "h-px bg-linear-to-r from-transparent to-primary/55",
                     width,
                 )}
             />
             <span className="rotate-45 text-xxxs leading-none">◆</span>
             <span
                 className={cn(
-                    "h-px bg-gradient-to-l from-transparent to-primary/55",
+                    "h-px bg-linear-to-l from-transparent to-primary/55",
                     width,
                 )}
             />
@@ -35,7 +35,7 @@ export function Ornament({
     );
 }
 
-const CHIP_TEXT = "px-2.5 py-0.5 text-xs font-bold uppercase tracking-[0.1em]";
+const CHIP_TEXT = "px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest";
 
 const ROLE_META: Record<
     UserRole,

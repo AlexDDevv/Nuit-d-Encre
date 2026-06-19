@@ -77,14 +77,14 @@ export function Ornament({
         >
             <span
                 className={cn(
-                    "to-primary/55 h-px bg-gradient-to-r from-transparent",
+                    "to-primary/55 h-px bg-linear-to-r from-transparent",
                     width,
                 )}
             />
             <span className="rotate-45 text-xxxs leading-none">◆</span>
             <span
                 className={cn(
-                    "to-primary/55 h-px bg-gradient-to-l from-transparent",
+                    "to-primary/55 h-px bg-linear-to-l from-transparent",
                     width,
                 )}
             />
@@ -119,7 +119,7 @@ export function SectionHeading({
 export function MoonMedallion({ size = 36 }: { size?: number }) {
     return (
         <span
-            className="border-primary/55 text-primary grid shrink-0 place-items-center rounded-full border-2 bg-gradient-to-b from-[hsl(43_59%_81%/0.25)] to-transparent shadow-[0_0_18px_-3px_hsl(43_59%_70%/0.55)]"
+            className="border-primary/55 text-primary grid shrink-0 place-items-center rounded-full border-2 bg-linear-to-b from-[hsl(43_59%_81%/0.25)] to-transparent shadow-[0_0_18px_-3px_hsl(43_59%_70%/0.55)]"
             style={{ width: size, height: size }}
         >
             <FaMoon size={size * 0.45} />

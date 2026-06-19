@@ -153,11 +153,11 @@ export default function EditProfileModal({
         bioLen > 300
             ? "text-destructive"
             : bioLen > 270
-              ? "text-warning-medium"
-              : "text-muted-foreground/70";
+                ? "text-warning-medium"
+                : "text-muted-foreground/70";
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-end justify-center sm:items-center">
+        <div className="fixed inset-0 z-60 flex items-end justify-center sm:items-center">
             <div
                 className="overlay-in bg-background/70 absolute inset-0 backdrop-blur-sm"
                 onClick={close}
@@ -169,7 +169,7 @@ export default function EditProfileModal({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="edit-modal-title"
-                className="modal-in border-border bg-popover grain relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)] sm:max-h-[90vh] sm:w-[520px] sm:rounded-2xl"
+                className="modal-in border-border bg-popover grain relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)] sm:max-h-[90vh] sm:w-130 sm:rounded-2xl"
             >
                 {/* En-tête */}
                 <div className="border-border/70 relative shrink-0 border-b-2 px-5 pt-5 pb-4 md:px-7">
@@ -249,11 +249,10 @@ export default function EditProfileModal({
                                                 bio: true,
                                             }))
                                         }
-                                        className={`bg-popover text-foreground/90 placeholder:text-muted-foreground/55 focus:border-primary w-full resize-none rounded-lg border-2 px-3.5 py-3 font-quote text-base leading-relaxed italic transition-colors duration-200 placeholder:not-italic focus:outline-none ${
-                                            showI("bio") && errInfos.bio
+                                        className={`bg-popover text-foreground/90 placeholder:text-muted-foreground/55 focus:border-primary w-full resize-none rounded-lg border-2 px-3.5 py-3 font-quote text-base leading-relaxed italic transition-colors duration-200 placeholder:not-italic focus:outline-none ${showI("bio") && errInfos.bio
                                                 ? "border-destructive/70"
                                                 : "border-border"
-                                        }`}
+                                            }`}
                                     />
                                     <span
                                         className={`pointer-events-none absolute right-3 bottom-2.5 font-title text-xs font-bold ${bioTone}`}

@@ -173,7 +173,7 @@ const TabsTriggerComponent: React.FC<TabsTriggerProps> = ({
       {children}
       <span
         className={cn(
-          'absolute inset-x-2 -bottom-0.5 h-[3px] rounded-full transition-all duration-200',
+          'absolute inset-x-2 -bottom-0.5 h-0.75 rounded-full transition-all duration-200',
           isActive
             ? 'bg-primary shadow-[0_0_12px_hsl(43_59%_70%/0.6)]'
             : 'bg-transparent',

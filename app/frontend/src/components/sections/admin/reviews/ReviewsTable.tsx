@@ -35,9 +35,8 @@ export default function ReviewsTable({
                 ].map((h, i) => (
                     <span
                         key={h}
-                        className={`font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground ${
-                            i === 6 ? "text-right" : ""
-                        }`}
+                        className={`font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground ${i === 6 ? "text-right" : ""
+                            }`}
                     >
                         {h}
                     </span>
@@ -117,9 +116,8 @@ export default function ReviewsTable({
                                     <StatusChip />
                                 </div>
                                 <p
-                                    className={`font-body text-sm italic text-muted-foreground/90 ${
-                                        open ? "" : "line-clamp-2"
-                                    }`}
+                                    className={`font-body text-sm italic text-muted-foreground/90 ${open ? "" : "line-clamp-2"
+                                        }`}
                                 >
                                     {r.reviewText || "—"}
                                 </p>
@@ -152,7 +150,7 @@ export default function ReviewsTable({
                                             “
                                         </span>
                                         <div>
-                                            <p className="font-quote text-base italic leading-relaxed text-foreground/90 [text-wrap:pretty]">
+                                            <p className="font-quote text-base italic leading-relaxed text-foreground/90 text-pretty">
                                                 {r.reviewText}
                                             </p>
                                             <p className="mt-2 font-body text-xs text-muted-foreground">

@@ -156,14 +156,14 @@ export default function FavoriteBookModal({
         selectedRank !== favoriteRank;
     const displaced =
         selectedRank != null &&
-        slots[selectedRank] &&
-        slots[selectedRank]!.userBookId !== userBookId
+            slots[selectedRank] &&
+            slots[selectedRank]!.userBookId !== userBookId
             ? slots[selectedRank]!.title
             : null;
 
     return (
         <div
-            className="fixed inset-0 z-[70] flex items-start justify-center overflow-y-auto bg-[hsl(20_3%_7%/0.78)] px-4 py-8 backdrop-blur-[3px] sm:items-center sm:py-10"
+            className="fixed inset-0 z-70 flex items-start justify-center overflow-y-auto bg-[hsl(20_3%_7%/0.78)] px-4 py-8 backdrop-blur-[3px] sm:items-center sm:py-10"
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
@@ -174,7 +174,7 @@ export default function FavoriteBookModal({
                 aria-modal="true"
                 aria-labelledby="fav-title"
                 aria-describedby="fav-sub"
-                className="border-primary/40 relative w-full max-w-135 rounded-2xl border-2 bg-[hsl(20_3%_16%)] shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
+                className="border-primary/40 relative w-full max-w-135 rounded-2xl border-2 bg-popover shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
             >
                 {/* fermeture */}
                 <button
@@ -216,7 +216,7 @@ export default function FavoriteBookModal({
                     <FavoriteBookReminder book={book} />
 
                     {/* podium */}
-                    <div className="mt-7 rounded-xl border border-[hsl(0_0%_24%)] bg-[radial-gradient(120%_90%_at_50%_0%,hsl(43_18%_17%/0.55),hsl(20_3%_15%/0.2)_70%)] px-3 pb-3 pt-2 sm:px-5">
+                    <div className="mt-7 rounded-xl border border-border bg-[radial-gradient(120%_90%_at_50%_0%,hsl(43_18%_17%/0.55),hsl(20_3%_15%/0.2)_70%)] px-3 pb-3 pt-2 sm:px-5">
                         <div className="flex items-end justify-center gap-3 sm:gap-4">
                             {([2, 1, 3] as Rank[]).map((rank) => (
                                 <div
@@ -265,7 +265,7 @@ export default function FavoriteBookModal({
                             type="button"
                             onClick={handleValidate}
                             disabled={loading || !changed}
-                            className="bg-primary text-primary-foreground focus-visible:ring-primary focus-visible:ring-offset-[hsl(20_3%_16%)] inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 font-body text-sm font-bold shadow-[0_14px_32px_-14px_hsl(43_59%_60%/0.6)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                            className="bg-primary text-primary-foreground focus-visible:ring-primary inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 font-body text-sm font-bold shadow-[0_14px_32px_-14px_hsl(43_59%_60%/0.6)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-offset-popover"
                         >
                             <FaCheck size={14} aria-hidden="true" />
                             {loading ? "Validation…" : "Valider"}

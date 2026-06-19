@@ -80,7 +80,7 @@ export default function BannerPreviewPanel({
                             className="shrink-0 text-primary/65"
                         />
                         <span>Le bouton redirige vers&nbsp;</span>
-                        <code className="truncate rounded bg-background/70 px-1.5 py-0.5 font-mono text-xs text-foreground/85">
+                        <code className="truncate rounded-sm bg-background/70 px-1.5 py-0.5 font-mono text-xs text-foreground/85">
                             {draft.actionTarget}
                         </code>
                     </div>
@@ -98,7 +98,7 @@ export default function BannerPreviewPanel({
                         {saved.length}
                     </span>
                 </div>
-                <div className="flex max-h-[460px] flex-col gap-2.5 overflow-y-auto p-3">
+                <div className="flex max-h-115 flex-col gap-2.5 overflow-y-auto p-3">
                     {saved.map((item) => (
                         <SavedBannerRow
                             key={item.id}

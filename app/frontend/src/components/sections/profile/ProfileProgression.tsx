@@ -14,7 +14,7 @@ function LevelMedallion({ level, pct }: { level: number; pct: number }) {
     }, [pct]);
 
     return (
-        <div className="relative grid h-[148px] w-[148px] shrink-0 place-items-center">
+        <div className="relative grid h-37 w-37 shrink-0 place-items-center">
             <svg
                 width="148"
                 height="148"
@@ -73,7 +73,7 @@ function XpBar({ pct }: { pct: number }) {
     return (
         <div className="xp-shimmer border-border bg-muted/70 relative h-3.5 w-full overflow-hidden rounded-full border">
             <div
-                className="h-full rounded-full bg-gradient-to-r from-[hsl(38_45%_55%)] via-[hsl(43_60%_78%)] to-[hsl(43_64%_84%)] shadow-[0_0_14px_-1px_hsl(43_59%_70%/0.7)]"
+                className="h-full rounded-full bg-linear-to-r from-[hsl(38_45%_55%)] via-[hsl(43_60%_78%)] to-[hsl(43_64%_84%)] shadow-[0_0_14px_-1px_hsl(43_59%_70%/0.7)]"
                 style={{
                     width: `${w * 100}%`,
                     transition: "width 1.4s cubic-bezier(.2,.8,.2,1)",
@@ -86,20 +86,20 @@ function XpBar({ pct }: { pct: number }) {
 function TitleFrieze({ level }: { level: number }) {
     return (
         <div className="no-scrollbar -mx-1 overflow-x-auto px-1 pt-9 pb-7">
-            <div className="flex w-full min-w-[560px] items-start">
+            <div className="flex w-full min-w-140 items-start">
                 {TITLES.map((t, i) => {
                     const status =
                         t.level < level
                             ? "past"
                             : t.level === level
-                              ? "current"
-                              : "future";
+                                ? "current"
+                                : "future";
                     const dot =
                         status === "current"
                             ? "h-5 w-5 bg-primary border-primary node-glow"
                             : status === "past"
-                              ? "h-3 w-3 bg-primary/70 border-primary/70"
-                              : "h-3 w-3 bg-transparent border-border";
+                                ? "h-3 w-3 bg-primary/70 border-primary/70"
+                                : "h-3 w-3 bg-transparent border-border";
                     return (
                         <div
                             key={t.level}
@@ -107,31 +107,29 @@ function TitleFrieze({ level }: { level: number }) {
                         >
                             {i > 0 && (
                                 <span
-                                    className={`absolute top-[8px] left-[-50%] h-px w-full ${
-                                        t.level <= level
+                                    className={`absolute top-2 left-1/2 h-px w-full ${t.level <= level
                                             ? "bg-primary/55"
                                             : "bg-border"
-                                    }`}
+                                        }`}
                                 />
                             )}
                             <span
                                 className={`relative z-10 mt-0.5 grid place-items-center rounded-full border-2 transition-all ${dot}`}
                             >
                                 {status === "current" && (
-                                    <span className="h-1.5 w-1.5 rounded-full bg-[hsl(43_59%_21%)]" />
+                                    <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
                                 )}
                             </span>
                             <span
-                                className={`mt-2 text-xs font-bold ${
-                                    status === "future"
+                                className={`mt-2 text-xs font-bold ${status === "future"
                                         ? "text-muted-foreground/55"
                                         : "text-primary/80"
-                                }`}
+                                    }`}
                             >
                                 {t.level}
                             </span>
                             {status === "current" && (
-                                <span className="text-foreground/90 mt-0.5 max-w-[74px] text-center font-quote text-xs leading-tight italic">
+                                <span className="text-foreground/90 mt-0.5 max-w-18.5 text-center font-quote text-xs leading-tight italic">
                                     {t.label}
                                 </span>
                             )}

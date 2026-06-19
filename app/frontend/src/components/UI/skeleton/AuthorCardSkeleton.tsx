@@ -13,7 +13,7 @@ export default function AuthorCardSkeleton() {
                     className="border-border bg-card flex w-64 flex-col items-center gap-3.5 rounded-xl border-2 px-5 pb-5 pt-7"
                 >
                     {/* monogramme */}
-                    <Skeleton className="h-[86px] w-[86px] rounded-full" />
+                    <Skeleton className="h-21.5 w-21.5 rounded-full" />
                     {/* nom + métadonnées */}
                     <div className="flex w-full flex-col items-center gap-2">
                         <Skeleton className="h-5 w-40" />

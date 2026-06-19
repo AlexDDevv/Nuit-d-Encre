@@ -84,7 +84,7 @@ export function PreviewDetails({
             </div>
 
             {book.description && (
-                <div className="relative mt-6 max-w-[52ch]">
+                <div className="relative mt-6 max-w-125">
                     <Glyph
                         name="quote"
                         size={22}

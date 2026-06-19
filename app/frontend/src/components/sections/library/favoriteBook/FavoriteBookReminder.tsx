@@ -10,12 +10,12 @@ export default function FavoriteBookReminder({
     const author = `${book.author.firstname} ${book.author.lastname}`;
 
     return (
-        <div className="mx-auto mt-6 flex max-w-sm items-center gap-3.5 rounded-xl border border-[hsl(0_0%_24%)] bg-[hsl(20_3%_14%/0.6)] px-3.5 py-3">
+        <div className="mx-auto mt-6 flex max-w-sm items-center gap-3.5 rounded-xl border border-border bg-[hsl(20_3%_14%/0.6)] px-3.5 py-3">
             <BookCover
                 coverUrl={book.coverUrl}
                 title={book.title}
                 author={author}
-                className="aspect-2/3 w-15 shrink-0 rounded-md border border-[hsl(0_0%_24%)] shadow-[0_10px_22px_-10px_hsl(20_3%_3%/0.9)] sm:w-17"
+                className="aspect-2/3 w-15 shrink-0 rounded-md border border-border shadow-[0_10px_22px_-10px_hsl(20_3%_3%/0.9)] sm:w-17"
             />
             <div className="min-w-0 flex-1">
                 <p className="text-primary/55 font-mono text-xxs uppercase tracking-[0.18em]">

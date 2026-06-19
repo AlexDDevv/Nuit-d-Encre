@@ -24,7 +24,7 @@ export function SealEmblem() {
         >
             <span className="seal-glow absolute inset-0 rounded-full" />
 
-            <span className="absolute left-1/2 top-[-9px] z-20 -translate-x-1/2">
+            <span className="absolute left-1/2 -top-2.25 z-20 -translate-x-1/2">
                 <span
                     className="candle block"
                     style={{
@@ -132,30 +132,30 @@ export function AuthButton({
 
     const base: React.CSSProperties = isPrimary
         ? {
-              background: GOLD,
-              color: GOLD_FG,
-              border: "2px solid transparent",
-              boxShadow: "0 12px 26px -14px hsl(43 59% 60% / 0.85)",
-          }
+            background: GOLD,
+            color: GOLD_FG,
+            border: "2px solid transparent",
+            boxShadow: "0 12px 26px -14px hsl(43 59% 60% / 0.85)",
+        }
         : {
-              background: "transparent",
-              color: "hsl(43 30% 85%)",
-              border: "2px solid hsl(43 30% 38%)",
-              boxShadow: "none",
-          };
+            background: "transparent",
+            color: "hsl(43 30% 85%)",
+            border: "2px solid hsl(43 30% 38%)",
+            boxShadow: "none",
+        };
     const hover: React.CSSProperties = isPrimary
         ? {
-              background: "transparent",
-              color: GOLD,
-              border: `2px solid ${GOLD}`,
-              boxShadow: "none",
-          }
+            background: "transparent",
+            color: GOLD,
+            border: `2px solid ${GOLD}`,
+            boxShadow: "none",
+        }
         : {
-              background: "hsl(43 30% 25%)",
-              color: "hsl(43 30% 92%)",
-              border: "2px solid hsl(43 30% 38%)",
-              boxShadow: "none",
-          };
+            background: "hsl(43 30% 25%)",
+            color: "hsl(43 30% 92%)",
+            border: "2px solid hsl(43 30% 38%)",
+            boxShadow: "none",
+        };
     const apply = (el: HTMLElement, style: React.CSSProperties) =>
         Object.assign(el.style, style);
 
@@ -203,9 +203,8 @@ export default function SealedAccessCard({
                 role="dialog"
                 aria-modal="false"
                 aria-labelledby={titleId}
-                className="fade-up relative w-full overflow-hidden rounded-2xl border-2 px-7 pb-8 pt-10 text-center sm:px-9"
+                className="fade-up relative w-full overflow-hidden rounded-2xl border-2 px-7 pb-8 pt-10 text-center max-w-md sm:px-9"
                 style={{
-                    maxWidth: "28rem",
                     borderColor: "hsl(43 59% 81% / 0.28)",
                     background:
                         "radial-gradient(120% 80% at 50% -10%, hsl(43 30% 22% / 0.4), hsl(20 3% 16%) 60%)",
@@ -250,7 +249,7 @@ export default function SealedAccessCard({
                 />
 
                 <p
-                    className="font-quote mx-auto mt-4 max-w-[32ch] text-base leading-relaxed"
+                    className="font-quote mx-auto mt-4 max-w-62.5 text-base leading-relaxed"
                     style={{ color: "hsl(20 12% 76%)" }}
                 >
                     {description}

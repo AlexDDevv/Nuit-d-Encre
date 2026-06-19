@@ -94,7 +94,7 @@ export default function FavoriteBookPicker({
                                 title={ub.book.title}
                                 author={`${ub.book.author.firstname} ${ub.book.author.lastname}`}
                                 compact
-                                className="border-border h-14 w-10 shrink-0 rounded border"
+                                className="border-border h-14 w-10 shrink-0 rounded-sm border"
                             />
                             <div className="min-w-0">
                                 <p className="text-foreground truncate text-sm font-medium">

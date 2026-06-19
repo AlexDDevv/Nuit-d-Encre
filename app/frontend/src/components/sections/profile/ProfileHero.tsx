@@ -111,7 +111,7 @@ export default function ProfileHero({
                         <div className="grain absolute inset-0 opacity-50" />
                     </>
                 )}
-                <div className="via-primary/45 absolute inset-x-0 bottom-0 z-10 h-px bg-gradient-to-r from-transparent to-transparent" />
+                <div className="via-primary/45 absolute inset-x-0 bottom-0 z-10 h-px bg-linear-to-r from-transparent to-transparent" />
 
                 {isOwner && busy !== "banner" && (
                     <div className="absolute top-3 right-3 z-10 flex items-center gap-2 opacity-0 transition-opacity duration-200 group-hover/banner:opacity-100 focus-within:opacity-100">
@@ -164,7 +164,7 @@ export default function ProfileHero({
                                     className="h-full w-full object-cover"
                                 />
                             ) : (
-                                <div className="grid h-full w-full place-items-center bg-gradient-to-br from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] font-title text-3xl font-black text-[hsl(43_59%_21%)] md:text-4xl">
+                                <div className="grid h-full w-full place-items-center bg-linear-to-br from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] font-title text-3xl font-black text-primary-foreground md:text-4xl">
                                     {initials(user.userName)}
                                 </div>
                             )}

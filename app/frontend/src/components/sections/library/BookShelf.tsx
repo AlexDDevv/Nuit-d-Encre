@@ -97,7 +97,7 @@ export default function BookShelf({
                         {/* favori */}
                         {isFavorite && (
                             <span
-                                className="bg-primary text-primary-foreground absolute right-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-xxs font-medium shadow"
+                                className="bg-primary text-primary-foreground absolute right-1.5 top-1.5 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-xxs font-medium shadow-sm"
                                 title={`Favori · rang ${favoriteRank}`}
                             >
                                 <FaStar size={10} aria-hidden="true" />{" "}

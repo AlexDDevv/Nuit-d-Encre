@@ -18,7 +18,7 @@ export default function RecentBooks({
                         key={b.id}
                         className="flex items-center gap-3.5 px-5 py-3 transition-colors hover:bg-muted/25"
                     >
-                        <span className="grid h-11 w-8 shrink-0 place-items-center rounded border-2 border-border bg-gradient-to-b from-secondary/30 to-popover text-xxs text-primary/55">
+                        <span className="grid h-11 w-8 shrink-0 place-items-center rounded-sm border-2 border-border bg-linear-to-b from-secondary/30 to-popover text-xxs text-primary/55">
                             ◆
                         </span>
                         <div className="min-w-0 flex-1">

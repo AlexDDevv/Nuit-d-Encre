@@ -228,7 +228,7 @@ export function SavedBannerRow({
             <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                     <span
-                        className="rounded-full border px-2 py-px font-body text-xxs font-bold uppercase tracking-[0.1em]"
+                        className="rounded-full border px-2 py-px font-body text-xxs font-bold uppercase tracking-widest"
                         style={{
                             borderColor: v.border,
                             color: v.accent,
@@ -238,7 +238,7 @@ export function SavedBannerRow({
                         {meta.label}
                     </span>
                     {isActive && (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-primary/45 bg-primary/12 px-2 py-px font-body text-xxs font-bold uppercase tracking-[0.1em] text-primary">
+                        <span className="inline-flex items-center gap-1 rounded-full border border-primary/45 bg-primary/12 px-2 py-px font-body text-xxs font-bold uppercase tracking-widest text-primary">
                             <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />{" "}
                             En ligne
                         </span>

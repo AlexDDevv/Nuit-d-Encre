@@ -85,7 +85,7 @@ export default function LibraryGridCard({
                     }
                     title={isFavorite ? `Favori · rang ${favoriteRank}` : "Ajouter aux favoris"}
                     className={cn(
-                        "focus-visible:ring-ring absolute left-2 top-2 z-10 inline-flex cursor-pointer items-center gap-1 rounded-full border px-2 py-[5px] backdrop-blur-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2",
+                        "focus-visible:ring-ring absolute left-2 top-2 z-10 inline-flex cursor-pointer items-center gap-1 rounded-full border px-2 py-1.25 backdrop-blur-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2",
                         isFavorite
                             ? "text-primary-foreground border-primary/40 bg-primary/90"
                             : "text-primary border-primary/35 bg-[hsl(20_3%_9%/0.72)]",
@@ -109,14 +109,14 @@ export default function LibraryGridCard({
             <div className="flex flex-1 flex-col gap-1.5 p-3">
                 <Link
                     to={bookPath}
-                    className="text-foreground hover:text-primary focus-visible:ring-ring font-title line-clamp-2 min-h-[2.6em] rounded text-base font-medium leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    className="text-foreground hover:text-primary focus-visible:ring-ring font-title line-clamp-2 min-h-[2.6em] rounded-sm text-base font-medium leading-snug transition-colors focus-visible:outline-none focus-visible:ring-2"
                     title={book.title}
                 >
                     {book.title}
                 </Link>
                 <Link
                     to={authorPath}
-                    className="text-muted-foreground hover:text-primary focus-visible:ring-ring -mx-1 w-fit rounded px-1 font-body text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    className="text-muted-foreground hover:text-primary focus-visible:ring-ring -mx-1 w-fit rounded-sm px-1 font-body text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
                     aria-label={`Voir l'auteur ${author}`}
                 >
                     {author}

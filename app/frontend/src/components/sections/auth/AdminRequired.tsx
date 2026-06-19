@@ -35,8 +35,7 @@ export default function AdminRequired() {
             <div className="mt-5">
                 <Link
                     to="/library"
-                    className="hover:text-foreground focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded text-xs underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
-                    style={{ color: "hsl(20 12% 68%)" }}
+                    className="hover:text-foreground text-[hsl(20 12% 68%)] focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded-sm text-xs underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
                 >
                     <Icon name="arrowRight" size={12} /> Consulter ma
                     bibliothèque

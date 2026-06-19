@@ -55,7 +55,7 @@ export default function XpJournal({
             meta="10 dernières actions"
         >
             <div className="relative px-5 py-4">
-                <span className="absolute bottom-5 left-[39px] top-5 w-px bg-border" />
+                <span className="absolute bottom-5 left-10 top-5 w-px bg-border" />
                 <ul className="flex flex-col gap-4">
                     {actions.map((ev) => {
                         const Icon = XP_ICON[ev.type] ?? LuBookOpen;

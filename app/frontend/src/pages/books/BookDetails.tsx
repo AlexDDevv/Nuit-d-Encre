@@ -168,7 +168,7 @@ export default function BookDetails() {
                             <Link
                                 to={authorPath}
                                 aria-label={`Voir la fiche de ${author}`}
-                                className="text-foreground hover:text-primary decoration-primary/40 hover:decoration-primary focus-visible:ring-ring rounded font-quote text-lg italic underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                className="text-foreground hover:text-primary decoration-primary/40 hover:decoration-primary focus-visible:ring-ring rounded-sm font-quote text-lg italic underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
                             >
                                 {author}
                             </Link>
@@ -176,7 +176,7 @@ export default function BookDetails() {
                     </div>
 
                     {/* résumé tronqué + lire la suite */}
-                    <div className="relative max-w-[54ch]">
+                    <div className="relative max-w-125">
                         <FaQuoteLeft
                             size={18}
                             className="text-primary absolute -left-1 -top-1 opacity-40"
@@ -189,7 +189,7 @@ export default function BookDetails() {
                             {isExcerpt && (
                                 <a
                                     href="#summary"
-                                    className="text-primary hover:text-foreground focus-visible:ring-ring rounded font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                    className="text-primary hover:text-foreground focus-visible:ring-ring rounded-sm font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
                                 >
                                     Lire la suite
                                 </a>

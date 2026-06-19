@@ -11,7 +11,7 @@ interface XpPillProps {
 export default function XpPill({ amount = 50 }: XpPillProps) {
     return (
         <span
-            className="mx-0.5 inline-flex items-center gap-1 rounded-full px-2 py-[1px] align-middle font-mono text-xs font-medium"
+            className="mx-0.5 inline-flex items-center gap-1 rounded-full px-2 py-px align-middle font-mono text-xs font-medium"
             style={{
                 background: "hsl(43 59% 81% / 0.16)",
                 color: "hsl(43 59% 81%)",
