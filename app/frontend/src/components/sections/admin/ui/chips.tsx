@@ -2,38 +2,8 @@ import { cn } from "@/lib/utils";
 import { Chipset } from "@/components/UI/Chipset";
 import type { UserRole } from "@/types/types";
 
-/** Ornement : filet — losange — filet. */
-export function Ornament({
-    className = "",
-    width = "w-10",
-}: {
-    className?: string;
-    width?: string;
-}) {
-    return (
-        <span
-            className={cn(
-                "inline-flex items-center gap-2 text-primary/55",
-                className,
-            )}
-            aria-hidden="true"
-        >
-            <span
-                className={cn(
-                    "h-px bg-linear-to-r from-transparent to-primary/55",
-                    width,
-                )}
-            />
-            <span className="rotate-45 text-xxxs leading-none">◆</span>
-            <span
-                className={cn(
-                    "h-px bg-linear-to-l from-transparent to-primary/55",
-                    width,
-                )}
-            />
-        </span>
-    );
-}
+/** Ornement signature — réexporté depuis la primitive partagée. */
+export { default as Ornament } from "@/components/sections/shared/Ornament";
 
 const CHIP_TEXT = "px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest";
 

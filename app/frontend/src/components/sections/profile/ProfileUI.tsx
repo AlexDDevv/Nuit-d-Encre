@@ -1,7 +1,10 @@
 import { ReactNode } from "react";
-import { FaMoon } from "react-icons/fa6";
 import { IconType } from "react-icons";
 import { cn } from "@/lib/utils";
+
+// Primitives ornementales mutualisées (réutilisées par profil, admin, legal).
+export { default as Ornament } from "@/components/sections/shared/Ornament";
+export { default as MoonMedallion } from "@/components/sections/shared/MoonMedallion";
 
 /** Carte sombre à liseré, optionnellement réactive au survol (halo doré). */
 export function Card({
@@ -59,39 +62,6 @@ export function Pill({
     );
 }
 
-/** Filet doré centré sur un losange — séparateur ornemental. */
-export function Ornament({
-    width = "w-10",
-    className,
-}: {
-    width?: string;
-    className?: string;
-}) {
-    return (
-        <span
-            className={cn(
-                "text-primary/55 inline-flex items-center gap-2",
-                className,
-            )}
-            aria-hidden="true"
-        >
-            <span
-                className={cn(
-                    "to-primary/55 h-px bg-linear-to-r from-transparent",
-                    width,
-                )}
-            />
-            <span className="rotate-45 text-xxxs leading-none">◆</span>
-            <span
-                className={cn(
-                    "to-primary/55 h-px bg-linear-to-l from-transparent",
-                    width,
-                )}
-            />
-        </span>
-    );
-}
-
 /** En-tête de section : icône dorée + titre en capitales espacées. */
 export function SectionHeading({
     icon: Icon,
@@ -112,17 +82,5 @@ export function SectionHeading({
             </div>
             {right}
         </div>
-    );
-}
-
-/** Médaillon lunaire doré, emblème des titres gamifiés. */
-export function MoonMedallion({ size = 36 }: { size?: number }) {
-    return (
-        <span
-            className="border-primary/55 text-primary grid shrink-0 place-items-center rounded-full border-2 bg-linear-to-b from-[hsl(43_59%_81%/0.25)] to-transparent shadow-[0_0_18px_-3px_hsl(43_59%_70%/0.55)]"
-            style={{ width: size, height: size }}
-        >
-            <FaMoon size={size * 0.45} />
-        </span>
     );
 }
