@@ -1,0 +1,48 @@
+import { ReactNode } from "react";
+import { IconType } from "react-icons";
+
+export type TypeSelectOptions = {
+    value: string;
+    label: string;
+};
+
+export type PaginationProps = {
+    currentPage: number;
+    totalCount: number;
+    perPage: number;
+    onPageChange: (page: number) => void;
+    className?: string;
+};
+
+export interface ErrorLayoutProps {
+    children: ReactNode;
+}
+
+/* ──────────────────────────── Navigation (sidebar) ──────────────────────────── */
+
+export interface SidebarLink {
+    href: string;
+    label: string;
+    icon: IconType;
+    ariaLabel: string;
+}
+
+export interface SidebarHeaderProps {
+    collapsed: boolean;
+    onToggle: () => void;
+}
+
+export interface SidebarFooterProps {
+    collapsed: boolean;
+    isAuthenticated: boolean;
+}
+
+export interface LogoProps {
+    to: string;
+}
+
+export interface SocialLink {
+    icon: IconType;
+    url: string;
+    label: string;
+}
