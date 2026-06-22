@@ -6,4 +6,5 @@ export * from "./book-review";
 export * from "./user-book";
 export * from "./banner";
 export * from "./admin";
+export * from "./stats";
 export * from "./ui";

@@ -37,6 +37,7 @@ const UserLibrary = lazy(() => import("@/pages/UserLibrary"));
 const Admin = lazy(() => import("@/pages/Admin"));
 const UserProfile = lazy(() => import("@/pages/UserProfile"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
+const Contact = lazy(() => import("@/pages/Contact"));
 
 /**
  * Router confirmation
@@ -201,6 +202,14 @@ const router = createBrowserRouter([
                 element: (
                     <Suspense fallback={<Loader />}>
                         <TermsOfUse />
+                    </Suspense>
+                ),
+            },
+            {
+                path: "about",
+                element: (
+                    <Suspense fallback={<Loader />}>
+                        <Contact />
                     </Suspense>
                 ),
             },
