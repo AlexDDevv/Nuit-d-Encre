@@ -1,4 +1,4 @@
-import { GoldLink } from "./ornaments";
+import { GoldLink } from "@/components/sections/shared/ornaments";
 import { FicheRow } from "./types";
 
 // Fiche d'identité — « notice de catalogue » monospace.

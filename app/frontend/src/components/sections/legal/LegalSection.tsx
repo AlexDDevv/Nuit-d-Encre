@@ -1,6 +1,6 @@
 import FicheCatalogue from "./FicheCatalogue";
 import { LEGAL_ICONS } from "./icons";
-import { GoldLink } from "./ornaments";
+import { GoldLink } from "@/components/sections/shared/ornaments";
 import { LegalSection as LegalSectionType } from "./types";
 
 export default function LegalSection({

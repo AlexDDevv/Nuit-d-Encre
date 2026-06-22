@@ -1,6 +1,6 @@
 import MoonMedallion from "@/components/sections/shared/MoonMedallion";
 import Ornament from "@/components/sections/shared/Ornament";
-import { MonoEyebrow } from "./ornaments";
+import { MonoEyebrow } from "@/components/sections/shared/ornaments";
 
 export default function LegalHeader({ lastUpdate }: { lastUpdate: string }) {
     return (

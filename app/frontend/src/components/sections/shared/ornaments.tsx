@@ -2,7 +2,6 @@ import { ReactNode } from "react";
 import { LuExternalLink } from "react-icons/lu";
 import { cn } from "@/lib/utils";
 
-// Séparateur de section — filet doré pleine largeur centré sur un losange.
 export function SectionSeparator() {
     return (
         <div
@@ -18,7 +17,6 @@ export function SectionSeparator() {
     );
 }
 
-// Suréclat monospace en petites capitales.
 export function MonoEyebrow({
     children,
     className = "",
@@ -38,7 +36,6 @@ export function MonoEyebrow({
     );
 }
 
-// Lien doré souligné qui s'illumine.
 export function GoldLink({
     href,
     external = false,
