@@ -23,6 +23,7 @@ import { TitleResolver } from "./graphql/resolvers/gamification/title-resolver";
 import { BookSearchResolver } from "./graphql/resolvers/book/book-search-resolver";
 import { AdminResolver } from "./graphql/resolvers/admin/admin-resolver";
 import { SiteBannersResolver } from "./graphql/resolvers/banner/site-banner-resolver";
+import { StatsResolver } from "./graphql/resolvers/stats/stats-resolver";
 import { createLoaders } from "./graphql/dataloaders";
 import { whoami } from "./services/auth-service";
 import { User } from "./database/entities/user/user";
@@ -73,6 +74,7 @@ if (!process.env.APP_PORT) {
                 BookSearchResolver,
                 AdminResolver,
                 SiteBannersResolver,
+                StatsResolver,
             ],
             validate: true, // Activate validation for input fields
             authChecker: customAuthChecker,
