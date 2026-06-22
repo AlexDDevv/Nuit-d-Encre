@@ -45,4 +45,6 @@ export interface SocialLink {
     icon: IconType;
     url: string;
     label: string;
+    /** Displayed handle (e.g. "@Sport_DevWeb") — used by the Contact page. */
+    handle?: string;
 }

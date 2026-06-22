@@ -1,26 +1,8 @@
-import { LuGithub, LuTwitter, LuLinkedin } from "react-icons/lu";
-import { SidebarFooterProps, SocialLink } from "@/types/types";
+import { SidebarFooterProps } from "@/types/types";
 import { cn } from "@/lib/utils";
+import { SOCIAL_LINKS } from "@/data/socials";
 
 import Button from "@/components/UI/Button";
-
-const SOCIAL_LINKS: SocialLink[] = [
-    {
-        icon: LuGithub,
-        url: "https://github.com/AlexDDevv",
-        label: "GitHub",
-    },
-    {
-        icon: LuTwitter,
-        url: "https://x.com/Sport_DevWeb",
-        label: "Twitter",
-    },
-    {
-        icon: LuLinkedin,
-        url: "https://www.linkedin.com/in/alexis-delporte/",
-        label: "LinkedIn",
-    },
-];
 
 export default function SidebarFooter({ collapsed, isAuthenticated }: SidebarFooterProps) {
     return (
