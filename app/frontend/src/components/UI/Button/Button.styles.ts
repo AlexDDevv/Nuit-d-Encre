@@ -35,6 +35,7 @@ export const variantClasses: Record<ButtonVariant, string> = {
     nav: "justify-start bg-transparent border-none text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-primary rounded-md px-2 py-1.5 text-sm font-[Switzer-regular]",
     layout: "bg-transparent border-none text-accent-foreground [&_svg]:h-7 [&_svg]:w-7 transition-all hover:scale-105 hover:text-foreground focus-visible:ring-primary",
     ghost: "bg-transparent border-none text-primary hover:underline focus:ring-primary disabled:bg-transparent",
+    google: "justify-center rounded-lg border-2 border-primary/45 bg-transparent text-primary tracking-wide transition-all duration-200 hover:-translate-y-px hover:border-primary hover:bg-primary/10 hover:text-primary focus-visible:ring-primary active:bg-primary/15 font-[Switzer-SemiBold]",
     social: "justify-center rounded-sm border border-popover-foreground/50 text-popover-foreground/50 hover:text-popover-foreground hover:border-popover-foreground w-10",
     hamburger:
         "justify-center bg-card border-border text-card-foreground fixed top-5 left-5 z-50 rounded-md border p-2 shadow-md w-10",
@@ -59,6 +60,7 @@ export const IconClasses: Record<ButtonVariant, string> = {
     nav: "",
     layout: "",
     ghost: "",
+    google: "",
     social: "",
     hamburger: "",
     searchResultCard: "",

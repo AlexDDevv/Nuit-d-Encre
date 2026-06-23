@@ -16,6 +16,7 @@ export type ButtonVariant =
     | "nav"
     | "layout"
     | "ghost"
+    | "google"
     | "social"
     | "hamburger"
     | "searchResultCard";
