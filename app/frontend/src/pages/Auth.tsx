@@ -2,46 +2,26 @@ import Signin from "@/components/sections/auth/Signin";
 import Signup from "@/components/sections/auth/Signup";
 import { Link, useLocation } from "react-router-dom";
 
-const routes = [
-    {
-        path: "/connexion",
-        component: <Signin />,
-        label: "Vous n'avez pas encore de compte?",
-        cta: "Inscrivez vous !",
-        ariaLabel: "d'inscription",
-        link: "/register",
-    },
-    {
-        path: "/register",
-        component: <Signup />,
-        label: "Vous avez déjà un compte?",
-        cta: "Connectez vous !",
-        ariaLabel: "de connexion",
-        link: "/connexion",
-    },
-];
-
-// Auth renders Signup or Sign depending on path
+// Auth renders Signup or Signin depending on path
 const Auth = () => {
     const { pathname } = useLocation();
 
-    const currentRoute = routes.find((route) => route.path === pathname);
+    // La page de connexion porte désormais sa propre mise en page
+    // (panneau éditorial + carte d'accès, navigation incluse).
+    if (pathname === "/connexion") return <Signin />;
 
-    if (!currentRoute) return null;
-
-    const { component, label, cta, ariaLabel, link } = currentRoute;
-
+    // Inscription : conserve la mise en page historique le temps de sa refonte.
     return (
         <div className="w-md mx-auto flex flex-col items-center gap-4">
-            {component}
+            <Signup />
             <Link
-                aria-label={`Aller à la page ${ariaLabel}`}
-                to={link}
+                aria-label="Aller à la page de connexion"
+                to="/connexion"
                 className="text-foreground flex items-center gap-2"
             >
-                {label}
+                Vous avez déjà un compte?
                 <span className="text-foreground font-bold hover:underline">
-                    {cta}
+                    Connectez vous !
                 </span>
             </Link>
         </div>

@@ -2,15 +2,17 @@ import { useToast } from "@/hooks/toast/useToast";
 import { UserSignIn } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
-import FormTitle from "@/components/sections/auth/form/FormTitle";
-import FormWrapper from "@/components/UI/form/FormWrapper";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { LuArrowRight } from "react-icons/lu";
 import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
+import EditorialPanel from "@/components/sections/auth/EditorialPanel";
+import Button from "@/components/UI/Button/Button";
 import { Checkbox } from "@/components/UI/Checkbox";
 import { Label } from "@/components/UI/form/Label";
 import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
+import MoonMedallion from "@/components/sections/shared/MoonMedallion";
+import SignatureFooter from "@/components/sections/shared/SignatureFooter";
 import { LOGIN, WHOAMI } from "@/graphql/user/auth";
 
 export default function Signin() {
@@ -89,26 +91,110 @@ export default function Signin() {
     };
 
     return (
-        <div className="flex w-full flex-col items-center gap-10">
-            <FormTitle isSignUp={false} />
-            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-                <InputEmail<UserSignIn> register={register} errors={errors} />
-                <InputPassword<UserSignIn>
-                    register={register}
-                    errors={errors}
-                />
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Checkbox />
-                        <Label htmlFor="rememberMe">Se souvenir de moi</Label>
-                    </div>
-                    <p className="text-card-foreground text-sm font-medium">
-                        Mot de passe oublié?
-                    </p>
+        <div className="animate-fadeIn mx-auto w-full max-w-230">
+            {/* Seuil : panneau éditorial + carte d'accès */}
+            <div className="grid overflow-hidden rounded-[20px] lg:grid-cols-[1fr_minmax(420px,468px)]">
+                <EditorialPanel mode="connexion" />
+
+                <div className="border-border bg-card relative rounded-[18px] border-2 shadow-[0_40px_100px_-40px_hsl(20_30%_4%/0.85),inset_0_1px_0_hsl(43_59%_81%/0.05)] lg:rounded-l-none lg:rounded-r-[18px]">
+                    <div
+                        aria-hidden="true"
+                        className="pointer-events-none absolute inset-0 rounded-[inherit]"
+                        style={{
+                            background:
+                                "radial-gradient(420px 200px at 50% -6%, hsl(43 45% 55% / 0.16), transparent 65%)",
+                        }}
+                    />
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        noValidate
+                        className="relative flex flex-col px-7 py-8 sm:px-9 sm:py-9"
+                    >
+                        {/* En-tête de la carte */}
+                        <div className="flex flex-col items-center text-center">
+                            <MoonMedallion size={64} ring />
+                            <h1 className="font-title text-foreground mt-4 text-3xl font-black leading-none tracking-tight sm:text-4xl">
+                                Nuit d'Encre
+                            </h1>
+                            <p className="font-quote text-muted-foreground mt-2.5 max-w-[34ch] text-pretty text-base italic leading-snug">
+                                La bibliothèque ne dort jamais - entrez.
+                            </p>
+                            <div className="mt-5 inline-flex items-center gap-2.5">
+                                <span className="to-primary/45 bg-linear-to-r h-px w-7 from-transparent" />
+                                <span className="text-primary/80 font-mono text-xs font-semibold uppercase tracking-[0.28em]">
+                                    Connexion
+                                </span>
+                                <span className="to-primary/45 bg-linear-to-l h-px w-7 from-transparent" />
+                            </div>
+                        </div>
+
+                        {/* Champs */}
+                        <div className="mt-6 flex flex-col gap-4">
+                            <InputEmail<UserSignIn>
+                                register={register}
+                                errors={errors}
+                            />
+                            <InputPassword<UserSignIn>
+                                register={register}
+                                errors={errors}
+                            />
+
+                            {/* Se souvenir de moi + mot de passe oublié */}
+                            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2.5">
+                                <div className="flex items-center gap-2.5">
+                                    <Checkbox defaultChecked />
+                                    <Label
+                                        htmlFor="rememberMe"
+                                        className="text-muted-foreground cursor-pointer text-sm font-normal"
+                                    >
+                                        Se souvenir de moi
+                                    </Label>
+                                </div>
+                                <Button
+                                    type="button"
+                                    variant="ghost"
+                                    ariaLabel="Réinitialiser le mot de passe"
+                                    className="decoration-primary/30 hover:decoration-primary h-auto px-0 text-sm font-medium underline underline-offset-[3px]"
+                                >
+                                    Mot de passe oublié ?
+                                </Button>
+                            </div>
+
+                            <div className="mt-1">
+                                <Button
+                                    type="submit"
+                                    variant="primary"
+                                    fullWidth
+                                    ariaLabel="Se connecter à Nuit d'Encre"
+                                    rightIcon={<LuArrowRight size={16} />}
+                                    className="h-12"
+                                >
+                                    Se connecter
+                                </Button>
+                            </div>
+                        </div>
+
+                        {/* Séparateur orné « ou » + bouton Google */}
+                        <ContinueWithGoogle />
+
+                        {/* Navigation vers la page d'inscription */}
+                        <div className="mt-6 flex flex-col items-center gap-2.5 text-center">
+                            <p className="font-quote text-muted-foreground/75 text-sm italic leading-relaxed">
+                                Première veillée parmi nous ? {" "}
+                                <Link
+                                    to="/register"
+                                    className="text-primary decoration-primary/40 focus-visible:ring-primary/70 rounded-sm font-medium not-italic underline underline-offset-[3px] transition-colors hover:text-[hsl(43_70%_88%)] hover:decoration-[hsl(43_59%_81%)] focus:outline-none focus-visible:ring-2"
+                                >
+                                    Créer une carte d'accès
+                                </Link>
+                                .
+                            </p>
+                        </div>
+                    </form>
                 </div>
-                <FormButtonSubmit type="sign-in" />
-                <ContinueWithGoogle />
-            </FormWrapper>
+            </div>
+
+            <SignatureFooter />
         </div>
     );
 }
