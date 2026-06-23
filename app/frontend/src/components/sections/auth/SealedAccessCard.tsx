@@ -1,5 +1,5 @@
 /**
- * @fileoverview Cartouche « accès scellé » partagé — coquille centrée façon
+ * @fileoverview Cartouche « accès scellé » partagé - coquille centrée façon
  * sceau de bibliothèque, réutilisée par les écrans « Authentification requise »
  * et « Accès refusé ». Expose aussi l'emblème et le bouton d'action.
  * @module SealedAccessCard
@@ -12,7 +12,7 @@ const GOLD = "hsl(43 59% 81%)";
 const GOLD_FG = "hsl(43 59% 21%)";
 
 /**
- * Emblème « accès scellé » — médaillon lunaire à la chandelle : bord double
+ * Emblème « accès scellé » - médaillon lunaire à la chandelle : bord double
  * doré, croissant gravé, trou de serrure embossé, flamme qui vacille au sommet.
  */
 export function SealEmblem() {
@@ -114,7 +114,7 @@ export function SealEmblem() {
 }
 
 /**
- * Bouton de cartouche — plein doré qui s'inverse (primaire) ou contour doré
+ * Bouton de cartouche - plein doré qui s'inverse (primaire) ou contour doré
  * atténué qui se remplit (secondaire) au survol. Rendu en `Link`.
  */
 export function AuthButton({
@@ -187,7 +187,7 @@ interface SealedAccessCardProps {
 }
 
 /**
- * SealedAccessCard — coquille du cartouche scellé : coins ornementés, emblème,
+ * SealedAccessCard - coquille du cartouche scellé : coins ornementés, emblème,
  * eyebrow, titre, filet doré, description, puis la région d'actions fournie.
  */
 export default function SealedAccessCard({

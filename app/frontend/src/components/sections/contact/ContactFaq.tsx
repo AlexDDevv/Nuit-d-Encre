@@ -6,7 +6,7 @@ import {
 } from "@/components/UI/Accordion";
 import { FAQ } from "@/data/contact";
 
-/** Contact page FAQ — single-open accordion (first item open by default). */
+/** Contact page FAQ - single-open accordion (first item open by default). */
 export default function ContactFaq() {
     return (
         <div className="grain border-border bg-card/55 relative overflow-hidden rounded-2xl border-2 px-5 md:px-7">

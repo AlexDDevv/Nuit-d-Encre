@@ -21,7 +21,7 @@ export default function IncompleteChip({ className }: IncompleteChipProps) {
                 color: "hsl(25 80% 66%)",
                 border: "1px solid hsl(25 78% 51% / 0.45)",
             }}
-            title="Fiche incomplète — informations manquantes"
+            title="Fiche incomplète - informations manquantes"
         >
             <FaCircleInfo size={11} aria-hidden="true" /> Incomplet
         </span>

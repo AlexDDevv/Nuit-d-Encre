@@ -6,7 +6,7 @@ import NoticePanel, {
     Missing,
 } from "@/components/sections/shared/Notice";
 
-const Dash = () => <span className="text-[hsl(20_12%_50%)]">—</span>;
+const Dash = () => <span className="text-[hsl(20_12%_50%)]">-</span>;
 
 /**
  * Notice monospace « Informations » de la fiche auteur (jumelle de la notice

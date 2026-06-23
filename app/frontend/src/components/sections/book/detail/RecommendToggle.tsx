@@ -9,7 +9,7 @@ type RecommendToggleProps = {
 };
 
 /**
- * Affordance « Je recommande » — rattachée à la veillée des lecteurs (critiques).
+ * Affordance « Je recommande » - rattachée à la veillée des lecteurs (critiques).
  * Toggle doré avec compteur, reprenant la flamme du jeton de statistiques.
  */
 export default function RecommendToggle({

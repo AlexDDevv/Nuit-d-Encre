@@ -16,7 +16,7 @@ const gradient =
 
 /**
  * Couverture de substitution stylée « Nuit d'Encre », affichée quand `coverUrl`
- * est absent. Dégradé sombre/doré, cadre intérieur, titre en serif et plume —
+ * est absent. Dégradé sombre/doré, cadre intérieur, titre en serif et plume -
  * jamais une icône générique de livre.
  */
 export default function FallbackCover({

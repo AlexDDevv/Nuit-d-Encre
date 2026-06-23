@@ -62,7 +62,7 @@ function TocEntry({
     );
 }
 
-// ── Sommaire — colonne sticky (bureau) ──────────────────────────
+// ── Sommaire - colonne sticky (bureau) ──────────────────────────
 export function TocDesktop({ sections, active, onJump }: TocProps) {
     return (
         <nav aria-label="Sommaire" className="sticky top-6">
@@ -89,7 +89,7 @@ export function TocDesktop({ sections, active, onJump }: TocProps) {
     );
 }
 
-// ── Sommaire — accordéon (mobile / sous lg) ─────────────────────
+// ── Sommaire - accordéon (mobile / sous lg) ─────────────────────
 export function TocMobile({ sections, active, onJump }: TocProps) {
     const [open, setOpen] = useState(false);
     const activeSec = sections.find((s) => s.id === active);

@@ -11,7 +11,7 @@ import BookCardMeta from "./BookCardMeta";
 import BookCardRating from "./BookCardRating";
 
 /**
- * Carte livre du catalogue — variante « survol immersif ».
+ * Carte livre du catalogue - variante « survol immersif ».
  * La couverture occupe tout le cadre (ratio 2:3) ; titre et auteur sont en
  * superposition, métadonnées et note se révélant au survol/focus. La carte mène
  * à la fiche du livre, le nom de l'auteur à la fiche auteur.

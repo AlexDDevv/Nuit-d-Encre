@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 type SupportRow = { k: string; v: string; email?: boolean };
 
 /**
- * Support "desk" card — monospace catalogue notice with email copy and a
+ * Support "desk" card - monospace catalogue notice with email copy and a
  * mail-to shortcut.
  */
 export default function SupportCard({
@@ -43,7 +43,7 @@ export default function SupportCard({
             try {
                 document.execCommand("copy");
             } catch {
-                /* clipboard unavailable — ignore */
+                /* clipboard unavailable - ignore */
             }
             document.body.removeChild(ta);
         }

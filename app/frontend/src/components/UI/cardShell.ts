@@ -1,7 +1,7 @@
 /**
  * Coque commune aux cartes cliquables du catalogue (livre, auteur).
  * Bordure discrète qui s'illumine en doré au survol, léger scale, ombre portée
- * et anneau de focus visible doré — fidèle au langage visuel « Nuit d'Encre ».
+ * et anneau de focus visible doré - fidèle au langage visuel « Nuit d'Encre ».
  *
  * Chaque carte compose cette base avec sa mise en page propre via `cn()`.
  */

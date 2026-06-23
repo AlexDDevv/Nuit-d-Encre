@@ -1,7 +1,7 @@
 import { UserAction, UserActionType } from "@/types/types";
 
 /**
- * Catégorie visuelle d'une action — détermine l'icône affichée dans le
+ * Catégorie visuelle d'une action - détermine l'icône affichée dans le
  * journal d'activité (le composant mappe `kind` vers une icône react-icons).
  */
 export type ActivityKind =

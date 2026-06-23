@@ -11,7 +11,7 @@ export const baseClasses =
 
 /**
  * Configuration sémantique par variante. La couleur colore bordure / icône /
- * accent — jamais le fond, qui reste une surface sombre légèrement teintée.
+ * accent - jamais le fond, qui reste une surface sombre légèrement teintée.
  */
 export const variantConfig: Record<BannerVariant, BannerVariantConfig> = {
     info: {

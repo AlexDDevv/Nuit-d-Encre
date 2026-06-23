@@ -2,7 +2,7 @@ import { LuGithub, LuTwitter, LuLinkedin } from "react-icons/lu";
 import { SocialLink } from "@/types/types";
 
 /**
- * "Nuit d'Encre" social links — single source shared by the sidebar footer
+ * "Nuit d'Encre" social links - single source shared by the sidebar footer
  * and the Contact page. Update here to propagate everywhere.
  */
 export const SOCIAL_LINKS: SocialLink[] = [

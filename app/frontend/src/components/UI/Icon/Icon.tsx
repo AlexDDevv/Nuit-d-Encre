@@ -1,5 +1,5 @@
 /**
- * @fileoverview Primitive d'icône en SVG inline (tracés lucide) — évite toute
+ * @fileoverview Primitive d'icône en SVG inline (tracés lucide) - évite toute
  * dépendance à une librairie d'icônes et permet d'animer/teinter librement les
  * glyphes (chandelle, étincelles…) pour le thème « Nuit d'Encre ».
  * @module Icon
@@ -39,7 +39,7 @@ interface IconProps {
 }
 
 /**
- * Icon — rend un glyphe lucide en SVG inline, hérite de `currentColor`.
+ * Icon - rend un glyphe lucide en SVG inline, hérite de `currentColor`.
  */
 export default function Icon({
     name,

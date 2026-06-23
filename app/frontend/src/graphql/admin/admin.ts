@@ -84,7 +84,7 @@ export const ADMIN_USERS = gql`
     }
 `;
 
-/** Tous les livres (onglet Livres) — pagination/recherche côté client. */
+/** Tous les livres (onglet Livres) - pagination/recherche côté client. */
 export const ADMIN_BOOKS = gql`
     query AdminBooks {
         books(filters: { limit: 1000 }) {

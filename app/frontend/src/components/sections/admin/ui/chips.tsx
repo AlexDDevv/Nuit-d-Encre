@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { Chipset } from "@/components/UI/Chipset";
 import type { UserRole } from "@/types/types";
 
-/** Ornement signature — réexporté depuis la primitive partagée. */
+/** Ornement signature - réexporté depuis la primitive partagée. */
 export { default as Ornament } from "@/components/sections/shared/Ornament";
 
 const CHIP_TEXT = "px-2.5 py-0.5 text-xs font-bold uppercase tracking-widest";

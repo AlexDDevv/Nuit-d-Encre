@@ -86,7 +86,7 @@ export default function Contact() {
                                                 ? numberFormatter.format(
                                                       stats[def.key],
                                                   )
-                                                : "—"
+                                                : "-"
                                         }
                                     />
                                 ))}
@@ -116,7 +116,7 @@ export default function Contact() {
                         title="Suivre la veillée"
                     />
                     <p className="text-muted-foreground mt-4 max-w-[60ch] font-quote text-base italic">
-                        Retrouvez-nous ailleurs — annonces, coups de cœur et
+                        Retrouvez-nous ailleurs - annonces, coups de cœur et
                         coulisses de la bibliothèque.
                     </p>
                     <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

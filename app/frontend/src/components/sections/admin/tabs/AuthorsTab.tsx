@@ -92,7 +92,7 @@ export function AuthorsTab() {
             cell: (a) => (
                 <span className="inline-flex items-center gap-1.5 font-body text-sm text-muted-foreground">
                     <LuGlobe size={13} className="text-primary/55" />
-                    {a.nationality || "—"}
+                    {a.nationality || "-"}
                 </span>
             ),
         },
@@ -112,7 +112,7 @@ export function AuthorsTab() {
             header: "Ajouté par",
             cell: (a) => (
                 <span className="font-body text-xs text-muted-foreground">
-                    {a.user?.userName ?? "—"}
+                    {a.user?.userName ?? "-"}
                 </span>
             ),
         },

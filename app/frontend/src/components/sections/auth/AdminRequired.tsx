@@ -1,5 +1,5 @@
 /**
- * @fileoverview Écran « Accès refusé » — cartouche scellé affiché lorsqu'un
+ * @fileoverview Écran « Accès refusé » - cartouche scellé affiché lorsqu'un
  * membre sans rôle administrateur tente d'ouvrir le panneau d'administration.
  * @module AdminRequired
  */
@@ -11,7 +11,7 @@ import SealedAccessCard, {
 } from "@/components/sections/auth/SealedAccessCard";
 
 /**
- * AdminRequired — cartouche centré façon sceau de bibliothèque indiquant qu'un
+ * AdminRequired - cartouche centré façon sceau de bibliothèque indiquant qu'un
  * rôle administrateur est requis, avec retour vers les espaces accessibles.
  */
 export default function AdminRequired() {

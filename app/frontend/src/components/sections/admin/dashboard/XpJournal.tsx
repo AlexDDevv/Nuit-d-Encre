@@ -51,7 +51,7 @@ export default function XpJournal({
     return (
         <DashBlock
             icon={LuAward}
-            title="Journal de bord — XP"
+            title="Journal de bord - XP"
             meta="10 dernières actions"
         >
             <div className="relative px-5 py-4">

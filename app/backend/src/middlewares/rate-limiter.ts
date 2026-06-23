@@ -32,7 +32,7 @@ interface WindowEntry {
  * In-memory, single-process fixed-window rate limiter.
  *
  * Apollo Server runs via startStandaloneServer (no Express), so we can't
- * plug in an Express middleware — this is called explicitly from resolvers.
+ * plug in an Express middleware - this is called explicitly from resolvers.
  * State lives in this process only; good enough for a single-instance dev
  * and small prod deployment. For a multi-instance setup, back it with Redis.
  */

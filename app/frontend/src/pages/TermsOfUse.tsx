@@ -66,7 +66,7 @@ export default function TermsOfUse() {
                 </div>
 
                 <div className="mt-8 lg:grid lg:grid-cols-[230px_minmax(0,1fr)] lg:gap-12">
-                    {/* colonne sommaire — bureau */}
+                    {/* colonne sommaire - bureau */}
                     <aside className="hidden lg:block">
                         <TocDesktop
                             sections={sections}

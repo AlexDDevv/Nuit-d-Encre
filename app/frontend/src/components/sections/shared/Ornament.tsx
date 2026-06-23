@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-/** Ornement signature : filet doré — losange ◆ — filet doré. */
+/** Ornement signature : filet doré - losange ◆ - filet doré. */
 export default function Ornament({
     className = "",
     width = "w-10",

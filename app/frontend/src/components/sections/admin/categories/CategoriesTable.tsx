@@ -98,7 +98,7 @@ export default function CategoriesTable({
                                 </span>
                             </td>
                             <td className="px-4 py-3 font-body text-xs text-muted-foreground">
-                                {c.createdBy?.userName ?? "—"}
+                                {c.createdBy?.userName ?? "-"}
                             </td>
                             <td className="whitespace-nowrap px-4 py-3 font-body text-xs text-muted-foreground">
                                 {new Date(c.createdAt).toLocaleDateString(

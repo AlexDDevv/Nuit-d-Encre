@@ -4,7 +4,7 @@ import { Rank, Slot, PLACE_LABEL } from "./podium";
 
 const ORDINAL: Record<Rank, string> = { 1: "ʳᵉ", 2: "ᵉ", 3: "ᵉ" };
 
-/** Dégradés parchemin/or — hiérarchie par luminosité, jamais or/argent/bronze. */
+/** Dégradés parchemin/or - hiérarchie par luminosité, jamais or/argent/bronze. */
 const BASE_GRADIENT: Record<Rank, string> = {
     1: "bg-[linear-gradient(180deg,hsl(43_34%_31%)_0%,hsl(43_30%_21%)_55%,hsl(20_4%_16%)_100%)]",
     2: "bg-[linear-gradient(180deg,hsl(43_27%_27%)_0%,hsl(43_24%_19%)_55%,hsl(20_4%_16%)_100%)]",

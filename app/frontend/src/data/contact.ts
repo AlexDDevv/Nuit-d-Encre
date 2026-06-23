@@ -11,7 +11,7 @@ import {
 import { FaqEntry, UsefulLink } from "@/components/sections/contact/types";
 import { SiteStats } from "@/types/types";
 
-// Contact details — placeholder email, confirm before going live.
+// Contact details - placeholder email, confirm before going live.
 export const CONTACT = {
     email: "contact@nuitdencre.fr",
     delai: "sous 48 h ouvrées",
@@ -22,7 +22,7 @@ export const ABOUT_PARAS = [
     "Plus qu'un catalogue, c'est une veillée : chaque page lue fait grandir votre rang, débloque des titres et nourrit des recommandations taillées pour vous. Une question, une suggestion, un grain de sable dans les rouages ? Écrivez-nous d'un mot, quelqu'un tient la lampe.",
 ];
 
-// Stat medallions — values resolved at runtime from the siteStats query.
+// Stat medallions - values resolved at runtime from the siteStats query.
 export type StatDef = {
     icon: IconType;
     key: keyof SiteStats;

@@ -8,7 +8,7 @@ type ExternalLinkChipProps = {
 };
 
 /**
- * Chip de lien externe (Wikipédia / site officiel) — ouverture dans un nouvel
+ * Chip de lien externe (Wikipédia / site officiel) - ouverture dans un nouvel
  * onglet, annoncée pour l'accessibilité.
  */
 export default function ExternalLinkChip({

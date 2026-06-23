@@ -1,5 +1,5 @@
 /**
- * @fileoverview Écran « Authentification requise » — cartouche scellé affiché
+ * @fileoverview Écran « Authentification requise » - cartouche scellé affiché
  * lorsqu'un visiteur tente d'ouvrir une page réservée aux membres.
  * @module AuthRequired
  */
@@ -11,7 +11,7 @@ import SealedAccessCard, {
 } from "@/components/sections/auth/SealedAccessCard";
 
 /**
- * AuthRequired — cartouche centré façon sceau de bibliothèque, avec actions de
+ * AuthRequired - cartouche centré façon sceau de bibliothèque, avec actions de
  * connexion / inscription préservant la redirection vers la page demandée.
  */
 export default function AuthRequired() {

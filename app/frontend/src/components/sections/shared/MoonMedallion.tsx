@@ -1,7 +1,7 @@
 import { FaMoon } from "react-icons/fa6";
 
 /**
- * Médaillon lunaire doré — sceau de marque « Nuit d'Encre ».
+ * Médaillon lunaire doré - sceau de marque « Nuit d'Encre ».
  * `ring` ajoute un liseré intérieur (traitement d'en-tête de document).
  */
 export default function MoonMedallion({

@@ -1,6 +1,6 @@
 import { FaCircleExclamation } from "react-icons/fa6";
 
-// — Champ : étiquette ornementale + indice + erreur inline —
+// - Champ : étiquette ornementale + indice + erreur inline -
 export default function Field({
     id,
     label,

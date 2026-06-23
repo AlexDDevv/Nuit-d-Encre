@@ -90,7 +90,7 @@ export default function UserProfile() {
             <footer className="mt-12 flex flex-col items-center gap-3 pb-6 text-center">
                 <Ornament />
                 <p className="text-muted-foreground/70 max-w-md font-quote text-base italic">
-                    « On n'habite pas un pays, on habite une langue. » — et, la
+                    « On n'habite pas un pays, on habite une langue. » - et, la
                     nuit venue, une bibliothèque.
                 </p>
             </footer>

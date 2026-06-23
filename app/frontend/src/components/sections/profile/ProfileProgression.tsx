@@ -198,7 +198,7 @@ export default function ProfileProgression({ user }: { user: User }) {
                                     className="text-primary/60"
                                 />
                                 <span className="text-foreground/85 font-quote text-base italic">
-                                    Niveau {user.level + 1} — {nextTitle}
+                                    Niveau {user.level + 1} - {nextTitle}
                                 </span>
                             </span>
                         ) : (

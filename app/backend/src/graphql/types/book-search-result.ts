@@ -16,7 +16,7 @@ export class BookSearchResult {
     @Field(() => ID, { nullable: true })
     authorId?: string;
 
-    // Nombre d'ouvrages de cet auteur déjà présents en BDD — alimente le signal
+    // Nombre d'ouvrages de cet auteur déjà présents en BDD - alimente le signal
     // « auteur déjà dans la maison » sur la page d'import.
     @Field(() => Int, { nullable: true })
     authorBookCount?: number;

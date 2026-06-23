@@ -92,7 +92,7 @@ export class User extends BaseEntity {
     @Column({ type: "varchar", length: 300, nullable: true })
     bio?: string | null;
 
-    // Computed via FieldResolver in ProfileResolver — not stored in DB
+    // Computed via FieldResolver in ProfileResolver - not stored in DB
     @Field(() => Title, { nullable: true })
     title?: Title | null;
 

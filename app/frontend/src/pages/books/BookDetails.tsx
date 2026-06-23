@@ -146,7 +146,7 @@ export default function BookDetails() {
             {/* couture « chez nous » */}
             <CollectionSeam
                 icon={<FaBook size={12} aria-hidden="true" />}
-                label="Dans la collection — chez nous"
+                label="Dans la collection - chez nous"
             />
 
             {/* HÉRO */}
@@ -220,7 +220,7 @@ export default function BookDetails() {
 
                     <BookStatChips book={book} />
 
-                    {/* statut de lecture — select existant, sans label */}
+                    {/* statut de lecture - select existant, sans label */}
                     <div className="mt-2">
                         <SelectBookStatus
                             value={status}
@@ -249,12 +249,12 @@ export default function BookDetails() {
             {/* CRITIQUES (+ recommandation) */}
             <BookReviews book={book} />
 
-            {/* DÉCOUVERTE — du même auteur (carrousel de cartes overlay) */}
+            {/* DÉCOUVERTE - du même auteur (carrousel de cartes overlay) */}
             {sameAuthorBooks.length > 0 && (
                 <section>
                     <SectionLead
                         kicker="De la même plume"
-                        title={`Du même auteur — ${author}`}
+                        title={`Du même auteur - ${author}`}
                     />
                     <div className="flex gap-5">
                         {sameAuthorBooks.map((b) => (
@@ -269,7 +269,7 @@ export default function BookDetails() {
                     </div>
                 </section>
             )}
-            {/* DÉCOUVERTE — « Dans la même catégorie » : à traiter ultérieurement. */}
+            {/* DÉCOUVERTE - « Dans la même catégorie » : à traiter ultérieurement. */}
 
             {/* GESTION DE LA FICHE (propriétaire / admin) */}
             <FicheManagementBar

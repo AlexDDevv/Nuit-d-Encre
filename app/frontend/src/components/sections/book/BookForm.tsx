@@ -251,11 +251,11 @@ export default function BookForm() {
             </section>
 
             <section className="flex flex-col gap-4">
-                <FieldGroupHeader hint="Données factuelles consignées au registre — fiche de catalogue.">
+                <FieldGroupHeader hint="Données factuelles consignées au registre - fiche de catalogue.">
                     Notice technique
                 </FieldGroupHeader>
                 <FormNoticeBlock
-                    refValue={isbn13Value ? isbn13Value : "—— en attente ——"}
+                    refValue={isbn13Value ? isbn13Value : "-- en attente --"}
                 >
                     <TextField
                         name="isbn13"

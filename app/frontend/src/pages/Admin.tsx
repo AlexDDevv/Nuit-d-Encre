@@ -74,7 +74,7 @@ export default function Admin() {
     return (
         <div className="min-h-screen">
             <Helmet>
-                <title>Administration — Nuit d'Encre</title>
+                <title>Administration - Nuit d'Encre</title>
             </Helmet>
 
             {/* En-tête */}

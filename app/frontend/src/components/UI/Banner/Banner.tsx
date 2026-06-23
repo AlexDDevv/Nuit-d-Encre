@@ -104,7 +104,7 @@ function BannerActionButton({
 }
 
 /**
- * Banner — bandeau contextuel générique et réutilisable (annonces, alertes,
+ * Banner - bandeau contextuel générique et réutilisable (annonces, alertes,
  * jalons de gamification). Chaque variante reste sur surface sombre ; la couleur
  * sémantique habille la bordure, l'icône et l'accent.
  */

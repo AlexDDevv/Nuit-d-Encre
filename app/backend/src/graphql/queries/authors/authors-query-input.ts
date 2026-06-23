@@ -11,7 +11,7 @@ import { Field, InputType, Int } from "type-graphql"
  *
  * - `search`: filter authors by firstname and lastname.
  * - `page`: page number for paginated results (default is typically 1).
- * - `limit`: maximum number of results per page (default can be 10–20).
+ * - `limit`: maximum number of results per page (default can be 10-20).
  *
  * All fields are optional, allowing flexible and partial filtering.
  * 

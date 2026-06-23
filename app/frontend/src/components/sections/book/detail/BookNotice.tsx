@@ -8,7 +8,7 @@ import NoticePanel, {
 } from "@/components/sections/shared/Notice";
 
 /**
- * « Informations complémentaires » — notice de catalogue en monospace (façon
+ * « Informations complémentaires » - notice de catalogue en monospace (façon
  * page d'import). Affiche « manquant » en ambre pour les champs absents.
  */
 export default function BookNotice({ book }: { book: Book }) {

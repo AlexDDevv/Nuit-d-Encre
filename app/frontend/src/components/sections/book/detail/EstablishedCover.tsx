@@ -122,13 +122,13 @@ export default function EstablishedCover(props: EstablishedCoverProps) {
     }
 
     const { book } = props;
-    const code = (book.isbn13 ?? "").replace(/[^0-9]/g, "").slice(-6) || "——————";
+    const code = (book.isbn13 ?? "").replace(/[^0-9]/g, "").slice(-6) || "------";
     const author = `${book.author.firstname} ${book.author.lastname}`;
     const addedOn = formatSince(book.createdAt);
 
     return (
         <div className="relative mx-auto w-full max-w-75">
-            {/* l'ouvrage — bordure pleine dorée */}
+            {/* l'ouvrage - bordure pleine dorée */}
             <div className="border-primary/85 relative aspect-2/3 overflow-hidden rounded-md border-2 shadow-[0_30px_60px_-22px_hsl(20_3%_3%/0.95),0_0_0_6px_hsl(43_59%_81%/0.06)]">
                 <div className="bg-background absolute inset-0 overflow-hidden rounded-md">
                     {book.coverUrl ? (

@@ -22,7 +22,7 @@ export function parseFullName(fullName: string): AuthorNameParts {
  *
  * Concurrent-safe: the insert uses ON CONFLICT DO NOTHING against the unique
  * constraint on (firstname, lastname), so two simultaneous requests for the
- * same author can't fail — the loser simply reads the row the winner created.
+ * same author can't fail - the loser simply reads the row the winner created.
  * No error is raised, which also keeps an enclosing transaction usable.
  *
  * @param fullName The full name of the author (e.g., "Antoine de Saint-Exupéry")

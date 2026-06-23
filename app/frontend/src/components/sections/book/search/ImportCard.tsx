@@ -21,7 +21,7 @@ export default function ImportCard({ result }: ImportCardProps) {
     const author = result.author ?? "";
     const source = getSourceLabel(result.source);
     const ariaLabel = `Importer ${result.title}${author ? ` par ${author}` : ""
-        } — résultat externe via ${source}`;
+        } - résultat externe via ${source}`;
 
     return (
         <Link

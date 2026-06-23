@@ -67,7 +67,7 @@ export default function BookPreview() {
     return (
         <>
             <Helmet>
-                <title>{book.title} — Aperçu sur Nuit d'Encre</title>
+                <title>{book.title} - Aperçu sur Nuit d'Encre</title>
                 <meta name="robots" content="noindex, nofollow" />
             </Helmet>
 
@@ -87,7 +87,7 @@ export default function BookPreview() {
                         className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-xxs uppercase tracking-[0.24em]"
                         style={{ color: "hsl(43 30% 60%)" }}
                     >
-                        <Glyph name="external" size={12} /> Venu d'ailleurs — pas encore dans vos
+                        <Glyph name="external" size={12} /> Venu d'ailleurs - pas encore dans vos
                         rayons
                     </span>
                     <span

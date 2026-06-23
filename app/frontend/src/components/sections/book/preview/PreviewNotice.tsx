@@ -40,7 +40,7 @@ export function PreviewNotice({ book }: { book: BookSearchResult }) {
                     className="font-mono text-xs uppercase tracking-[0.2em]"
                     style={{ color: "hsl(43 30% 62%)" }}
                 >
-                    La notice — telle qu'on l'a trouvée
+                    La notice - telle qu'on l'a trouvée
                 </span>
                 <span className="h-px flex-1" style={{ background: "hsl(43 59% 81% / 0.18)" }} />
             </div>

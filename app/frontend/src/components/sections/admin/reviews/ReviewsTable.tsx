@@ -70,7 +70,7 @@ export default function ReviewsTable({
                                 </span>
                                 <NoteBadge note={r.rating} />
                                 <span className="truncate font-body text-xs italic text-muted-foreground/90">
-                                    {r.reviewText || "—"}
+                                    {r.reviewText || "-"}
                                 </span>
                                 <StatusChip />
                                 <span className="whitespace-nowrap font-body text-xs text-muted-foreground">
@@ -119,7 +119,7 @@ export default function ReviewsTable({
                                     className={`font-body text-sm italic text-muted-foreground/90 ${open ? "" : "line-clamp-2"
                                         }`}
                                 >
-                                    {r.reviewText || "—"}
+                                    {r.reviewText || "-"}
                                 </p>
                                 <div className="flex items-center justify-between gap-3 pt-1">
                                     <span className="font-body text-xs text-muted-foreground/80">
@@ -154,7 +154,7 @@ export default function ReviewsTable({
                                                 {r.reviewText}
                                             </p>
                                             <p className="mt-2 font-body text-xs text-muted-foreground">
-                                                — {r.user.userName} sur «{" "}
+                                                - {r.user.userName} sur «{" "}
                                                 {r.book.title} » de{" "}
                                                 {r.book.author.firstname}{" "}
                                                 {r.book.author.lastname}

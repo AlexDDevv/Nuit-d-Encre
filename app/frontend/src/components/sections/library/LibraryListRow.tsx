@@ -10,7 +10,7 @@ import { cn, slugify } from "@/lib/utils";
 import { BookCardLibraryProps } from "@/types/types";
 
 /**
- * Ligne de la vue Liste de la bibliothèque : dense et scannable — petite
+ * Ligne de la vue Liste de la bibliothèque : dense et scannable - petite
  * couverture, titre/auteur, catégorie, note, sélecteur de statut coloré et
  * actions (favori + retrait avec confirmation).
  */

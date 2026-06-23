@@ -43,7 +43,7 @@ function UsefulLinkItem({ link }: { link: UsefulLinkType }) {
     );
 }
 
-/** "Useful links" band — gilded rules, diamond separators. */
+/** "Useful links" band - gilded rules, diamond separators. */
 export default function UsefulLinks() {
     return (
         <div className="grain border-border bg-card/55 relative overflow-hidden rounded-2xl border-2 px-6 py-7 md:px-9 md:py-8">

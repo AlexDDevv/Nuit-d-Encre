@@ -7,7 +7,7 @@ type MonogramProps = {
 
 /**
  * Monogramme d'auteur : initiales en serif sur une pastille dorée/sombre, avec
- * un ornement plume — l'identité visuelle d'une carte auteur à défaut de photo.
+ * un ornement plume - l'identité visuelle d'une carte auteur à défaut de photo.
  */
 export default function Monogram({ first, last }: MonogramProps) {
     const initials = `${first[0] ?? ""}${last[0] ?? ""}`.toUpperCase();

@@ -15,7 +15,7 @@ import { BookFormat } from "../../../types/types"
  * - `format`: filter books by their format
  * - `language`: filter books by their language
  * - `page`: page number for paginated results (default is typically 1).
- * - `limit`: maximum number of results per page (default can be 10–20).
+ * - `limit`: maximum number of results per page (default can be 10-20).
  *
  * The decorators used are:
  * - `@Field({ nullable: true })`: exposes each property to the GraphQL schema as optional.

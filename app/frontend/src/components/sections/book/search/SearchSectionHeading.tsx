@@ -11,7 +11,7 @@ type SearchSectionHeadingProps = {
 
 /**
  * En-tête de section de la page de recherche : surtitre à filet doré, titre,
- * compteur et note — reprend le langage des en-têtes de l'accueil.
+ * compteur et note - reprend le langage des en-têtes de l'accueil.
  */
 export default function SearchSectionHeading({
     kicker,

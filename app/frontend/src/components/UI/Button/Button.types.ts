@@ -82,7 +82,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     ariaLabel?: string;
 
     /**
-     * Route vers laquelle naviguer — rend le bouton comme un lien react-router
+     * Route vers laquelle naviguer - rend le bouton comme un lien react-router
      */
     to?: string;
 

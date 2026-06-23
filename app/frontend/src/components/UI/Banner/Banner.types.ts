@@ -11,7 +11,7 @@ export interface BannerAction {
     label: string;
     to?: string;
     /**
-     * Lien externe — rendu en `<a target="_blank">`. Priorité : `to` > `href` > `button`.
+     * Lien externe - rendu en `<a target="_blank">`. Priorité : `to` > `href` > `button`.
      */
     href?: string;
     onClick?: () => void;
@@ -24,12 +24,12 @@ export interface BannerAction {
 
 /**
  * Configuration sémantique d'une variante. Toutes les variantes restent sur
- * surface sombre — la couleur sémantique habille la bordure, l'icône et l'accent.
+ * surface sombre - la couleur sémantique habille la bordure, l'icône et l'accent.
  */
 export interface BannerVariantConfig {
     /** Icône par défaut de la variante */
     icon: GlyphName;
-    /** Rôle ARIA — `alert` (assertif) pour les erreurs, `status` (poli) sinon */
+    /** Rôle ARIA - `alert` (assertif) pour les erreurs, `status` (poli) sinon */
     role: "status" | "alert";
     /** Couleur d'accent (icône, liseré, bouton d'action) */
     accent: string;
@@ -68,12 +68,12 @@ export interface BannerProps {
     action?: BannerAction;
 
     /**
-     * Icône affichée à gauche du titre — surcharge l'icône par défaut de la variante
+     * Icône affichée à gauche du titre - surcharge l'icône par défaut de la variante
      */
     icon?: GlyphName;
 
     /**
-     * Affiche un bouton de fermeture — la bannière gère son propre état dismissed
+     * Affiche un bouton de fermeture - la bannière gère son propre état dismissed
      * @default false
      */
     dismissible?: boolean;

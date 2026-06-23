@@ -622,7 +622,7 @@ const reviewsData: ReviewSeed[] = [
         book: "lotr",
         rating: 5,
         text: DETAILED(
-            "La pierre angulaire de la fantasy. Tolkien ne raconte pas seulement une quête, il fait exister un monde entier — ses langues, ses peuples, sa géographie, son histoire profonde. Le souffle épique côtoie des moments d'une grande tendresse. Exigeant, parfois lent, mais d'une richesse inépuisable.",
+            "La pierre angulaire de la fantasy. Tolkien ne raconte pas seulement une quête, il fait exister un monde entier - ses langues, ses peuples, sa géographie, son histoire profonde. Le souffle épique côtoie des moments d'une grande tendresse. Exigeant, parfois lent, mais d'une richesse inépuisable.",
         ),
     },
     {

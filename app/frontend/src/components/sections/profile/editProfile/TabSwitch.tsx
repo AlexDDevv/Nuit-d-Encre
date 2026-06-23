@@ -1,7 +1,7 @@
 import { FaRegUser, FaShieldHalved } from "react-icons/fa6";
 import { Tab } from "./types";
 
-// — Sélecteur d'onglets segmenté (bascule dorée) —
+// - Sélecteur d'onglets segmenté (bascule dorée) -
 export default function TabSwitch({
     tab,
     setTab,

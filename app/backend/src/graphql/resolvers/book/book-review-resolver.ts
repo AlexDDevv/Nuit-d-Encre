@@ -167,7 +167,7 @@ export class BookReviewsResolver {
 
                 const ids: string[] = rawIds.map((r: any) => String(r.id));
 
-                // Step 2 — fetch full entities for those IDs (no skip/take = no DISTINCT pagination).
+                // Step 2 - fetch full entities for those IDs (no skip/take = no DISTINCT pagination).
                 if (ids.length === 0) {
                     reviews = [];
                 } else {

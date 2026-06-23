@@ -1,4 +1,4 @@
-// — Voile « envoi en cours » doré —
+// - Voile « envoi en cours » doré -
 export default function UploadVeil({
     rounded = "rounded-full",
 }: {

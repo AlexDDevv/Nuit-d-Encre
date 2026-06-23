@@ -1,4 +1,4 @@
-// — Validation des deux onglets du formulaire de profil —
+// - Validation des deux onglets du formulaire de profil -
 
 export const validateInfos = ({ name, bio }: { name: string; bio: string }) => {
     const n = name.trim();

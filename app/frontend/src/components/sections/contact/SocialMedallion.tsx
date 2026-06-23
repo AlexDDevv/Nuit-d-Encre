@@ -1,6 +1,6 @@
 import { SocialLink } from "@/types/types";
 
-/** Social medallion — gilded badge + label + handle. */
+/** Social medallion - gilded badge + label + handle. */
 export default function SocialMedallion({
     icon: Icon,
     url,

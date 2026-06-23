@@ -46,7 +46,7 @@ export default function FavoriteMoveNote({
                         <span className="text-primary">
                             {PLACE_LABEL[selectedRank]}
                         </span>{" "}
-                        — «{" "}
+                        - «{" "}
                         <span className="text-primary">{displaced}</span> »
                         quittera vos favoris.
                     </>

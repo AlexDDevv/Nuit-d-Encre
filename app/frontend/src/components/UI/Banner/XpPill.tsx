@@ -5,7 +5,7 @@ interface XpPillProps {
 }
 
 /**
- * Pastille XP dorée — à insérer dans le contenu riche d'une bannière pour
+ * Pastille XP dorée - à insérer dans le contenu riche d'une bannière pour
  * signaler une récompense de gamification.
  */
 export default function XpPill({ amount = 50 }: XpPillProps) {

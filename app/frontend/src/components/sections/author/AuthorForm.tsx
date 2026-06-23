@@ -142,7 +142,7 @@ export default function AuthorForm() {
             submitAriaLabel={ariaLabel}
         >
             <section className="flex flex-col gap-4">
-                <FieldGroupHeader hint="Le nom porté en couverture — l'essentiel pour consigner l'auteur.">
+                <FieldGroupHeader hint="Le nom porté en couverture - l'essentiel pour consigner l'auteur.">
                     État civil
                 </FieldGroupHeader>
                 <div className="grid gap-4 sm:grid-cols-2">
@@ -214,7 +214,7 @@ export default function AuthorForm() {
             </section>
 
             <section className="flex flex-col gap-4">
-                <FieldGroupHeader hint="Quelques lignes sur la vie et l'œuvre — rendu à l'italique, comme une notice manuscrite.">
+                <FieldGroupHeader hint="Quelques lignes sur la vie et l'œuvre - rendu à l'italique, comme une notice manuscrite.">
                     Biographie
                 </FieldGroupHeader>
                 <TextareaField
@@ -237,7 +237,7 @@ export default function AuthorForm() {
             </section>
 
             <section className="flex flex-col gap-4">
-                <FieldGroupHeader hint="Liens publics pour en savoir davantage — facultatifs.">
+                <FieldGroupHeader hint="Liens publics pour en savoir davantage - facultatifs.">
                     Références externes
                 </FieldGroupHeader>
                 <div className="grid gap-4 sm:grid-cols-2">

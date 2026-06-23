@@ -67,7 +67,7 @@ export default function BookShelf({
             >
                 <Link
                     to={bookPath}
-                    aria-label={`${book.title}, ${author} — ${statusConfig?.label ?? ""}`}
+                    aria-label={`${book.title}, ${author} - ${statusConfig?.label ?? ""}`}
                     className="group focus-visible:ring-ring relative block w-28 rounded-md focus-visible:outline-none focus-visible:ring-2"
                 >
                     <div className="bg-background border-border group-hover:border-primary/55 relative aspect-4/5 overflow-hidden rounded-md border-2 shadow-lg transition-all duration-200 group-hover:-translate-y-1.5 group-hover:shadow-[0_20px_40px_-14px_rgba(0,0,0,0.8)]">
@@ -108,7 +108,7 @@ export default function BookShelf({
                 </Link>
             </Tooltip>
 
-            {/* planche d'étagère — bois sombre */}
+            {/* planche d'étagère - bois sombre */}
             <div className="relative mt-2 h-2.5 w-28 rounded-xs bg-[linear-gradient(to_bottom,hsl(28_34%_15%),hsl(24_44%_6%))] shadow-[0_7px_14px_-4px_hsl(20_3%_2%/0.9),inset_0_1px_0_hsl(43_45%_55%/0.18)]" />
         </div>
     );

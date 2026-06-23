@@ -134,7 +134,7 @@ export class BookSearchResolver {
             };
         });
 
-        // 2. Si DB suffisante, retour immédiat — zéro appel externe
+        // 2. Si DB suffisante, retour immédiat - zéro appel externe
         if (dbResults.length >= DB_THRESHOLD) return dbResults;
 
         // 3. OL + Google Books en parallèle avec timeout

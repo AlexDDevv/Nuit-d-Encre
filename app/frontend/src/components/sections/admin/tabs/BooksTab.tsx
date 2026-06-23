@@ -106,7 +106,7 @@ export function BooksTab() {
                         {b.category.name}
                     </span>
                 ) : (
-                    <span className="text-muted-foreground/60">—</span>
+                    <span className="text-muted-foreground/60">-</span>
                 ),
         },
         {
@@ -119,7 +119,7 @@ export function BooksTab() {
             header: "Ajouté par",
             cell: (b) => (
                 <span className="font-body text-xs text-muted-foreground">
-                    {b.user?.userName ?? "—"}
+                    {b.user?.userName ?? "-"}
                 </span>
             ),
         },

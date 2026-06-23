@@ -1,7 +1,7 @@
 import { GoldLink } from "@/components/sections/shared/ornaments";
 import { FicheRow } from "./types";
 
-// Fiche d'identité — « notice de catalogue » monospace.
+// Fiche d'identité - « notice de catalogue » monospace.
 // Libellé doré atténué à gauche, valeur parchemin à droite, en grille.
 export default function FicheCatalogue({
     label,

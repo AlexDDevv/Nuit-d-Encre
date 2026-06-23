@@ -77,7 +77,7 @@ function AccessionStamp({ short, code }: { short: string; code: string }) {
 
 export function ArrivingCover({ book }: { book: BookSearchResult }) {
     const { label, short } = sourceInfo(book.source);
-    const code = (book.isbn13 ?? "").slice(-6) || "——————";
+    const code = (book.isbn13 ?? "").slice(-6) || "------";
 
     return (
         <div className="relative" style={{ perspective: 1000 }}>

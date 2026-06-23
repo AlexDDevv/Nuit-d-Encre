@@ -3,7 +3,7 @@ import { IconType } from "react-icons";
 import { LuCircleAlert } from "react-icons/lu";
 import { cn } from "@/lib/utils";
 
-/** Compteur de caractères — ambre à l'approche de la limite, rouge au-delà. */
+/** Compteur de caractères - ambre à l'approche de la limite, rouge au-delà. */
 export function CharCounter({ value, max }: { value: number; max: number }) {
     const over = value > max;
     const near = !over && value >= max * 0.9;

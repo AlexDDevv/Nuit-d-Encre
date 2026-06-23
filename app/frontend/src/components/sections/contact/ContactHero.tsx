@@ -2,7 +2,7 @@ import MoonMedallion from "@/components/sections/shared/MoonMedallion";
 import Ornament from "@/components/sections/shared/Ornament";
 import { MonoEyebrow } from "@/components/sections/shared/ornaments";
 
-/** Contact page editorial header — moon seal + ornamented title. */
+/** Contact page editorial header - moon seal + ornamented title. */
 export default function ContactHero() {
     return (
         <header className="grain bg-card/60 border-border relative overflow-hidden rounded-2xl border-2 px-6 py-12 text-center md:px-12 md:py-16">
@@ -24,7 +24,7 @@ export default function ContactHero() {
 
                 <p className="text-muted-foreground mt-5 max-w-lg font-quote text-lg italic leading-relaxed">
                     Une question, une suggestion, un grain de sable dans les
-                    rouages ? Écrivez-nous — la bibliothèque ne dort jamais,
+                    rouages ? Écrivez-nous - la bibliothèque ne dort jamais,
                     quelqu'un tient la lampe.
                 </p>
             </div>

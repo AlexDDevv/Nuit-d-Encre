@@ -107,7 +107,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                         <span className="text-foreground font-quote text-4xl leading-none">
                             {avgRating != null
                                 ? avgRating.toFixed(1).replace(".", ",")
-                                : "—"}
+                                : "-"}
                         </span>
                         <span className="text-muted-foreground font-body text-sm">
                             / 5
@@ -146,7 +146,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                 )}
             </div>
 
-            {/* état vide — au-dessus du formulaire */}
+            {/* état vide - au-dessus du formulaire */}
             {!hasReviews && (
                 <div className="border-border mb-6 flex flex-col items-center gap-3 rounded-xl border-2 border-dashed bg-[hsl(20_3%_14%/0.4)] px-6 py-14 text-center">
                     <span className="ring-primary/25 grid h-12 w-12 place-items-center rounded-full bg-[hsl(43_30%_25%/0.3)] ring-1">
