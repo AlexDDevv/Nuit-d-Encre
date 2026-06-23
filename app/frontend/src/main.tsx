@@ -1,6 +1,6 @@
 import { client } from "@/config/client";
 import Router from "@/config/router";
-import { ErrorBoundary } from "@/components/UI/ErrorBoundary";
+import { ErrorBoundary } from "@/components/UI/error/ErrorBoundary";
 import { AuthProvider } from "@/contexts/AuthContextProvider";
 import "@/styles/index.css";
 import { ApolloProvider } from "@apollo/client";

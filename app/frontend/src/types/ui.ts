@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { IconType } from "react-icons";
 
 export type TypeSelectOptions = {
@@ -13,10 +12,6 @@ export type PaginationProps = {
     onPageChange: (page: number) => void;
     className?: string;
 };
-
-export interface ErrorLayoutProps {
-    children: ReactNode;
-}
 
 /* ──────────────────────────── Navigation (sidebar) ──────────────────────────── */
 

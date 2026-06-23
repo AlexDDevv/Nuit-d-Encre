@@ -8,7 +8,7 @@ import ProtectedRoute from "@/components/hoc/ProtectedRoute";
 import PublicRoute from "@/components/hoc/PublicRoute";
 import AdminRoute from "@/components/hoc/AdminRoute";
 import Books from "@/pages/books/Books";
-import ErrorElement from "@/components/UI/ErrorElement";
+import ErrorElement from "@/components/UI/error/ErrorElement";
 import Loader from "@/components/UI/Loader";
 import { lazy, Suspense } from "react";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
