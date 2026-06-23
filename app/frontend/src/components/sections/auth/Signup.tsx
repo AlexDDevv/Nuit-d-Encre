@@ -1,14 +1,17 @@
 import { useToast } from "@/hooks/toast/useToast";
-import { UserSignUp } from "@/types/types";
+import { UserSignUpForm } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSearchParams } from "react-router-dom";
-import FormButtonSubmit from "@/components/sections/auth/form/FormButtonSubmit";
-import FormTitle from "@/components/sections/auth/form/FormTitle";
-import FormWrapper from "@/components/UI/form/FormWrapper";
-import InputEmail from "@/components/sections/auth/form/InputEmail";
+import { Link, useSearchParams } from "react-router-dom";
+import { LuArrowRight } from "react-icons/lu";
 import InputUserName from "@/components/sections/auth/form/InputUserName";
+import InputEmail from "@/components/sections/auth/form/InputEmail";
 import InputPassword from "@/components/sections/auth/form/InputPassword";
+import InputConfirmPassword from "@/components/sections/auth/form/InputConfirmPassword";
+import PasswordStrengthMeter from "@/components/sections/auth/PasswordStrengthMeter";
+import AuthShell from "@/components/sections/auth/AuthShell";
+import AuthCardHeader from "@/components/sections/auth/AuthCardHeader";
+import Button from "@/components/UI/Button/Button";
 import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
 import { REGISTER, WHOAMI } from "@/graphql/user/auth";
 
@@ -17,13 +20,16 @@ export default function Signup() {
         register,
         handleSubmit,
         reset,
+        watch,
+        getValues,
         formState: { errors },
-    } = useForm<UserSignUp>({
+    } = useForm<UserSignUpForm>({
         mode: "onBlur",
         defaultValues: {
             userName: "",
             email: "",
             password: "",
+            confirmPassword: "",
         },
     });
 
@@ -36,8 +42,11 @@ export default function Signup() {
 
     // Get the redirect URL from query params to pass it to the login page
     const redirectUrl = searchParams.get("redirect");
+    const loginHref = redirectUrl
+        ? `/connexion?redirect=${encodeURIComponent(redirectUrl)}`
+        : "/connexion";
 
-    const onSubmit: SubmitHandler<UserSignUp> = async (formData) => {
+    const onSubmit: SubmitHandler<UserSignUpForm> = async (formData) => {
         try {
             const { data } = await Register({
                 variables: {
@@ -56,9 +65,7 @@ export default function Signup() {
                     title: "Inscription réussie !",
                     description: "Bienvenue dans Nuit d'Encre",
                     actionLabel: "Me connecter",
-                    redirectTo: redirectUrl
-                        ? `/connexion?redirect=${encodeURIComponent(redirectUrl)}`
-                        : "/connexion",
+                    redirectTo: loginHref,
                 });
             }
         } catch (err) {
@@ -90,19 +97,81 @@ export default function Signup() {
         }
     };
 
+    const password = watch("password");
+
     return (
-        <div className="flex w-full flex-col items-center gap-10">
-            <FormTitle isSignUp />
-            <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-                <InputUserName register={register} errors={errors} />
-                <InputEmail<UserSignUp> register={register} errors={errors} />
-                <InputPassword<UserSignUp>
+        <AuthShell mode="inscription" onSubmit={handleSubmit(onSubmit)}>
+            <AuthCardHeader
+                welcome="Faites-vous une place au coin du feu."
+                eyebrow="Inscription"
+            />
+
+            {/* Champs */}
+            <div className="mt-6 flex flex-col gap-4">
+                <InputUserName<UserSignUpForm>
                     register={register}
                     errors={errors}
                 />
-                <FormButtonSubmit type="sign-up" />
-                <ContinueWithGoogle />
-            </FormWrapper>
-        </div>
+                <InputEmail<UserSignUpForm>
+                    register={register}
+                    errors={errors}
+                />
+
+                <div className="flex flex-col gap-2.5">
+                    <InputPassword<UserSignUpForm>
+                        register={register}
+                        errors={errors}
+                        strong
+                    />
+                    <PasswordStrengthMeter value={password} />
+                </div>
+
+                <InputConfirmPassword
+                    register={register}
+                    errors={errors}
+                    getValues={getValues}
+                />
+
+                <div className="mt-1">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        fullWidth
+                        ariaLabel="Créer un compte Nuit d'Encre"
+                        rightIcon={<LuArrowRight size={16} />}
+                    >
+                        Créer mon compte
+                    </Button>
+                </div>
+            </div>
+
+            {/* Séparateur orné « ou » + bouton Google */}
+            <ContinueWithGoogle />
+
+            {/* Mentions légales + navigation vers la page de connexion */}
+            <div className="mt-6 flex flex-col items-center gap-2.5 text-center">
+                <p className="font-quote text-muted-foreground/70 text-pretty text-sm italic leading-relaxed">
+                    En créant un compte, vous acceptez les conditions exposées
+                    dans nos{" "}
+                    <Link
+                        to="/terms-of-use"
+                        className="text-primary decoration-primary/40 focus-visible:ring-primary/70 rounded-sm font-medium not-italic underline underline-offset-[3px] transition-colors hover:text-[hsl(43_70%_88%)] hover:decoration-[hsl(43_59%_81%)] focus:outline-none focus-visible:ring-2"
+                    >
+                        mentions légales
+                    </Link>
+                    .
+                </p>
+                <p className="font-quote text-muted-foreground/75 text-sm italic leading-relaxed">
+                    Déjà une carte d'accès ?{" "}
+                    <Link
+                        to={loginHref}
+                        className="text-primary decoration-primary/40 focus-visible:ring-primary/70 rounded-sm font-medium not-italic underline underline-offset-[3px] transition-colors hover:text-[hsl(43_70%_88%)] hover:decoration-[hsl(43_59%_81%)] focus:outline-none focus-visible:ring-2"
+                    >
+                        Se connecter
+                    </Link>
+                    .
+                </p>
+            </div>
+        </AuthShell>
     );
 }
