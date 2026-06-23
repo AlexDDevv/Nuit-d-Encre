@@ -6,6 +6,8 @@ type TextareaProps = ComponentProps<"textarea"> & {
     errorMessage: string | undefined;
     counter?: boolean;
     maxLength?: number;
+    /** Masque le message d'erreur intégré (la bordure rouge reste appliquée). */
+    hideErrorMessage?: boolean;
 };
 
 const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
@@ -15,6 +17,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
             errorMessage,
             counter = false,
             maxLength,
+            hideErrorMessage = false,
             onChange,
             value,
             defaultValue,
@@ -52,14 +55,19 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
                     ref={ref}
                     {...props}
                 />
-                <div className="flex items-center justify-between gap-5">
-                    {errorMessage && <ErrorInput message={errorMessage} />}
-                    {counter && maxLength && (
-                        <p className="text-card-foreground ml-auto text-xs">
-                            {currentLength}/{maxLength}
-                        </p>
-                    )}
-                </div>
+                {((!hideErrorMessage && errorMessage) ||
+                    (counter && maxLength)) && (
+                    <div className="flex items-center justify-between gap-5">
+                        {!hideErrorMessage && errorMessage && (
+                            <ErrorInput message={errorMessage} />
+                        )}
+                        {counter && maxLength && (
+                            <p className="text-card-foreground ml-auto text-xs">
+                                {currentLength}/{maxLength}
+                            </p>
+                        )}
+                    </div>
+                )}
             </div>
         );
     },

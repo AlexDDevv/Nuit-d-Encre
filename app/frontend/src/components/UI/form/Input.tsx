@@ -4,10 +4,12 @@ import ErrorInput from "@/components/UI/form/ErrorInput";
 
 type InputProps = ComponentProps<"input"> & {
     errorMessage: string | undefined;
+    /** Masque le message d'erreur intégré (la bordure rouge reste appliquée). */
+    hideErrorMessage?: boolean;
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-    ({ className, type, errorMessage, ...props }, ref) => {
+    ({ className, type, errorMessage, hideErrorMessage = false, ...props }, ref) => {
         const classError = errorMessage
             ? "border-destructive focus-visible:ring-destructive focus-visible:border-none"
             : "";
@@ -24,7 +26,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                     ref={ref}
                     {...props}
                 />
-                {errorMessage && <ErrorInput message={errorMessage} />}
+                {!hideErrorMessage && errorMessage && (
+                    <ErrorInput message={errorMessage} />
+                )}
             </div>
         );
     },
