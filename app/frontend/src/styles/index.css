@@ -91,6 +91,71 @@ body {
     }
 }
 
+/* ── Pages d'erreur : sceau, fumée, chiffre gravé, vignette ── */
+
+/* Vignette de chandelle plein écran (pages d'erreur) */
+.candle-vignette {
+    background-image:
+        radial-gradient(
+            1100px 640px at 50% -14%,
+            hsl(43 45% 50% / 0.2),
+            transparent 60%
+        ),
+        radial-gradient(
+            820px 540px at 6% 110%,
+            hsl(43 30% 22% / 0.22),
+            transparent 56%
+        ),
+        radial-gradient(
+            760px 540px at 100% 100%,
+            hsl(43 30% 20% / 0.16),
+            transparent 55%
+        );
+}
+
+/* Grand chiffre gravé / embossé doré (code HTTP) */
+.digit-emboss {
+    color: hsl(43 62% 82%);
+    text-shadow:
+        0 1px 0 hsl(43 70% 90% / 0.35),
+        0 -1px 0 hsl(20 30% 6% / 0.55),
+        0 2px 1px hsl(20 30% 6% / 0.45),
+        0 0 38px hsl(43 59% 60% / 0.28);
+}
+
+@keyframes sealIn {
+    from {
+        transform: scale(0.86);
+        opacity: 0;
+    }
+    to {
+        transform: none;
+        opacity: 1;
+    }
+}
+@keyframes smokeRise {
+    from {
+        stroke-dashoffset: 220;
+        opacity: 0;
+    }
+    30% {
+        opacity: 0.9;
+    }
+    to {
+        stroke-dashoffset: 0;
+        opacity: 0.55;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    .seal-in {
+        animation: sealIn 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+    .smoke-path {
+        stroke-dasharray: 220;
+        animation: smokeRise 2.2s ease-out 0.25s both;
+    }
+}
+
 @keyframes nodeGlow {
     0%,
     100% {
