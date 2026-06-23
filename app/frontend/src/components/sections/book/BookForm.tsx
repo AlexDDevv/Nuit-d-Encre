@@ -3,23 +3,54 @@ import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { TypeSelectOptions, CreateBookInput } from "@/types/types";
 import { useEffect } from "react";
-import FormWrapper from "@/components/UI/form/FormWrapper";
-import InputTitle from "@/components/sections/book/inputs/InputTitle";
-import InputSummary from "@/components/sections/book/inputs/InputSummary";
-import InputCategory from "@/components/sections/book/inputs/InputCategory";
-import InputAuthor from "@/components/sections/book/inputs/InputAuthor";
-import InputIsbn from "@/components/sections/book/inputs/InputIsbn";
-import InputPage from "@/components/sections/book/inputs/InputPage";
-import InputPublishedYear from "@/components/sections/book/inputs/InputPublishedYear";
-import InputLanguage from "@/components/sections/book/inputs/InputLanguage";
-import InputPublisher from "@/components/sections/book/inputs/InputPublisher";
-import InputFormat from "@/components/sections/book/inputs/InputFormat";
-import Button from "@/components/UI/Button/Button";
+import {
+    LuBookOpen,
+    LuBuilding2,
+    LuCalendar,
+    LuCheck,
+    LuFeather,
+    LuFileText,
+    LuHash,
+    LuLanguages,
+    LuLayers,
+    LuTag,
+    LuType,
+} from "react-icons/lu";
+import AtelierFormShell from "@/components/sections/shared/AtelierFormShell";
+import FieldGroupHeader from "@/components/sections/shared/FieldGroupHeader";
+import FormNoticeBlock from "@/components/sections/shared/FormNoticeBlock";
+import TextField from "@/components/sections/shared/fields/TextField";
+import TextareaField from "@/components/sections/shared/fields/TextareaField";
+import SelectField from "@/components/sections/shared/fields/SelectField";
 import Loader from "@/components/UI/Loader";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import { useCategoriesData } from "@/hooks/category/useCategoriesData";
-import { parseGraphQLError } from "@/utils/graphql-error";
+import { assertEntityLoaded, runFicheMutation } from "@/utils/ficheForm";
+
+const SUMMARY_MAX = 5000;
+
+const FORMAT_OPTIONS: TypeSelectOptions[] = [
+    { label: "Relié", value: "hardcover" },
+    { label: "Broché", value: "paperback" },
+    { label: "Couverture souple", value: "softcover" },
+    { label: "Livre de poche", value: "pocket" },
+];
+
+const HEADINGS = {
+    create: {
+        eyebrow: "Nouvel ouvrage",
+        title: "Consigner un ouvrage",
+        subtitle:
+            "Remplissez les informations du livre pour l'ajouter aux rayons de Nuit d'Encre.",
+    },
+    edit: {
+        eyebrow: "Ouvrage existant",
+        title: "Modifier l'ouvrage",
+        subtitle:
+            "Corrigez la fiche de l'ouvrage déjà consigné dans les registres.",
+    },
+};
 
 export default function BookForm() {
     const { id: bookId } = useParams();
@@ -28,31 +59,32 @@ export default function BookForm() {
     const { categories, isLoadingCategories, errorCategories } =
         useCategoriesData();
 
-    if (!categories && errorCategories) {
-        const isNotFoundError = errorCategories.graphQLErrors.some((error) =>
-            error.message.includes("Categories not found"),
-        );
-
-        if (isNotFoundError) {
-            throw new Response("Categories not found", { status: 404 });
-        }
-
-        // Pour les autres erreurs GraphQL
-        throw new Response("Failed to fetch categories", { status: 500 });
-    }
-
-    if (!isLoadingCategories && !categories) {
-        throw new Response("Categories not found", { status: 404 });
-    }
+    assertEntityLoaded({
+        enabled: true,
+        entity: categories,
+        error: errorCategories,
+        isLoading: isLoadingCategories,
+        notFoundNeedle: "Categories not found",
+        notFoundMessage: "Categories not found",
+        loadErrorMessage: "Failed to fetch categories",
+    });
 
     const { createBook, updateBook, isUpdatingBook } = useBookMutations();
-
     const { book, isLoadingBook, bookError } = useBookData(bookId);
 
     const navigate = useNavigate();
     const { showToast } = useToast();
 
-    const form = useForm<CreateBookInput>({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        setError,
+        clearErrors,
+        control,
+        watch,
+        reset,
+    } = useForm<CreateBookInput>({
         mode: "all",
         defaultValues: {
             title: "",
@@ -68,16 +100,6 @@ export default function BookForm() {
             category: "",
         },
     });
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-        setError,
-        clearErrors,
-        control,
-        reset,
-    } = form;
 
     useEffect(() => {
         if (isEdit && book) {
@@ -101,80 +123,47 @@ export default function BookForm() {
         return <Loader />;
     }
 
-    if (isEdit) {
-        if (!book && bookError) {
-            const isNotFoundError = bookError.graphQLErrors.some((error) =>
-                error.message.includes("Failed to fetch book"),
-            );
+    assertEntityLoaded({
+        enabled: isEdit,
+        entity: book,
+        error: bookError,
+        isLoading: isLoadingBook,
+        notFoundNeedle: "Failed to fetch book",
+        notFoundMessage: "Book not found",
+        loadErrorMessage: "Error loading book",
+    });
 
-            if (isNotFoundError) {
-                throw new Response("Book not found", { status: 404 });
-            }
-
-            // Pour les autres erreurs GraphQL
-            throw new Response("Error loading book", { status: 500 });
-        }
-
-        if (!isLoadingBook && !book) {
-            throw new Response("Book not found", { status: 404 });
-        }
-    }
-
-    const onFormSubmit = async (form: CreateBookInput) => {
+    const onFormSubmit = (values: CreateBookInput) => {
         clearErrors();
-        try {
-            let result;
-
-            if (isEdit && book) {
-                result = await updateBook(book.id, {
-                    ...form,
-                    category: form.category,
-                });
-
-                showToast({
-                    type: "success",
-                    title: "Livre modifié",
-                    description: "Votre livre a bien été mis à jour.",
-                });
-            } else {
-                result = await createBook({
-                    ...form,
-                    category: form.category,
-                });
-
-                showToast({
-                    type: "success",
-                    title: "Livre créée",
-                    description: "Votre livre a bien été enregistré.",
-                });
-            }
-
-            if (result && result.id) {
-                navigate(`/books/${result.id}-${result.title}`);
-            }
-        } catch (err) {
-            const { title, description } = parseGraphQLError(
-                err,
-                isEdit ? "updateBook" : "createBook",
-            );
-
-            setError("root", { message: description });
-
-            showToast({
-                type: "error",
-                title,
-                description,
-            });
-        }
+        return runFicheMutation({
+            perform: () =>
+                isEdit && book
+                    ? updateBook(book.id, { ...values, category: values.category })
+                    : createBook({ ...values, category: values.category }),
+            success: isEdit
+                ? {
+                      title: "Livre modifié",
+                      description: "Votre livre a bien été mis à jour.",
+                  }
+                : {
+                      title: "Livre créée",
+                      description: "Votre livre a bien été enregistré.",
+                  },
+            errorOperation: isEdit ? "updateBook" : "createBook",
+            setError,
+            showToast,
+            onSuccess: (result) =>
+                navigate(`/books/${result.id}-${result.title}`),
+        });
     };
 
-    const label = isSubmitting
+    const ariaLabel = isSubmitting
         ? isEdit
             ? "Modification..."
             : "Création..."
         : isEdit
-            ? "Modifier le livre"
-            : "Enregistrer le livre";
+          ? "Modifier le livre"
+          : "Enregistrer le livre";
 
     const categoryOptions: TypeSelectOptions[] =
         categories?.map((cat: { id: string; name: string }) => ({
@@ -182,52 +171,241 @@ export default function BookForm() {
             label: cat.name,
         })) ?? [];
 
+    const isbn13Value = (watch("isbn13") ?? "").trim();
+    const heading = HEADINGS[isEdit ? "edit" : "create"];
+
     return (
-        <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
-            <div>
-                <h1 className="text-card-foreground text-2xl font-bold">
-                    {bookId ? "Modifier le livre" : "Enregistrer un livre"}
-                </h1>
-                <p className="text-card-foreground font-medium">
-                    {bookId
-                        ? "Modifiez les informations du livre."
-                        : "Remplissez les informations du livre pour l'ajouter à la bibliothèque de Nuit d'Encre."}
-                </p>
-            </div>
-            <div className="flex items-center gap-5">
-                <InputTitle register={register} errors={errors} />
-                <InputAuthor register={register} errors={errors} />
-            </div>
-            <InputSummary register={register} errors={errors} />
-            <div className="flex items-center gap-5">
-                <InputCategory
-                    control={control}
-                    categoryOptions={categoryOptions}
-                    loadingCategories={isLoadingCategories}
+        <AtelierFormShell
+            icon={LuBookOpen}
+            eyebrow={heading.eyebrow}
+            title={heading.title}
+            subtitle={heading.subtitle}
+            formId="book-form"
+            onSubmit={handleSubmit(onFormSubmit)}
+            isSubmitting={isSubmitting}
+            onCancel={() => navigate(-1)}
+            submitLabel={
+                isEdit ? "Enregistrer les modifications" : "Ajouter le livre"
+            }
+            submitIcon={isEdit ? <LuCheck size={16} /> : <LuBookOpen size={16} />}
+            submitAriaLabel={ariaLabel}
+        >
+            <section className="flex flex-col gap-4">
+                <FieldGroupHeader hint="Le titre tel qu'il figure en couverture, et la plume qui l'a écrit.">
+                    Identité de l'ouvrage
+                </FieldGroupHeader>
+                <div className="grid items-start gap-4 sm:grid-cols-2">
+                    <TextField
+                        name="title"
+                        label="Titre"
+                        icon={LuType}
+                        required
+                        placeholder="Le titre de l'ouvrage"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            required: "Le titre est requis",
+                            maxLength: {
+                                value: 255,
+                                message:
+                                    "Le titre doit contenir 255 caractères maximum.",
+                            },
+                        }}
+                    />
+                    <TextField
+                        name="author"
+                        label="Auteur"
+                        icon={LuFeather}
+                        required
+                        placeholder="Nom complet de l'auteur"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            required: "Le nom et prénom de l'auteur sont requis",
+                            maxLength: {
+                                value: 255,
+                                message:
+                                    "Le nom et prénom de l'auteur doivent contenir 255 caractères maximum.",
+                            },
+                        }}
+                    />
+                </div>
+                <TextareaField
+                    name="summary"
+                    label="Résumé"
+                    required
+                    placeholder="Quelques lignes pour donner envie d'ouvrir le livre…"
+                    max={SUMMARY_MAX}
+                    length={(watch("summary") ?? "").length}
+                    register={register}
                     errors={errors}
+                    rules={{
+                        required: "Le résumé du livre est requis",
+                        maxLength: {
+                            value: SUMMARY_MAX,
+                            message:
+                                "Le résumé du livre doit contenir 5000 caractères maximum.",
+                        },
+                    }}
                 />
-                <InputFormat control={control} errors={errors} />
-            </div>
-            <div className="flex items-center gap-5">
-                <InputIsbn isbn13 register={register} errors={errors} />
-                <InputIsbn isbn13={false} register={register} errors={errors} />
-            </div>
-            <div className="flex items-center gap-5">
-                <InputPage register={register} errors={errors} />
-                <InputLanguage register={register} errors={errors} />
-            </div>
-            <div className="flex items-center gap-5">
-                <InputPublishedYear register={register} errors={errors} />
-                <InputPublisher register={register} errors={errors} />
-            </div>
-            <Button
-                type="submit"
-                disabled={isSubmitting}
-                fullWidth
-                ariaLabel={label}
-            >
-                {label}
-            </Button>
-        </FormWrapper>
+            </section>
+
+            <section className="flex flex-col gap-4">
+                <FieldGroupHeader hint="Données factuelles consignées au registre — fiche de catalogue.">
+                    Notice technique
+                </FieldGroupHeader>
+                <FormNoticeBlock
+                    refValue={isbn13Value ? isbn13Value : "—— en attente ——"}
+                >
+                    <TextField
+                        name="isbn13"
+                        label="ISBN-13"
+                        icon={LuHash}
+                        mono
+                        required
+                        inputMode="numeric"
+                        placeholder="9782070368228"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            required: "Le ISBN-13 est requis",
+                            pattern: {
+                                value: /^.{13}$/,
+                                message:
+                                    "Le ISBN-13 doit contenir exactement 13 caractères.",
+                            },
+                        }}
+                    />
+                    <TextField
+                        name="isbn10"
+                        label="ISBN-10"
+                        icon={LuHash}
+                        mono
+                        inputMode="numeric"
+                        placeholder="2070368220 (optionnel)"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            pattern: {
+                                value: /^(.{10}|)$/,
+                                message:
+                                    "Le ISBN-10 doit contenir exactement 10 caractères.",
+                            },
+                        }}
+                    />
+                    <TextField
+                        name="pageCount"
+                        label="Nombre de pages"
+                        icon={LuFileText}
+                        mono
+                        required
+                        type="number"
+                        step="1"
+                        preventDecimal
+                        placeholder="384"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            valueAsNumber: true,
+                            required: "Le nombre de page est requis",
+                            min: {
+                                value: 1,
+                                message:
+                                    "Le nombre de pages doit être au moins de 1.",
+                            },
+                        }}
+                    />
+                    <TextField
+                        name="publishedYear"
+                        label="Année de publication"
+                        icon={LuCalendar}
+                        mono
+                        required
+                        type="number"
+                        step="1"
+                        preventDecimal
+                        placeholder="2021"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            valueAsNumber: true,
+                            required: "L'année de publication est requise",
+                            min: {
+                                value: 1000,
+                                message:
+                                    "L'année de publication doit être une année valide.",
+                            },
+                        }}
+                    />
+                    <TextField
+                        name="language"
+                        label="Langue"
+                        icon={LuLanguages}
+                        mono
+                        required
+                        placeholder="fr"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            required: "La langue est requis",
+                            maxLength: {
+                                value: 5,
+                                message:
+                                    "La langue doit contenir 5 caractères maximum.",
+                            },
+                        }}
+                    />
+                    <TextField
+                        name="publisher"
+                        label="Éditeur"
+                        icon={LuBuilding2}
+                        mono
+                        required
+                        placeholder="Éditions du Crépuscule"
+                        register={register}
+                        errors={errors}
+                        rules={{
+                            required: "La maison d'édition est requise",
+                            maxLength: {
+                                value: 255,
+                                message:
+                                    "La maison d'édition doit contenir 255 caractères maximum.",
+                            },
+                        }}
+                    />
+                </FormNoticeBlock>
+            </section>
+
+            <section className="flex flex-col gap-4">
+                <FieldGroupHeader hint="Où ranger l'ouvrage dans les rayons de Nuit d'Encre.">
+                    Classement
+                </FieldGroupHeader>
+                <div className="grid gap-4 sm:grid-cols-2">
+                    <SelectField
+                        name="format"
+                        label="Format"
+                        icon={LuLayers}
+                        required
+                        control={control}
+                        errors={errors}
+                        options={FORMAT_OPTIONS}
+                        message="Le format du livre est requis"
+                        placeholder="Choisir un format"
+                    />
+                    <SelectField
+                        name="category"
+                        label="Catégorie"
+                        icon={LuTag}
+                        required
+                        control={control}
+                        errors={errors}
+                        options={categoryOptions}
+                        message="La catégorie est requise"
+                        placeholder="Choisir une catégorie"
+                        disabled={isLoadingCategories}
+                    />
+                </div>
+            </section>
+        </AtelierFormShell>
     );
 }

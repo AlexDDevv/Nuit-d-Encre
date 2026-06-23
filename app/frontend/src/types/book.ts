@@ -1,4 +1,3 @@
-import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { ReactNode } from "react";
 import { IconType } from "react-icons";
 
@@ -6,7 +5,6 @@ import { Author } from "./author";
 import { User } from "./user";
 import { CategoryBook } from "./category";
 import { UserBookStatus } from "./user-book";
-import { TypeSelectOptions } from "./ui";
 
 export type BookFormat = "hardcover" | "paperback" | "softcover" | "pocket";
 
@@ -160,21 +158,3 @@ export type LayoutButtonsProps = {
     activeLayout: LayoutOptionsValue;
     onLayoutChange: (layout: LayoutOptionsValue) => void;
 };
-
-export type BookInputsProps = {
-    register: UseFormRegister<CreateBookInput>;
-    errors: FieldErrors<CreateBookInput>;
-};
-
-export type CategoryInputProps = {
-    control: Control<CreateBookInput>;
-    categoryOptions: TypeSelectOptions[];
-    loadingCategories: boolean;
-    errors: FieldErrors<CreateBookInput>;
-};
-
-export type InputIsbnProps = Pick<BookInputsProps, "register" | "errors"> & {
-    isbn13: boolean;
-};
-
-export type FormatInputProps = Pick<CategoryInputProps, "control" | "errors">;

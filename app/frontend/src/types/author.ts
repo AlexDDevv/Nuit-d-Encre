@@ -1,5 +1,3 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
-
 import { Book, UseBooksMode } from "./book";
 import { User } from "./user";
 
@@ -39,9 +37,4 @@ export type AuthorCardProps = {
     isIncomplete?: boolean;
     nationality?: string;
     bookCount?: number;
-};
-
-export type AuthorInputsProps = {
-    register: UseFormRegister<CreateAuthorInput>;
-    errors: FieldErrors<CreateAuthorInput>;
 };
