@@ -14,28 +14,28 @@ export const baseClasses =
  */
 export const variantClasses: Record<ButtonVariant, string> = {
     primary:
-        "justify-center rounded-lg bg-primary text-primary-foreground hover:bg-transparent hover:text-primary border-2 border-primary focus-visible:ring-primary active:bg-primary-foreground active:text-primary font-[Switzer-SemiBold]",
+        "justify-center rounded-lg bg-primary text-primary-foreground hover:bg-transparent hover:text-primary border-2 border-primary focus-visible:ring-primary active:bg-primary-foreground active:text-primary",
     secondary:
-        "justify-center rounded-lg bg-secondary text-secondary-foreground border-2 border-secondary hover:bg-transparent hover:text-secondary focus-visible:ring-primary active:bg-primary active:text-primary-foreground font-[Switzer-SemiBold]",
+        "justify-center rounded-lg bg-secondary text-secondary-foreground border-2 border-secondary hover:bg-transparent hover:text-secondary focus-visible:ring-primary active:bg-primary active:text-primary-foreground",
     outline:
-        "justify-center rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary active:bg-primary-foreground active:text-primary font-[Switzer-medium]",
-    card: "justify-center border border-border hover:border-foreground rounded-lg bg-card text-card-foreground hover:text-foreground focus-visible:ring-primary active:bg-accent active:text-accent-foreground font-[Switzer-regular] text-xs group",
+        "justify-center rounded-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary active:bg-primary-foreground active:text-primary",
+    card: "justify-center border border-border hover:border-foreground rounded-lg bg-card text-card-foreground hover:text-foreground focus-visible:ring-primary active:bg-accent active:text-accent-foreground text-xs group",
     bookCard:
         "relative overflow-hidden flex-col items-center justify-center gap-5 rounded-xl border-2 border-border bg-card hover:border-primary focus-visible:ring-ring ring-offset-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none transition-all duration-200 ease-in-out",
     underlineText:
-        "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer font-[Switzer-SemiBold]",
-    text: "text-foreground underline-offset-4 hover:bg-muted active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer font-[Switzer-regular] bg-transparent rounded-lg px-0 disabled:bg-transparent disabled:text-muted-foreground/50",
+        "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer",
+    text: "text-foreground underline-offset-4 hover:bg-muted active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer bg-transparent rounded-lg px-0 disabled:bg-transparent disabled:text-muted-foreground/50",
     checkable:
-        "justify-start focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 text-muted-foreground justify-between font-[Switzer-light] bg-transparent hover:bg-muted text-sm rounded-lg disabled:text-muted-foreground/50 disabled:bg-transparent",
-    icon: "justify-center text-foreground underline-offset-4 hover:underline active:no-underline disabled:bg-transparent disabled:text-muted-foreground focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline font-[Switzer-SemiBold]",
+        "justify-start focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 text-muted-foreground justify-between bg-transparent hover:bg-muted text-sm rounded-lg disabled:text-muted-foreground/50 disabled:bg-transparent",
+    icon: "justify-center text-foreground underline-offset-4 hover:underline active:no-underline disabled:bg-transparent disabled:text-muted-foreground focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline",
     iconUnderlined:
-        "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer hover:border-b rounded-none border-foreground font-[Switzer-SemiBold]",
+        "justify-center text-foreground underline-offset-4 hover:underline active:no-underline focus-visible:ring-transparent focus-visible:ring-offset-transparent focus-visible:ring-offset-0 focus-visible:underline cursor-pointer hover:border-b rounded-none border-foreground",
     destructive:
-        "justify-center rounded-lg bg-button-destructive-bg text-button-destructive-fg border-2 border-transparent hover:bg-transparent hover:text-button-destructive-bg hover:border-button-destructive-bg focus-visible:ring-destructive active:bg-button-destructive-bg font-[Switzer-SemiBold]",
-    nav: "justify-start bg-transparent border-none text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-primary rounded-md px-2 py-1.5 text-sm font-[Switzer-regular]",
+        "justify-center rounded-lg bg-button-destructive-bg text-button-destructive-fg border-2 border-transparent hover:bg-transparent hover:text-button-destructive-bg hover:border-button-destructive-bg focus-visible:ring-destructive active:bg-button-destructive-bg",
+    nav: "justify-start bg-transparent border-none text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:ring-primary rounded-md px-2 py-1.5 text-sm",
     layout: "bg-transparent border-none text-accent-foreground [&_svg]:h-7 [&_svg]:w-7 transition-all hover:scale-105 hover:text-foreground focus-visible:ring-primary",
     ghost: "bg-transparent border-none text-primary hover:underline focus:ring-primary disabled:bg-transparent",
-    google: "justify-center rounded-lg border-2 border-primary/45 bg-transparent text-primary tracking-wide transition-all duration-200 hover:-translate-y-px hover:border-primary hover:bg-primary/10 hover:text-primary focus-visible:ring-primary active:bg-primary/15 font-[Switzer-SemiBold]",
+    google: "justify-center rounded-lg border-2 border-primary/45 bg-transparent text-primary tracking-wide transition-all duration-200 hover:-translate-y-px hover:border-primary hover:bg-primary/10 hover:text-primary focus-visible:ring-primary active:bg-primary/15",
     social: "justify-center rounded-sm border border-popover-foreground/50 text-popover-foreground/50 hover:text-popover-foreground hover:border-popover-foreground w-10",
     hamburger:
         "justify-center bg-card border-border text-card-foreground fixed top-5 left-5 z-50 rounded-md border p-2 shadow-md w-10",

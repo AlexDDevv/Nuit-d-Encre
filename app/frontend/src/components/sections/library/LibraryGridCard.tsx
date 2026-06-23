@@ -64,7 +64,7 @@ export default function LibraryGridCard({
             )}
         >
             {/* couverture */}
-            <div className="bg-background relative aspect-2/3 overflow-hidden rounded-t-[10px]">
+            <div className="bg-background relative aspect-2/3 overflow-hidden rounded-t-xl">
                 <BookCover
                     coverUrl={book.coverUrl}
                     title={book.title}

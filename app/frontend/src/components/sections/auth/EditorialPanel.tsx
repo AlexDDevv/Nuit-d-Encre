@@ -26,7 +26,7 @@ export default function EditorialPanel({ mode }: EditorialPanelProps) {
     const c = COPY[mode];
 
     return (
-        <aside className="lg:border-border relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-between lg:rounded-l-[20px] lg:border-2 lg:border-r-0">
+        <aside className="lg:border-border relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-between lg:rounded-l-3xl lg:border-2 lg:border-r-0">
             <div aria-hidden="true" className="bg-card/70 absolute inset-0" />
             <div
                 aria-hidden="true"
@@ -38,7 +38,7 @@ export default function EditorialPanel({ mode }: EditorialPanelProps) {
             />
             <div
                 aria-hidden="true"
-                className="border-primary/15 pointer-events-none absolute inset-5 rounded-[14px] border"
+                className="border-primary/15 pointer-events-none absolute inset-5 rounded-xl border"
             />
 
             <div className="relative z-10 flex items-center gap-2.5 px-9 pt-9">

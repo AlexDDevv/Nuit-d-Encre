@@ -44,7 +44,7 @@ export default function AuthRequired() {
             </nav>
 
             <p
-                className="mt-5 inline-flex max-w-full items-center gap-1.5 font-mono text-xxs"
+                className="text-xxs mt-5 inline-flex max-w-full items-center gap-1.5 font-mono"
                 style={{ color: "hsl(20 12% 56%)" }}
             >
                 <Icon

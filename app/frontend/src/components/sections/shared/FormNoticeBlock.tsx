@@ -17,7 +17,7 @@ export default function FormNoticeBlock({
         <div className="grain border-border bg-popover/55 relative overflow-hidden rounded-xl border-2 p-4 sm:p-5">
             <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-[inherit]"
+                className="pointer-events-none absolute inset-0"
                 style={{
                     background:
                         "radial-gradient(360px 120px at 50% -10%, hsl(43 45% 55% / 0.10), transparent 70%)",

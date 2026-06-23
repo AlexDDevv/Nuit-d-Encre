@@ -46,10 +46,10 @@ export default function AtelierFormShell({
                 subtitle={subtitle}
             />
 
-            <div className="grain border-border bg-card relative rounded-[20px] border-2 p-6 shadow-[0_40px_100px_-44px_hsl(20_30%_4%/0.85),inset_0_1px_0_hsl(43_59%_81%/0.05)] sm:p-8 md:p-9">
+            <div className="grain border-border bg-card relative rounded-3xl border-2 p-6 shadow-[0_40px_100px_-44px_hsl(20_30%_4%/0.85),inset_0_1px_0_hsl(43_59%_81%/0.05)] sm:p-8 md:p-9">
                 <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 rounded-[inherit]"
+                    className="pointer-events-none absolute inset-0"
                     style={{
                         background:
                             "radial-gradient(460px 200px at 50% -6%, hsl(43 45% 55% / 0.13), transparent 65%)",

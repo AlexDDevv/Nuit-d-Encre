@@ -13,8 +13,8 @@ export default function ContinueWithGoogle() {
                 fullWidth
                 ariaLabel="Continuer avec Google"
                 leftIcon={
-                    <span className="bg-foreground/95 grid h-6 w-6 place-items-center rounded-full">
-                        <FcGoogle size={15} />
+                    <span className="bg-foreground/95 grid h-5 w-5 place-items-center rounded-full">
+                        <FcGoogle className="h-3 w-3" />
                     </span>
                 }
             >
