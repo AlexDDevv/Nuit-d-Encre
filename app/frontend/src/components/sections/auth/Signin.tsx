@@ -3,9 +3,8 @@ import { UserSignIn } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { LuArrowRight } from "react-icons/lu";
-import InputEmail from "@/components/sections/auth/form/InputEmail";
-import InputPassword from "@/components/sections/auth/form/InputPassword";
+import { LuArrowRight, LuLock, LuMail } from "react-icons/lu";
+import TextField from "@/components/sections/shared/fields/TextField";
 import AuthShell from "@/components/sections/auth/AuthShell";
 import AuthCardHeader from "@/components/sections/auth/AuthCardHeader";
 import Button from "@/components/UI/Button/Button";
@@ -98,10 +97,40 @@ export default function Signin() {
 
             {/* Champs */}
             <div className="mt-6 flex flex-col gap-4">
-                <InputEmail<UserSignIn> register={register} errors={errors} />
-                <InputPassword<UserSignIn>
+                <TextField<UserSignIn>
+                    name="email"
+                    label="Email"
+                    type="email"
+                    inputMode="email"
+                    icon={LuMail}
+                    required
+                    placeholder="vous@exemple.fr"
                     register={register}
                     errors={errors}
+                    rules={{
+                        required: "L'email est requis",
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Format d'email invalide",
+                        },
+                    }}
+                />
+                <TextField<UserSignIn>
+                    name="password"
+                    label="Mot de passe"
+                    type="password"
+                    icon={LuLock}
+                    required
+                    placeholder="••••••••"
+                    register={register}
+                    errors={errors}
+                    rules={{
+                        required: "Le mot de passe est requis",
+                        minLength: {
+                            value: 8,
+                            message: "Doit contenir au moins 8 caractères",
+                        },
+                    }}
                 />
 
                 {/* Se souvenir de moi + mot de passe oublié */}

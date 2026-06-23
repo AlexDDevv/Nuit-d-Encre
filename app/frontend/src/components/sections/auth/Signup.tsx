@@ -3,16 +3,14 @@ import { UserSignUpForm } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useSearchParams } from "react-router-dom";
-import { LuArrowRight } from "react-icons/lu";
-import InputUserName from "@/components/sections/auth/form/InputUserName";
-import InputEmail from "@/components/sections/auth/form/InputEmail";
-import InputPassword from "@/components/sections/auth/form/InputPassword";
-import InputConfirmPassword from "@/components/sections/auth/form/InputConfirmPassword";
+import { LuArrowRight, LuLock, LuMail, LuUser } from "react-icons/lu";
+import TextField from "@/components/sections/shared/fields/TextField";
 import PasswordStrengthMeter from "@/components/sections/auth/PasswordStrengthMeter";
 import AuthShell from "@/components/sections/auth/AuthShell";
 import AuthCardHeader from "@/components/sections/auth/AuthCardHeader";
 import Button from "@/components/UI/Button/Button";
 import ContinueWithGoogle from "@/components/UI/form/ContinueWithGoogle";
+import { isPasswordStrong } from "@/lib/password";
 import { REGISTER, WHOAMI } from "@/graphql/user/auth";
 
 export default function Signup() {
@@ -108,28 +106,82 @@ export default function Signup() {
 
             {/* Champs */}
             <div className="mt-6 flex flex-col gap-4">
-                <InputUserName<UserSignUpForm>
+                <TextField<UserSignUpForm>
+                    name="userName"
+                    label="Nom d'utilisateur"
+                    icon={LuUser}
+                    required
+                    placeholder="Votre nom de plume"
                     register={register}
                     errors={errors}
+                    rules={{
+                        required: "Le nom d'utilisateur est requis",
+                        minLength: {
+                            value: 2,
+                            message:
+                                "Le nom d'utilisateur doit contenir au moins 2 caractères.",
+                        },
+                        maxLength: {
+                            value: 100,
+                            message:
+                                "Le nom d'utilisateur doit contenir 100 caractères maximum.",
+                        },
+                    }}
                 />
-                <InputEmail<UserSignUpForm>
+                <TextField<UserSignUpForm>
+                    name="email"
+                    label="Email"
+                    type="email"
+                    inputMode="email"
+                    icon={LuMail}
+                    required
+                    placeholder="vous@exemple.fr"
                     register={register}
                     errors={errors}
+                    rules={{
+                        required: "L'email est requis",
+                        pattern: {
+                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                            message: "Format d'email invalide",
+                        },
+                    }}
                 />
 
                 <div className="flex flex-col gap-2.5">
-                    <InputPassword<UserSignUpForm>
+                    <TextField<UserSignUpForm>
+                        name="password"
+                        label="Mot de passe"
+                        type="password"
+                        icon={LuLock}
+                        required
+                        placeholder="••••••••"
                         register={register}
                         errors={errors}
-                        strong
+                        rules={{
+                            required: "Le mot de passe est requis",
+                            validate: (value) =>
+                                isPasswordStrong(value as string) ||
+                                "Le mot de passe ne remplit pas tous les critères.",
+                        }}
                     />
                     <PasswordStrengthMeter value={password} />
                 </div>
 
-                <InputConfirmPassword
+                <TextField<UserSignUpForm>
+                    name="confirmPassword"
+                    label="Confirmer le mot de passe"
+                    type="password"
+                    icon={LuLock}
+                    required
+                    placeholder="Saisissez à nouveau"
                     register={register}
                     errors={errors}
-                    getValues={getValues}
+                    rules={{
+                        required: "Veuillez confirmer le mot de passe",
+                        validate: (value) =>
+                            value === getValues("password") ||
+                            "Les deux mots de passe ne correspondent pas.",
+                    }}
                 />
 
                 <div className="mt-1">
