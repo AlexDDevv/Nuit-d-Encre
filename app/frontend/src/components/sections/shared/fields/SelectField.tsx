@@ -1,29 +1,9 @@
-import { IconType } from "react-icons";
-import {
-    Control,
-    FieldError,
-    FieldErrors,
-    FieldValues,
-    Path,
-} from "react-hook-form";
+import { FieldError, FieldValues } from "react-hook-form";
 import TypeSelect from "@/components/UI/form/TypeSelect";
 import FieldShell from "@/components/sections/shared/FieldShell";
 import { atelierSelectTriggerClass } from "@/components/sections/shared/atelierField";
 import { cn } from "@/lib/utils";
-import { TypeSelectOptions } from "@/types/types";
-
-type SelectFieldProps<T extends FieldValues> = {
-    name: Path<T>;
-    label: string;
-    control: Control<T>;
-    errors: FieldErrors<T>;
-    options: TypeSelectOptions[];
-    message: string;
-    placeholder: string;
-    icon?: IconType;
-    required?: boolean;
-    disabled?: boolean;
-};
+import { SelectFieldProps } from "@/types/types";
 
 /** Sélecteur de l'atelier : `FieldShell` + `TypeSelect` conservé. */
 export default function SelectField<T extends FieldValues>({

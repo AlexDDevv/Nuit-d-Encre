@@ -1,29 +1,9 @@
-import {
-    FieldError,
-    FieldErrors,
-    FieldValues,
-    Path,
-    RegisterOptions,
-    UseFormRegister,
-} from "react-hook-form";
+import { FieldError, FieldValues } from "react-hook-form";
 import { Textarea } from "@/components/UI/form/Textarea";
 import FieldShell from "@/components/sections/shared/FieldShell";
 import { atelierTextareaClass } from "@/components/sections/shared/atelierField";
 import { cn } from "@/lib/utils";
-
-type TextareaFieldProps<T extends FieldValues> = {
-    name: Path<T>;
-    label: string;
-    register: UseFormRegister<T>;
-    errors: FieldErrors<T>;
-    rules?: RegisterOptions<T, Path<T>>;
-    required?: boolean;
-    placeholder?: string;
-    rows?: number;
-    max: number;
-    /** Longueur courante (via `watch`) pour alimenter le compteur. */
-    length: number;
-};
+import { TextareaFieldProps } from "@/types/types";
 
 /** Zone de texte serif de l'atelier : `FieldShell` + `Textarea` conservé. */
 export default function TextareaField<T extends FieldValues>({

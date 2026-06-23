@@ -1,31 +1,9 @@
-import { ComponentProps } from "react";
-import { IconType } from "react-icons";
-import {
-    FieldError,
-    FieldErrors,
-    FieldValues,
-    Path,
-    RegisterOptions,
-    UseFormRegister,
-} from "react-hook-form";
+import { FieldError, FieldValues } from "react-hook-form";
 import { Input } from "@/components/UI/form/Input";
 import FieldShell from "@/components/sections/shared/FieldShell";
 import { atelierControlClass } from "@/components/sections/shared/atelierField";
 import { cn } from "@/lib/utils";
-
-type TextFieldProps<T extends FieldValues> = {
-    name: Path<T>;
-    label: string;
-    register: UseFormRegister<T>;
-    errors: FieldErrors<T>;
-    rules?: RegisterOptions<T, Path<T>>;
-    icon?: IconType;
-    required?: boolean;
-    hint?: string;
-    mono?: boolean;
-    /** Empêche la saisie de « . » et « , » (champs entiers). */
-    preventDecimal?: boolean;
-} & Pick<ComponentProps<"input">, "type" | "placeholder" | "inputMode" | "step">;
+import { TextFieldProps } from "@/types/types";
 
 /** Champ texte de l'atelier : habillage `FieldShell` + `Input` conservé. */
 export default function TextField<T extends FieldValues>({
