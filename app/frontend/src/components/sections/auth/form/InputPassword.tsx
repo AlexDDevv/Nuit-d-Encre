@@ -1,6 +1,7 @@
 import { Input } from "@/components/UI/form/Input";
 import { Label } from "@/components/UI/form/Label";
 import { UserSignForm } from "@/types/types";
+import { isPasswordStrong } from "@/lib/password";
 import {
     FieldErrors,
     FieldValues,
@@ -11,11 +12,14 @@ import {
 type InputPasswordProps<T extends FieldValues> = {
     register: UseFormRegister<T>;
     errors: FieldErrors<T>;
+    /** Exige tous les critères de robustesse (inscription) plutôt que la seule longueur min. */
+    strong?: boolean;
 };
 
 export default function InputPassword<T extends UserSignForm>({
     register,
     errors,
+    strong = false,
 }: InputPasswordProps<T>) {
     const errorMessage = errors.password?.message as string | undefined;
 
@@ -33,10 +37,19 @@ export default function InputPassword<T extends UserSignForm>({
                 aria-required
                 {...register(passwordKey as Path<T>, {
                     required: "Le mot de passe est requis",
-                    minLength: {
-                        value: 8,
-                        message: "Doit contenir au moins 8 caractères",
-                    },
+                    ...(strong
+                        ? {
+                              validate: (value) =>
+                                  isPasswordStrong(value as string) ||
+                                  "Le mot de passe ne remplit pas tous les critères.",
+                          }
+                        : {
+                              minLength: {
+                                  value: 8,
+                                  message:
+                                      "Doit contenir au moins 8 caractères",
+                              },
+                          }),
                 })}
                 aria-invalid={errors.password ? "true" : "false"}
                 errorMessage={errorMessage}

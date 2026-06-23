@@ -1,17 +1,16 @@
 import { Input } from "@/components/UI/form/Input";
 import { Label } from "@/components/UI/form/Label";
-import { UserSignUp } from "@/types/types";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { AuthFieldProps, UserSignUp } from "@/types/types";
+import { Path } from "react-hook-form";
 
-type InputUserNameProps = {
-    register: UseFormRegister<UserSignUp>;
-    errors: FieldErrors<UserSignUp>;
-};
-
-export default function InputUserName({
+export default function InputUserName<T extends UserSignUp>({
     register,
     errors,
-}: InputUserNameProps) {
+}: AuthFieldProps<T>) {
+    const errorMessage = errors.userName?.message as string | undefined;
+
+    const userNameKey: keyof T = "userName";
+
     return (
         <div className="flex flex-col gap-2">
             <Label htmlFor="userName" required>
@@ -22,7 +21,7 @@ export default function InputUserName({
                 type="text"
                 placeholder="Ex: Le libraire"
                 aria-required
-                {...register("userName", {
+                {...register(userNameKey as Path<T>, {
                     required: "Le nom d'utilisateur est requis",
                     minLength: {
                         value: 2,
@@ -30,8 +29,8 @@ export default function InputUserName({
                             "Le nom d'utilisateur doit contenir au moins 2 caractères.",
                     },
                 })}
-                aria-invalid={errors?.userName ? "true" : "false"}
-                errorMessage={errors?.userName?.message}
+                aria-invalid={errors.userName ? "true" : "false"}
+                errorMessage={errorMessage}
             />
         </div>
     );
