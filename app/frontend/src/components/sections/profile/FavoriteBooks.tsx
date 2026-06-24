@@ -1,8 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/client";
-import { FaStar, FaArrowUp, FaArrowDown, FaXmark, FaPlus } from "react-icons/fa6";
+import {
+    FaStar,
+    FaArrowUp,
+    FaArrowDown,
+    FaXmark,
+    FaPlus,
+} from "react-icons/fa6";
 import BookCover from "@/components/sections/book/BookCover";
+import Button from "@/components/UI/Button";
 import {
     GET_USER_FAVORITE_BOOKS,
     SET_FAVORITE_BOOK,
@@ -22,11 +29,12 @@ interface FavoriteBooksProps {
 const RANKS = [1, 2, 3] as const;
 
 function Cover({ fav, rank }: { fav: UserBook; rank: number }) {
-    const author = `${fav.book.author.firstname} ${fav.book.author.lastname}`.trim();
+    const author =
+        `${fav.book.author.firstname} ${fav.book.author.lastname}`.trim();
     return (
         <Link
             to={`/books/${fav.book.id}-${slugify(fav.book.title)}`}
-            className="group/cover border-border hover:border-primary/50 relative block aspect-2/3 w-full overflow-hidden rounded-lg border-2 shadow-[0_10px_30px_-12px_hsl(0_0%_0%/0.8)] transition-all duration-200"
+            className="group/cover border-border hover:border-primary/50 aspect-2/3 relative block w-full overflow-hidden rounded-lg border-2 shadow-[0_10px_30px_-12px_hsl(0_0%_0%/0.8)] transition-all duration-200"
         >
             <BookCover
                 coverUrl={fav.book.coverUrl}
@@ -35,7 +43,7 @@ function Cover({ fav, rank }: { fav: UserBook; rank: number }) {
                 className="absolute inset-0 h-full w-full"
             />
             <span className="border-primary/25 pointer-events-none absolute inset-1.5 rounded-sm border" />
-            <span className="border-primary/70 bg-background/80 text-primary absolute top-2 right-2 grid h-7 w-7 place-items-center rounded-full border-2 font-title text-sm font-black">
+            <span className="border-primary/70 bg-background/80 text-primary font-title absolute right-2 top-2 grid h-7 w-7 place-items-center rounded-full border-2 text-sm font-black">
                 {rank}
             </span>
         </Link>
@@ -54,12 +62,12 @@ function EmptyCover({
     const content = (
         <>
             <span className="border-border text-muted-foreground/70 grid h-9 w-9 place-items-center rounded-full border-2">
-                {editable ? <FaPlus size={16} /> : <FaStar size={14} />}
+                {editable ? <FaPlus size={16} /> : <FaStar />}
             </span>
             <span className="text-muted-foreground/70 font-quote text-sm italic">
                 {editable ? "Ajouter un favori" : "Place à pourvoir"}
             </span>
-            <span className="text-muted-foreground/40 font-title text-xs font-bold tracking-widest uppercase">
+            <span className="text-muted-foreground/40 font-title text-xs font-bold uppercase tracking-widest">
                 Rang {rank}
             </span>
         </>
@@ -156,32 +164,32 @@ export default function FavoriteBooks({
                                     <Cover fav={fav} rank={rank} />
                                     {editing && isOwner && (
                                         <div className="mt-2 flex items-center justify-center gap-1.5">
-                                            <button
-                                                type="button"
-                                                aria-label="Monter dans le classement"
+                                            <Button
+                                                variant="icon"
+                                                ariaLabel="Monter dans le classement"
                                                 disabled={rank === 1 || busy}
                                                 onClick={() => move(rank, -1)}
-                                                className="border-border text-foreground hover:border-primary hover:text-primary disabled:hover:border-border disabled:hover:text-foreground grid h-7 w-7 place-items-center rounded-md border-2 transition-colors disabled:opacity-30"
+                                                className="border-border text-foreground hover:border-primary h-8 w-8 rounded-md p-0 disabled:bg-transparent"
                                             >
                                                 <FaArrowUp size={13} />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                aria-label="Descendre dans le classement"
+                                            </Button>
+                                            <Button
+                                                variant="icon"
+                                                ariaLabel="Descendre dans le classement"
                                                 disabled={rank === 3 || busy}
                                                 onClick={() => move(rank, 1)}
-                                                className="border-border text-foreground hover:border-primary hover:text-primary disabled:hover:border-border disabled:hover:text-foreground grid h-7 w-7 place-items-center rounded-md border-2 transition-colors disabled:opacity-30"
+                                                className="border-border text-foreground hover:border-primary h-8 w-8 rounded-md p-0 disabled:bg-transparent"
                                             >
                                                 <FaArrowDown size={13} />
-                                            </button>
-                                            <button
-                                                type="button"
-                                                aria-label="Retirer des favoris"
+                                            </Button>
+                                            <Button
+                                                variant="destructiveGhost"
+                                                ariaLabel="Retirer des favoris"
                                                 onClick={() => remove(fav.id)}
-                                                className="border-destructive/50 text-destructive hover:bg-destructive grid h-7 w-7 place-items-center rounded-md border-2 transition-colors hover:text-white"
+                                                className="h-8 w-8 rounded-md p-0"
                                             >
                                                 <FaXmark size={13} />
-                                            </button>
+                                            </Button>
                                         </div>
                                     )}
                                 </div>
