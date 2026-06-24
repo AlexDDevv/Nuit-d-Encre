@@ -9,9 +9,13 @@ import PublicRoute from "@/components/hoc/PublicRoute";
 import AdminRoute from "@/components/hoc/AdminRoute";
 import Books from "@/pages/books/Books";
 import ErrorElement from "@/components/UI/error/ErrorElement";
-import Loader from "@/components/UI/Loader";
+import { NocturneLoader } from "@/components/UI/loader";
 import { lazy, Suspense } from "react";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import {
+    createBrowserRouter,
+    RouterProvider,
+    Navigate,
+} from "react-router-dom";
 import BookDetailsSkeleton from "@/components/UI/skeleton/BookDetailsSkeleton";
 import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 import BookPreviewSkeleton from "@/components/UI/skeleton/BookPreviewSkeleton";
@@ -59,7 +63,15 @@ const router = createBrowserRouter([
             {
                 path: "register",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="medaillon"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <PublicRoute>
                             <Auth />
                         </PublicRoute>
@@ -69,7 +81,15 @@ const router = createBrowserRouter([
             {
                 path: "connexion",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="medaillon"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <PublicRoute>
                             <Auth />
                         </PublicRoute>
@@ -104,7 +124,11 @@ const router = createBrowserRouter([
             {
                 path: "books/scribe",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader concept="plume" fullscreen label />
+                        }
+                    >
                         <ProtectedRoute>
                             <BookScribe />
                         </ProtectedRoute>
@@ -114,7 +138,11 @@ const router = createBrowserRouter([
             {
                 path: "books/update/:id",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader concept="plume" fullscreen label />
+                        }
+                    >
                         <ProtectedRoute>
                             <BookUpdate />
                         </ProtectedRoute>
@@ -132,7 +160,11 @@ const router = createBrowserRouter([
             {
                 path: "authors/scribe",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader concept="plume" fullscreen label />
+                        }
+                    >
                         <ProtectedRoute>
                             <AuthorScribe />
                         </ProtectedRoute>
@@ -142,7 +174,11 @@ const router = createBrowserRouter([
             {
                 path: "authors/update/:id",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader concept="plume" fullscreen label />
+                        }
+                    >
                         <ProtectedRoute>
                             <AuthorUpdate />
                         </ProtectedRoute>
@@ -160,7 +196,11 @@ const router = createBrowserRouter([
             {
                 path: "library",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader concept="livre" fullscreen label />
+                        }
+                    >
                         <ProtectedRoute>
                             <UserLibrary />
                         </ProtectedRoute>
@@ -170,7 +210,15 @@ const router = createBrowserRouter([
             {
                 path: "profil",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="medaillon"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <ProtectedRoute>
                             <UserProfile />
                         </ProtectedRoute>
@@ -180,7 +228,15 @@ const router = createBrowserRouter([
             {
                 path: "profil/:id",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="medaillon"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <UserProfile />
                     </Suspense>
                 ),
@@ -188,7 +244,15 @@ const router = createBrowserRouter([
             {
                 path: "admin",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="medaillon"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <ProtectedRoute>
                             <AdminRoute>
                                 <Admin />
@@ -200,7 +264,15 @@ const router = createBrowserRouter([
             {
                 path: "terms-of-use",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="chandelle"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <TermsOfUse />
                     </Suspense>
                 ),
@@ -208,7 +280,15 @@ const router = createBrowserRouter([
             {
                 path: "about",
                 element: (
-                    <Suspense fallback={<Loader />}>
+                    <Suspense
+                        fallback={
+                            <NocturneLoader
+                                concept="chandelle"
+                                fullscreen
+                                label
+                            />
+                        }
+                    >
                         <Contact />
                     </Suspense>
                 ),

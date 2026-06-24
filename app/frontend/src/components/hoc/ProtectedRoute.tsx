@@ -3,7 +3,7 @@
  * @module ProtectedRoute
  */
 
-import Loader from "@/components/UI/Loader";
+import { NocturneLoader } from "@/components/UI/loader";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import AuthRequired from "@/components/sections/auth/AuthRequired";
 
@@ -28,7 +28,7 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({
 
     // If the authentication state is still loading, show the loader
     if (isLoading) {
-        return <Loader />;
+        return <NocturneLoader concept="medaillon" fullscreen label />;
     }
 
     // If there is no user (not authenticated), show the AuthRequired component

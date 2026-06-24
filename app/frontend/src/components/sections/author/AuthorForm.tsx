@@ -3,12 +3,19 @@ import { useToast } from "@/hooks/toast/useToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { CreateAuthorInput } from "@/types/types";
 import { useEffect } from "react";
-import { LuCalendar, LuCheck, LuFeather, LuGlobe, LuLink, LuUser } from "react-icons/lu";
+import {
+    LuCalendar,
+    LuCheck,
+    LuFeather,
+    LuGlobe,
+    LuLink,
+    LuUser,
+} from "react-icons/lu";
 import AtelierFormShell from "@/components/sections/shared/AtelierFormShell";
 import FieldGroupHeader from "@/components/sections/shared/FieldGroupHeader";
 import TextField from "@/components/sections/shared/fields/TextField";
 import TextareaField from "@/components/sections/shared/fields/TextareaField";
-import Loader from "@/components/UI/Loader";
+import { NocturneLoader } from "@/components/UI/loader";
 import { useAuthorMutations } from "@/hooks/author/useAuthorMutations";
 import { useAuthorData } from "@/hooks/author/useAuthorData";
 import { assertEntityLoaded, runFicheMutation } from "@/utils/ficheForm";
@@ -76,7 +83,7 @@ export default function AuthorForm() {
     }, [author, isEdit, reset]);
 
     if (isEdit && isUpdatingAuthor) {
-        return <Loader />;
+        return <NocturneLoader concept="plume" fullscreen label />;
     }
 
     assertEntityLoaded({
@@ -98,13 +105,13 @@ export default function AuthorForm() {
                     : createAuthor({ ...values }),
             success: isEdit
                 ? {
-                    title: "Auteur modifié !",
-                    description: "L'auteur a bien été mis à jour",
-                }
+                      title: "Auteur modifié !",
+                      description: "L'auteur a bien été mis à jour",
+                  }
                 : {
-                    title: "Auteur enregistré !",
-                    description: "L'auteur a bien été enregistré",
-                },
+                      title: "Auteur enregistré !",
+                      description: "L'auteur a bien été enregistré",
+                  },
             errorOperation: isEdit ? "updateAuthor" : "createAuthor",
             setError,
             showToast,
@@ -120,8 +127,8 @@ export default function AuthorForm() {
             ? "Modification..."
             : "Création..."
         : isEdit
-            ? "Modifier l'auteur"
-            : "Enregistrer l'auteur";
+          ? "Modifier l'auteur"
+          : "Enregistrer l'auteur";
 
     const heading = HEADINGS[isEdit ? "edit" : "create"];
 
@@ -138,7 +145,9 @@ export default function AuthorForm() {
             submitLabel={
                 isEdit ? "Enregistrer les modifications" : "Ajouter l'auteur"
             }
-            submitIcon={isEdit ? <LuCheck size={16} /> : <LuFeather size={16} />}
+            submitIcon={
+                isEdit ? <LuCheck size={16} /> : <LuFeather size={16} />
+            }
             submitAriaLabel={ariaLabel}
         >
             <section className="flex flex-col gap-4">

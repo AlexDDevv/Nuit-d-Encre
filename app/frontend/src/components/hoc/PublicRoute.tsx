@@ -3,7 +3,7 @@
  * @module PublicRoute
  */
 
-import Loader from "@/components/UI/Loader";
+import { NocturneLoader } from "@/components/UI/loader";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
     // Show loader while auth status is loading
     if (isLoading) {
-        return <Loader />;
+        return <NocturneLoader concept="medaillon" fullscreen label />;
     }
 
     // Redirect authenticated users to books page

@@ -22,7 +22,7 @@ import FormNoticeBlock from "@/components/sections/shared/FormNoticeBlock";
 import TextField from "@/components/sections/shared/fields/TextField";
 import TextareaField from "@/components/sections/shared/fields/TextareaField";
 import SelectField from "@/components/sections/shared/fields/SelectField";
-import Loader from "@/components/UI/Loader";
+import { NocturneLoader } from "@/components/UI/loader";
 import { useBookData } from "@/hooks/book/useBookData";
 import { useBookMutations } from "@/hooks/book/useBookMutations";
 import { useCategoriesData } from "@/hooks/category/useCategoriesData";
@@ -120,7 +120,7 @@ export default function BookForm() {
     }, [book, categories, isEdit, reset]);
 
     if (isEdit && isUpdatingBook) {
-        return <Loader />;
+        return <NocturneLoader concept="plume" fullscreen label />;
     }
 
     assertEntityLoaded({
@@ -138,7 +138,10 @@ export default function BookForm() {
         return runFicheMutation({
             perform: () =>
                 isEdit && book
-                    ? updateBook(book.id, { ...values, category: values.category })
+                    ? updateBook(book.id, {
+                          ...values,
+                          category: values.category,
+                      })
                     : createBook({ ...values, category: values.category }),
             success: isEdit
                 ? {
@@ -187,7 +190,9 @@ export default function BookForm() {
             submitLabel={
                 isEdit ? "Enregistrer les modifications" : "Ajouter le livre"
             }
-            submitIcon={isEdit ? <LuCheck size={16} /> : <LuBookOpen size={16} />}
+            submitIcon={
+                isEdit ? <LuCheck size={16} /> : <LuBookOpen size={16} />
+            }
             submitAriaLabel={ariaLabel}
         >
             <section className="flex flex-col gap-4">
@@ -221,7 +226,8 @@ export default function BookForm() {
                         register={register}
                         errors={errors}
                         rules={{
-                            required: "Le nom et prénom de l'auteur sont requis",
+                            required:
+                                "Le nom et prénom de l'auteur sont requis",
                             maxLength: {
                                 value: 255,
                                 message:
