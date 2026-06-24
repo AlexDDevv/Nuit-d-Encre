@@ -11,3 +11,4 @@ export * from "./admin";
 export * from "./stats";
 export * from "./ui";
 export * from "./error";
+export * from "./loader";
