@@ -37,7 +37,7 @@ export const variantClasses: Record<ButtonVariant, string> = {
         "justify-center bg-transparent text-primary border-primary hover:bg-primary hover:text-primary-foreground hover:-translate-y-px active:bg-[hsl(43_59%_70%)] active:text-primary-foreground active:border-[hsl(43_59%_70%)] active:scale-[0.97]",
     // Destructive discret : contour subtil, texte rouge doux, léger remplissage au survol
     destructiveGhost:
-        "justify-center bg-transparent text-[hsl(3_84%_64%)] border-destructive/40 hover:bg-[hsl(3_84%_51%/0.1)] hover:border-destructive/70 active:scale-[0.98]",
+        "justify-center bg-transparent text-[hsl(3_84%_64%)] border-destructive/40 hover:bg-[hsl(3_84%_51%/0.1)] hover:border-destructive/70 active:scale-[0.98] hover:-translate-y-px",
 
     // Discrètes (sans contour)
     text: "justify-center bg-transparent text-muted-foreground hover:bg-muted/60 hover:text-primary active:bg-muted active:text-primary active:scale-[0.98]",
