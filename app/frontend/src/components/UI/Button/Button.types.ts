@@ -29,7 +29,6 @@ export type ButtonSize =
     | "lg"
     | "xl"
     | "icon"
-    | "square"
     | "card"
     | "bookCard"
     | "authorCard"

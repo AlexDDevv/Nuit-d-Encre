@@ -139,8 +139,6 @@ export const sizeClasses: Record<ButtonSize, string> = {
     lg: "h-11 px-6 text-lg",
     xl: "h-12 px-8 text-xl",
     icon: "size-10 p-0",
-    // Carrée (40×40, hauteur md / des champs) : boutons icône type variant social.
-    square: "size-10 p-0 text-lg",
     card: "p-4",
     bookCard: "p-5",
     searchResultCard: "p-4",

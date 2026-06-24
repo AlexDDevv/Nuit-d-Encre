@@ -40,7 +40,7 @@ export default function SidebarFooter({
                         <li key={label}>
                             <Button
                                 variant="social"
-                                size="square"
+                                size="icon"
                                 to={url}
                                 ariaLabel={`Profil ${label}`}
                                 title={label}
