@@ -75,23 +75,21 @@ export default function ReviewCard({
                         {onEdit && (
                             <Button
                                 variant="secondary"
-                                size="sm"
+                                size="icon"
                                 onClick={() => onEdit(review)}
                                 ariaLabel="Modifier ma critique"
-                                className="h-8 w-8 p-0"
-                                icon={<LuPencil className="h-4 w-4" />}
+                                icon={<LuPencil />}
                             />
                         )}
                         {onDelete && (
                             <Button
                                 variant="destructive"
-                                size="sm"
+                                size="icon"
                                 onClick={() => onDelete(review.id)}
                                 loading={isDeletingReview}
                                 disabled={isDeletingReview}
                                 ariaLabel="Supprimer ma critique"
-                                className="h-8 w-8 p-0"
-                                icon={<LuTrash2 className="h-4 w-4" />}
+                                icon={<LuTrash2 />}
                             />
                         )}
                     </div>
@@ -104,7 +102,7 @@ export default function ReviewCard({
                 </p>
             )}
 
-            <div className="mt-0.5">
+            <div className="mt-auto">
                 <ReviewVoteButtons
                     reviewId={review.id}
                     initialHelpfulCount={review.helpfulCount || 0}
