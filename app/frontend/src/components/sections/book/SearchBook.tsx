@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router-dom";
-import { CiSearch } from "react-icons/ci";
 import { Label } from "@/components/UI/form/Label";
-import { Input } from "@/components/UI/form/Input";
-import Button from "@/components/UI/Button/Button";
+import SearchField from "@/components/sections/shared/fields/SearchField";
 import { cn } from "@/lib/utils";
 import { useDebounce } from "@/hooks/search/useDebounce";
 
@@ -60,29 +58,22 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
         <form
             onSubmit={handleSubmit(onSubmit)}
             className={cn(
-                "relative flex items-center justify-center",
+                "flex items-center",
                 isInLibrary ? "min-w-60" : "min-w-md",
             )}
         >
             <Label htmlFor="search" className="sr-only">
                 Rechercher un livre
             </Label>
-            <Input
+            <SearchField
                 id="search"
                 type="search"
                 placeholder="Titre, auteur, ISBN…"
-                errorMessage=""
+                submit
+                submitLabel="Rechercher un livre"
                 {...register("search")}
-                className="text-ellipsis whitespace-nowrap pl-10"
+                className="text-ellipsis whitespace-nowrap"
             />
-            <Button
-                type="submit"
-                variant="ghost"
-                ariaLabel="Rechercher un livre"
-                className="absolute left-1.5 h-fit p-1.5"
-            >
-                <CiSearch className="text-muted-foreground h-4 w-4" />
-            </Button>
         </form>
     );
 }

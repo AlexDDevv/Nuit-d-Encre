@@ -1,6 +1,4 @@
-import { LuSearch, LuX } from "react-icons/lu";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/UI/form/Input";
+import SearchField from "@/components/sections/shared/fields/SearchField";
 
 type SearchInputProps = {
     value: string;
@@ -10,8 +8,8 @@ type SearchInputProps = {
 };
 
 /**
- * Champ de recherche du panel admin, bâti sur l'`Input` partagé : icône loupe à
- * gauche et bouton d'effacement à droite.
+ * Champ de recherche du panel admin : adaptateur contrôlé au-dessus de
+ * `SearchField` (loupe à gauche, effacement à droite).
  */
 export function SearchInput({
     value,
@@ -20,29 +18,14 @@ export function SearchInput({
     className = "",
 }: SearchInputProps) {
     return (
-        <div className={cn("relative", className)}>
-            <LuSearch
-                size={16}
-                className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-muted-foreground/70"
-            />
-            <Input
-                type="text"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                placeholder={placeholder}
-                aria-label={placeholder}
-                errorMessage=""
-                className="pl-9 pr-9"
-            />
-            {value && (
-                <button
-                    onClick={() => onChange("")}
-                    aria-label="Effacer la recherche"
-                    className="absolute right-2.5 top-1/2 z-10 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:text-primary"
-                >
-                    <LuX size={14} />
-                </button>
-            )}
-        </div>
+        <SearchField
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            onClear={() => onChange("")}
+            placeholder={placeholder}
+            aria-label={placeholder}
+            wrapperClassName={className}
+        />
     );
 }
