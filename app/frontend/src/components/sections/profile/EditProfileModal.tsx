@@ -6,6 +6,8 @@ import { UPDATE_PROFILE, CHANGE_PASSWORD } from "@/graphql/user/profile";
 import { WHOAMI } from "@/graphql/user/auth";
 import { useToast } from "@/hooks/toast/useToast";
 import { User } from "@/types/types";
+import { atelierTextareaClass } from "@/components/sections/shared/atelierField";
+import { cn } from "@/lib/utils";
 import { Ornament } from "./ProfileUI";
 import { Tab } from "./editProfile/types";
 import TabSwitch from "./editProfile/TabSwitch";
@@ -35,43 +37,53 @@ export default function EditProfileModal({
     const [newpw, setNewpw] = useState("");
     const [confirm, setConfirm] = useState("");
     const [touched, setTouched] = useState<Record<string, boolean>>({});
-    const [submitted, setSubmitted] = useState({ infos: false, security: false });
+    const [submitted, setSubmitted] = useState({
+        infos: false,
+        security: false,
+    });
 
     const refetch = [{ query: WHOAMI }];
-    const [updateProfile, { loading: savingInfos }] = useMutation(UPDATE_PROFILE, {
-        refetchQueries: refetch,
-        onCompleted: () => {
-            showToast({
-                type: "success",
-                title: "Profil mis à jour",
-                description: "Vos informations ont été enregistrées.",
-            });
-            finishClose();
+    const [updateProfile, { loading: savingInfos }] = useMutation(
+        UPDATE_PROFILE,
+        {
+            refetchQueries: refetch,
+            onCompleted: () => {
+                showToast({
+                    type: "success",
+                    title: "Profil mis à jour",
+                    description: "Vos informations ont été enregistrées.",
+                });
+                finishClose();
+            },
+            onError: () =>
+                showToast({
+                    type: "error",
+                    title: "Erreur",
+                    description: "La mise à jour du profil a échoué.",
+                }),
         },
-        onError: () =>
-            showToast({
-                type: "error",
-                title: "Erreur",
-                description: "La mise à jour du profil a échoué.",
-            }),
-    });
-    const [changePassword, { loading: savingPw }] = useMutation(CHANGE_PASSWORD, {
-        onCompleted: () => {
-            showToast({
-                type: "success",
-                title: "Mot de passe modifié",
-                description: "Votre nouveau sésame est scellé.",
-            });
-            finishClose();
+    );
+    const [changePassword, { loading: savingPw }] = useMutation(
+        CHANGE_PASSWORD,
+        {
+            onCompleted: () => {
+                showToast({
+                    type: "success",
+                    title: "Mot de passe modifié",
+                    description: "Votre nouveau sésame est scellé.",
+                });
+                finishClose();
+            },
+            onError: (err) =>
+                showToast({
+                    type: "error",
+                    title: "Erreur",
+                    description:
+                        err.message ||
+                        "La modification du mot de passe a échoué.",
+                }),
         },
-        onError: (err) =>
-            showToast({
-                type: "error",
-                title: "Erreur",
-                description:
-                    err.message || "La modification du mot de passe a échoué.",
-            }),
-    });
+    );
     const submitting = savingInfos || savingPw;
 
     // Fermeture inconditionnelle (après succès) : restaure le focus déclencheur.
@@ -106,7 +118,10 @@ export default function EditProfileModal({
                     dialogRef.current.querySelectorAll<HTMLElement>(
                         'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
                     ),
-                ).filter((n) => n.offsetParent !== null || n === document.activeElement);
+                ).filter(
+                    (n) =>
+                        n.offsetParent !== null || n === document.activeElement,
+                );
                 if (!nodes.length) return;
                 const firstEl = nodes[0];
                 const lastEl = nodes[nodes.length - 1];
@@ -153,11 +168,11 @@ export default function EditProfileModal({
         bioLen > 300
             ? "text-destructive"
             : bioLen > 270
-                ? "text-warning-medium"
-                : "text-muted-foreground/70";
+              ? "text-warning-medium"
+              : "text-muted-foreground/70";
 
     return (
-        <div className="fixed inset-0 z-60 flex items-end justify-center sm:items-center">
+        <div className="z-60 fixed inset-0 flex items-end justify-center sm:items-center">
             <div
                 className="overlay-in bg-background/70 absolute inset-0 backdrop-blur-sm"
                 onClick={close}
@@ -169,26 +184,26 @@ export default function EditProfileModal({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="edit-modal-title"
-                className="modal-in border-border bg-popover grain relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)] sm:max-h-[90vh] sm:w-130 sm:rounded-2xl"
+                className="modal-in border-border bg-popover grain sm:w-130 relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)] sm:max-h-[90vh] sm:rounded-2xl"
             >
                 {/* En-tête */}
-                <div className="border-border/70 relative shrink-0 border-b-2 px-5 pt-5 pb-4 md:px-7">
+                <div className="border-border/70 relative shrink-0 border-b-2 px-5 pb-4 pt-5 md:px-7">
                     <button
                         type="button"
                         onClick={close}
                         aria-label="Fermer"
                         disabled={submitting}
-                        className="border-border text-muted-foreground hover:border-primary hover:text-primary absolute top-3.5 right-3.5 grid h-9 w-9 place-items-center rounded-lg border-2 transition-colors focus:outline-none disabled:opacity-40"
+                        className="border-border text-muted-foreground hover:border-primary hover:text-primary absolute right-3.5 top-3.5 grid h-9 w-9 place-items-center rounded-lg border-2 transition-colors focus:outline-none disabled:opacity-40"
                     >
                         <FaXmark size={18} />
                     </button>
                     <div className="flex flex-col items-start gap-1 pr-10">
-                        <span className="text-muted-foreground font-body text-xs tracking-[0.28em] uppercase">
+                        <span className="text-muted-foreground font-body text-xs uppercase tracking-[0.28em]">
                             Votre profil
                         </span>
                         <h2
                             id="edit-modal-title"
-                            className="text-foreground font-quote text-2xl leading-none font-semibold"
+                            className="text-foreground font-quote text-2xl font-semibold leading-none"
                         >
                             Modifier le profil
                         </h2>
@@ -221,7 +236,10 @@ export default function EditProfileModal({
                                     placeholder="Votre nom de lecteur"
                                     onChange={(e) => setName(e.target.value)}
                                     onBlur={() =>
-                                        setTouched((t) => ({ ...t, name: true }))
+                                        setTouched((t) => ({
+                                            ...t,
+                                            name: true,
+                                        }))
                                     }
                                 />
                             </Field>
@@ -249,13 +267,16 @@ export default function EditProfileModal({
                                                 bio: true,
                                             }))
                                         }
-                                        className={`bg-popover text-foreground/90 placeholder:text-muted-foreground/55 focus:border-primary w-full resize-none rounded-lg border-2 px-3.5 py-3 font-quote text-base leading-relaxed italic transition-colors duration-200 placeholder:not-italic focus:outline-none ${showI("bio") && errInfos.bio
-                                                ? "border-destructive/70"
-                                                : "border-border"
-                                            }`}
+                                        className={cn(
+                                            atelierTextareaClass,
+                                            "font-quote w-full resize-none px-3.5 py-3 text-base italic placeholder:not-italic focus-visible:outline-none",
+                                            showI("bio") &&
+                                                errInfos.bio &&
+                                                "border-destructive focus-visible:border-destructive",
+                                        )}
                                     />
                                     <span
-                                        className={`pointer-events-none absolute right-3 bottom-2.5 font-title text-xs font-bold ${bioTone}`}
+                                        className={`font-title pointer-events-none absolute bottom-2.5 right-3 text-xs font-bold ${bioTone}`}
                                     >
                                         {bioLen}/300
                                     </span>
@@ -312,7 +333,7 @@ export default function EditProfileModal({
                                         }))
                                     }
                                 />
-                                <p className="text-muted-foreground/80 flex items-center gap-1.5 font-quote text-sm italic">
+                                <p className="text-muted-foreground/80 font-quote flex items-center gap-1.5 text-sm italic">
                                     <FaLock
                                         size={11}
                                         className="text-primary/55"
