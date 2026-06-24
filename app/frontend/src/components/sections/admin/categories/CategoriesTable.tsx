@@ -77,22 +77,19 @@ export default function CategoriesTable({
                                             aria-label="Valider"
                                             className="border-success bg-success/80 hover:text-success grid h-7 w-7 place-items-center rounded-md border-2 text-white transition-colors hover:bg-transparent"
                                         >
-                                            <LuCheck size={14} />
+                                            <LuCheck />
                                         </button>
                                         <button
                                             onClick={() => setEditing(null)}
                                             aria-label="Annuler"
                                             className="border-border text-muted-foreground hover:text-foreground grid h-7 w-7 place-items-center rounded-md border-2 transition-colors"
                                         >
-                                            <LuX size={14} />
+                                            <LuX />
                                         </button>
                                     </div>
                                 ) : (
                                     <span className="font-quote text-foreground inline-flex items-center gap-2 text-base">
-                                        <LuHash
-                                            size={14}
-                                            className="text-primary/50"
-                                        />
+                                        <LuHash className="text-primary/50" />
                                         {c.name}
                                     </span>
                                 )}
@@ -123,7 +120,7 @@ export default function CategoriesTable({
                                         title="Renommer"
                                         className="border-border text-muted-foreground hover:border-primary hover:text-primary grid h-8 w-8 place-items-center rounded-md border-2 transition-all"
                                     >
-                                        <LuPencil size={14} />
+                                        <LuPencil />
                                     </button>
                                     <DeleteBtn onClick={() => onDelete(c)} />
                                 </div>
@@ -162,7 +159,7 @@ export default function CategoriesTable({
                                         aria-label="Valider"
                                         className="border-success bg-success/80 grid h-7 w-7 place-items-center rounded-md border-2 text-white"
                                     >
-                                        <LuCheck size={14} />
+                                        <LuCheck />
                                     </button>
                                 </div>
                             ) : (
@@ -187,7 +184,7 @@ export default function CategoriesTable({
                                 aria-label="Renommer"
                                 className="border-border text-muted-foreground hover:border-primary hover:text-primary grid h-8 w-8 place-items-center rounded-md border-2"
                             >
-                                <LuPencil size={14} />
+                                <LuPencil />
                             </button>
                             <DeleteBtn onClick={() => onDelete(c)} />
                         </div>

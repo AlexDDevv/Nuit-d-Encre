@@ -73,7 +73,7 @@ export function TocDesktop({ sections, active, onJump }: TocProps) {
                         Sommaire
                     </span>
                 </div>
-                <div className="from-primary/30 mx-3 mb-1 h-px bg-linear-to-r to-transparent" />
+                <div className="from-primary/30 bg-linear-to-r mx-3 mb-1 h-px to-transparent" />
                 <div className="flex flex-col gap-0.5 p-1">
                     {sections.map((s) => (
                         <TocEntry
@@ -101,6 +101,7 @@ export function TocMobile({ sections, active, onJump }: TocProps) {
         >
             <Button
                 variant="text"
+                size="lg"
                 fullWidth
                 aria-expanded={open}
                 onClick={() => setOpen((v) => !v)}
@@ -116,13 +117,16 @@ export function TocMobile({ sections, active, onJump }: TocProps) {
                 }
             >
                 <span className="flex items-center gap-2.5">
-                    <LuListTree size={16} className="text-primary/70 shrink-0" />
+                    <LuListTree
+                        size={16}
+                        className="text-primary/70 shrink-0"
+                    />
                     <span className="flex flex-col leading-tight">
                         <span className="text-foreground/80 font-quote text-xs font-medium uppercase tracking-[0.24em]">
                             Sommaire
                         </span>
                         {activeSec && (
-                            <span className="text-primary/70 font-mono text-xxs">
+                            <span className="text-primary/70 text-xxs font-mono">
                                 {activeSec.num} ·{" "}
                                 <span className="text-muted-foreground">
                                     {activeSec.title}
@@ -139,7 +143,7 @@ export function TocMobile({ sections, active, onJump }: TocProps) {
                 )}
             >
                 <div className="overflow-hidden">
-                    <div className="from-primary/30 mx-4 h-px bg-linear-to-r to-transparent" />
+                    <div className="from-primary/30 bg-linear-to-r mx-4 h-px to-transparent" />
                     <div className="flex flex-col gap-0.5 p-2">
                         {sections.map((s) => (
                             <TocEntry

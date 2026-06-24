@@ -85,7 +85,6 @@ export default function AuthorDetails() {
                     label="Wikipédia"
                     icon={
                         <FaGlobe
-                            size={14}
                             className="text-primary/80"
                             aria-hidden="true"
                         />
@@ -172,7 +171,7 @@ export default function AuthorDetails() {
                 size="sm"
                 to="/authors"
                 ariaLabel="Retourner aux auteurs"
-                leftIcon={<FaArrowLeftLong size={14} />}
+                leftIcon={<FaArrowLeftLong />}
                 className="w-fit"
             >
                 Auteurs
@@ -203,11 +202,11 @@ export default function AuthorDetails() {
                         <p className="font-quote text-base italic text-[hsl(43_30%_64%)]">
                             Un auteur de notre bibliothèque
                         </p>
-                        <h1 className="text-foreground font-quote text-4xl leading-[1.04] text-balance">
+                        <h1 className="text-foreground font-quote text-balance text-4xl leading-[1.04]">
                             {name}
                         </h1>
                         {/* méta en ligne */}
-                        <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-sm">
+                        <div className="text-muted-foreground font-body flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
                             {country && (
                                 <>
                                     <span className="inline-flex items-center gap-1.5">
@@ -248,7 +247,7 @@ export default function AuthorDetails() {
                     </div>
 
                     {/* biographie tronquée + lire la suite */}
-                    <div className="relative max-w-125">
+                    <div className="max-w-125 relative">
                         <FaQuoteLeft
                             size={18}
                             className="text-primary absolute -left-1 -top-1 opacity-40"
@@ -262,7 +261,7 @@ export default function AuthorDetails() {
                                 {isExcerpt && (
                                     <a
                                         href="#biography"
-                                        className="text-primary hover:text-foreground focus-visible:ring-ring rounded-sm font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                        className="text-primary hover:text-foreground focus-visible:ring-ring font-body rounded-sm text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
                                     >
                                         Lire la suite
                                     </a>
@@ -279,7 +278,7 @@ export default function AuthorDetails() {
 
                     {/* statistique : nombre d'ouvrages */}
                     <div className="flex flex-wrap items-center gap-3">
-                        <span className="border-border inline-flex items-center gap-2 rounded-full border-2 bg-[hsl(20_3%_14%/0.6)] px-3.5 py-2 font-body text-xs">
+                        <span className="border-border font-body inline-flex items-center gap-2 rounded-full border-2 bg-[hsl(20_3%_14%/0.6)] px-3.5 py-2 text-xs">
                             <FaBook
                                 size={13}
                                 className="text-primary/70"
@@ -297,7 +296,7 @@ export default function AuthorDetails() {
                     {/* liens externes */}
                     {hasExternal && (
                         <div className="flex flex-col gap-2">
-                            <p className="font-mono text-xxs uppercase tracking-[0.18em] text-[hsl(43_30%_60%)]">
+                            <p className="text-xxs font-mono uppercase tracking-[0.18em] text-[hsl(43_30%_60%)]">
                                 Pour aller plus loin
                             </p>
                             <div className="flex flex-wrap items-center gap-2.5">
@@ -314,7 +313,10 @@ export default function AuthorDetails() {
                 className="grid scroll-mt-20 gap-8 md:grid-cols-[1fr_0.78fr]"
             >
                 <section className="flex flex-col gap-4">
-                    <SectionHairline label="La biographie" textClass="text-sm" />
+                    <SectionHairline
+                        label="La biographie"
+                        textClass="text-sm"
+                    />
                     {bio ? (
                         <div className="flex flex-col gap-4">
                             {bio.split("\n\n").map((para, i) => (
@@ -366,7 +368,7 @@ export default function AuthorDetails() {
                     title={`Les ouvrages de ${name}`}
                     right={
                         worksCount > 0 ? (
-                            <span className="text-muted-foreground hidden font-mono text-xs tracking-wide whitespace-nowrap sm:inline">
+                            <span className="text-muted-foreground hidden whitespace-nowrap font-mono text-xs tracking-wide sm:inline">
                                 {worksCount} titre{worksCount > 1 ? "s" : ""}
                             </span>
                         ) : undefined

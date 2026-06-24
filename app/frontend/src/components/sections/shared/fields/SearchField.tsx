@@ -66,7 +66,7 @@ const SearchField = forwardRef<HTMLInputElement, SearchFieldProps>(
                         aria-label="Effacer la recherche"
                         className="text-muted-foreground hover:text-primary absolute right-2.5 top-1/2 z-10 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md transition-colors focus:outline-none"
                     >
-                        <LuX size={14} />
+                        <LuX />
                     </button>
                 )}
             </div>

@@ -30,13 +30,13 @@ export default function TabSwitch({
                         id={`tab-${o.id}`}
                         aria-controls={`panel-${o.id}`}
                         onClick={() => setTab(o.id)}
-                        className={`inline-flex items-center justify-center gap-2 rounded-md px-3.5 py-2 font-body text-sm font-bold tracking-wide whitespace-nowrap transition-all duration-200 ${
+                        className={`font-body inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-3.5 py-2 text-sm font-bold tracking-wide transition-all duration-200 ${
                             on
                                 ? "bg-primary text-primary-foreground shadow-sm"
                                 : "text-muted-foreground hover:text-foreground"
                         }`}
                     >
-                        <Icon size={14} /> {o.label}
+                        <Icon /> {o.label}
                     </button>
                 );
             })}

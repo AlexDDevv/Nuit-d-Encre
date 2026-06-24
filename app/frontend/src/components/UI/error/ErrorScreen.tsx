@@ -28,7 +28,7 @@ export default function ErrorScreen({
     }, [content.code, content.label]);
 
     return (
-        <main className="candle-vignette bg-background text-foreground flex min-h-screen flex-col items-center justify-center px-5 py-14 text-center">
+        <main className="candle-vignette bg-background text-foreground flex min-h-screen flex-col items-center justify-center px-5 py-10 text-center">
             <div
                 ref={blockRef}
                 role="alert"
@@ -39,11 +39,11 @@ export default function ErrorScreen({
                 className="fade-up flex w-full max-w-xl flex-col items-center outline-none"
             >
                 <MonoEyebrow className="mb-6">
-                    <span className="text-primary/45 rotate-45 text-xxxs leading-none">
+                    <span className="text-primary/45 text-xxxs rotate-45 leading-none">
                         ◆
                     </span>
                     {content.ref}
-                    <span className="text-primary/45 rotate-45 text-xxxs leading-none">
+                    <span className="text-primary/45 text-xxxs rotate-45 leading-none">
                         ◆
                     </span>
                 </MonoEyebrow>
@@ -68,7 +68,7 @@ export default function ErrorScreen({
                     {content.label}
                 </h2>
 
-                <p className="font-quote text-muted-foreground/90 mt-3 max-w-md text-lg italic leading-relaxed text-pretty">
+                <p className="font-quote text-muted-foreground/90 mt-3 max-w-md text-pretty text-lg italic leading-relaxed">
                     {content.message}
                 </p>
                 {content.hint && (

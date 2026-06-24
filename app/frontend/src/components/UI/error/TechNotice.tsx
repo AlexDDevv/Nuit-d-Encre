@@ -14,12 +14,12 @@ function TechRow({
 }) {
     return (
         <div className="flex flex-col gap-0.5 py-2.5 sm:flex-row sm:items-baseline sm:gap-4">
-            <dt className="text-primary/50 shrink-0 font-mono text-xxs font-medium uppercase tracking-[0.18em] sm:w-22">
+            <dt className="text-primary/50 text-xxs sm:w-22 shrink-0 font-mono font-medium uppercase tracking-[0.18em]">
                 {label}
             </dt>
             <dd
                 className={cn(
-                    "min-w-0 wrap-break-word font-mono text-xs leading-relaxed",
+                    "wrap-break-word min-w-0 font-mono text-xs leading-relaxed",
                     tone === "destructive"
                         ? "font-semibold text-[hsl(3_84%_64%)]"
                         : "text-foreground/90",
@@ -45,14 +45,14 @@ export default function TechNotice({ tech }: { tech: ErrorTechDetails }) {
                 type="button"
                 onClick={() => setOpen((o) => !o)}
                 aria-expanded={open}
-                className="group border-border/70 hover:bg-primary/8 focus-visible:ring-primary/70 flex w-full items-center justify-between gap-3 border-b bg-primary/4 px-4 py-3 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset"
+                className="border-border/70 hover:bg-primary/8 focus-visible:ring-primary/70 bg-primary/4 group flex w-full items-center justify-between gap-3 border-b px-4 py-3 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset"
             >
                 <span className="inline-flex items-center gap-2.5">
-                    <LuWrench size={14} className="text-primary/70" />
-                    <span className="text-primary/80 font-mono text-xxs font-semibold uppercase tracking-[0.26em]">
+                    <LuWrench className="text-primary/70" />
+                    <span className="text-primary/80 text-xxs font-mono font-semibold uppercase tracking-[0.26em]">
                         Détails techniques
                     </span>
-                    <span className="border-warning/40 bg-warning/10 text-warning rounded border px-1.5 py-px font-mono text-xxxs font-semibold uppercase tracking-[0.18em]">
+                    <span className="border-warning/40 bg-warning/10 text-warning text-xxxs rounded border px-1.5 py-px font-mono font-semibold uppercase tracking-[0.18em]">
                         dev
                     </span>
                 </span>
@@ -70,7 +70,9 @@ export default function TechNotice({ tech }: { tech: ErrorTechDetails }) {
                     <TechRow label="type" tone="destructive">
                         {tech.type}
                     </TechRow>
-                    {tech.status && <TechRow label="status">{tech.status}</TechRow>}
+                    {tech.status && (
+                        <TechRow label="status">{tech.status}</TechRow>
+                    )}
                     {tech.message && (
                         <TechRow label="message">{tech.message}</TechRow>
                     )}
@@ -81,7 +83,7 @@ export default function TechNotice({ tech }: { tech: ErrorTechDetails }) {
                     )}
                     {tech.stack && (
                         <div className="py-3">
-                            <dt className="text-primary/50 mb-2 font-mono text-xxs font-medium uppercase tracking-[0.2em]">
+                            <dt className="text-primary/50 text-xxs mb-2 font-mono font-medium uppercase tracking-[0.2em]">
                                 stack trace
                             </dt>
                             <dd>

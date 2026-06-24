@@ -86,7 +86,7 @@ export function Field({
                 htmlFor={htmlFor}
                 className="font-body text-muted-foreground flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em]"
             >
-                {I && <I size={14} className="text-primary/70" />}
+                {I && <I className="text-primary/70" />}
                 {label}
                 {optional && (
                     <span className="font-body text-xxs text-muted-foreground/55 font-medium normal-case tracking-normal">
@@ -167,7 +167,7 @@ export function StateSelector({
                                 border: `1px solid ${v.border}`,
                             }}
                         >
-                            <Icon name={v.icon} size={14} />
+                            <Icon name={v.icon} />
                         </span>
                         <span
                             className="font-body min-w-0 text-xs font-bold leading-tight"

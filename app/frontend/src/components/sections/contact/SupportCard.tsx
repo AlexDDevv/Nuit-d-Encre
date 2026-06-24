@@ -54,14 +54,14 @@ export default function SupportCard({
 
     return (
         <div className="grain border-primary/30 bg-popover/70 relative overflow-hidden rounded-2xl border-2 shadow-[inset_0_1px_0_hsl(43_59%_81%/0.05),0_18px_40px_-24px_hsl(43_59%_40%/0.5)]">
-            <div className="border-primary/20 bg-primary/[0.06] flex items-center justify-between gap-3 border-b px-5 py-3">
+            <div className="border-primary/20 bg-primary/6 flex items-center justify-between gap-3 border-b px-5 py-3">
                 <span className="flex items-center gap-2.5">
                     <LuMail size={15} className="text-primary/80" />
-                    <span className="text-primary/80 font-mono text-xxs font-semibold uppercase tracking-[0.26em]">
+                    <span className="text-primary/80 text-xxs font-mono font-semibold uppercase tracking-[0.26em]">
                         Par courriel · Nous écrire
                     </span>
                 </span>
-                <span className="text-primary/50 rotate-45 text-xxxs leading-none">
+                <span className="text-primary/50 text-xxxs rotate-45 leading-none">
                     ◆
                 </span>
             </div>
@@ -72,7 +72,7 @@ export default function SupportCard({
                         key={r.k}
                         className="border-border/40 flex flex-col gap-1.5 border-b py-4 last:border-b-0 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
                     >
-                        <dt className="text-primary/55 shrink-0 font-mono text-xxs font-medium uppercase tracking-[0.16em]">
+                        <dt className="text-primary/55 text-xxs shrink-0 font-mono font-medium uppercase tracking-[0.16em]">
                             {r.k}
                         </dt>
                         <dd className="text-foreground/90 font-mono text-xs leading-relaxed">
@@ -93,14 +93,16 @@ export default function SupportCard({
                     variant="outline"
                     onClick={copy}
                     aria-live="polite"
-                    leftIcon={copied ? <LuCheck size={16} /> : <LuCopy size={16} />}
+                    leftIcon={
+                        copied ? <LuCheck size={16} /> : <LuCopy size={16} />
+                    }
                     className={cn(
-                        "flex-1 justify-center gap-2 text-sm",
+                        "flex-1",
                         copied &&
                             "border-success/60 bg-success/10 hover:bg-success/10 text-[hsl(140_45%_72%)] hover:text-[hsl(140_45%_72%)]",
                     )}
                 >
-                    {copied ? "Copié ✓" : "Copier l'adresse"}
+                    {copied ? "Copiée ✓" : "Copier l'adresse"}
                 </Button>
                 <a
                     href={`mailto:${email}`}
@@ -111,7 +113,7 @@ export default function SupportCard({
                         "flex-1 gap-2 text-sm",
                     )}
                 >
-                    <LuSendHorizontal size={15} />
+                    <LuSendHorizontal />
                     Écrire un courrier
                 </a>
             </div>

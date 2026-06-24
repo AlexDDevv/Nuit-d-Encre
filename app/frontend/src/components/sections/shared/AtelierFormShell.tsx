@@ -69,7 +69,6 @@ export default function AtelierFormShell({
                             variant="outline"
                             onClick={onCancel}
                             disabled={isSubmitting}
-                            className="border-border text-muted-foreground hover:border-primary/40 hover:bg-transparent hover:text-foreground"
                             ariaLabel="Annuler"
                         >
                             Annuler

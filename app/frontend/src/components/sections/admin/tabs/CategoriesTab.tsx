@@ -96,7 +96,7 @@ export function CategoriesTab() {
             <div className="border-border bg-card rounded-xl border-2 p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <div className="flex items-center gap-2.5 sm:flex-1">
-                        <span className="border-border bg-popover text-primary/80 grid h-9 w-9 shrink-0 place-items-center rounded-lg border-2">
+                        <span className="border-border bg-popover text-primary/80 grid h-10 w-10 shrink-0 place-items-center rounded-lg border-2">
                             <LuTag size={16} />
                         </span>
                         <Input
@@ -116,7 +116,6 @@ export function CategoriesTab() {
                         disabled={isCreatingCategory}
                         loading={isCreatingCategory}
                         leftIcon={<LuPlus size={16} />}
-                        className="shrink-0"
                     >
                         Créer la catégorie
                     </Button>

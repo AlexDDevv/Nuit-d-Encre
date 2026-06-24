@@ -53,7 +53,7 @@ export default function Modal({
             <div
                 className={cn(
                     "relative w-full overflow-hidden rounded-xl",
-                    "border border-border",
+                    "border-border border",
                     "shadow-[0_0_0_1px_hsl(43_59%_81%/0.12),0_25px_60px_-10px_rgba(0,0,0,0.9)]",
                     sizeClasses[size],
                     className,
@@ -61,9 +61,9 @@ export default function Modal({
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Header */}
-                <div className="bg-popover border-b border-border flex items-center justify-between px-6 py-4">
+                <div className="bg-popover border-border flex items-center justify-between border-b px-6 py-4">
                     {title ? (
-                        <h2 className="font-quote italic text-xl text-foreground">
+                        <h2 className="font-quote text-foreground text-xl italic">
                             {title}
                         </h2>
                     ) : (
@@ -71,11 +71,10 @@ export default function Modal({
                     )}
                     <Button
                         variant="ghost"
-                        size="sm"
                         onClick={onClose}
                         ariaLabel="Fermer la modale"
                         icon={<LuX />}
-                        className="text-muted-foreground hover:text-foreground [&_svg]:h-5 [&_svg]:w-5"
+                        className="text-muted-foreground hover:text-foreground"
                     />
                 </div>
 

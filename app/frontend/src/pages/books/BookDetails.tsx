@@ -107,7 +107,10 @@ export default function BookDetails() {
             });
             navigate("/books");
         } catch (error) {
-            const { title, description } = parseGraphQLError(error, "deleteBook");
+            const { title, description } = parseGraphQLError(
+                error,
+                "deleteBook",
+            );
             showToast({ type: "error", title, description });
         }
     };
@@ -137,7 +140,7 @@ export default function BookDetails() {
                 size="sm"
                 to="/books"
                 ariaLabel="Retourner au catalogue"
-                leftIcon={<FaArrowLeftLong size={14} />}
+                leftIcon={<FaArrowLeftLong />}
                 className="w-fit"
             >
                 Catalogue
@@ -160,7 +163,7 @@ export default function BookDetails() {
                         <p className="font-quote text-sm italic text-[hsl(43_30%_64%)]">
                             Un ouvrage de notre bibliothèque
                         </p>
-                        <h1 className="text-foreground font-quote text-4xl leading-[1.04] text-balance">
+                        <h1 className="text-foreground font-quote text-balance text-4xl leading-[1.04]">
                             {book.title}
                         </h1>
                         <p className="text-foreground/90 font-body text-sm">
@@ -168,7 +171,7 @@ export default function BookDetails() {
                             <Link
                                 to={authorPath}
                                 aria-label={`Voir la fiche de ${author}`}
-                                className="text-foreground hover:text-primary decoration-primary/40 hover:decoration-primary focus-visible:ring-ring rounded-sm font-quote text-lg italic underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                className="text-foreground hover:text-primary decoration-primary/40 hover:decoration-primary focus-visible:ring-ring font-quote rounded-sm text-lg italic underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
                             >
                                 {author}
                             </Link>
@@ -176,7 +179,7 @@ export default function BookDetails() {
                     </div>
 
                     {/* résumé tronqué + lire la suite */}
-                    <div className="relative max-w-125">
+                    <div className="max-w-125 relative">
                         <FaQuoteLeft
                             size={18}
                             className="text-primary absolute -left-1 -top-1 opacity-40"
@@ -189,7 +192,7 @@ export default function BookDetails() {
                             {isExcerpt && (
                                 <a
                                     href="#summary"
-                                    className="text-primary hover:text-foreground focus-visible:ring-ring rounded-sm font-body text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                                    className="text-primary hover:text-foreground focus-visible:ring-ring font-body rounded-sm text-sm font-bold not-italic underline decoration-dotted underline-offset-2 transition-colors focus-visible:outline-none focus-visible:ring-2"
                                 >
                                     Lire la suite
                                 </a>
@@ -198,7 +201,7 @@ export default function BookDetails() {
                     </div>
 
                     {/* méta en ligne */}
-                    <div className="text-muted-foreground flex flex-wrap items-center gap-x-3 gap-y-1.5 font-body text-sm">
+                    <div className="text-muted-foreground font-body flex flex-wrap items-center gap-x-3 gap-y-1.5 text-sm">
                         <span className="font-quote italic text-[hsl(43_30%_64%)]">
                             {book.category.name}
                         </span>

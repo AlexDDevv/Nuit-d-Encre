@@ -14,10 +14,15 @@ import Button from "@/components/UI/Button";
 
 export default function Sidebar() {
     const { user } = useAuthContext();
-    const [collapsed, setCollapsed] = useLocalStorage("sidebar-collapsed", false);
+    const [collapsed, setCollapsed] = useLocalStorage(
+        "sidebar-collapsed",
+        false,
+    );
     const [overlayOpen, setOverlayOpen] = useState(false);
     const isMobile = useMediaQuery("(max-width: 767px)");
-    const isTablet = useMediaQuery("(min-width: 768px) and (max-width: 1023px)");
+    const isTablet = useMediaQuery(
+        "(min-width: 768px) and (max-width: 1023px)",
+    );
 
     const isSmallScreen = isMobile || isTablet;
     const isEffectivelyCollapsed = isSmallScreen ? !overlayOpen : collapsed;
@@ -51,7 +56,6 @@ export default function Sidebar() {
                 onClick={handleToggle}
                 ariaLabel="Ouvrir la navigation"
                 icon={<LuMenu />}
-                className="p-2"
             />
         );
     }
@@ -65,7 +69,10 @@ export default function Sidebar() {
             <SidebarFavorites collapsed={isEffectivelyCollapsed} />
             <SidebarActionButton collapsed={isEffectivelyCollapsed} />
             <SidebarNav collapsed={isEffectivelyCollapsed} />
-            <SidebarFooter collapsed={isEffectivelyCollapsed} isAuthenticated={!!user} />
+            <SidebarFooter
+                collapsed={isEffectivelyCollapsed}
+                isAuthenticated={!!user}
+            />
         </>
     );
 
@@ -84,7 +91,7 @@ export default function Sidebar() {
                         "bg-card border-border flex flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
                         overlayOpen
                             ? "fixed inset-y-0 left-0 z-50 w-64 shadow-lg"
-                            : "sticky top-0 h-screen w-18",
+                            : "w-18 sticky top-0 h-screen",
                     )}
                 >
                     {sidebarContent}
@@ -97,10 +104,7 @@ export default function Sidebar() {
     if (isMobile && overlayOpen) {
         return (
             <>
-                <SidebarOverlay
-                    visible={true}
-                    onClose={handleOverlayClose}
-                />
+                <SidebarOverlay visible={true} onClose={handleOverlayClose} />
                 <aside
                     aria-label="Navigation principale"
                     onKeyDown={handleKeyDown}

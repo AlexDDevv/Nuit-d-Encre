@@ -13,7 +13,7 @@ export default function LibraryMark() {
             aria-label="Dans ma bibliothèque"
             role="img"
         >
-            <FaCheck size={14} aria-hidden="true" />
+            <FaCheck aria-hidden="true" />
         </span>
     );
 }

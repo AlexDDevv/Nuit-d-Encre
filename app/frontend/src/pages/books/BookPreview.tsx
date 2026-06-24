@@ -22,7 +22,9 @@ export default function BookPreview() {
     const { showToast } = useToast();
     const { importBook, isImporting } = useImportBook();
 
-    const { data, loading } = useQuery<{ previewBook: BookSearchResult | null }>(PREVIEW_BOOK, {
+    const { data, loading } = useQuery<{
+        previewBook: BookSearchResult | null;
+    }>(PREVIEW_BOOK, {
         variables: { isbn13 },
         skip: !isbn13,
     });
@@ -34,7 +36,9 @@ export default function BookPreview() {
 
     // Déjà en base → on file directement sur sa fiche.
     if (book.isInDatabase && book.id) {
-        return <Navigate to={`/books/${book.id}-${slugify(book.title)}`} replace />;
+        return (
+            <Navigate to={`/books/${book.id}-${slugify(book.title)}`} replace />
+        );
     }
 
     const { label: source } = sourceInfo(book.source);
@@ -77,18 +81,18 @@ export default function BookPreview() {
                     size="sm"
                     to="/books"
                     ariaLabel="Retourner à la recherche"
-                    leftIcon={<Glyph name="arrowL" size={14} />}
+                    leftIcon={<Glyph name="arrowL" />}
                 >
                     Recherche
                 </Button>
 
                 <div className="mb-7 mt-8 flex items-center gap-3">
                     <span
-                        className="inline-flex items-center gap-2 whitespace-nowrap font-mono text-xxs uppercase tracking-[0.24em]"
+                        className="text-xxs inline-flex items-center gap-2 whitespace-nowrap font-mono uppercase tracking-[0.24em]"
                         style={{ color: "hsl(43 30% 60%)" }}
                     >
-                        <Glyph name="external" size={12} /> Venu d'ailleurs - pas encore dans vos
-                        rayons
+                        <Glyph name="external" size={12} /> Venu d'ailleurs -
+                        pas encore dans vos rayons
                     </span>
                     <span
                         className="h-px flex-1"
@@ -98,7 +102,7 @@ export default function BookPreview() {
                         }}
                     />
                     <span
-                        className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 font-mono text-xxs tracking-wide"
+                        className="text-xxs inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1 font-mono tracking-wide"
                         style={{
                             borderColor: "hsl(43 59% 81% / 0.3)",
                             color: "hsl(43 59% 81% / 0.9)",

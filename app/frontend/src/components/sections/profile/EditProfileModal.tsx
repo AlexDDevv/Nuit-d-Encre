@@ -377,7 +377,6 @@ export default function EditProfileModal({
                     <div className="flex items-center justify-end gap-2.5">
                         <Button
                             variant="text"
-                            size="md"
                             onClick={close}
                             disabled={submitting}
                         >
@@ -389,17 +388,16 @@ export default function EditProfileModal({
                                 size="md"
                                 onClick={submitInfos}
                                 loading={savingInfos}
-                                leftIcon={<FaCheck size={15} />}
+                                leftIcon={<FaCheck />}
                             >
                                 Enregistrer
                             </Button>
                         ) : (
                             <Button
                                 variant="primary"
-                                size="md"
                                 onClick={submitSecurity}
                                 loading={savingPw}
-                                leftIcon={<FaLock size={14} />}
+                                leftIcon={<FaLock />}
                             >
                                 Changer le mot de passe
                             </Button>

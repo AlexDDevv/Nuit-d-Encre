@@ -25,9 +25,7 @@ interface SidebarFavoritesProps {
     collapsed: boolean;
 }
 
-export default function SidebarFavorites({
-    collapsed,
-}: SidebarFavoritesProps) {
+export default function SidebarFavorites({ collapsed }: SidebarFavoritesProps) {
     const { user, isLoading: isAuthLoading } = useAuthContext();
     const { pathname } = useLocation();
 
@@ -62,17 +60,22 @@ export default function SidebarFavorites({
         "whitespace-nowrap transition-opacity",
         collapsed
             ? "opacity-0 duration-150"
-            : "opacity-100 duration-200 delay-150"
+            : "opacity-100 duration-200 delay-150",
     );
 
     return (
-        <section aria-label="Livres favoris" className="flex flex-col gap-2 p-4 pb-0">
-            <h2 className={cn(
-                "text-popover-foreground flex items-center gap-3 text-sm font-medium overflow-hidden",
-                collapsed
-                    ? "h-5 opacity-0 transition-all duration-150"
-                    : "h-5 opacity-100 transition-all duration-200 delay-150"
-            )}>
+        <section
+            aria-label="Livres favoris"
+            className="flex flex-col gap-2 p-4 pb-0"
+        >
+            <h2
+                className={cn(
+                    "text-popover-foreground flex items-center gap-3 overflow-hidden text-sm font-medium",
+                    collapsed
+                        ? "h-5 opacity-0 transition-all duration-150"
+                        : "h-5 opacity-100 transition-all delay-150 duration-200",
+                )}
+            >
                 <LuBookOpenCheck className="shrink-0" />
                 <span>Vos livres favoris</span>
             </h2>
@@ -85,10 +88,15 @@ export default function SidebarFavorites({
                             fullWidth
                             ariaLabel={`Voir le livre ${fav.book.title}`}
                             title={fav.book.title}
-                            leftIcon={<LuAward className="shrink-0" />}
-                            className={cn(collapsed && "justify-center h-10 w-full rounded-md [&>span:first-child]:mr-0")}
+                            leftIcon={<LuAward />}
+                            className={cn(
+                                collapsed &&
+                                    "justify-center rounded-md [&>span:first-child]:mr-0",
+                            )}
                         >
-                            <span className={cn(labelClasses, "truncate")}>{fav.book.title}</span>
+                            <span className={cn(labelClasses, "truncate")}>
+                                {fav.book.title}
+                            </span>
                         </Button>
                     </li>
                 ))}

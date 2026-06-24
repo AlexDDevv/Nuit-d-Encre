@@ -80,7 +80,10 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                 description: "Votre critique a été supprimée avec succès.",
             });
         } catch (error) {
-            const { title, description } = parseGraphQLError(error, "deleteReview");
+            const { title, description } = parseGraphQLError(
+                error,
+                "deleteReview",
+            );
             showToast({ type: "error", title, description });
         }
     };
@@ -159,7 +162,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                     <p className="text-foreground/85 font-quote text-lg italic">
                         Aucune critique pour l'instant.
                     </p>
-                    <p className="text-muted-foreground max-w-80 font-body text-xs">
+                    <p className="text-muted-foreground font-body max-w-80 text-xs">
                         Cet ouvrage attend sa première veillée.{" "}
                         {user
                             ? "Soyez la première plume à en parler."
@@ -179,9 +182,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
             ) : user ? (
                 !hasUserReviewed && <ReviewForm book={book} />
             ) : (
-                <div
-                    className="border-primary/30 mb-6 flex flex-col items-start gap-3 rounded-xl border-2 border-dashed bg-[hsl(20_3%_14%/0.5)] px-5 py-5 sm:flex-row sm:items-center sm:justify-between"
-                >
+                <div className="border-primary/30 mb-6 flex flex-col items-start gap-3 rounded-xl border-2 border-dashed bg-[hsl(20_3%_14%/0.5)] px-5 py-5 sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-foreground/85 font-quote inline-flex items-center gap-2.5 italic">
                         <FaLock
                             size={15}
@@ -192,7 +193,6 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                     </p>
                     <Button
                         variant="primary"
-                        size="sm"
                         to={loginHref}
                         ariaLabel="Se connecter pour laisser un avis"
                     >

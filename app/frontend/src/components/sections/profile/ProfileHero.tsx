@@ -57,9 +57,15 @@ export default function ProfileHero({
     const { showToast } = useToast();
 
     const refetch = [{ query: WHOAMI }];
-    const [updateAvatar] = useMutation(UPDATE_AVATAR, { refetchQueries: refetch });
-    const [updateBanner] = useMutation(UPDATE_BANNER, { refetchQueries: refetch });
-    const [removeBanner] = useMutation(REMOVE_BANNER, { refetchQueries: refetch });
+    const [updateAvatar] = useMutation(UPDATE_AVATAR, {
+        refetchQueries: refetch,
+    });
+    const [updateBanner] = useMutation(UPDATE_BANNER, {
+        refetchQueries: refetch,
+    });
+    const [removeBanner] = useMutation(REMOVE_BANNER, {
+        refetchQueries: refetch,
+    });
 
     const handleUpload = async (
         kind: "avatar" | "banner",
@@ -111,24 +117,24 @@ export default function ProfileHero({
                         <div className="grain absolute inset-0 opacity-50" />
                     </>
                 )}
-                <div className="via-primary/45 absolute inset-x-0 bottom-0 z-10 h-px bg-linear-to-r from-transparent to-transparent" />
+                <div className="via-primary/45 bg-linear-to-r absolute inset-x-0 bottom-0 z-10 h-px from-transparent to-transparent" />
 
                 {isOwner && busy !== "banner" && (
-                    <div className="absolute top-3 right-3 z-10 flex items-center gap-2 opacity-0 transition-opacity duration-200 group-hover/banner:opacity-100 focus-within:opacity-100">
+                    <div className="absolute right-3 top-3 z-10 flex items-center gap-2 opacity-0 transition-opacity duration-200 focus-within:opacity-100 group-hover/banner:opacity-100">
                         <button
                             type="button"
                             onClick={() => bannerInput.current?.click()}
-                            className="border-primary/70 bg-background/55 text-primary hover:bg-primary hover:text-primary-foreground inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-sm font-bold whitespace-nowrap backdrop-blur-sm transition-colors focus:outline-none cursor-pointer"
+                            className="border-primary/70 bg-background/55 text-primary hover:bg-primary hover:text-primary-foreground inline-flex cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg border-2 px-3 py-1.5 text-sm font-bold backdrop-blur-sm transition-colors focus:outline-none"
                         >
-                            <FaCamera size={14} /> Changer la bannière
+                            <FaCamera /> Changer la bannière
                         </button>
                         {user.banner && (
                             <button
                                 type="button"
                                 onClick={() => removeBanner()}
-                                className="border-destructive/60 bg-background/55 text-destructive hover:bg-destructive inline-flex items-center gap-2 rounded-lg border-2 px-3 py-1.5 text-sm font-bold whitespace-nowrap backdrop-blur-sm transition-colors hover:text-white focus:outline-none"
+                                className="border-destructive/60 bg-background/55 text-destructive hover:bg-destructive inline-flex items-center gap-2 whitespace-nowrap rounded-lg border-2 px-3 py-1.5 text-sm font-bold backdrop-blur-sm transition-colors hover:text-white focus:outline-none"
                             >
-                                <FaTrash size={14} /> Retirer
+                                <FaTrash /> Retirer
                             </button>
                         )}
                     </div>
@@ -164,7 +170,7 @@ export default function ProfileHero({
                                     className="h-full w-full object-cover"
                                 />
                             ) : (
-                                <div className="grid h-full w-full place-items-center bg-linear-to-br from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] font-title text-3xl font-black text-primary-foreground md:text-4xl">
+                                <div className="bg-linear-to-br font-title text-primary-foreground grid h-full w-full place-items-center from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] text-3xl font-black md:text-4xl">
                                     {initials(user.userName)}
                                 </div>
                             )}
@@ -173,10 +179,10 @@ export default function ProfileHero({
                                     type="button"
                                     aria-label="Changer la photo de profil"
                                     onClick={() => avatarInput.current?.click()}
-                                    className="bg-background/65 text-primary absolute inset-0 z-10 grid place-items-center rounded-full opacity-0 transition-opacity duration-200 hover:opacity-100 focus:opacity-100 focus:outline-none cursor-pointer"
+                                    className="bg-background/65 text-primary absolute inset-0 z-10 grid cursor-pointer place-items-center rounded-full opacity-0 transition-opacity duration-200 hover:opacity-100 focus:opacity-100 focus:outline-none"
                                 >
                                     <FaCamera size={22} />
-                                    <span className="mt-1 text-xxs font-bold tracking-wider uppercase">
+                                    <span className="text-xxs mt-1 font-bold uppercase tracking-wider">
                                         Changer
                                     </span>
                                 </button>
@@ -188,17 +194,17 @@ export default function ProfileHero({
                         <span className="ring-background pointer-events-none absolute inset-0 rounded-full ring-4" />
                         {/* Pastille appareil photo (indice d'éditabilité) */}
                         {isOwner && (
-                            <span className="border-background bg-primary text-primary-foreground pointer-events-none absolute -right-0.5 -bottom-0.5 z-30 grid h-8 w-8 place-items-center rounded-full border-2 shadow-md transition-transform duration-200 group-hover/av:scale-110">
-                                <FaCamera size={14} />
+                            <span className="border-background bg-primary text-primary-foreground pointer-events-none absolute -bottom-0.5 -right-0.5 z-30 grid h-8 w-8 place-items-center rounded-full border-2 shadow-md transition-transform duration-200 group-hover/av:scale-110">
+                                <FaCamera />
                             </span>
                         )}
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center pt-16 text-center md:flex-row md:items-end md:justify-between md:pt-4 md:pl-40 md:text-left">
+                <div className="flex flex-col items-center pt-16 text-center md:flex-row md:items-end md:justify-between md:pl-40 md:pt-4 md:text-left">
                     {/* Identité */}
                     <div className="flex flex-col items-center gap-3 md:items-start">
-                        <h1 className="text-foreground font-title text-2xl leading-tight font-black md:text-4xl">
+                        <h1 className="text-foreground font-title text-2xl font-black leading-tight md:text-4xl">
                             {user.userName}
                         </h1>
                         {since && (
@@ -222,9 +228,8 @@ export default function ProfileHero({
                         <div className="mt-5 flex shrink-0 items-center gap-2 md:mt-0 md:self-start md:pt-1">
                             <Button
                                 variant="primary"
-                                size="md"
                                 onClick={onOpenEdit}
-                                leftIcon={<FaPen size={14} />}
+                                leftIcon={<FaPen />}
                             >
                                 Modifier le profil
                             </Button>
@@ -235,15 +240,15 @@ export default function ProfileHero({
                 {/* Bio */}
                 <div className="mt-5 md:pl-40">
                     {user.bio ? (
-                        <p className="text-foreground/85 max-w-2xl font-quote text-lg leading-relaxed italic">
+                        <p className="text-foreground/85 font-quote max-w-2xl text-lg italic leading-relaxed">
                             <FaQuoteLeft
                                 size={13}
-                                className="text-primary/50 mr-1.5 -mt-1 inline-block"
+                                className="text-primary/50 -mt-1 mr-1.5 inline-block"
                             />
                             {user.bio}
                         </p>
                     ) : (
-                        <p className="text-muted-foreground/70 max-w-xl font-quote text-base italic">
+                        <p className="text-muted-foreground/70 font-quote max-w-xl text-base italic">
                             {isOwner
                                 ? "Vous n'avez pas encore écrit votre préface."
                                 : "Ce lecteur n'a pas encore écrit sa préface."}

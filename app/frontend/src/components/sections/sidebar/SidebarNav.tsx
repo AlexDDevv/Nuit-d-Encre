@@ -76,41 +76,41 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
     const authLinks: SidebarLink[] = user
         ? user.role === "admin"
             ? [
-                {
-                    href: "/admin",
-                    label: "Admin",
-                    icon: LuShield,
-                    ariaLabel: "Accéder au panel admin",
-                },
-            ]
+                  {
+                      href: "/admin",
+                      label: "Admin",
+                      icon: LuShield,
+                      ariaLabel: "Accéder au panel admin",
+                  },
+              ]
             : [
-                {
-                    href: "/profil",
-                    label: "Profil",
-                    icon: LuUser,
-                    ariaLabel: "Accéder à son profil",
-                },
-            ]
+                  {
+                      href: "/profil",
+                      label: "Profil",
+                      icon: LuUser,
+                      ariaLabel: "Accéder à son profil",
+                  },
+              ]
         : [
-            {
-                href: `/register?redirect=${encodeURIComponent(pathname)}`,
-                label: "S'inscrire",
-                icon: LuUserPlus,
-                ariaLabel: "S'inscrire à Nuit d'Encre",
-            },
-            {
-                href: `/connexion?redirect=${encodeURIComponent(pathname)}`,
-                label: "Se connecter",
-                icon: LuLogIn,
-                ariaLabel: "Se connecter à Nuit d'Encre",
-            },
-        ];
+              {
+                  href: `/register?redirect=${encodeURIComponent(pathname)}`,
+                  label: "S'inscrire",
+                  icon: LuUserPlus,
+                  ariaLabel: "S'inscrire à Nuit d'Encre",
+              },
+              {
+                  href: `/connexion?redirect=${encodeURIComponent(pathname)}`,
+                  label: "Se connecter",
+                  icon: LuLogIn,
+                  ariaLabel: "Se connecter à Nuit d'Encre",
+              },
+          ];
 
     const labelClasses = cn(
         "whitespace-nowrap transition-opacity",
         collapsed
             ? "opacity-0 duration-150"
-            : "opacity-100 duration-200 delay-150"
+            : "opacity-100 duration-200 delay-150",
     );
 
     const renderLink = (link: SidebarLink) => {
@@ -128,7 +128,10 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
                     title={collapsed ? link.label : undefined}
                     aria-current={active ? "page" : undefined}
                     leftIcon={<Icon className="shrink-0" />}
-                    className={cn(collapsed && "justify-center w-full h-10 rounded-md [&>span:first-child]:mr-0")}
+                    className={cn(
+                        collapsed &&
+                            "justify-center rounded-md [&>span:first-child]:mr-0",
+                    )}
                 >
                     <span className={labelClasses}>{link.label}</span>
                 </Button>
@@ -137,7 +140,10 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
     };
 
     return (
-        <nav aria-label="Navigation principale" className="flex flex-1 flex-col gap-1 p-4">
+        <nav
+            aria-label="Navigation principale"
+            className="flex flex-1 flex-col gap-1 p-4"
+        >
             <ul className="flex flex-col gap-1">
                 {MAIN_LINKS.map(renderLink)}
             </ul>
@@ -152,7 +158,10 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
                             ariaLabel="Se déconnecter de Nuit d'Encre"
                             title={collapsed ? "Se déconnecter" : undefined}
                             leftIcon={<LuLogOut className="shrink-0" />}
-                            className={cn(collapsed && "justify-center w-full h-10 rounded-md [&>span:first-child]:mr-0")}
+                            className={cn(
+                                collapsed &&
+                                    "justify-center rounded-md [&>span:first-child]:mr-0",
+                            )}
                         >
                             <span className={labelClasses}>Se déconnecter</span>
                         </Button>

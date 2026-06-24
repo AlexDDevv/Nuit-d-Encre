@@ -109,10 +109,7 @@ export default function BannerEditorPanel({
                             htmlFor="b-hasaction"
                             className="font-body text-muted-foreground flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em]"
                         >
-                            <LuMousePointer2
-                                size={14}
-                                className="text-primary/70"
-                            />{" "}
+                            <LuMousePointer2 className="text-primary/70" />{" "}
                             Ajouter un bouton
                         </Label>
                         <Switch
@@ -172,7 +169,7 @@ export default function BannerEditorPanel({
                 {/* Audience */}
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <LuUsers size={14} className="text-primary/70" />
+                        <LuUsers className="text-primary/70" />
                         <div>
                             <Label
                                 htmlFor="b-audience"
@@ -203,7 +200,7 @@ export default function BannerEditorPanel({
                 {/* Fermable */}
                 <div className="flex items-center justify-between gap-3">
                     <div className="flex items-center gap-2">
-                        <Icon name="x" size={14} className="text-primary/70" />
+                        <Icon name="x" className="text-primary/70" />
                         <div>
                             <Label
                                 htmlFor="b-dismiss"
@@ -250,7 +247,6 @@ export default function BannerEditorPanel({
                             disabled={isMutating}
                             loading={isMutating}
                             leftIcon={<LuSend size={15} />}
-                            className="px-5"
                         >
                             Publier la bannière
                         </Button>

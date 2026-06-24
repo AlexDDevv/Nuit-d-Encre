@@ -13,6 +13,7 @@ import { Rank, Slot, PLACE_LABEL } from "./favoriteBook/podium";
 import Socle from "./favoriteBook/Socle";
 import FavoriteBookReminder from "./favoriteBook/FavoriteBookReminder";
 import FavoriteMoveNote from "./favoriteBook/FavoriteMoveNote";
+import Button from "@/components/UI/Button";
 
 // ── La modale ───────────────────────────────────────────────────────────────
 export default function FavoriteBookModal({
@@ -156,14 +157,14 @@ export default function FavoriteBookModal({
         selectedRank !== favoriteRank;
     const displaced =
         selectedRank != null &&
-            slots[selectedRank] &&
-            slots[selectedRank]!.userBookId !== userBookId
+        slots[selectedRank] &&
+        slots[selectedRank]!.userBookId !== userBookId
             ? slots[selectedRank]!.title
             : null;
 
     return (
         <div
-            className="fixed inset-0 z-70 flex items-start justify-center overflow-y-auto bg-[hsl(20_3%_7%/0.78)] px-4 py-8 backdrop-blur-[3px] sm:items-center sm:py-10"
+            className="z-70 fixed inset-0 flex items-start justify-center overflow-y-auto bg-[hsl(20_3%_7%/0.78)] px-4 py-8 backdrop-blur-[3px] sm:items-center sm:py-10"
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
@@ -174,7 +175,7 @@ export default function FavoriteBookModal({
                 aria-modal="true"
                 aria-labelledby="fav-title"
                 aria-describedby="fav-sub"
-                className="border-primary/40 relative w-full max-w-135 rounded-2xl border-2 bg-popover shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
+                className="border-primary/40 max-w-135 bg-popover relative w-full rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
             >
                 {/* fermeture */}
                 <button
@@ -206,7 +207,7 @@ export default function FavoriteBookModal({
                         </h2>
                         <p
                             id="fav-sub"
-                            className="mx-auto mt-2 max-w-sm font-quote text-base italic leading-relaxed text-[hsl(20_12%_70%)]"
+                            className="font-quote mx-auto mt-2 max-w-sm text-base italic leading-relaxed text-[hsl(20_12%_70%)]"
                         >
                             Choisissez la place de ce livre sur votre podium.
                         </p>
@@ -216,12 +217,14 @@ export default function FavoriteBookModal({
                     <FavoriteBookReminder book={book} />
 
                     {/* podium */}
-                    <div className="mt-7 rounded-xl border border-border bg-[radial-gradient(120%_90%_at_50%_0%,hsl(43_18%_17%/0.55),hsl(20_3%_15%/0.2)_70%)] px-3 pb-3 pt-2 sm:px-5">
+                    <div className="border-border mt-7 rounded-xl border bg-[radial-gradient(120%_90%_at_50%_0%,hsl(43_18%_17%/0.55),hsl(20_3%_15%/0.2)_70%)] px-3 pb-3 pt-2 sm:px-5">
                         <div className="flex items-end justify-center gap-3 sm:gap-4">
                             {([2, 1, 3] as Rank[]).map((rank) => (
                                 <div
                                     key={rank}
-                                    className={rank === 1 ? "w-[34%]" : "w-[30%]"}
+                                    className={
+                                        rank === 1 ? "w-[34%]" : "w-[30%]"
+                                    }
                                 >
                                     <Socle
                                         rank={rank}
@@ -250,26 +253,26 @@ export default function FavoriteBookModal({
                     {/* actions */}
                     <div className="mt-6 flex flex-wrap items-center justify-end gap-2.5 border-t border-dashed border-[hsl(0_0%_100%/0.08)] pt-5">
                         {isFavorite && selectedRank != null && (
-                            <button
-                                type="button"
+                            <Button
+                                variant="destructiveGhost"
                                 onClick={() => setSelectedRank(null)}
                                 disabled={loading}
-                                className="border-destructive/40 hover:border-destructive/70 focus-visible:ring-primary inline-flex cursor-pointer items-center gap-2 rounded-lg border px-3.5 py-2 font-body text-xs font-bold text-[hsl(3_84%_64%)] transition-colors duration-200 hover:bg-[hsl(3_84%_51%/0.1)] focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+                                leftIcon={<FaTrashCan aria-hidden="true" />}
                             >
-                                <FaTrashCan size={14} aria-hidden="true" />
                                 Retirer des favoris
-                            </button>
+                            </Button>
                         )}
 
-                        <button
+                        <Button
+                            variant="primary"
                             type="button"
                             onClick={handleValidate}
+                            loading={loading}
                             disabled={loading || !changed}
-                            className="bg-primary text-primary-foreground focus-visible:ring-primary inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-2 font-body text-sm font-bold shadow-[0_14px_32px_-14px_hsl(43_59%_60%/0.6)] transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 focus-visible:ring-offset-popover"
+                            leftIcon={<FaCheck aria-hidden="true" />}
                         >
-                            <FaCheck size={14} aria-hidden="true" />
                             {loading ? "Validation…" : "Valider"}
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

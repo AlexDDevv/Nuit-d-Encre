@@ -20,8 +20,8 @@ export default function ConfirmRemoveOverlay({
 }: ConfirmRemoveOverlayProps) {
     return (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-3 rounded-xl bg-[hsl(20_3%_9%/0.92)] px-4 text-center backdrop-blur-sm">
-            <span className="border-destructive/50 bg-destructive/15 grid h-10 w-10 place-items-center rounded-full border text-[hsl(3_84%_64%)]">
-                <FaTrashCan size={16} aria-hidden="true" />
+            <span className="border-destructive/40 grid h-10 w-10 place-items-center rounded-full border-2 text-[hsl(3_84%_64%)]">
+                <FaTrashCan aria-hidden="true" />
             </span>
             <p className="text-foreground font-quote text-sm italic leading-snug">
                 Retirer
@@ -34,7 +34,7 @@ export default function ConfirmRemoveOverlay({
             </p>
             <div className="flex items-center gap-2">
                 <Button
-                    variant="destructive"
+                    variant="destructiveGhost"
                     size="sm"
                     onClick={onConfirm}
                     disabled={loading}

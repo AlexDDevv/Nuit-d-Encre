@@ -204,7 +204,7 @@ export default function ReviewForm({
                                 ? "Modifier ma critique"
                                 : "Publier ma critique"
                         }
-                        leftIcon={<FaFeatherPointed className="h-4 w-4" />}
+                        leftIcon={<FaFeatherPointed />}
                     >
                         {isEditing ? "Modifier" : "Publier"}
                     </Button>

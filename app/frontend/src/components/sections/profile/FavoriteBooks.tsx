@@ -165,28 +165,31 @@ export default function FavoriteBooks({
                                     {editing && isOwner && (
                                         <div className="mt-2 flex items-center justify-center gap-1.5">
                                             <Button
-                                                variant="icon"
+                                                variant="social"
+                                                size="icon"
                                                 ariaLabel="Monter dans le classement"
                                                 disabled={rank === 1 || busy}
                                                 onClick={() => move(rank, -1)}
-                                                className="border-border text-foreground hover:border-primary h-8 w-8 rounded-md p-0 disabled:bg-transparent"
+                                                className="h-8 w-8 rounded-md"
                                             >
                                                 <FaArrowUp size={13} />
                                             </Button>
                                             <Button
-                                                variant="icon"
+                                                variant="social"
+                                                size="icon"
                                                 ariaLabel="Descendre dans le classement"
                                                 disabled={rank === 3 || busy}
                                                 onClick={() => move(rank, 1)}
-                                                className="border-border text-foreground hover:border-primary h-8 w-8 rounded-md p-0 disabled:bg-transparent"
+                                                className="h-8 w-8 rounded-md"
                                             >
                                                 <FaArrowDown size={13} />
                                             </Button>
                                             <Button
                                                 variant="destructiveGhost"
+                                                size="icon"
                                                 ariaLabel="Retirer des favoris"
                                                 onClick={() => remove(fav.id)}
-                                                className="h-8 w-8 rounded-md p-0"
+                                                className="h-8 w-8 rounded-md"
                                             >
                                                 <FaXmark size={13} />
                                             </Button>

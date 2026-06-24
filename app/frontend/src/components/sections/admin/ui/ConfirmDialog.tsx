@@ -31,21 +31,21 @@ export function ConfirmDialog({
     return (
         <Modal isOpen={open} onClose={onCancel} size="sm">
             <div className="flex items-start gap-4">
-                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full border-2 border-destructive/45 bg-destructive/12 text-destructive">
+                <span className="border-destructive/45 bg-destructive/12 text-destructive grid h-12 w-12 shrink-0 place-items-center rounded-full border-2">
                     <LuTrash2 size={20} />
                 </span>
                 <div className="flex-1">
-                    <h3 className="font-title text-xl font-bold text-foreground">
+                    <h3 className="font-title text-foreground text-xl font-bold">
                         {title}
                     </h3>
-                    <div className="mt-2 font-body text-sm leading-relaxed text-muted-foreground">
+                    <div className="font-body text-muted-foreground mt-2 text-sm leading-relaxed">
                         {children}
                     </div>
                     {warning && (
-                        <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-warning/45 bg-warning/10 px-3 py-2.5">
+                        <div className="border-warning/45 bg-warning/10 mt-3 flex items-start gap-2.5 rounded-lg border px-3 py-2.5">
                             <LuTriangleAlert
                                 size={16}
-                                className="mt-0.5 shrink-0 text-warning"
+                                className="text-warning mt-0.5 shrink-0"
                             />
                             <p className="font-body text-sm leading-snug text-[hsl(25_70%_72%)]">
                                 {warning}
@@ -55,17 +55,11 @@ export function ConfirmDialog({
                 </div>
             </div>
             <div className="mt-6 flex items-center justify-end gap-3">
-                <Button
-                    variant="outline"
-                    size="md"
-                    onClick={onCancel}
-                    disabled={loading}
-                >
+                <Button variant="outline" onClick={onCancel} disabled={loading}>
                     Annuler
                 </Button>
                 <Button
                     variant="destructive"
-                    size="md"
                     onClick={onConfirm}
                     disabled={loading}
                     loading={loading}

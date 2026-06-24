@@ -5,7 +5,9 @@ import { cn } from "@/lib/utils";
 
 export default function SidebarActionButton({
     collapsed,
-}: { collapsed: boolean }) {
+}: {
+    collapsed: boolean;
+}) {
     const { pathname } = useLocation();
 
     const isOnAuthorsPage = pathname.startsWith("/authors");
@@ -16,20 +18,24 @@ export default function SidebarActionButton({
         : "Enregistrer un livre";
 
     return (
-        <div className="border-b border-border p-4">
+        <div className="border-border border-b p-4">
             <Button
                 to={href}
                 title={collapsed ? label : undefined}
                 fullWidth
-                leftIcon={<FiPlus className="shrink-0" />}
-                className={cn(collapsed && "justify-center w-full h-10 rounded-md [&>span:first-child]:mr-0")}
+                leftIcon={<FiPlus />}
+                className={cn(
+                    collapsed && "rounded-md [&>span:first-child]:mr-0",
+                )}
             >
-                <span className={cn(
-                    "whitespace-nowrap transition-opacity",
-                    collapsed
-                        ? "opacity-0 duration-150"
-                        : "opacity-100 duration-200 delay-150"
-                )}>
+                <span
+                    className={cn(
+                        "whitespace-nowrap transition-opacity",
+                        collapsed
+                            ? "opacity-0 duration-150"
+                            : "opacity-100 delay-150 duration-200",
+                    )}
+                >
                     {label}
                 </span>
             </Button>

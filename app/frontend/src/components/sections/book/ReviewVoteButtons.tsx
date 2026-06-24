@@ -51,9 +51,9 @@ export default function ReviewVoteButtons({
             isActive
                 ? activeClass
                 : cn(
-                    "bg-muted border-muted text-muted-foreground",
-                    !isOwnReview && hoverClass,
-                ),
+                      "bg-muted border-muted text-muted-foreground",
+                      !isOwnReview && hoverClass,
+                  ),
             isDisabled && "opacity-50",
         );
 
@@ -111,7 +111,10 @@ export default function ReviewVoteButtons({
             setNotHelpfulCount(initialNotHelpfulCount);
             setCurrentVote(currentVote);
 
-            const { title, description } = parseGraphQLError(error, "voteOnReview");
+            const { title, description } = parseGraphQLError(
+                error,
+                "voteOnReview",
+            );
             showToast({ type: "error", title, description });
         }
     };
@@ -128,7 +131,7 @@ export default function ReviewVoteButtons({
                     "bg-primary border-primary text-primary-foreground",
                     "hover:bg-primary/10 hover:border-primary/10 hover:text-primary",
                 )}
-                leftIcon={<LuThumbsUp className="h-4 w-4" />}
+                leftIcon={<LuThumbsUp />}
             >
                 <span>{helpfulCount}</span>
             </Button>
@@ -142,7 +145,7 @@ export default function ReviewVoteButtons({
                     "bg-destructive border-destructive text-destructive-foreground",
                     "hover:bg-destructive/10 hover:border-destructive/10 hover:text-destructive",
                 )}
-                leftIcon={<LuThumbsDown className="h-4 w-4" />}
+                leftIcon={<LuThumbsDown />}
             >
                 <span>{notHelpfulCount}</span>
             </Button>

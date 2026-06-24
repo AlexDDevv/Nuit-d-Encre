@@ -11,6 +11,7 @@ import { cn, slugify } from "@/lib/utils";
 import { formatShortLabelMap } from "@/lib/filterMaps";
 import { BOOK_STATES, STATUS_COLORS } from "@/constants/bookStatus";
 import { BookCardLibraryProps } from "@/types/types";
+import Button from "@/components/UI/Button";
 
 /** Pastille de statut en lecture seule, colorée selon le statut. */
 function StatusPill({ status }: { status: BookCardLibraryProps["status"] }) {
@@ -20,7 +21,7 @@ function StatusPill({ status }: { status: BookCardLibraryProps["status"] }) {
     return (
         <span
             className={cn(
-                "inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 font-body text-xxs font-bold backdrop-blur-sm",
+                "font-body text-xxs inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 font-bold backdrop-blur-sm",
                 STATUS_COLORS[status].chip,
             )}
         >
@@ -52,19 +53,21 @@ export default function LibraryGridCard({
     const author = `${book.author.firstname} ${book.author.lastname}`;
     const bookPath = `/books/${book.id}-${slugify(book.title)}`;
     const authorPath = `/authors/${book.author.id}-${slugify(author)}`;
-    const formatLabel = book.format ? formatShortLabelMap[book.format] : undefined;
+    const formatLabel = book.format
+        ? formatShortLabelMap[book.format]
+        : undefined;
 
     return (
         <div
             className={cn(
-                "group bg-card relative flex flex-col rounded-xl border-2 transition-all duration-200 hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.7)]",
+                "bg-card group relative flex flex-col rounded-xl border-2 transition-all duration-200 hover:shadow-[0_18px_40px_-14px_rgba(0,0,0,0.7)]",
                 isFavorite
                     ? "border-primary/40 hover:border-primary/60"
                     : "border-border hover:border-primary/55",
             )}
         >
             {/* couverture */}
-            <div className="bg-background relative aspect-2/3 overflow-hidden rounded-t-xl">
+            <div className="bg-background aspect-2/3 relative overflow-hidden rounded-t-xl">
                 <BookCover
                     coverUrl={book.coverUrl}
                     title={book.title}
@@ -83,9 +86,13 @@ export default function LibraryGridCard({
                             ? `Favori, rang ${favoriteRank}. Gérer les favoris`
                             : "Ajouter aux favoris"
                     }
-                    title={isFavorite ? `Favori · rang ${favoriteRank}` : "Ajouter aux favoris"}
+                    title={
+                        isFavorite
+                            ? `Favori · rang ${favoriteRank}`
+                            : "Ajouter aux favoris"
+                    }
                     className={cn(
-                        "focus-visible:ring-ring absolute left-2 top-2 z-10 inline-flex cursor-pointer items-center gap-1 rounded-full border px-2 py-1.25 backdrop-blur-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2",
+                        "focus-visible:ring-ring py-1.25 absolute left-2 top-2 z-10 inline-flex cursor-pointer items-center gap-1 rounded-full border px-2 backdrop-blur-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2",
                         isFavorite
                             ? "text-primary-foreground border-primary/40 bg-primary/90"
                             : "text-primary border-primary/35 bg-[hsl(20_3%_9%/0.72)]",
@@ -93,7 +100,7 @@ export default function LibraryGridCard({
                 >
                     <FaStar size={12} aria-hidden="true" />
                     {isFavorite && (
-                        <span className="font-mono text-xxs font-medium leading-none">
+                        <span className="text-xxs font-mono font-medium leading-none">
                             {favoriteRank}
                         </span>
                     )}
@@ -116,7 +123,7 @@ export default function LibraryGridCard({
                 </Link>
                 <Link
                     to={authorPath}
-                    className="text-muted-foreground hover:text-primary focus-visible:ring-ring -mx-1 w-fit rounded-sm px-1 font-body text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
+                    className="text-muted-foreground hover:text-primary focus-visible:ring-ring font-body -mx-1 w-fit rounded-sm px-1 text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
                     aria-label={`Voir l'auteur ${author}`}
                 >
                     {author}
@@ -148,14 +155,15 @@ export default function LibraryGridCard({
                         colored
                         className="h-8 w-full min-w-0 flex-1 py-1 text-xs"
                     />
-                    <button
-                        type="button"
+                    <Button
+                        variant="destructiveGhost"
+                        size="icon"
                         onClick={() => setConfirming(true)}
-                        aria-label="Retirer de vos rayons"
-                        className="border-border text-muted-foreground hover:border-destructive/60 hover:text-[hsl(3_84%_62%)] focus-visible:ring-ring grid h-8 w-8 shrink-0 cursor-pointer place-items-center rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2"
+                        ariaLabel="Retirer de vos rayons"
+                        className="h-8 w-8"
                     >
-                        <FaTrashCan size={14} aria-hidden="true" />
-                    </button>
+                        <FaTrashCan className="h-3 w-3" aria-hidden="true" />
+                    </Button>
                 </div>
             </div>
 

@@ -47,11 +47,11 @@ function BannerActionButton({
 
     const content = (
         <>
-            {gold && <Icon name="pencil" size={14} />}
+            {gold && <Icon name="pencil" />}
             {action.label}
             {action.xp != null && (
                 <span
-                    className="rounded-full px-2 py-px font-mono text-xxs font-medium"
+                    className="text-xxs rounded-full px-2 py-px font-mono font-medium"
                     style={{
                         background: gold
                             ? "hsl(43 59% 21% / 0.18)"
@@ -145,7 +145,7 @@ const Banner = ({
         >
             <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-0 w-0.75"
+                className="w-0.75 pointer-events-none absolute inset-y-0 left-0"
                 style={{
                     background: `linear-gradient(180deg, transparent, ${v.accent}, transparent)`,
                     opacity: v.gold ? 0.9 : 0.55,
@@ -213,7 +213,7 @@ const Banner = ({
                 <div className="min-w-0">
                     {v.gold && (
                         <span
-                            className="mb-1 inline-flex items-center gap-1.5 font-mono text-xxs uppercase tracking-[0.18em]"
+                            className="text-xxs mb-1 inline-flex items-center gap-1.5 font-mono uppercase tracking-[0.18em]"
                             style={{ color: "hsl(43 30% 64%)" }}
                         >
                             <Icon name="sparkles" size={10} /> Récompense

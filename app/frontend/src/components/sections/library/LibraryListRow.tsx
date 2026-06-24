@@ -136,7 +136,7 @@ export default function LibraryListRow({
                                     : "border-border text-muted-foreground hover:text-primary hover:border-primary/40",
                             )}
                         >
-                            <FaStar size={13} aria-hidden="true" />
+                            <FaStar className="h-3 w-3" aria-hidden="true" />
                         </button>
                         <Button
                             variant="destructiveGhost"
@@ -145,7 +145,10 @@ export default function LibraryListRow({
                             ariaLabel="Retirer de vos rayons"
                             className="h-8 w-8 rounded-md"
                         >
-                            <FaTrashCan aria-hidden="true" />
+                            <FaTrashCan
+                                className="h-3 w-3"
+                                aria-hidden="true"
+                            />
                         </Button>
                     </div>
                 </div>

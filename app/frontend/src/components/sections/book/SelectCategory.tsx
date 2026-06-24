@@ -102,7 +102,6 @@ export default function SelectCategory() {
                     ariaLabel="Retirer le filtre sur la catégorie"
                     children="Retirer le filtre"
                     onClick={handleResetFilter}
-                    className="max-h-10"
                 />
             )}
         </>

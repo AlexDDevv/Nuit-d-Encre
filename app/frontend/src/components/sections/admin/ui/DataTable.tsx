@@ -26,9 +26,9 @@ function ViewLink({ label, href }: { label: string; href: string }) {
     return (
         <Link
             to={href}
-            className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 font-body text-xs font-bold text-muted-foreground transition-colors duration-200 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+            className="font-body text-muted-foreground hover:text-primary focus-visible:ring-primary/40 inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 text-xs font-bold transition-colors duration-200 focus:outline-none focus-visible:ring-2"
         >
-            <LuEye size={14} /> {label}
+            <LuEye /> {label}
         </Link>
     );
 }
@@ -46,7 +46,7 @@ export function DeleteBtn({
             onClick={onClick}
             aria-label={label}
             title={label}
-            className="grid h-8 w-8 place-items-center rounded-md border-2 border-border text-muted-foreground transition-all duration-200 hover:border-destructive hover:bg-destructive/12 hover:text-destructive focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/50"
+            className="border-border text-muted-foreground hover:border-destructive hover:bg-destructive/12 hover:text-destructive focus-visible:ring-destructive/50 grid h-8 w-8 place-items-center rounded-md border-2 transition-all duration-200 focus:outline-none focus-visible:ring-2"
         >
             <LuTrash2 size={15} />
         </button>
@@ -70,32 +70,32 @@ export function DataTable<T extends { id: string }>({
     return (
         <>
             {/* Bureau : tableau dense */}
-            <div className="hidden overflow-hidden rounded-xl border-2 border-border bg-card lg:block">
+            <div className="border-border bg-card hidden overflow-hidden rounded-xl border-2 lg:block">
                 <div className="overflow-x-auto">
                     <table className="w-full border-collapse text-left">
                         <thead>
-                            <tr className="border-b-2 border-border bg-muted/30">
+                            <tr className="border-border bg-muted/30 border-b-2">
                                 {columns.map((c) => (
                                     <th
                                         key={c.key}
                                         className={cn(
-                                            "px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground",
+                                            "font-body text-muted-foreground px-4 py-3 text-xs font-bold uppercase tracking-[0.13em]",
                                             c.thClass,
                                         )}
                                     >
                                         {c.header}
                                     </th>
                                 ))}
-                                <th className="px-4 py-3 text-right font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                                <th className="font-body text-muted-foreground px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.13em]">
                                     Actions
                                 </th>
                             </tr>
                         </thead>
-                        <tbody className="divide-y-2 divide-border/45">
+                        <tbody className="divide-border/45 divide-y-2">
                             {rows.map((row) => (
                                 <tr
                                     key={row.id}
-                                    className="group transition-colors duration-150 hover:bg-muted/20"
+                                    className="hover:bg-muted/20 group transition-colors duration-150"
                                 >
                                     {columns.map((c) => (
                                         <td
@@ -103,7 +103,7 @@ export function DataTable<T extends { id: string }>({
                                             className={cn(
                                                 "px-4 py-3 align-middle",
                                                 c.tdClass ??
-                                                "font-body text-sm text-foreground/90",
+                                                    "font-body text-foreground/90 text-sm",
                                             )}
                                         >
                                             {c.cell(row)}
@@ -132,26 +132,26 @@ export function DataTable<T extends { id: string }>({
                 {rows.map((row) => (
                     <div
                         key={row.id}
-                        className="rounded-xl border-2 border-border bg-card p-4"
+                        className="border-border bg-card rounded-xl border-2 p-4"
                     >
                         {primary && (
-                            <div className="mb-3 border-b-2 border-border/50 pb-3">
+                            <div className="border-border/50 mb-3 border-b-2 pb-3">
                                 {primary.cell(row)}
                             </div>
                         )}
                         <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2">
                             {rest.map((c) => (
                                 <Fragment key={c.key}>
-                                    <dt className="font-body text-xs font-bold uppercase tracking-widest text-muted-foreground/70">
+                                    <dt className="font-body text-muted-foreground/70 text-xs font-bold uppercase tracking-widest">
                                         {c.header}
                                     </dt>
-                                    <dd className="text-right font-body text-sm text-foreground/90">
+                                    <dd className="font-body text-foreground/90 text-right text-sm">
                                         {c.cell(row)}
                                     </dd>
                                 </Fragment>
                             ))}
                         </dl>
-                        <div className="mt-4 flex items-center justify-end gap-2 border-t-2 border-border/50 pt-3">
+                        <div className="border-border/50 mt-4 flex items-center justify-end gap-2 border-t-2 pt-3">
                             <ViewLink label={viewLabel} href={viewHref(row)} />
                             <DeleteBtn onClick={() => onDelete(row)} />
                         </div>

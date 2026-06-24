@@ -9,20 +9,26 @@ export default function SidebarHeader({
     onToggle,
 }: SidebarHeaderProps) {
     return (
-        <div className={cn(
-            "flex items-center py-3 px-4 border-b border-border",
-            collapsed ? "justify-center" : "justify-between"
-        )}>
-            <div className={cn(
-                "overflow-hidden whitespace-nowrap transition-[max-width] duration-150",
-                collapsed ? "max-w-0" : "max-w-50"
-            )}>
-                <div className={cn(
-                    "transition-opacity",
-                    collapsed
-                        ? "opacity-0 duration-150"
-                        : "opacity-100 duration-200 delay-150"
-                )}>
+        <div
+            className={cn(
+                "border-border flex items-center border-b px-4 py-3",
+                collapsed ? "justify-center" : "justify-between",
+            )}
+        >
+            <div
+                className={cn(
+                    "overflow-hidden whitespace-nowrap transition-[max-width] duration-150",
+                    collapsed ? "max-w-0" : "max-w-50",
+                )}
+            >
+                <div
+                    className={cn(
+                        "transition-opacity",
+                        collapsed
+                            ? "opacity-0 duration-150"
+                            : "opacity-100 delay-150 duration-200",
+                    )}
+                >
                     <Logo to="/books" />
                 </div>
             </div>
@@ -35,8 +41,10 @@ export default function SidebarHeader({
                         : "Réduire la navigation"
                 }
                 aria-expanded={!collapsed}
-                icon={<LuPanelsLeftBottom className="text-popover-foreground stroke-1 transition-all duration-200 ease-in-out hover:stroke-2" />}
-                className="p-0 flex items-center justify-center shrink-0"
+                icon={
+                    <LuPanelsLeftBottom className="text-popover-foreground stroke-1 transition-all duration-200 ease-in-out hover:stroke-2" />
+                }
+                className="p-0"
             />
         </div>
     );
