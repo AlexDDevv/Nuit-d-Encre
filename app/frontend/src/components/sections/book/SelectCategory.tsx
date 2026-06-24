@@ -22,7 +22,7 @@ export default function SelectCategory() {
 
     if (isLoadingCategories) {
         return (
-            <Skeleton className="bg-popover/70 border-border flex h-11 w-60 min-w-60 rounded-lg border-2" />
+            <Skeleton className="bg-popover/70 border-border flex h-10 w-60 min-w-60 rounded-lg border-2" />
         );
     }
 
