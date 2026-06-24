@@ -3,7 +3,8 @@ import { useAdminBooks } from "@/hooks/admin/useAdminBooks";
 import { useAdminMutations } from "@/hooks/admin/useAdminMutations";
 import { usePagination } from "@/hooks/admin/usePagination";
 import { useToast } from "@/hooks/toast/useToast";
-import { slugify } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
+import { atelierSelectTriggerClass } from "@/components/sections/shared/atelierField";
 import type { AdminBookRow } from "@/types/types";
 import { FormatChip } from "@/components/sections/admin/ui/chips";
 import { SearchInput } from "@/components/sections/admin/ui/SearchInput";
@@ -15,9 +16,15 @@ import {
     SelectValue,
 } from "@/components/UI/Select";
 import Pagination from "@/components/UI/Pagination";
-import { EmptyState, SkeletonRows } from "@/components/sections/admin/ui/feedback";
+import {
+    EmptyState,
+    SkeletonRows,
+} from "@/components/sections/admin/ui/feedback";
 import { ConfirmDialog } from "@/components/sections/admin/ui/ConfirmDialog";
-import { DataTable, type Column } from "@/components/sections/admin/ui/DataTable";
+import {
+    DataTable,
+    type Column,
+} from "@/components/sections/admin/ui/DataTable";
 
 /** Onglet Livres : recherche par titre, filtre par catégorie, suppression. */
 export function BooksTab() {
@@ -70,10 +77,10 @@ export function BooksTab() {
             primary: true,
             cell: (b) => (
                 <div className="min-w-0">
-                    <div className="truncate font-quote text-base text-foreground">
+                    <div className="font-quote text-foreground truncate text-base">
                         {b.title}
                     </div>
-                    <div className="truncate font-body text-xs text-muted-foreground lg:hidden">
+                    <div className="font-body text-muted-foreground truncate text-xs lg:hidden">
                         {b.author.firstname} {b.author.lastname}
                     </div>
                 </div>
@@ -83,7 +90,7 @@ export function BooksTab() {
             key: "isbn",
             header: "ISBN-13",
             cell: (b) => (
-                <span className="whitespace-nowrap font-body text-xs tabular-nums text-muted-foreground">
+                <span className="font-body text-muted-foreground whitespace-nowrap text-xs tabular-nums">
                     {b.isbn13}
                 </span>
             ),
@@ -92,7 +99,7 @@ export function BooksTab() {
             key: "auteur",
             header: "Auteur",
             cell: (b) => (
-                <span className="font-body text-sm text-foreground/85">
+                <span className="font-body text-foreground/85 text-sm">
                     {b.author.firstname} {b.author.lastname}
                 </span>
             ),
@@ -102,7 +109,7 @@ export function BooksTab() {
             header: "Catégorie",
             cell: (b) =>
                 b.category ? (
-                    <span className="inline-flex items-center rounded-full border border-border bg-muted/70 px-2.5 py-0.5 text-xs font-bold uppercase tracking-[0.12em] text-muted-foreground">
+                    <span className="border-border bg-muted/70 text-muted-foreground inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-bold uppercase tracking-[0.12em]">
                         {b.category.name}
                     </span>
                 ) : (
@@ -118,7 +125,7 @@ export function BooksTab() {
             key: "par",
             header: "Ajouté par",
             cell: (b) => (
-                <span className="font-body text-xs text-muted-foreground">
+                <span className="font-body text-muted-foreground text-xs">
                     {b.user?.userName ?? "-"}
                 </span>
             ),
@@ -127,7 +134,7 @@ export function BooksTab() {
             key: "le",
             header: "Ajouté le",
             cell: (b) => (
-                <span className="whitespace-nowrap font-body text-xs text-muted-foreground">
+                <span className="font-body text-muted-foreground whitespace-nowrap text-xs">
                     {new Date(b.createdAt).toLocaleDateString("fr-FR")}
                 </span>
             ),
@@ -155,18 +162,13 @@ export function BooksTab() {
                 >
                     <SelectTrigger
                         aria-label="Filtrer par catégorie"
-                        className="bg-input border-border text-accent-foreground focus-visible:ring-ring rounded-lg px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sm:w-56"
+                        className={cn(atelierSelectTriggerClass, "sm:w-56")}
                     >
                         <SelectValue placeholder="Toutes les catégories" />
                     </SelectTrigger>
                     <SelectContent animate>
                         {categories.map((c, index) => (
-                            <SelectItem
-                                key={c}
-                                value={c}
-                                index={index}
-                                animate
-                            >
+                            <SelectItem key={c} value={c} index={index} animate>
                                 {c === "all" ? "Toutes les catégories" : c}
                             </SelectItem>
                         ))}
@@ -175,11 +177,11 @@ export function BooksTab() {
             </div>
 
             {isLoadingBooks ? (
-                <div className="rounded-xl border-2 border-border bg-card">
+                <div className="border-border bg-card rounded-xl border-2">
                     <SkeletonRows rows={8} cols={7} />
                 </div>
             ) : filtered.length === 0 ? (
-                <div className="rounded-xl border-2 border-border bg-card">
+                <div className="border-border bg-card rounded-xl border-2">
                     <EmptyState
                         message="Aucun livre trouvé"
                         hint="Modifiez le titre recherché ou le filtre de catégorie."
@@ -219,8 +221,9 @@ export function BooksTab() {
                         <span className="font-quote text-foreground">
                             {pending.title}
                         </span>{" "}
-                        » de {pending.author.firstname} {pending.author.lastname}{" "}
-                        sera retiré de la bibliothèque.
+                        » de {pending.author.firstname}{" "}
+                        {pending.author.lastname} sera retiré de la
+                        bibliothèque.
                     </>
                 )}
             </ConfirmDialog>

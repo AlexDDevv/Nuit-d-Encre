@@ -6,6 +6,7 @@ import {
     SelectValue,
 } from "@/components/UI/Select";
 import { cn, slugify } from "@/lib/utils";
+import { atelierSelectTriggerClass } from "@/components/sections/shared/atelierField";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
 import { CategoryBook } from "@/types/types";
 import { useLocation, useSearchParams } from "react-router-dom";
@@ -21,7 +22,7 @@ export default function SelectCategory() {
 
     if (isLoadingCategories) {
         return (
-            <Skeleton className="bg-input border-border flex h-10 w-60 min-w-60 rounded-md border" />
+            <Skeleton className="bg-popover/70 border-border flex h-11 w-60 min-w-60 rounded-lg border-2" />
         );
     }
 
@@ -72,9 +73,6 @@ export default function SelectCategory() {
         setSearchParams(newParams);
     };
 
-    const openStateClasses =
-        "data-[state=open]:ring-2 data-[state=open]:ring-ring data-[state=open]:ring-offset-2";
-
     return (
         <>
             <Select
@@ -82,10 +80,7 @@ export default function SelectCategory() {
                 onValueChange={filterByCategory}
             >
                 <SelectTrigger
-                    className={cn(
-                        "bg-input ring-offset-input text-accent-foreground focus-visible:ring-ring focus-within:ring-ring border-border flex w-60 min-w-60 rounded-md border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                        openStateClasses,
-                    )}
+                    className={cn(atelierSelectTriggerClass, "w-60 min-w-60")}
                 >
                     <SelectValue placeholder="Sélectionnez une catégorie" />
                 </SelectTrigger>
