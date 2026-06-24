@@ -4,6 +4,8 @@ import { useForm, Controller } from "react-hook-form";
 import Button from "@/components/UI/Button/Button";
 import { Textarea } from "@/components/UI/form/Textarea";
 import FormWrapper from "@/components/UI/form/FormWrapper";
+import { atelierTextareaClass } from "@/components/sections/shared/atelierField";
+import { cn } from "@/lib/utils";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
 import { Book, BookReview } from "@/types/types";
 import { useToast } from "@/hooks/toast/useToast";
@@ -72,7 +74,8 @@ export default function ReviewForm({
                 showToast({
                     type: "success",
                     title: "Critique modifiée !",
-                    description: "Votre critique a été mise à jour avec succès.",
+                    description:
+                        "Votre critique a été mise à jour avec succès.",
                 });
             } else {
                 await createReview({
@@ -99,10 +102,13 @@ export default function ReviewForm({
     };
 
     return (
-        <FormWrapper onSubmit={handleSubmit(onSubmit)} className="border-primary/30 border-2 mb-6">
+        <FormWrapper
+            onSubmit={handleSubmit(onSubmit)}
+            className="border-primary/30 mb-6 border-2"
+        >
             {/* note */}
-            <div className="flex flex-col gap-1 items-end">
-                <div className="flex items-center justify-between w-full">
+            <div className="flex flex-col items-end gap-1">
+                <div className="flex w-full items-center justify-between">
                     <p className="text-foreground font-title font-bold">
                         Écrire ma critique
                     </p>
@@ -114,7 +120,8 @@ export default function ReviewForm({
                                 required: "Veuillez sélectionner une note",
                                 min: {
                                     value: 1,
-                                    message: "La note doit être d'au moins 1 étoile",
+                                    message:
+                                        "La note doit être d'au moins 1 étoile",
                                 },
                             }}
                             render={({ field }) => (
@@ -143,7 +150,7 @@ export default function ReviewForm({
                 placeholder="Qu'avez-vous ressenti à la lecture de cet ouvrage ?"
                 maxLength={5000}
                 counter
-                className="font-quote min-h-32"
+                className={cn(atelierTextareaClass, "font-quote")}
                 errorMessage={errors.reviewText?.message}
                 {...register("reviewText", {
                     maxLength: {
@@ -156,7 +163,7 @@ export default function ReviewForm({
             <div className="flex items-center gap-4">
                 {/* astuce / bonus XP */}
                 {isDetailed ? (
-                    <div className="bg-primary/10 border-primary/20 flex items-center justify-center gap-2 rounded-md border p-3 flex-1">
+                    <div className="bg-primary/10 border-primary/20 flex flex-1 items-center justify-center gap-2 rounded-md border p-3">
                         <LuSparkles className="text-primary h-4 w-4 shrink-0" />
                         <p className="text-primary text-xs font-medium">
                             Vous recevrez un bonus d'XP pour cette critique
@@ -164,7 +171,7 @@ export default function ReviewForm({
                         </p>
                     </div>
                 ) : (
-                    <div className="bg-muted border-border flex items-center justify-center gap-2 rounded-md border p-3 flex-1">
+                    <div className="bg-muted border-border flex flex-1 items-center justify-center gap-2 rounded-md border p-3">
                         <LuSparkles className="text-primary h-4 w-4 shrink-0" />
                         <p className="text-muted-foreground text-xs">
                             <span className="font-medium">Astuce :</span> Les
