@@ -4,6 +4,7 @@ export type ButtonVariant =
     | "primary"
     | "secondary"
     | "destructive"
+    | "destructiveGhost"
     | "outline"
     | "text"
     | "checkable"
