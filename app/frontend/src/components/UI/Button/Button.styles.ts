@@ -7,10 +7,10 @@ import type {
  * Cartouche des sceaux - système de boutons (thème nocturne).
  *
  * Contrat de composition : `cn(baseClasses, variantClasses, sizeClasses, …, className)`.
- * Avec tailwind-merge, la **taille** pilote le padding et la fonte, la **variante**
- * pilote les couleurs / bordures / effets (survol · pression · focus), et le
- * `className` du site d'appel a toujours le dernier mot. On ne met donc jamais de
- * padding ni de taille de fonte dans `variantClasses`.
+ * Avec tailwind-merge, la **taille** pilote la hauteur, le padding horizontal et la
+ * fonte, la **variante** pilote les couleurs / bordures / effets (survol · pression ·
+ * focus), et le `className` du site d'appel a toujours le dernier mot. On ne met donc
+ * jamais de dimension ni de taille de fonte dans `variantClasses`.
  */
 
 /**
@@ -126,15 +126,18 @@ export const IconClasses: Record<ButtonVariant, string> = {
 };
 
 /**
- * Classes spécifiques aux tailles - padding (et non hauteur fixe) + fonte standard.
+ * Classes spécifiques aux tailles - hauteur fixe + padding horizontal + fonte.
+ * L'échelle de hauteurs progresse par paliers de 4px ; `md` (h-10) s'aligne sur la
+ * hauteur des champs de formulaire. Les tailles conteneur (icon, card, bookCard,
+ * searchResultCard, authorCard) restent dimensionnées au padding, sans hauteur fixe.
  */
 export const sizeClasses: Record<ButtonSize, string> = {
-    xxs: "px-2 py-1 text-xxs",
-    xs: "px-2.5 py-1 text-xs",
-    sm: "px-3 py-1.5 text-sm",
-    md: "px-4 py-2.5 text-base",
-    lg: "px-6 py-3 text-lg",
-    xl: "px-8 py-4 text-xl",
+    xxs: "h-7 px-2 text-xxs",
+    xs: "h-8 px-2.5 text-xs",
+    sm: "h-9 px-3 text-sm",
+    md: "h-10 px-4 text-base",
+    lg: "h-11 px-6 text-lg",
+    xl: "h-12 px-8 text-xl",
     icon: "size-10 p-0",
     card: "p-4",
     bookCard: "p-5",
