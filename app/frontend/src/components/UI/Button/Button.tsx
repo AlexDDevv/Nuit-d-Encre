@@ -4,6 +4,8 @@ import { cn } from '@/lib/utils'
 import {
     IconClasses,
     baseClasses,
+    checkedClasses,
+    navSelectedClasses,
     sizeClasses,
     variantClasses,
 } from '@/components/UI/Button/Button.styles'
@@ -58,7 +60,8 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
             variantClasses[variant],
             sizeClasses[size],
             fullWidth ? 'w-full' : '',
-            isNavBtnSelected && 'bg-accent text-foreground font-medium hover:bg-accent',
+            isNavBtnSelected && navSelectedClasses[variant],
+            variant === 'checkable' && isChecked && checkedClasses,
             className,
         )
 
