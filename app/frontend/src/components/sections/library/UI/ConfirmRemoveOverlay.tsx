@@ -1,4 +1,5 @@
 import { FaTrashCan } from "react-icons/fa6";
+import Button from "@/components/UI/Button";
 
 type ConfirmRemoveOverlayProps = {
     title: string;
@@ -32,21 +33,18 @@ export default function ConfirmRemoveOverlay({
                 de vos rayons ?
             </p>
             <div className="flex items-center gap-2">
-                <button
-                    type="button"
+                <Button
+                    variant="destructive"
+                    size="sm"
                     onClick={onConfirm}
                     disabled={loading}
-                    className="bg-destructive focus-visible:ring-ring inline-flex cursor-pointer items-center gap-1.5 rounded-lg px-3.5 py-2 font-body text-xs font-bold text-white transition-opacity focus-visible:outline-none focus-visible:ring-2 disabled:opacity-60"
+                    leftIcon={<FaTrashCan size={12} aria-hidden="true" />}
                 >
-                    <FaTrashCan size={12} aria-hidden="true" /> Retirer
-                </button>
-                <button
-                    type="button"
-                    onClick={onCancel}
-                    className="border-border text-foreground hover:border-primary/60 focus-visible:ring-ring cursor-pointer rounded-lg border px-3.5 py-2 font-body text-xs transition-colors focus-visible:outline-none focus-visible:ring-2"
-                >
+                    Retirer
+                </Button>
+                <Button variant="text" size="sm" onClick={onCancel}>
                     Annuler
-                </button>
+                </Button>
             </div>
         </div>
     );

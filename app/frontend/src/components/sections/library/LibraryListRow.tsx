@@ -8,6 +8,7 @@ import FavoriteBookModal from "@/components/sections/library/FavoriteBookModal";
 import ConfirmRemoveOverlay from "@/components/sections/library/UI/ConfirmRemoveOverlay";
 import { cn, slugify } from "@/lib/utils";
 import { BookCardLibraryProps } from "@/types/types";
+import Button from "@/components/UI/Button";
 
 /**
  * Ligne de la vue Liste de la bibliothèque : dense et scannable - petite
@@ -35,7 +36,7 @@ export default function LibraryListRow({
     return (
         <div
             className={cn(
-                "group bg-card relative flex items-center gap-3.5 overflow-hidden rounded-xl border-2 px-3 py-3 transition-colors duration-200 sm:gap-4 sm:px-4",
+                "bg-card group relative flex items-center gap-3.5 overflow-hidden rounded-xl border-2 px-3 py-3 transition-colors duration-200 sm:gap-4 sm:px-4",
                 isFavorite
                     ? "border-primary/38 hover:border-primary/55"
                     : "border-border hover:border-primary/45",
@@ -45,7 +46,7 @@ export default function LibraryListRow({
             <Link
                 to={bookPath}
                 aria-label={`Voir ${book.title}`}
-                className="bg-background relative h-16.5 w-11 shrink-0 overflow-hidden rounded-md sm:h-19.5 sm:w-13"
+                className="bg-background h-16.5 sm:h-19.5 sm:w-13 relative w-11 shrink-0 overflow-hidden rounded-md"
             >
                 <BookCover
                     coverUrl={book.coverUrl}
@@ -56,7 +57,7 @@ export default function LibraryListRow({
                 />
                 {isFavorite && (
                     <span
-                        className="bg-primary text-primary-foreground absolute -right-1 -top-1 inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.75 font-mono text-xxs font-medium shadow-sm"
+                        className="bg-primary text-primary-foreground py-0.75 text-xxs absolute -right-1 -top-1 inline-flex items-center gap-0.5 rounded-full px-1.5 font-mono font-medium shadow-sm"
                         title={`Favori · rang ${favoriteRank}`}
                     >
                         <FaStar size={9} aria-hidden="true" /> {favoriteRank}
@@ -75,12 +76,12 @@ export default function LibraryListRow({
                 </Link>
                 <Link
                     to={authorPath}
-                    className="text-muted-foreground hover:text-primary -mx-1 block max-w-full truncate rounded-sm px-1 font-body text-xs transition-colors"
+                    className="text-muted-foreground hover:text-primary font-body -mx-1 block max-w-full truncate rounded-sm px-1 text-xs transition-colors"
                     aria-label={`Voir l'auteur ${author}`}
                 >
                     {author}
                 </Link>
-                <p className="text-muted-foreground mt-0.5 font-body text-xs sm:hidden">
+                <p className="text-muted-foreground font-body mt-0.5 text-xs sm:hidden">
                     <span className="font-quote italic text-[hsl(43_30%_62%)]">
                         {book.category?.name}
                     </span>{" "}
@@ -114,7 +115,7 @@ export default function LibraryListRow({
                             }
                             disabled={isUpdatingUserBook}
                             colored
-                            className="h-8 w-full min-w-37.5 text-xs rounded-md"
+                            className="min-w-37.5 h-8 w-full rounded-md text-xs"
                         />
                     </div>
 
@@ -137,14 +138,15 @@ export default function LibraryListRow({
                         >
                             <FaStar size={13} aria-hidden="true" />
                         </button>
-                        <button
-                            type="button"
+                        <Button
+                            variant="destructiveGhost"
+                            size="icon"
                             onClick={() => setConfirming(true)}
-                            aria-label="Retirer de vos rayons"
-                            className="border-border text-muted-foreground hover:border-destructive/60 hover:text-[hsl(3_84%_62%)] focus-visible:ring-ring grid h-8 w-8 cursor-pointer place-items-center rounded-md border transition-colors focus-visible:outline-none focus-visible:ring-2"
+                            ariaLabel="Retirer de vos rayons"
+                            className="h-8 w-8 rounded-md"
                         >
-                            <FaTrashCan size={14} aria-hidden="true" />
-                        </button>
+                            <FaTrashCan aria-hidden="true" />
+                        </Button>
                     </div>
                 </div>
             </div>
