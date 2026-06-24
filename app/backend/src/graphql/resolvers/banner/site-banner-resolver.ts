@@ -134,6 +134,9 @@ export class SiteBannersResolver {
 			throw new AppError("Banner not found", 404, "NotFoundError")
 		}
 		await banner.remove()
+		// TypeORM retire la PK de l'entité après remove() : on la restaure
+		// pour que le champ non-nullable SiteBanner.id reste résolvable.
+		banner.id = id
 		return banner
 	}
 }
