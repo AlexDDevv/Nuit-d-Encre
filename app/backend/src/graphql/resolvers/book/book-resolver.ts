@@ -248,6 +248,14 @@ export class BooksResolver {
                     author: authorEntity,
                 });
 
+                // isbn10 est optionnel mais soumis à une contrainte UNIQUE :
+                // une chaîne vide doit être persistée comme NULL, sinon le 2e
+                // livre sans ISBN-10 viole la contrainte (plusieurs NULL sont
+                // autorisés, plusieurs "" non).
+                if (!book.isbn10 || book.isbn10.trim() === "") {
+                    book.isbn10 = undefined;
+                }
+
                 return manager.save(book);
             });
 
@@ -345,6 +353,12 @@ export class BooksResolver {
             const wasIncomplete = book.isImported && isImportedBookIncomplete(book);
 
             Object.assign(book, updateData);
+
+            // Voir createBook : une chaîne vide collisionne sur la contrainte
+            // UNIQUE(isbn10), on la ramène à NULL.
+            if (!book.isbn10 || book.isbn10.trim() === "") {
+                book.isbn10 = undefined;
+            }
 
             await book.save();
 
