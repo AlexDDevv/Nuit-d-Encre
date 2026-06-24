@@ -6,13 +6,10 @@ import {
     SelectValue,
 } from "@/components/UI/Select";
 import { cn } from "@/lib/utils";
+import { atelierSelectTriggerClass } from "@/components/sections/shared/atelierField";
 import { SelectBookStatusProps } from "@/types/types";
 import { useUserBookStatusMapping } from "@/hooks/userBook/useUserBookStatusMapping";
-import {
-    BOOK_STATES,
-    OPEN_STATE_CLASSES,
-    STATUS_COLORS,
-} from "@/constants/bookStatus";
+import { BOOK_STATES, STATUS_COLORS } from "@/constants/bookStatus";
 
 export default function SelectBookStatus({
     value,
@@ -34,12 +31,11 @@ export default function SelectBookStatus({
         >
             <SelectTrigger
                 className={cn(
-                    "ring-offset-input focus-visible:ring-ring focus-within:ring-ring flex w-60 min-w-60 rounded-lg border px-3 py-2 text-sm placeholder:italic placeholder:opacity-85 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-                    // Couleurs : par statut si `colored`, sinon le style d'input neutre.
-                    colorClasses ??
-                        "bg-input text-accent-foreground border-border",
+                    atelierSelectTriggerClass,
+                    "w-60 min-w-60",
+                    // Couleurs par statut si `colored` ; sinon le neutre atelier.
+                    colorClasses,
                     colored && "font-semibold",
-                    OPEN_STATE_CLASSES,
                     className,
                 )}
             >

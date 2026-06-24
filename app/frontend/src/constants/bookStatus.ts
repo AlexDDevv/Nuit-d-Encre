@@ -55,6 +55,3 @@ export const BOOK_STATES: readonly UserBookStatusConfig[] = [
         value: "READ",
     },
 ] as const;
-
-export const OPEN_STATE_CLASSES =
-    "data-[state=open]:ring-2 data-[state=open]:ring-ring data-[state=open]:ring-offset-2";
