@@ -107,7 +107,7 @@ function TitleFrieze({ level }: { level: number }) {
                         >
                             {i > 0 && (
                                 <span
-                                    className={`absolute top-2 left-1/2 h-px w-full ${t.level <= level
+                                    className={`absolute top-2 right-1/2 h-px w-full ${t.level <= level
                                             ? "bg-primary/55"
                                             : "bg-border"
                                         }`}
