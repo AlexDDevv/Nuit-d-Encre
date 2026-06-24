@@ -5,7 +5,12 @@ import { useAdminMutations } from "@/hooks/admin/useAdminMutations";
 import { useToast } from "@/hooks/toast/useToast";
 import type { AdminCategoryRow } from "@/types/types";
 import Button from "@/components/UI/Button/Button";
-import { EmptyState, SkeletonRows } from "@/components/sections/admin/ui/feedback";
+import { Input } from "@/components/UI/form/Input";
+import { atelierControlClass } from "@/components/sections/shared/atelierField";
+import {
+    EmptyState,
+    SkeletonRows,
+} from "@/components/sections/admin/ui/feedback";
 import { ConfirmDialog } from "@/components/sections/admin/ui/ConfirmDialog";
 import CategoriesTable from "../categories/CategoriesTable";
 
@@ -22,9 +27,10 @@ export function CategoriesTab() {
     const { showToast } = useToast();
 
     const [draft, setDraft] = useState("");
-    const [editing, setEditing] = useState<{ id: string; value: string } | null>(
-        null,
-    );
+    const [editing, setEditing] = useState<{
+        id: string;
+        value: string;
+    } | null>(null);
     const [pending, setPending] = useState<AdminCategoryRow | null>(null);
 
     const create = async () => {
@@ -87,19 +93,21 @@ export function CategoriesTab() {
     return (
         <section className="fade-up flex flex-col gap-5">
             {/* Création inline */}
-            <div className="rounded-xl border-2 border-border bg-card p-4">
+            <div className="border-border bg-card rounded-xl border-2 p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                     <div className="flex items-center gap-2.5 sm:flex-1">
-                        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border-2 border-border bg-popover text-primary/80">
+                        <span className="border-border bg-popover text-primary/80 grid h-9 w-9 shrink-0 place-items-center rounded-lg border-2">
                             <LuTag size={16} />
                         </span>
-                        <input
+                        <Input
                             value={draft}
                             onChange={(e) => setDraft(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && create()}
                             placeholder="Nom de la nouvelle catégorie…"
                             aria-label="Nom de la catégorie"
-                            className="w-full rounded-lg border-2 border-border bg-popover/70 px-3.5 py-2 font-body text-sm text-foreground placeholder:text-muted-foreground/55 transition-colors focus:border-primary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/35"
+                            errorMessage=""
+                            hideErrorMessage
+                            className={atelierControlClass}
                         />
                     </div>
                     <Button
@@ -116,11 +124,11 @@ export function CategoriesTab() {
             </div>
 
             {isLoadingCategories ? (
-                <div className="rounded-xl border-2 border-border bg-card">
+                <div className="border-border bg-card rounded-xl border-2">
                     <SkeletonRows rows={6} cols={4} />
                 </div>
             ) : categories.length === 0 ? (
-                <div className="rounded-xl border-2 border-border bg-card">
+                <div className="border-border bg-card rounded-xl border-2">
                     <EmptyState
                         message="Aucune catégorie"
                         hint="Créez la première catégorie ci-dessus."

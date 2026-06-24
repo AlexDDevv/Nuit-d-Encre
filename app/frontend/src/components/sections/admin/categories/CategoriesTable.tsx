@@ -1,5 +1,7 @@
 import { LuBookOpen, LuCheck, LuHash, LuPencil, LuX } from "react-icons/lu";
 import type { AdminCategoryRow } from "@/types/types";
+import { atelierInlineClass } from "@/components/sections/shared/atelierField";
+import { cn } from "@/lib/utils";
 import { DeleteBtn } from "@/components/sections/admin/ui/DataTable";
 
 type Editing = { id: string; value: string } | null;
@@ -19,33 +21,33 @@ export default function CategoriesTable({
     onDelete: (c: AdminCategoryRow) => void;
 }) {
     return (
-        <div className="overflow-hidden rounded-xl border-2 border-border bg-card">
+        <div className="border-border bg-card overflow-hidden rounded-xl border-2">
             {/* Bureau */}
             <table className="hidden w-full border-collapse text-left sm:table">
                 <thead>
-                    <tr className="border-b-2 border-border bg-muted/30">
-                        <th className="px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                    <tr className="border-border bg-muted/30 border-b-2">
+                        <th className="font-body text-muted-foreground px-4 py-3 text-xs font-bold uppercase tracking-[0.13em]">
                             Nom
                         </th>
-                        <th className="px-4 py-3 text-center font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="font-body text-muted-foreground px-4 py-3 text-center text-xs font-bold uppercase tracking-[0.13em]">
                             Livres associés
                         </th>
-                        <th className="px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="font-body text-muted-foreground px-4 py-3 text-xs font-bold uppercase tracking-[0.13em]">
                             Créée par
                         </th>
-                        <th className="px-4 py-3 font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="font-body text-muted-foreground px-4 py-3 text-xs font-bold uppercase tracking-[0.13em]">
                             Créée le
                         </th>
-                        <th className="px-4 py-3 text-right font-body text-xs font-bold uppercase tracking-[0.13em] text-muted-foreground">
+                        <th className="font-body text-muted-foreground px-4 py-3 text-right text-xs font-bold uppercase tracking-[0.13em]">
                             Actions
                         </th>
                     </tr>
                 </thead>
-                <tbody className="divide-y-2 divide-border/45">
+                <tbody className="divide-border/45 divide-y-2">
                     {categories.map((c) => (
                         <tr
                             key={c.id}
-                            className="group transition-colors hover:bg-muted/20"
+                            className="hover:bg-muted/20 group transition-colors"
                         >
                             <td className="px-4 py-3">
                                 {editing?.id === c.id ? (
@@ -65,25 +67,28 @@ export default function CategoriesTable({
                                                 if (e.key === "Escape")
                                                     setEditing(null);
                                             }}
-                                            className="w-48 rounded-md border-2 border-primary/50 bg-popover px-2.5 py-1 font-quote text-base text-foreground focus:outline-none"
+                                            className={cn(
+                                                atelierInlineClass,
+                                                "font-quote w-48 text-base",
+                                            )}
                                         />
                                         <button
                                             onClick={onSaveRename}
                                             aria-label="Valider"
-                                            className="grid h-7 w-7 place-items-center rounded-md border-2 border-success bg-success/80 text-white transition-colors hover:bg-transparent hover:text-success"
+                                            className="border-success bg-success/80 hover:text-success grid h-7 w-7 place-items-center rounded-md border-2 text-white transition-colors hover:bg-transparent"
                                         >
                                             <LuCheck size={14} />
                                         </button>
                                         <button
                                             onClick={() => setEditing(null)}
                                             aria-label="Annuler"
-                                            className="grid h-7 w-7 place-items-center rounded-md border-2 border-border text-muted-foreground transition-colors hover:text-foreground"
+                                            className="border-border text-muted-foreground hover:text-foreground grid h-7 w-7 place-items-center rounded-md border-2 transition-colors"
                                         >
                                             <LuX size={14} />
                                         </button>
                                     </div>
                                 ) : (
-                                    <span className="inline-flex items-center gap-2 font-quote text-base text-foreground">
+                                    <span className="font-quote text-foreground inline-flex items-center gap-2 text-base">
                                         <LuHash
                                             size={14}
                                             className="text-primary/50"
@@ -93,14 +98,14 @@ export default function CategoriesTable({
                                 )}
                             </td>
                             <td className="px-4 py-3 text-center">
-                                <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/60 bg-secondary/35 px-2.5 py-0.5 font-title text-xs font-bold text-secondary-foreground">
+                                <span className="border-secondary/60 bg-secondary/35 font-title text-secondary-foreground inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-bold">
                                     <LuBookOpen size={12} /> {c.books.length}
                                 </span>
                             </td>
-                            <td className="px-4 py-3 font-body text-xs text-muted-foreground">
+                            <td className="font-body text-muted-foreground px-4 py-3 text-xs">
                                 {c.createdBy?.userName ?? "-"}
                             </td>
-                            <td className="whitespace-nowrap px-4 py-3 font-body text-xs text-muted-foreground">
+                            <td className="font-body text-muted-foreground whitespace-nowrap px-4 py-3 text-xs">
                                 {new Date(c.createdAt).toLocaleDateString(
                                     "fr-FR",
                                 )}
@@ -116,7 +121,7 @@ export default function CategoriesTable({
                                         }
                                         aria-label="Renommer"
                                         title="Renommer"
-                                        className="grid h-8 w-8 place-items-center rounded-md border-2 border-border text-muted-foreground transition-all hover:border-primary hover:text-primary"
+                                        className="border-border text-muted-foreground hover:border-primary hover:text-primary grid h-8 w-8 place-items-center rounded-md border-2 transition-all"
                                     >
                                         <LuPencil size={14} />
                                     </button>
@@ -129,7 +134,7 @@ export default function CategoriesTable({
             </table>
 
             {/* Mobile */}
-            <ul className="divide-y-2 divide-border/45 sm:hidden">
+            <ul className="divide-border/45 divide-y-2 sm:hidden">
                 {categories.map((c) => (
                     <li
                         key={c.id}
@@ -147,22 +152,25 @@ export default function CategoriesTable({
                                                 value: e.target.value,
                                             })
                                         }
-                                        className="w-32 rounded-md border-2 border-primary/50 bg-popover px-2 py-1 font-quote text-base text-foreground focus:outline-none"
+                                        className={cn(
+                                            atelierInlineClass,
+                                            "font-quote w-32 px-2 text-base",
+                                        )}
                                     />
                                     <button
                                         onClick={onSaveRename}
                                         aria-label="Valider"
-                                        className="grid h-7 w-7 place-items-center rounded-md border-2 border-success bg-success/80 text-white"
+                                        className="border-success bg-success/80 grid h-7 w-7 place-items-center rounded-md border-2 text-white"
                                     >
                                         <LuCheck size={14} />
                                     </button>
                                 </div>
                             ) : (
                                 <>
-                                    <div className="font-quote text-base text-foreground">
+                                    <div className="font-quote text-foreground text-base">
                                         {c.name}
                                     </div>
-                                    <div className="font-body text-xs text-muted-foreground">
+                                    <div className="font-body text-muted-foreground text-xs">
                                         {c.books.length} livre(s) ·{" "}
                                         {new Date(
                                             c.createdAt,
@@ -177,7 +185,7 @@ export default function CategoriesTable({
                                     setEditing({ id: c.id, value: c.name })
                                 }
                                 aria-label="Renommer"
-                                className="grid h-8 w-8 place-items-center rounded-md border-2 border-border text-muted-foreground hover:border-primary hover:text-primary"
+                                className="border-border text-muted-foreground hover:border-primary hover:text-primary grid h-8 w-8 place-items-center rounded-md border-2"
                             >
                                 <LuPencil size={14} />
                             </button>
