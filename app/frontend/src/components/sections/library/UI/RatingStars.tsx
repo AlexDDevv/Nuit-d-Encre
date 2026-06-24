@@ -1,6 +1,5 @@
 import { LuStar } from "react-icons/lu";
 import { cn } from "@/lib/utils";
-import Button from "@/components/UI/Button/Button";
 
 interface RatingStarsProps {
     value: number;
@@ -27,41 +26,52 @@ export default function RatingStars({
     showValue = false,
     className,
 }: RatingStarsProps) {
-    const handleClick = (rating: number) => {
-        if (!readOnly && onChange) {
-            onChange(rating);
-        }
-    };
-
     return (
-        <div className={cn("flex items-center gap-1", className)}>
+        <div
+            className={cn("flex items-center gap-1", className)}
+            {...(readOnly && {
+                role: "img",
+                "aria-label": `Note : ${value} sur ${max}`,
+            })}
+        >
             {Array.from({ length: max }, (_, index) => {
                 const starValue = index + 1;
                 const isFilled = starValue <= value;
-
-                return (
-                    <Button
-                        key={index}
-                        variant="ghost"
-                        size="xs"
-                        onClick={() => handleClick(starValue)}
-                        disabled={readOnly}
-                        ariaLabel={`${starValue} étoile${starValue > 1 ? "s" : ""}`}
+                const star = (
+                    <LuStar
                         className={cn(
-                            "transition-colors hover:no-underline p-0 h-fit",
-                            !readOnly && "cursor-pointer hover:scale-110",
-                            readOnly && "cursor-default",
+                            sizeClasses[size],
+                            isFilled
+                                ? "fill-yellow-400 text-yellow-400"
+                                : "text-muted-foreground",
                         )}
+                    />
+                );
+
+                // Lecture seule : étoile décorative, sans fond ni bouton.
+                if (readOnly) {
+                    return (
+                        <span
+                            key={index}
+                            aria-hidden="true"
+                            className="inline-flex"
+                        >
+                            {star}
+                        </span>
+                    );
+                }
+
+                // Interactif : bouton nu (agrandissement au survol, anneau de focus).
+                return (
+                    <button
+                        key={index}
+                        type="button"
+                        onClick={() => onChange?.(starValue)}
+                        aria-label={`${starValue} étoile${starValue > 1 ? "s" : ""}`}
+                        className="focus-visible:ring-ring cursor-pointer rounded-sm transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2"
                     >
-                        <LuStar
-                            className={cn(
-                                sizeClasses[size],
-                                isFilled
-                                    ? "fill-yellow-400 text-yellow-400"
-                                    : "text-muted-foreground",
-                            )}
-                        />
-                    </Button>
+                        {star}
+                    </button>
                 );
             })}
             {showValue && (
