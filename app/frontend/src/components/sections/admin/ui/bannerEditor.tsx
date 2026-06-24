@@ -64,11 +64,6 @@ export const VARIANT_META: Record<
     error: { label: "Erreur", ring: "hsl(3 84% 58%)" },
 };
 
-export const inputCls =
-    "w-full rounded-lg border-2 border-border bg-popover/70 px-3.5 py-2.5 font-body text-sm text-foreground " +
-    "placeholder:text-muted-foreground/45 transition-colors duration-200 " +
-    "focus:border-primary/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/30";
-
 /** Champ étiqueté : intitulé en capitales, icône dorée, indication facultative. */
 export function Field({
     icon: I,
@@ -89,19 +84,19 @@ export function Field({
         <div className="flex flex-col gap-2">
             <Label
                 htmlFor={htmlFor}
-                className="flex items-center gap-2 font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground"
+                className="font-body text-muted-foreground flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em]"
             >
                 {I && <I size={14} className="text-primary/70" />}
                 {label}
                 {optional && (
-                    <span className="font-body text-xxs font-medium normal-case tracking-normal text-muted-foreground/55">
+                    <span className="font-body text-xxs text-muted-foreground/55 font-medium normal-case tracking-normal">
                         facultatif
                     </span>
                 )}
             </Label>
             {children}
             {hint && (
-                <p className="font-body text-xs leading-snug text-muted-foreground/55">
+                <p className="font-body text-muted-foreground/55 text-xs leading-snug">
                     {hint}
                 </p>
             )}
@@ -155,7 +150,7 @@ export function StateSelector({
                         }}
                         tabIndex={on ? 0 : -1}
                         onClick={() => onChange(key)}
-                        className="group relative flex items-center gap-2.5 cursor-pointer rounded-lg border-2 px-3 py-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                        className="focus-visible:ring-primary/50 focus-visible:ring-offset-card group relative flex cursor-pointer items-center gap-2.5 rounded-lg border-2 px-3 py-2.5 text-left transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
                         style={{
                             borderColor: on ? meta.ring : "hsl(0 0% 24%)",
                             background: on ? v.tint : "hsl(20 3% 16% / 0.6)",
@@ -175,7 +170,7 @@ export function StateSelector({
                             <Icon name={v.icon} size={14} />
                         </span>
                         <span
-                            className="min-w-0 font-body text-xs font-bold leading-tight"
+                            className="font-body min-w-0 text-xs font-bold leading-tight"
                             style={{
                                 color: on
                                     ? "hsl(43 59% 88%)"
@@ -214,7 +209,7 @@ export function SavedBannerRow({
     const v = variantConfig[item.variant];
     const meta = VARIANT_META[item.variant];
     return (
-        <div className="group flex items-start gap-3 rounded-xl border-2 border-border bg-popover/50 p-3.5 transition-all duration-200 hover:border-primary/40">
+        <div className="border-border bg-popover/50 hover:border-primary/40 group flex items-start gap-3 rounded-xl border-2 p-3.5 transition-all duration-200">
             <span
                 className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full"
                 style={{
@@ -228,7 +223,7 @@ export function SavedBannerRow({
             <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                     <span
-                        className="rounded-full border px-2 py-px font-body text-xxs font-bold uppercase tracking-widest"
+                        className="font-body text-xxs rounded-full border px-2 py-px font-bold uppercase tracking-widest"
                         style={{
                             borderColor: v.border,
                             color: v.accent,
@@ -238,20 +233,20 @@ export function SavedBannerRow({
                         {meta.label}
                     </span>
                     {isActive && (
-                        <span className="inline-flex items-center gap-1 rounded-full border border-primary/45 bg-primary/12 px-2 py-px font-body text-xxs font-bold uppercase tracking-widest text-primary">
-                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />{" "}
+                        <span className="border-primary/45 bg-primary/12 font-body text-xxs text-primary inline-flex items-center gap-1 rounded-full border px-2 py-px font-bold uppercase tracking-widest">
+                            <span className="bg-primary h-1.5 w-1.5 animate-pulse rounded-full" />{" "}
                             En ligne
                         </span>
                     )}
-                    <span className="ml-auto shrink-0 font-body text-xs text-muted-foreground/55">
+                    <span className="font-body text-muted-foreground/55 ml-auto shrink-0 text-xs">
                         {item.date}
                     </span>
                 </div>
-                <p className="mt-1.5 truncate font-body text-sm font-bold text-foreground">
+                <p className="font-body text-foreground mt-1.5 truncate text-sm font-bold">
                     {item.title}
                 </p>
                 {item.content && (
-                    <p className="mt-0.5 line-clamp-2 font-body text-xs leading-snug text-muted-foreground">
+                    <p className="font-body text-muted-foreground mt-0.5 line-clamp-2 text-xs leading-snug">
                         {item.content}
                     </p>
                 )}
@@ -259,14 +254,14 @@ export function SavedBannerRow({
                     <button
                         type="button"
                         onClick={onLoad}
-                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-border bg-transparent px-2.5 py-1 font-body text-xs font-bold text-muted-foreground transition-colors hover:border-primary/55 hover:text-primary focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                        className="border-border font-body text-muted-foreground hover:border-primary/55 hover:text-primary focus-visible:ring-primary/40 inline-flex items-center gap-1.5 rounded-md border-2 bg-transparent px-2.5 py-1 text-xs font-bold transition-colors focus:outline-none focus-visible:ring-2"
                     >
                         <LuPencil size={12} /> Charger
                     </button>
                     <button
                         type="button"
                         onClick={onDelete}
-                        className="inline-flex items-center gap-1.5 rounded-md border-2 border-destructive/45 bg-transparent px-2.5 py-1 font-body text-xs font-bold text-destructive transition-colors hover:bg-destructive hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40"
+                        className="border-destructive/45 font-body text-destructive hover:bg-destructive focus-visible:ring-destructive/40 inline-flex items-center gap-1.5 rounded-md border-2 bg-transparent px-2.5 py-1 text-xs font-bold transition-colors hover:text-white focus:outline-none focus-visible:ring-2"
                     >
                         <LuTrash2 size={12} /> Supprimer
                     </button>
@@ -274,7 +269,7 @@ export function SavedBannerRow({
                         <button
                             type="button"
                             onClick={onReactivate}
-                            className="inline-flex items-center gap-1.5 rounded-md border-2 border-primary/55 bg-primary/10 px-2.5 py-1 font-body text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                            className="border-primary/55 bg-primary/10 font-body text-primary hover:bg-primary hover:text-primary-foreground focus-visible:ring-primary/40 inline-flex items-center gap-1.5 rounded-md border-2 px-2.5 py-1 text-xs font-bold transition-colors focus:outline-none focus-visible:ring-2"
                         >
                             <LuPower size={12} /> Réactiver
                         </button>

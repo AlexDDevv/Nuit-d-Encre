@@ -13,10 +13,16 @@ import Button from "@/components/UI/Button/Button";
 import Icon from "@/components/UI/Icon/Icon";
 import { Switch } from "@/components/UI/Switch/Switch";
 import { Label } from "@/components/UI/form/Label";
+import { Input } from "@/components/UI/form/Input";
+import { Textarea } from "@/components/UI/form/Textarea";
+import {
+    atelierControlClass,
+    atelierTextareaClass,
+} from "@/components/sections/shared/atelierField";
+import { cn } from "@/lib/utils";
 import {
     Field,
     StateSelector,
-    inputCls,
     type BannerDraft,
 } from "@/components/sections/admin/ui/bannerEditor";
 
@@ -39,7 +45,7 @@ export default function BannerEditorPanel({
     isMutating: boolean;
 }) {
     return (
-        <div className="order-2 rounded-xl border-2 border-border bg-card lg:order-1">
+        <div className="border-border bg-card order-2 rounded-xl border-2 lg:order-1">
             <div className="flex flex-col gap-7 p-5 sm:p-6">
                 {/* État */}
                 <Field
@@ -53,7 +59,7 @@ export default function BannerEditorPanel({
                     />
                 </Field>
 
-                <div className="h-px bg-border/70" />
+                <div className="bg-border/70 h-px" />
 
                 {/* Titre */}
                 <Field
@@ -62,13 +68,15 @@ export default function BannerEditorPanel({
                     htmlFor="b-title"
                     hint="Le message principal, lu en premier."
                 >
-                    <input
+                    <Input
                         id="b-title"
                         type="text"
                         value={draft.title}
                         onChange={(e) => set({ title: e.target.value })}
                         placeholder="Ex. Vous avez gagné 50 points d'expérience !"
-                        className={inputCls}
+                        errorMessage=""
+                        hideErrorMessage
+                        className={atelierControlClass}
                     />
                 </Field>
 
@@ -80,24 +88,26 @@ export default function BannerEditorPanel({
                     optional
                     hint="Détail secondaire affiché sous le titre."
                 >
-                    <textarea
+                    <Textarea
                         id="b-content"
                         rows={3}
                         value={draft.content}
                         onChange={(e) => set({ content: e.target.value })}
                         placeholder="Précisez le contexte, la récompense, l'échéance…"
-                        className={`${inputCls} resize-none leading-relaxed`}
+                        errorMessage=""
+                        hideErrorMessage
+                        className={atelierTextareaClass}
                     />
                 </Field>
 
-                <div className="h-px bg-border/70" />
+                <div className="bg-border/70 h-px" />
 
                 {/* Bouton d'action */}
                 <div className="flex flex-col gap-4">
                     <div className="flex items-center justify-between gap-3">
                         <Label
                             htmlFor="b-hasaction"
-                            className="flex items-center gap-2 font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground"
+                            className="font-body text-muted-foreground flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em]"
                         >
                             <LuMousePointer2
                                 size={14}
@@ -113,12 +123,12 @@ export default function BannerEditorPanel({
                         />
                     </div>
                     {draft.hasAction && (
-                        <div className="flex flex-col gap-4 rounded-lg border-2 border-border/70 bg-popover/40 p-4">
+                        <div className="border-border/70 bg-popover/40 flex flex-col gap-4 rounded-lg border-2 p-4">
                             <Field
                                 label="Libellé du bouton"
                                 htmlFor="b-actionlabel"
                             >
-                                <input
+                                <Input
                                     id="b-actionlabel"
                                     type="text"
                                     value={draft.actionLabel}
@@ -126,7 +136,9 @@ export default function BannerEditorPanel({
                                         set({ actionLabel: e.target.value })
                                     }
                                     placeholder="Ex. Voir ma progression"
-                                    className={inputCls}
+                                    errorMessage=""
+                                    hideErrorMessage
+                                    className={atelierControlClass}
                                 />
                             </Field>
                             <Field
@@ -135,7 +147,7 @@ export default function BannerEditorPanel({
                                 htmlFor="b-actiontarget"
                                 hint="Route interne (ex. « /livres ») ou URL complète. Au clic, l'utilisateur est redirigé."
                             >
-                                <input
+                                <Input
                                     id="b-actiontarget"
                                     type="text"
                                     value={draft.actionTarget}
@@ -143,14 +155,19 @@ export default function BannerEditorPanel({
                                         set({ actionTarget: e.target.value })
                                     }
                                     placeholder="/livres ou https://…"
-                                    className={`${inputCls} font-mono text-sm`}
+                                    errorMessage=""
+                                    hideErrorMessage
+                                    className={cn(
+                                        atelierControlClass,
+                                        "font-mono",
+                                    )}
                                 />
                             </Field>
                         </div>
                     )}
                 </div>
 
-                <div className="h-px bg-border/70" />
+                <div className="bg-border/70 h-px" />
 
                 {/* Audience */}
                 <div className="flex items-center justify-between gap-3">
@@ -159,13 +176,13 @@ export default function BannerEditorPanel({
                         <div>
                             <Label
                                 htmlFor="b-audience"
-                                className="font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground"
+                                className="font-body text-muted-foreground text-xs font-bold uppercase tracking-[0.14em]"
                             >
                                 Réserver aux membres connectés
                             </Label>
-                            <p className="mt-0.5 font-body text-xs text-muted-foreground/55">
-                                Si activé, seuls les lecteurs connectés voient la
-                                bannière ; sinon elle est visible par tous.
+                            <p className="font-body text-muted-foreground/55 mt-0.5 text-xs">
+                                Si activé, seuls les lecteurs connectés voient
+                                la bannière ; sinon elle est visible par tous.
                             </p>
                         </div>
                     </div>
@@ -181,7 +198,7 @@ export default function BannerEditorPanel({
                     />
                 </div>
 
-                <div className="h-px bg-border/70" />
+                <div className="bg-border/70 h-px" />
 
                 {/* Fermable */}
                 <div className="flex items-center justify-between gap-3">
@@ -190,11 +207,11 @@ export default function BannerEditorPanel({
                         <div>
                             <Label
                                 htmlFor="b-dismiss"
-                                className="font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground"
+                                className="font-body text-muted-foreground text-xs font-bold uppercase tracking-[0.14em]"
                             >
                                 L'utilisateur peut fermer la bannière
                             </Label>
-                            <p className="mt-0.5 font-body text-xs text-muted-foreground/55">
+                            <p className="font-body text-muted-foreground/55 mt-0.5 text-xs">
                                 Affiche une croix de fermeture à droite.
                             </p>
                         </div>
@@ -208,11 +225,11 @@ export default function BannerEditorPanel({
                 </div>
 
                 {/* Pied de l'éditeur */}
-                <div className="-mx-5 -mb-5 mt-1 flex flex-col gap-3 border-t-2 border-border/70 bg-popover/30 px-5 py-4 sm:-mx-6 sm:-mb-6 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+                <div className="border-border/70 bg-popover/30 -mx-5 -mb-5 mt-1 flex flex-col gap-3 border-t-2 px-5 py-4 sm:-mx-6 sm:-mb-6 sm:flex-row sm:items-center sm:justify-between sm:px-6">
                     <button
                         type="button"
                         onClick={onReset}
-                        className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-transparent px-4 py-2.5 font-body text-sm font-bold tracking-wide text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+                        className="font-body text-muted-foreground hover:bg-muted/60 hover:text-foreground focus-visible:ring-primary/40 inline-flex items-center justify-center gap-2 rounded-lg border-2 border-transparent bg-transparent px-4 py-2.5 text-sm font-bold tracking-wide transition-colors focus:outline-none focus-visible:ring-2"
                     >
                         <LuRotateCcw size={15} /> Réinitialiser
                     </button>
@@ -221,7 +238,7 @@ export default function BannerEditorPanel({
                             <button
                                 type="button"
                                 onClick={onDeactivate}
-                                className="inline-flex items-center justify-center gap-2 rounded-lg border-2 border-destructive/55 bg-transparent px-4 py-2.5 font-body text-sm font-bold tracking-wide text-destructive transition-colors hover:bg-destructive hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-destructive/40"
+                                className="border-destructive/55 font-body text-destructive hover:bg-destructive focus-visible:ring-destructive/40 inline-flex items-center justify-center gap-2 rounded-lg border-2 bg-transparent px-4 py-2.5 text-sm font-bold tracking-wide transition-colors hover:text-white focus:outline-none focus-visible:ring-2"
                             >
                                 <LuPower size={15} /> Désactiver la bannière en
                                 cours
