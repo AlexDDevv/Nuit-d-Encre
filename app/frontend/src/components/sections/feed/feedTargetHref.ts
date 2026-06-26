@@ -1,14 +1,15 @@
 import { slugify } from "@/lib/utils";
 import { FeedEntry } from "@/types/types";
 
+// Uniquement les actions dont le `targetId` est bien l'id d'un livre.
+// Exclus volontairement (sinon lien /books/ vers une fiche inexistante → 404) :
+// - BOOK_ADDED_TO_LIBRARY / BOOK_FINISHED → targetId = id du UserBook, pas du livre
+// - REVIEW_CREATED → targetId = id de la critique (et metadata utilise `bookTitle`)
 const BOOK_TYPES = new Set([
     "BOOK_ADDED",
-    "BOOK_ADDED_TO_LIBRARY",
     "BOOK_IMPORTED",
-    "BOOK_FINISHED",
     "BOOK_COMPLETED",
     "BOOK_RECOMMENDED",
-    "REVIEW_CREATED",
 ]);
 const AUTHOR_TYPES = new Set(["AUTHOR_ADDED", "AUTHOR_COMPLETED"]);
 
