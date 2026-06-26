@@ -25,6 +25,9 @@ export interface User {
     banner: string | null;
     bio: string | null;
     title: Title | null;
+    followerCount?: number;
+    followingCount?: number;
+    isFollowedByMe?: boolean;
 }
 
 export type UserActionType =
@@ -45,6 +48,22 @@ export interface UserAction {
     xp: number;
     createdAt: string;
     metadata: string | null;
+}
+
+export interface FeedActor {
+    id: string;
+    userName: string;
+    avatar: string | null;
+    level: number;
+}
+
+export interface FeedEntry {
+    id: string;
+    type: UserActionType;
+    metadata: string | null;
+    targetId: string | null;
+    createdAt: string;
+    actor: FeedActor;
 }
 
 export interface UserAuth {

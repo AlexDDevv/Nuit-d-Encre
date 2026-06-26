@@ -10,6 +10,9 @@ export const GET_USER_PROFILE = gql`
             bio
             level
             xp
+            followerCount
+            followingCount
+            isFollowedByMe
             createdAt
             title {
                 id
