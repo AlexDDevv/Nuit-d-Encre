@@ -17,7 +17,7 @@ export function useActivityFeed() {
     });
 
     const entries: FeedEntry[] = data?.activityFeed ?? [];
-    const isEmpty = !loading && entries.length === 0;
+    const isEmpty = !loading && data !== undefined && entries.length === 0;
 
     const { data: globalData, loading: globalLoading } = useQuery(
         GET_GLOBAL_ACTIVITY_FEED,

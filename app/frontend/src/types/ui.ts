@@ -1,4 +1,5 @@
 import { IconType } from "react-icons";
+import { FeedEntry } from "./user";
 
 export type TypeSelectOptions = {
     value: string;
@@ -61,4 +62,10 @@ export interface FollowListModalProps {
     userId: string;
     mode: "followers" | "following";
     onClose: () => void;
+}
+
+export interface FeedListProps {
+    entries: FeedEntry[];
+    hasMore?: boolean;
+    onLoadMore?: () => void;
 }
