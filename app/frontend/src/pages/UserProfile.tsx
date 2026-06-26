@@ -44,7 +44,7 @@ export default function UserProfile() {
     );
     const stats = useMemo(() => computeStats(actions), [actions]);
 
-    if (loading) {
+    if (loading && !profileUser) {
         return (
             <div className="text-muted-foreground p-8 text-center">
                 Chargement…
