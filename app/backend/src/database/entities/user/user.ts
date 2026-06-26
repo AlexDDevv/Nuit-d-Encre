@@ -15,6 +15,7 @@ import { BookReview } from "../book/bookReview";
 import { BookRecommendation } from "../book/bookRecommendation";
 import { BookReviewVote } from "../book/bookReviewVote";
 import { Title } from "../gamification/title";
+import { UserFollow } from "./user-follow";
 
 /**
  * Represents a user entity in the database.
@@ -99,6 +100,12 @@ export class User extends BaseEntity {
     @Field(() => [UserActions])
     @OneToMany(() => UserActions, (action) => action.user)
     actions!: UserActions[];
+
+    @OneToMany(() => UserFollow, (f) => f.follower)
+    following!: UserFollow[];
+
+    @OneToMany(() => UserFollow, (f) => f.following)
+    followers!: UserFollow[];
 
     @OneToMany(() => UserBook, (ub) => ub.user)
     userBooks!: UserBook[];
