@@ -24,7 +24,7 @@ export default function UserProfile() {
 
     const { data: profileData, loading } = useQuery(GET_USER_PROFILE, {
         variables: { id: profileId },
-        skip: !profileId || isOwner,
+        skip: !profileId,
     });
 
     const { data: actionsData } = useQuery(GET_USER_ACTIONS, {
@@ -32,8 +32,11 @@ export default function UserProfile() {
         skip: !profileId,
     });
 
+    const fetched = profileData?.getUserProfile;
     const profileUser: User | undefined =
-        isOwner && currentUser ? currentUser : profileData?.getUserProfile;
+        isOwner && currentUser
+            ? { ...currentUser, ...(fetched ?? {}) }
+            : fetched;
 
     const actions: UserAction[] = useMemo(
         () => actionsData?.userActionsByUser ?? [],

@@ -51,3 +51,14 @@ export interface UserLinkProps {
     size?: "sm" | "md";
     className?: string;
 }
+
+export interface FollowButtonProps {
+    targetId: string;
+    isFollowedByMe: boolean;
+}
+
+export interface FollowListModalProps {
+    userId: string;
+    mode: "followers" | "following";
+    onClose: () => void;
+}

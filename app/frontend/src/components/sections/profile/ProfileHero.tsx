@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import FollowButton from "@/components/sections/profile/FollowButton";
+import FollowListModal from "@/components/sections/profile/FollowListModal";
 import { useMutation } from "@apollo/client";
 import {
     FaPen,
@@ -54,6 +56,9 @@ export default function ProfileHero({
     const avatarInput = useRef<HTMLInputElement>(null);
     const bannerInput = useRef<HTMLInputElement>(null);
     const [busy, setBusy] = useState<"avatar" | "banner" | null>(null);
+    const [followModal, setFollowModal] = useState<
+        "followers" | "following" | null
+    >(null);
     const { showToast } = useToast();
 
     const refetch = [{ query: WHOAMI }];
@@ -255,6 +260,46 @@ export default function ProfileHero({
                         </p>
                     )}
                 </div>
+
+                {/* Compteurs abonnés / abonnements + bouton suivre */}
+                <div className="mt-4 flex flex-wrap items-center gap-4 md:pl-40">
+                    <button
+                        type="button"
+                        onClick={() => setFollowModal("followers")}
+                        className="text-foreground hover:text-primary text-sm transition-colors"
+                    >
+                        <span className="font-title">
+                            {user.followerCount ?? 0}
+                        </span>{" "}
+                        <span className="text-muted-foreground">abonnés</span>
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => setFollowModal("following")}
+                        className="text-foreground hover:text-primary text-sm transition-colors"
+                    >
+                        <span className="font-title">
+                            {user.followingCount ?? 0}
+                        </span>{" "}
+                        <span className="text-muted-foreground">
+                            abonnements
+                        </span>
+                    </button>
+                    {!isOwner && (
+                        <FollowButton
+                            targetId={user.id}
+                            isFollowedByMe={user.isFollowedByMe ?? false}
+                        />
+                    )}
+                </div>
+
+                {followModal && (
+                    <FollowListModal
+                        userId={user.id}
+                        mode={followModal}
+                        onClose={() => setFollowModal(null)}
+                    />
+                )}
             </div>
         </Card>
     );
