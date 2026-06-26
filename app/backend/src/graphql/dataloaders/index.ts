@@ -13,6 +13,11 @@ import {
     recommendedBookIds,
     libraryBookIds,
 } from "./user-book-flag-loaders";
+import {
+    batchFollowerCount,
+    batchFollowingCount,
+    makeIsFollowedByMeBatch,
+} from "./follow-loaders";
 
 export type Loaders = {
     averageRating: DataLoader<string, number | null>;
@@ -22,6 +27,9 @@ export type Loaders = {
     hasUserReviewed: DataLoader<string, boolean>;
     hasUserRecommended: DataLoader<string, boolean>;
     isInLibrary: DataLoader<string, boolean>;
+    followerCount: DataLoader<string, number>;
+    followingCount: DataLoader<string, number>;
+    isFollowedByMe: DataLoader<string, boolean>;
 };
 
 /**
@@ -50,5 +58,8 @@ export function createLoaders(
         isInLibrary: new DataLoader(
             makeUserFlagBatch(libraryBookIds, getUser),
         ),
+        followerCount: new DataLoader((ids) => batchFollowerCount(ids)),
+        followingCount: new DataLoader((ids) => batchFollowingCount(ids)),
+        isFollowedByMe: new DataLoader(makeIsFollowedByMeBatch(getUser)),
     };
 }
