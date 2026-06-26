@@ -14,10 +14,21 @@ import { User } from "../../../database/entities/user/user";
 import { UserBook } from "../../../database/entities/user/user-book";
 import { Title } from "../../../database/entities/gamification/title";
 import { AppError } from "../../../middlewares/error-handler";
-import { Context } from "../../../types/types";
+import { Context, Roles } from "../../../types/types";
 
 @Resolver(() => User)
 export class ProfileResolver {
+    @FieldResolver(() => String, { nullable: true })
+    async email(
+        @Root() user: User,
+        @Ctx() context: Context,
+    ): Promise<string | null> {
+        const me = context.user;
+        if (!me) return null;
+        if (me.id === user.id || me.role === Roles.Admin) return user.email;
+        return null;
+    }
+
     @FieldResolver(() => Title, { nullable: true })
     async title(
         @Root() user: User,
