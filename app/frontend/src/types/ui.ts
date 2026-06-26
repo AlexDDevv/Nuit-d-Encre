@@ -43,3 +43,11 @@ export interface SocialLink {
     /** Displayed handle (e.g. "@Sport_DevWeb") - used by the Contact page. */
     handle?: string;
 }
+
+export interface UserLinkProps {
+    id: string;
+    userName: string;
+    avatar?: string | null;
+    size?: "sm" | "md";
+    className?: string;
+}

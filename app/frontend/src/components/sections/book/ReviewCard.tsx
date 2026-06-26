@@ -6,6 +6,7 @@ import { BookReview } from "@/types/types";
 import ReviewVoteButtons from "@/components/sections/book/ReviewVoteButtons";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
 import Button from "@/components/UI/Button/Button";
+import UserLink from "@/components/sections/profile/UserLink";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 
@@ -25,7 +26,6 @@ export default function ReviewCard({
     const { user } = useAuthContext();
     const isOwnReview = user?.id === review.user.id;
 
-    const initials = review.user.userName.slice(0, 2).toUpperCase();
     const timeAgo = useMemo(
         () =>
             formatDistanceToNow(new Date(review.createdAt), {
@@ -45,16 +45,12 @@ export default function ReviewCard({
             )}
         >
             <div className="flex items-start gap-3.5">
-                {/* monogramme */}
-                <span className="text-primary font-quote grid h-12 w-12 shrink-0 place-items-center rounded-full bg-[radial-gradient(circle_at_32%_26%,hsl(43_30%_31%),hsl(20_3%_13%)_82%)] text-lg shadow-[inset_0_0_0_1px_hsl(43_59%_81%/0.28)]">
-                    {initials}
-                </span>
-
                 <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-                        <span className="text-foreground font-title text-sm font-medium">
-                            {review.user.userName}
-                        </span>
+                        <UserLink
+                            id={review.user.id}
+                            userName={review.user.userName}
+                        />
                         {isOwnReview && (
                             <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-xxs uppercase tracking-[0.16em]">
                                 Votre critique
