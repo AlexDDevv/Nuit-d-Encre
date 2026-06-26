@@ -21,6 +21,7 @@ import BookPageSkeleton from "@/components/UI/skeleton/BookPageSkeleton";
 import BookPreviewSkeleton from "@/components/UI/skeleton/BookPreviewSkeleton";
 import AuthorDetailsSkeleton from "@/components/UI/skeleton/AuthorDetailsSkeleton";
 import AuthorCardSkeleton from "@/components/UI/skeleton/AuthorCardSkeleton";
+import FeedSkeleton from "@/components/UI/skeleton/FeedSkeleton";
 
 /**
  *  Using lazy loading for pages
@@ -42,6 +43,7 @@ const Admin = lazy(() => import("@/pages/Admin"));
 const UserProfile = lazy(() => import("@/pages/UserProfile"));
 const TermsOfUse = lazy(() => import("@/pages/TermsOfUse"));
 const Contact = lazy(() => import("@/pages/Contact"));
+const Fil = lazy(() => import("@/pages/Fil"));
 
 /**
  * Router confirmation
@@ -203,6 +205,16 @@ const router = createBrowserRouter([
                     >
                         <ProtectedRoute>
                             <UserLibrary />
+                        </ProtectedRoute>
+                    </Suspense>
+                ),
+            },
+            {
+                path: "fil",
+                element: (
+                    <Suspense fallback={<FeedSkeleton />}>
+                        <ProtectedRoute>
+                            <Fil />
                         </ProtectedRoute>
                     </Suspense>
                 ),

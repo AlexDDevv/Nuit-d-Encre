@@ -10,6 +10,7 @@ import {
     LuUser,
     LuLogOut,
     LuShield,
+    LuNewspaper,
 } from "react-icons/lu";
 import { FaFeatherPointed } from "react-icons/fa6";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
@@ -73,24 +74,34 @@ export default function SidebarNav({ collapsed }: SidebarNavProps) {
         });
     };
 
+    const feedLink: SidebarLink = {
+        href: "/fil",
+        label: "Fil d'activité",
+        icon: LuNewspaper,
+        ariaLabel: "Voir le fil d'activité",
+    };
+
     const authLinks: SidebarLink[] = user
-        ? user.role === "admin"
-            ? [
-                  {
-                      href: "/admin",
-                      label: "Admin",
-                      icon: LuShield,
-                      ariaLabel: "Accéder au panel admin",
-                  },
-              ]
-            : [
-                  {
-                      href: "/profil",
-                      label: "Profil",
-                      icon: LuUser,
-                      ariaLabel: "Accéder à son profil",
-                  },
-              ]
+        ? [
+              feedLink,
+              ...(user.role === "admin"
+                  ? [
+                        {
+                            href: "/admin",
+                            label: "Admin",
+                            icon: LuShield,
+                            ariaLabel: "Accéder au panel admin",
+                        },
+                    ]
+                  : [
+                        {
+                            href: "/profil",
+                            label: "Profil",
+                            icon: LuUser,
+                            ariaLabel: "Accéder à son profil",
+                        },
+                    ]),
+          ]
         : [
               {
                   href: `/register?redirect=${encodeURIComponent(pathname)}`,
