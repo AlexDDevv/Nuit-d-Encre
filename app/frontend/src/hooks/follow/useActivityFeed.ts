@@ -3,32 +3,36 @@ import {
     GET_ACTIVITY_FEED,
     GET_GLOBAL_ACTIVITY_FEED,
 } from "@/graphql/user/feed";
-import { FeedEntry } from "@/types/types";
+import { FeedEntry, FeedTab } from "@/types/types";
 
 const PAGE = 20;
 
 /**
- * Fil d'activité : actions des personnes suivies (page unique MVP).
- * Si vide (0 abonnement), bascule sur l'activité globale (découverte).
+ * Fil d'activité (page unique MVP) : actions des lecteurs suivis et flux global
+ * de la communauté. Le flux global est chargé à la demande — quand l'onglet
+ * « Communauté » est actif, ou en repli automatique si aucun abonnement.
  */
-export function useActivityFeed() {
-    const { data, loading } = useQuery(GET_ACTIVITY_FEED, {
+export function useActivityFeed(tab: FeedTab) {
+    const following = useQuery(GET_ACTIVITY_FEED, {
         variables: { limit: PAGE, offset: 0 },
     });
+    const followingEntries: FeedEntry[] = following.data?.activityFeed ?? [];
+    const isEmpty =
+        !following.loading &&
+        following.data !== undefined &&
+        followingEntries.length === 0;
 
-    const entries: FeedEntry[] = data?.activityFeed ?? [];
-    const isEmpty = !loading && data !== undefined && entries.length === 0;
-
-    const { data: globalData, loading: globalLoading } = useQuery(
-        GET_GLOBAL_ACTIVITY_FEED,
-        { variables: { limit: PAGE }, skip: !isEmpty },
-    );
-    const globalEntries: FeedEntry[] = globalData?.globalActivityFeed ?? [];
+    const wantGlobal = isEmpty || tab === "communaute";
+    const global = useQuery(GET_GLOBAL_ACTIVITY_FEED, {
+        variables: { limit: PAGE },
+        skip: !wantGlobal,
+    });
+    const globalEntries: FeedEntry[] = global.data?.globalActivityFeed ?? [];
 
     return {
-        entries,
-        isEmpty,
+        followingEntries,
         globalEntries,
-        loading: loading || globalLoading,
+        isEmpty,
+        loading: following.loading || (wantGlobal && global.loading),
     };
 }
