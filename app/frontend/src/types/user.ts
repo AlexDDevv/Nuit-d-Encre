@@ -50,6 +50,18 @@ export interface UserAction {
     metadata: string | null;
 }
 
+/**
+ * Catégorie visuelle d'une action - détermine l'icône et le libellé court
+ * affichés dans le journal de profil et le fil d'activité.
+ */
+export type ActivityKind =
+    | "added"
+    | "finished"
+    | "review"
+    | "author"
+    | "reco"
+    | "complete";
+
 export interface FeedActor {
     id: string;
     userName: string;

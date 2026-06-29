@@ -1,5 +1,4 @@
 import { IconType } from "react-icons";
-import { FeedEntry } from "./user";
 
 export type TypeSelectOptions = {
     value: string;
@@ -64,8 +63,41 @@ export interface FollowListModalProps {
     onClose: () => void;
 }
 
-export interface FeedListProps {
-    entries: FeedEntry[];
-    hasMore?: boolean;
-    onLoadMore?: () => void;
+/* ──────────────────────────── Primitives UI génériques ──────────────────────────── */
+
+export interface SegmentedOption<T extends string> {
+    value: T;
+    label: string;
+    icon?: IconType;
+    disabled?: boolean;
+    tooltip?: string;
+}
+
+export interface SegmentedTabsProps<T extends string> {
+    options: SegmentedOption<T>[];
+    value: T;
+    onChange: (value: T) => void;
+    ariaLabel: string;
+    /** Onglets à largeur égale (sinon dimensionnés au contenu). */
+    fullWidth?: boolean;
+    className?: string;
+}
+
+export interface ChipOption<T extends string> {
+    value: T;
+    label: string;
+    icon?: IconType;
+}
+
+export interface FilterChipsProps<T extends string> {
+    options: ChipOption<T>[];
+    value: T;
+    onChange: (value: T) => void;
+    ariaLabel: string;
+    className?: string;
+}
+
+export interface LevelBadgeProps {
+    level: number;
+    className?: string;
 }

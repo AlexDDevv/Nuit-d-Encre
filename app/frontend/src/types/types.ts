@@ -10,5 +10,6 @@ export * from "./banner";
 export * from "./admin";
 export * from "./stats";
 export * from "./ui";
+export * from "./feed";
 export * from "./error";
 export * from "./loader";
