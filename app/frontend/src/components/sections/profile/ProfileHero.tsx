@@ -240,6 +240,14 @@ export default function ProfileHero({
                             </Button>
                         </div>
                     )}
+                    {!isOwner && (
+                        <div className="mt-5 flex shrink-0 items-center gap-2 md:mt-0 md:self-start md:pt-1">
+                            <FollowButton
+                                targetId={user.id}
+                                isFollowedByMe={user.isFollowedByMe ?? false}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Bio */}
@@ -285,12 +293,6 @@ export default function ProfileHero({
                             abonnements
                         </span>
                     </button>
-                    {!isOwner && (
-                        <FollowButton
-                            targetId={user.id}
-                            isFollowedByMe={user.isFollowedByMe ?? false}
-                        />
-                    )}
                 </div>
 
                 {followModal && (
