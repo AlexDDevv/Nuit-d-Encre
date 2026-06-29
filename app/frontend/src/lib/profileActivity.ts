@@ -1,16 +1,9 @@
-import { UserAction, UserActionType } from "@/types/types";
-
-/**
- * Catégorie visuelle d'une action - détermine l'icône affichée dans le
- * journal d'activité (le composant mappe `kind` vers une icône react-icons).
- */
-export type ActivityKind =
-    | "added"
-    | "finished"
-    | "review"
-    | "author"
-    | "reco"
-    | "complete";
+import {
+    ActivityKind,
+    FeedEntry,
+    UserAction,
+    UserActionType,
+} from "@/types/types";
 
 export type ProfileStats = {
     added: number;
@@ -96,6 +89,21 @@ export function describeAction(action: UserAction): {
     }
 }
 
+/**
+ * Libellé + catégorie d'une entrée de fil (qui ne porte pas d'XP) : réutilise
+ * `describeAction` pour garantir des textes identiques au journal de profil.
+ */
+export function describeFeedEntry(
+    entry: Pick<FeedEntry, "type" | "metadata">,
+): { label: string; kind: ActivityKind } {
+    return describeAction({
+        type: entry.type,
+        xp: 0,
+        createdAt: "",
+        metadata: entry.metadata,
+    });
+}
+
 const COUNTERS: Partial<Record<UserActionType, keyof ProfileStats>> = {
     BOOK_ADDED: "added",
     BOOK_FINISHED: "finished",
@@ -144,6 +152,17 @@ export function formatRelativeDate(iso: string): string {
         duration /= amount;
     }
     return "";
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** Tranche temporelle d'une date ISO — repère de section posé sur le filet du fil. */
+export function timeBucket(iso: string): { key: string; label: string } {
+    const age = Date.now() - new Date(iso).getTime();
+    if (age < DAY_MS) return { key: "today", label: "Aujourd'hui" };
+    if (age < 2 * DAY_MS) return { key: "yesterday", label: "Hier" };
+    if (age < 7 * DAY_MS) return { key: "week", label: "Cette semaine" };
+    return { key: "earlier", label: "Plus tôt" };
 }
 
 /** Trie les actions de la plus récente à la plus ancienne. */

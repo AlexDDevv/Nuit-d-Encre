@@ -1,29 +1,12 @@
-import { IconType } from "react-icons";
-import {
-    FaBookOpen,
-    FaCircleCheck,
-    FaPenToSquare,
-    FaFeatherPointed,
-    FaThumbsUp,
-    FaRegStar,
-} from "react-icons/fa6";
+import { FaPenToSquare } from "react-icons/fa6";
 import { UserAction } from "@/types/types";
 import {
     describeAction,
     formatRelativeDate,
     sortByRecent,
-    ActivityKind,
 } from "@/lib/profileActivity";
+import { CATEGORY_ICON } from "@/components/sections/shared/activityCategory";
 import { Card, SectionHeading } from "./ProfileUI";
-
-const KIND_ICON: Record<ActivityKind, IconType> = {
-    added: FaBookOpen,
-    finished: FaCircleCheck,
-    review: FaPenToSquare,
-    author: FaFeatherPointed,
-    reco: FaThumbsUp,
-    complete: FaRegStar,
-};
 
 const MAX_EVENTS = 8;
 
@@ -41,16 +24,16 @@ export default function ProfileActivity({
             </SectionHeading>
             <Card glow={false} className="p-5 md:p-6">
                 {events.length === 0 ? (
-                    <p className="text-muted-foreground/70 py-6 text-center font-quote text-base italic">
+                    <p className="text-muted-foreground/70 font-quote py-6 text-center text-base italic">
                         Aucune activité pour le moment.
                     </p>
                 ) : (
                     <div className="relative">
-                        <span className="bg-border absolute top-1 bottom-1 left-5 w-px" />
+                        <span className="bg-border absolute bottom-1 left-5 top-1 w-px" />
                         <ul className="flex flex-col gap-5">
                             {events.map((ev, i) => {
                                 const { label, kind } = describeAction(ev);
-                                const Icon = KIND_ICON[kind];
+                                const Icon = CATEGORY_ICON[kind];
                                 return (
                                     <li
                                         key={i}
@@ -65,7 +48,7 @@ export default function ProfileActivity({
                                             </p>
                                             <div className="mt-1 flex items-center gap-2.5">
                                                 {ev.xp > 0 && (
-                                                    <span className="border-primary/40 bg-primary/10 text-primary inline-flex items-center rounded-full border px-2 py-0.5 font-title text-xs font-bold">
+                                                    <span className="border-primary/40 bg-primary/10 text-primary font-title inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-bold">
                                                         +{ev.xp} XP
                                                     </span>
                                                 )}
