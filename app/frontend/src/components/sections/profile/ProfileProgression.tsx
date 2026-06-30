@@ -98,32 +98,34 @@ function TitleFrieze({ level }: { level: number }) {
                         status === "current"
                             ? "h-5 w-5 bg-primary border-primary node-glow"
                             : status === "past"
-                                ? "h-3 w-3 bg-primary/70 border-primary/70"
-                                : "h-3 w-3 bg-transparent border-border";
+                                ? "h-3 w-3 bg-primary border-primary/70"
+                                : "h-3 w-3 bg-card border-border";
                     return (
                         <div
                             key={t.level}
                             className="group relative flex flex-1 flex-col items-center"
                         >
-                            {i > 0 && (
-                                <span
-                                    className={`absolute top-2 right-1/2 h-px w-full ${t.level <= level
+                            <div className="relative flex h-5 w-full items-center justify-center">
+                                {i > 0 && (
+                                    <span
+                                        className={`absolute top-1/2 right-1/2 h-px w-full -translate-y-1/2 ${t.level <= level
                                             ? "bg-primary/55"
                                             : "bg-border"
-                                        }`}
-                                />
-                            )}
-                            <span
-                                className={`relative z-10 mt-0.5 grid place-items-center rounded-full border-2 transition-all ${dot}`}
-                            >
-                                {status === "current" && (
-                                    <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
+                                            }`}
+                                    />
                                 )}
-                            </span>
+                                <span
+                                    className={`relative z-10 grid place-items-center rounded-full border-2 transition-all ${dot}`}
+                                >
+                                    {status === "current" && (
+                                        <span className="h-1.5 w-1.5 rounded-full bg-primary-foreground" />
+                                    )}
+                                </span>
+                            </div>
                             <span
                                 className={`mt-2 text-xs font-bold ${status === "future"
-                                        ? "text-muted-foreground/55"
-                                        : "text-primary/80"
+                                    ? "text-muted-foreground/55"
+                                    : "text-primary/80"
                                     }`}
                             >
                                 {t.level}
