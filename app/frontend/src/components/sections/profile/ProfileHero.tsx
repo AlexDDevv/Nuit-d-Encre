@@ -224,7 +224,11 @@ export default function ProfileHero({
                             </div>
                         )}
                         <div className="mt-1">
-                            <TitlePlate level={user.level} title={title} />
+                            <TitlePlate
+                                level={user.level}
+                                title={title}
+                                iconKey={user.title?.iconKey ?? null}
+                            />
                         </div>
                     </div>
 
