@@ -11,6 +11,8 @@ export interface BookReview {
     book: Book;
     helpfulCount?: number;
     notHelpfulCount?: number;
+    comments?: BookReviewComment[];
+    commentCount?: number;
 }
 
 export interface BookReviewsResult {
@@ -76,4 +78,16 @@ export type SelectReviewSortProps = {
     value: BookReviewSortBy;
     onChange: (sortBy: BookReviewSortBy) => void;
     disabled?: boolean;
+};
+
+export interface BookReviewComment {
+    id: string;
+    content: string;
+    createdAt: string;
+    user: User;
+}
+
+export type CreateBookReviewCommentInput = {
+    reviewId: string;
+    content: string;
 };

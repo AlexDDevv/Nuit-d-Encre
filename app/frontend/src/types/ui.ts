@@ -1,5 +1,7 @@
 import { IconType } from "react-icons";
 
+import { BookReviewComment } from "./book-review";
+
 export type TypeSelectOptions = {
     value: string;
     label: string;
@@ -100,4 +102,15 @@ export interface FilterChipsProps<T extends string> {
 export interface LevelBadgeProps {
     level: number;
     className?: string;
+}
+
+export interface ReviewCommentsProps {
+    reviewId: string;
+    comments: BookReviewComment[];
+    commentCount: number;
+}
+
+export interface ReviewCommentFormProps {
+    reviewId: string;
+    onSuccess?: () => void;
 }

@@ -38,6 +38,17 @@ export const GET_BOOK_REVIEWS = gql`
                 }
                 helpfulCount
                 notHelpfulCount
+                commentCount
+                comments {
+                    id
+                    content
+                    createdAt
+                    user {
+                        id
+                        userName
+                        avatar
+                    }
+                }
             }
             totalCount
             page
