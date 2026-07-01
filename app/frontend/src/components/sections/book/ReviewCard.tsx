@@ -4,6 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
 import { BookReview } from "@/types/types";
 import ReviewVoteButtons from "@/components/sections/book/ReviewVoteButtons";
+import ReviewComments from "@/components/sections/book/ReviewComments";
 import RatingStars from "@/components/sections/library/UI/RatingStars";
 import Button from "@/components/UI/Button/Button";
 import UserLink from "@/components/sections/profile/UserLink";
@@ -98,12 +99,17 @@ export default function ReviewCard({
                 </p>
             )}
 
-            <div className="mt-auto">
+            <div className="mt-auto flex flex-col gap-3">
                 <ReviewVoteButtons
                     reviewId={review.id}
                     initialHelpfulCount={review.helpfulCount || 0}
                     initialNotHelpfulCount={review.notHelpfulCount || 0}
                     isOwnReview={isOwnReview}
+                />
+                <ReviewComments
+                    reviewId={review.id}
+                    comments={review.comments ?? []}
+                    commentCount={review.commentCount ?? 0}
                 />
             </div>
         </article>

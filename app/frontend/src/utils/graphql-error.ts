@@ -13,7 +13,9 @@ export type ErrorContext =
     | "toggleRecommendation"
     | "createUserBook"
     | "updateUserBook"
-    | "deleteUserBook";
+    | "deleteUserBook"
+    | "createBookReviewComment"
+    | "deleteBookReviewComment";
 
 interface ErrorRule {
     matches: string;
@@ -121,6 +123,21 @@ const ERROR_MAP: Record<ErrorContext, { rules: ErrorRule[]; fallback: ErrorResul
             { matches: "Access denied", title: "Action non autorisée", description: "Vous n'avez pas les droits pour supprimer ce livre." },
         ],
         fallback: { title: "Échec de la suppression", description: "Impossible de supprimer ce livre de votre bibliothèque. Veuillez réessayer." },
+    },
+    createBookReviewComment: {
+        rules: [
+            { matches: "Review not found", title: "Critique introuvable", description: "Cette critique n'existe pas ou a été supprimée." },
+            { matches: "Access denied", title: "Connexion requise", description: "Vous devez être connecté pour publier un commentaire." },
+        ],
+        fallback: { title: "Échec de la publication", description: "Impossible de publier le commentaire. Veuillez réessayer." },
+    },
+    deleteBookReviewComment: {
+        rules: [
+            { matches: "Comment not found", title: "Commentaire introuvable", description: "Ce commentaire n'existe pas ou a déjà été supprimé." },
+            { matches: "Not authorized to delete this comment", title: "Action non autorisée", description: "Vous ne pouvez pas supprimer ce commentaire." },
+            { matches: "Access denied", title: "Connexion requise", description: "Vous devez être connecté pour supprimer un commentaire." },
+        ],
+        fallback: { title: "Échec de la suppression", description: "Impossible de supprimer le commentaire. Veuillez réessayer." },
     },
 };
 
