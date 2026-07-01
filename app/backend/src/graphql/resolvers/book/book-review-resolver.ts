@@ -78,6 +78,7 @@ export class BookReviewsResolver {
                 relations: {
                     user: true,
                     book: true,
+                    comments: true,
                 },
             });
 
@@ -176,6 +177,7 @@ export class BookReviewsResolver {
                     )
                         .leftJoinAndSelect("review.user", "user")
                         .leftJoinAndSelect("review.votes", "votes")
+                        .leftJoinAndSelect("review.comments", "comments")
                         .whereInIds(ids)
                         .getMany();
 
@@ -188,6 +190,7 @@ export class BookReviewsResolver {
                 const query = BookReview.createQueryBuilder("review")
                     .leftJoinAndSelect("review.user", "user")
                     .leftJoinAndSelect("review.votes", "votes")
+                    .leftJoinAndSelect("review.comments", "comments")
                     .where("review.bookId = :bookId", { bookId });
 
                 switch (sortBy) {
@@ -609,5 +612,30 @@ export class BookReviewsResolver {
     @FieldResolver(() => Int)
     notHelpfulCount(@Root() review: BookReview): number {
         return review.votes?.filter((vote) => !vote.isHelpful).length ?? 0;
+    }
+
+    /**
+     * Field Resolver: Count of comments
+     *
+     * @description
+     * Counts how many comments have been posted on this review.
+     *
+     * @param review - The parent BookReview object.
+     *
+     * @returns Number of comments.
+     *
+     * @example
+     * ```graphql
+     * query {
+     *   bookReview(id: 1) {
+     *     reviewText
+     *     commentCount
+     *   }
+     * }
+     * ```
+     */
+    @FieldResolver(() => Int)
+    commentCount(@Root() review: BookReview): number {
+        return review.comments?.length ?? 0;
     }
 }

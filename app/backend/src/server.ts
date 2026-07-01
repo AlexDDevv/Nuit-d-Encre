@@ -17,6 +17,7 @@ import { UserActionsResolver } from "./graphql/resolvers/user/user-actions-resol
 import { UserBooksResolver } from "./graphql/resolvers/user/user-books-resolver";
 import { BookReviewsResolver } from "./graphql/resolvers/book/book-review-resolver";
 import { BookReviewVotesResolver } from "./graphql/resolvers/book/book-review-vote-resolver";
+import { BookReviewCommentsResolver } from "./graphql/resolvers/book/book-review-comment-resolver";
 import { BookRecommendationsResolver } from "./graphql/resolvers/book/book-recommendation-resolver";
 import { ProfileResolver } from "./graphql/resolvers/user/profile-resolver";
 import { FollowResolver } from "./graphql/resolvers/user/follow-resolver";
@@ -70,6 +71,7 @@ if (!process.env.APP_PORT) {
                 UserBooksResolver,
                 BookReviewsResolver,
                 BookReviewVotesResolver,
+                BookReviewCommentsResolver,
                 BookRecommendationsResolver,
                 ProfileResolver,
                 FollowResolver,
