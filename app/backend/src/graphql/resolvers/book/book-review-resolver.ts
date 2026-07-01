@@ -80,6 +80,12 @@ export class BookReviewsResolver {
                     book: true,
                     comments: true,
                 },
+                // Chronological comments (spec §1, decision 1).
+                order: {
+                    comments: {
+                        createdAt: "ASC",
+                    },
+                },
             });
 
             if (!review) {
@@ -172,6 +178,7 @@ export class BookReviewsResolver {
                 if (ids.length === 0) {
                     reviews = [];
                 } else {
+                    // TODO(perf): votes × comments double leftJoinAndSelect is multiplicative — revisit if engagement grows
                     const reviewsData = await BookReview.createQueryBuilder(
                         "review",
                     )
@@ -179,6 +186,7 @@ export class BookReviewsResolver {
                         .leftJoinAndSelect("review.votes", "votes")
                         .leftJoinAndSelect("review.comments", "comments")
                         .whereInIds(ids)
+                        .addOrderBy("comments.createdAt", "ASC")
                         .getMany();
 
                     // Restore the sorted order from step 1.
@@ -187,6 +195,7 @@ export class BookReviewsResolver {
                         .filter(Boolean);
                 }
             } else {
+                // TODO(perf): votes × comments double leftJoinAndSelect is multiplicative — revisit if engagement grows
                 const query = BookReview.createQueryBuilder("review")
                     .leftJoinAndSelect("review.user", "user")
                     .leftJoinAndSelect("review.votes", "votes")
@@ -208,6 +217,10 @@ export class BookReviewsResolver {
                         query.orderBy("review.createdAt", "DESC");
                         break;
                 }
+
+                // Chronological comments (spec §1, decision 1) — appended after
+                // the review-level orderBy so it does not affect review sorting.
+                query.addOrderBy("comments.createdAt", "ASC");
 
                 query.skip((page - 1) * limit).take(limit);
                 reviews = await query.getMany();
