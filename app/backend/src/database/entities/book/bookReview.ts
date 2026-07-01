@@ -21,6 +21,7 @@ import {
 import { User } from "../user/user";
 import { Book } from "../book/book";
 import { BookReviewVote } from "./bookReviewVote";
+import { BookReviewComment } from "./bookReviewComment";
 
 /**
  * BookReview Entity
@@ -125,6 +126,13 @@ export class BookReview extends BaseEntity {
     @OneToMany(() => BookReviewVote, (vote) => vote.review)
     @Field(() => [BookReviewVote])
     votes!: BookReviewVote[];
+
+    /**
+     * Commentaires postés sur cette critique.
+     */
+    @OneToMany(() => BookReviewComment, (comment) => comment.review)
+    @Field(() => [BookReviewComment])
+    comments!: BookReviewComment[];
 
     /**
      * Timestamp when the review was created
