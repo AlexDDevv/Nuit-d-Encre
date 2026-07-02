@@ -108,6 +108,7 @@ export default function ReviewCard({
                 />
                 <ReviewComments
                     reviewId={review.id}
+                    reviewAuthorId={review.user.id}
                     comments={review.comments ?? []}
                     commentCount={review.commentCount ?? 0}
                 />

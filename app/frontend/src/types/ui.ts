@@ -106,8 +106,24 @@ export interface LevelBadgeProps {
 
 export interface ReviewCommentsProps {
     reviewId: string;
+    reviewAuthorId: string;
     comments: BookReviewComment[];
     commentCount: number;
+}
+
+export interface ReviewThreadToggleProps {
+    count: number;
+    open: boolean;
+    onToggle: () => void;
+}
+
+export interface ReviewCommentItemProps {
+    comment: BookReviewComment;
+    isReviewAuthor: boolean;
+    canDelete: boolean;
+    isDeleting: boolean;
+    disabled: boolean;
+    onDelete: (commentId: string) => void;
 }
 
 export interface ReviewCommentFormProps {
