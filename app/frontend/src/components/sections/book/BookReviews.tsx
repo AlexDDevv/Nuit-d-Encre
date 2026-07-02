@@ -209,7 +209,7 @@ export default function BookReviews({ book, pageLimit = 6 }: BookReviewsProps) {
                             Chargement des critiques…
                         </p>
                     ) : (
-                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                        <div className="flex flex-col gap-6">
                             {reviews?.map((review) => (
                                 <ReviewCard
                                     key={review.id}

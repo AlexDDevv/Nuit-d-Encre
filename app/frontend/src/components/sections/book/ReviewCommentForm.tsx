@@ -45,7 +45,7 @@ export default function ReviewCommentForm({
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <TextareaField
                 name="content"
                 label="Votre commentaire"
