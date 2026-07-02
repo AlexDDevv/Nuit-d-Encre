@@ -34,7 +34,7 @@ export default function UserLink({
             ) : (
                 <span
                     className={cn(
-                        "text-primary font-quote grid shrink-0 place-items-center rounded-full",
+                        "text-primary font-quote grid shrink-0 place-items-center rounded-full leading-none",
                         "bg-[radial-gradient(circle_at_32%_26%,hsl(43_30%_31%),hsl(20_3%_13%)_82%)]",
                         "shadow-[inset_0_0_0_1px_hsl(43_59%_81%/0.28)]",
                         box,
