@@ -110,4 +110,19 @@ describe("login", () => {
             (cookies as unknown as { set: jest.Mock }).set
         ).not.toHaveBeenCalled();
     });
+
+    it("rejects a Google-only account (null password) without setting a cookie", async () => {
+        repoMock.findOne.mockResolvedValue({ id: 9, hashedPassword: null });
+        const cookies = makeCookies();
+
+        await expect(
+            login("google-user@example.com", "whatever", cookies)
+        ).rejects.toMatchObject({
+            message: "Invalid identifiers",
+            statusCode: 401,
+        });
+        expect(
+            (cookies as unknown as { set: jest.Mock }).set
+        ).not.toHaveBeenCalled();
+    });
 });

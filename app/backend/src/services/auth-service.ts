@@ -53,6 +53,28 @@ export const register = async (
     }
 };
 
+// Signe un JWT identifiant l'utilisateur et le pose en cookie httpOnly signé.
+const setAuthCookie = (user: User, cookies: Cookies): void => {
+    if (!process.env.JWT_SECRET) {
+        throw new AppError(
+            "JWT_SECRET is not defined in environment variables.",
+            500,
+            "InternalServerError"
+        );
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+    });
+
+    cookies.set("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        signed: true,
+    });
+};
+
 // Function to log in an existing user
 export const login = async (
     email: string,
@@ -69,12 +91,13 @@ export const login = async (
         throw new AppError("Invalid identifiers", 401, "UnauthorizedError");
     }
 
-    try {
-        // Check if the user has a hashed password (not a Google OAuth user)
-        if (!user.hashedPassword) {
-            throw new AppError("Invalid identifiers", 401, "UnauthorizedError");
-        }
+    // Les comptes Google purs n'ont pas de mot de passe local : un login
+    // par mot de passe doit échouer proprement sans crasher argon2.verify.
+    if (!user.hashedPassword) {
+        throw new AppError("Invalid identifiers", 401, "UnauthorizedError");
+    }
 
+    try {
         // Check if the password is correct
         const isPasswordValid = await argon2.verify(
             user.hashedPassword,
@@ -85,27 +108,7 @@ export const login = async (
             throw new AppError("Invalid identifiers", 401, "UnauthorizedError");
         }
 
-        // Ensure that the JWT secret is defined
-        if (!process.env.JWT_SECRET) {
-            throw new AppError(
-                "JWT_SECRET is not defined in environment variables.",
-                500,
-                "InternalServerError"
-            );
-        }
-
-        // Generate a JWT token for the user
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
-            expiresIn: "1d", // Temps d'expiration du token
-        });
-
-        // Set the token as a cookie in the response
-        cookies.set("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            signed: true,
-        });
+        setAuthCookie(user, cookies);
 
         // Return a success message
         return {
