@@ -4,7 +4,7 @@ import { dataSource } from "../database/config/datasource";
 import { User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
 import { Roles } from "../types/types";
-import { login, register } from "./auth-service";
+import { login, register, resolveOrCreateGoogleUser } from "./auth-service";
 
 jest.mock("../database/config/datasource", () => ({
     dataSource: { getRepository: jest.fn() },
@@ -124,5 +124,83 @@ describe("login", () => {
         expect(
             (cookies as unknown as { set: jest.Mock }).set
         ).not.toHaveBeenCalled();
+    });
+});
+
+describe("resolveOrCreateGoogleUser", () => {
+    const profile = {
+        sub: "google-sub-123",
+        email: "gaby@example.com",
+        name: "Gaby Lecteur",
+        picture: "https://img/pic.jpg",
+    };
+
+    it("returns the existing user matched by googleId", async () => {
+        const existing = { id: 1, googleId: "google-sub-123" };
+        repoMock.findOne.mockResolvedValueOnce(existing);
+
+        const user = await resolveOrCreateGoogleUser(profile);
+
+        expect(user).toBe(existing);
+        expect(repoMock.findOne).toHaveBeenCalledWith({
+            where: { googleId: "google-sub-123" },
+        });
+    });
+
+    it("links googleId to an existing account matched by email", async () => {
+        const save = jest.fn();
+        const existing = {
+            id: 2,
+            email: "gaby@example.com",
+            avatar: null,
+            save,
+        };
+        // 1st findOne (by googleId) -> null ; 2nd (by email) -> existing
+        repoMock.findOne
+            .mockResolvedValueOnce(null)
+            .mockResolvedValueOnce(existing);
+
+        const user = (await resolveOrCreateGoogleUser(profile)) as unknown as {
+            googleId: string;
+            avatar: string | null;
+        };
+
+        expect(user.googleId).toBe("google-sub-123");
+        expect(user.avatar).toBe("https://img/pic.jpg");
+        expect(save).toHaveBeenCalledTimes(1);
+    });
+
+    it("creates a new user with a unique userName when none matches", async () => {
+        const save = jest.fn();
+        // findOne: by googleId -> null, by email -> null,
+        // then userName uniqueness probe -> null (name is free)
+        repoMock.findOne
+            .mockResolvedValueOnce(null)
+            .mockResolvedValueOnce(null)
+            .mockResolvedValueOnce(null);
+        const createSpy = jest
+            .spyOn(User, "create")
+            .mockImplementation(
+                (data: unknown) => ({ ...(data as object), save } as never)
+            );
+
+        const user = (await resolveOrCreateGoogleUser(profile)) as unknown as {
+            email: string;
+            googleId: string;
+            userName: string;
+            hashedPassword: string | null;
+            level: number;
+            xp: number;
+        };
+
+        expect(user.email).toBe("gaby@example.com");
+        expect(user.googleId).toBe("google-sub-123");
+        expect(user.userName).toBe("Gaby Lecteur");
+        expect(user.hashedPassword).toBeNull();
+        expect(user.level).toBe(1);
+        expect(user.xp).toBe(0);
+        expect(save).toHaveBeenCalledTimes(1);
+
+        createSpy.mockRestore();
     });
 });

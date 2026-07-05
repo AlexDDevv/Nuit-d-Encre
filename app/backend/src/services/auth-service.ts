@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { dataSource } from "../database/config/datasource";
 import { LogInResponse, User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
-import { UserRole } from "../types/types";
+import { Roles, UserRole } from "../types/types";
 
 export const register = async (
     email: string,
@@ -73,6 +73,77 @@ const setAuthCookie = (user: User, cookies: Cookies): void => {
         sameSite: "strict",
         signed: true,
     });
+};
+
+export interface GoogleProfile {
+    sub: string;
+    email: string;
+    name?: string | null;
+    picture?: string | null;
+}
+
+// Génère un userName unique à partir d'une base, en ajoutant un suffixe
+// numérique tant que le nom est déjà pris (contrainte d'unicité BDD).
+const generateUniqueUserName = async (
+    base: string
+): Promise<string> => {
+    const userRepository = dataSource.getRepository(User);
+    const cleaned = base.trim().slice(0, 90) || "lecteur";
+    let candidate = cleaned;
+    let suffix = 1;
+
+    while (await userRepository.findOne({ where: { userName: candidate } })) {
+        candidate = `${cleaned}-${suffix}`;
+        suffix += 1;
+    }
+
+    return candidate;
+};
+
+// Résout l'utilisateur associé à un profil Google vérifié : par googleId,
+// sinon liaison par email, sinon création d'un nouveau compte.
+export const resolveOrCreateGoogleUser = async (
+    profile: GoogleProfile
+): Promise<User> => {
+    const userRepository = dataSource.getRepository(User);
+
+    // 1. Compte déjà lié à ce googleId.
+    const byGoogleId = await userRepository.findOne({
+        where: { googleId: profile.sub },
+    });
+    if (byGoogleId) return byGoogleId;
+
+    // 2. Compte existant avec le même email : on le lie.
+    const byEmail = await userRepository.findOne({
+        where: { email: profile.email },
+    });
+    if (byEmail) {
+        byEmail.googleId = profile.sub;
+        if (!byEmail.avatar && profile.picture) {
+            byEmail.avatar = profile.picture;
+        }
+        await byEmail.save();
+        return byEmail;
+    }
+
+    // 3. Nouveau compte.
+    const userName = await generateUniqueUserName(
+        profile.name ?? profile.email.split("@")[0]
+    );
+
+    const user = User.create({
+        email: profile.email,
+        googleId: profile.sub,
+        userName,
+        avatar: profile.picture ?? null,
+        hashedPassword: null,
+        role: Roles.User,
+        level: 1,
+        xp: 0,
+    });
+
+    await user.save();
+    return user;
 };
 
 // Function to log in an existing user
