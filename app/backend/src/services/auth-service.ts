@@ -1,5 +1,6 @@
 import * as argon2 from "argon2";
 import Cookies from "cookies";
+import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
 import { dataSource } from "../database/config/datasource";
 import { LogInResponse, User } from "../database/entities/user/user";
@@ -144,6 +145,50 @@ export const resolveOrCreateGoogleUser = async (
 
     await user.save();
     return user;
+};
+
+// Échange l'authorization code Google contre les tokens, vérifie l'ID token,
+// résout/crée l'utilisateur et pose le cookie de session.
+export const googleAuth = async (
+    code: string,
+    cookies: Cookies
+): Promise<LogInResponse> => {
+    const client = new OAuth2Client(
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
+        "postmessage"
+    );
+
+    const { tokens } = await client.getToken(code);
+
+    if (!tokens.id_token) {
+        throw new AppError("Invalid Google token", 401, "UnauthorizedError");
+    }
+
+    const ticket = await client.verifyIdToken({
+        idToken: tokens.id_token,
+        audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+
+    if (!payload?.sub || !payload.email) {
+        throw new AppError("Invalid Google token", 401, "UnauthorizedError");
+    }
+
+    const user = await resolveOrCreateGoogleUser({
+        sub: payload.sub,
+        email: payload.email,
+        name: payload.name,
+        picture: payload.picture,
+    });
+
+    setAuthCookie(user, cookies);
+
+    return {
+        message: "Sign in successful!",
+        cookieSet: true,
+    };
 };
 
 // Function to log in an existing user

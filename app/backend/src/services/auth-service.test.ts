@@ -4,10 +4,24 @@ import { dataSource } from "../database/config/datasource";
 import { User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
 import { Roles } from "../types/types";
-import { login, register, resolveOrCreateGoogleUser } from "./auth-service";
+import {
+    login,
+    register,
+    resolveOrCreateGoogleUser,
+    googleAuth,
+} from "./auth-service";
 
 jest.mock("../database/config/datasource", () => ({
     dataSource: { getRepository: jest.fn() },
+}));
+
+const getTokenMock = jest.fn();
+const verifyIdTokenMock = jest.fn();
+jest.mock("google-auth-library", () => ({
+    OAuth2Client: jest.fn().mockImplementation(() => ({
+        getToken: getTokenMock,
+        verifyIdToken: verifyIdTokenMock,
+    })),
 }));
 
 const repoMock = { findOne: jest.fn() };
@@ -202,5 +216,52 @@ describe("resolveOrCreateGoogleUser", () => {
         expect(save).toHaveBeenCalledTimes(1);
 
         createSpy.mockRestore();
+    });
+});
+
+describe("googleAuth", () => {
+    function makeCookies() {
+        return { set: jest.fn() } as unknown as Parameters<typeof googleAuth>[1];
+    }
+
+    beforeEach(() => {
+        getTokenMock.mockReset();
+        verifyIdTokenMock.mockReset();
+        repoMock.findOne.mockReset();
+    });
+
+    it("exchanges the code, resolves the user and sets the cookie", async () => {
+        getTokenMock.mockResolvedValue({ tokens: { id_token: "id-tok" } });
+        verifyIdTokenMock.mockResolvedValue({
+            getPayload: () => ({
+                sub: "sub-1",
+                email: "user@example.com",
+                name: "User One",
+                picture: null,
+            }),
+        });
+        // resolveOrCreateGoogleUser -> found by googleId
+        repoMock.findOne.mockResolvedValueOnce({ id: 42, googleId: "sub-1" });
+        const cookies = makeCookies();
+
+        const result = await googleAuth("auth-code", cookies);
+
+        expect(result.cookieSet).toBe(true);
+        expect(getTokenMock).toHaveBeenCalledWith("auth-code");
+        const setMock = (cookies as unknown as { set: jest.Mock }).set;
+        expect(setMock).toHaveBeenCalledTimes(1);
+        expect(setMock.mock.calls[0][0]).toBe("token");
+    });
+
+    it("rejects when Google returns no id_token", async () => {
+        getTokenMock.mockResolvedValue({ tokens: {} });
+        const cookies = makeCookies();
+
+        await expect(googleAuth("bad-code", cookies)).rejects.toMatchObject({
+            statusCode: 401,
+        });
+        expect(
+            (cookies as unknown as { set: jest.Mock }).set
+        ).not.toHaveBeenCalled();
     });
 });
