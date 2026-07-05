@@ -17,6 +17,8 @@ export const RATE_LIMIT_RULES = {
     login: { limit: 10, windowMs: 5 * 60 * 1000 },
     // Throttle mass account creation.
     register: { limit: 5, windowMs: 15 * 60 * 1000 },
+    // Brute-force protection sur l'auth Google (même budget que login).
+    googleAuth: { limit: 10, windowMs: 5 * 60 * 1000 },
     // Throttle book import spam (hits external APIs + Cloudinary).
     importBook: { limit: 20, windowMs: 5 * 60 * 1000 },
 } as const satisfies Record<string, RateLimitRule>;

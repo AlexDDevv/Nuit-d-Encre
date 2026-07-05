@@ -5,6 +5,7 @@ import { AppError } from "../../../middlewares/error-handler";
 import {
     login,
     register,
+    googleAuth,
     whoami,
     updateProfile,
     changePassword,
@@ -102,6 +103,38 @@ export class AuthResolver {
             // Logger la cause réelle (identifiants invalides, indispo BDD…)
             // sans l'exposer au client : le message reste générique (401).
             console.error("Login failed:", error);
+            throw new AppError("Login failed", 401, "UnauthorizedError");
+        }
+    }
+
+    /**
+     * Mutation de connexion via Google (flux OAuth auth-code).
+     * Échange l'authorization code, upsert l'utilisateur et pose le cookie.
+     */
+    @Mutation(() => LogInResponse)
+    async googleAuth(
+        @Arg("code") code: string,
+        @Ctx() context: Context,
+    ): Promise<LogInResponse> {
+        // Hors du try : le catch ci-dessous mappe tout en 401, ce qui
+        // masquerait sinon le 429 du rate-limit.
+        enforceRateLimit("googleAuth", context.ip);
+
+        try {
+            const { cookies } = context;
+
+            if (!cookies) {
+                throw new AppError(
+                    "Cookies context not available",
+                    500,
+                    "InternalServerError",
+                );
+            }
+
+            return await googleAuth(code, cookies);
+        } catch (error) {
+            // Logger la cause réelle sans l'exposer (message générique 401).
+            console.error("Google auth failed:", error);
             throw new AppError("Login failed", 401, "UnauthorizedError");
         }
     }
