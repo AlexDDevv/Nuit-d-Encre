@@ -84,7 +84,9 @@ export interface GoogleProfile {
 }
 
 // Génère un userName unique à partir d'une base, en ajoutant un suffixe
-// numérique tant que le nom est déjà pris (contrainte d'unicité BDD).
+// numérique tant que le nom est déjà pris. Vérification best-effort au
+// niveau applicatif (non atomique) : il n'existe aucune contrainte
+// d'unicité BDD sur User.userName pour servir de filet de sécurité.
 const generateUniqueUserName = async (
     base: string
 ): Promise<string> => {
@@ -172,7 +174,7 @@ export const googleAuth = async (
 
     const payload = ticket.getPayload();
 
-    if (!payload?.sub || !payload.email) {
+    if (!payload?.sub || !payload.email || payload.email_verified !== true) {
         throw new AppError("Invalid Google token", 401, "UnauthorizedError");
     }
 

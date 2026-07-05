@@ -238,6 +238,7 @@ describe("googleAuth", () => {
                 email: "user@example.com",
                 name: "User One",
                 picture: null,
+                email_verified: true,
             }),
         });
         // resolveOrCreateGoogleUser -> found by googleId
@@ -258,6 +259,25 @@ describe("googleAuth", () => {
         const cookies = makeCookies();
 
         await expect(googleAuth("bad-code", cookies)).rejects.toMatchObject({
+            statusCode: 401,
+        });
+        expect(
+            (cookies as unknown as { set: jest.Mock }).set
+        ).not.toHaveBeenCalled();
+    });
+
+    it("rejects when Google returns an unverified email", async () => {
+        getTokenMock.mockResolvedValue({ tokens: { id_token: "id-tok" } });
+        verifyIdTokenMock.mockResolvedValue({
+            getPayload: () => ({
+                sub: "sub-1",
+                email: "user@example.com",
+                email_verified: false,
+            }),
+        });
+        const cookies = makeCookies();
+
+        await expect(googleAuth("auth-code", cookies)).rejects.toMatchObject({
             statusCode: 401,
         });
         expect(
