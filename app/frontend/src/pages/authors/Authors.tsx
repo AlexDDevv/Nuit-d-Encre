@@ -69,7 +69,7 @@ export default function Authors() {
                         </p>
                     </div>
                 ) : (
-                    <div className="grid w-full grid-cols-[repeat(auto-fit,16rem)] justify-center gap-10">
+                    <div className="grid w-full grid-cols-[repeat(auto-fit,14rem)] justify-center gap-10">
                         {authors.map((author: AuthorCardProps) => (
                             <AuthorCard
                                 key={author.id}
@@ -79,6 +79,10 @@ export default function Authors() {
                                 isIncomplete={author.isIncomplete}
                                 nationality={author.nationality}
                                 bookCount={author.bookCount}
+                                birthDate={author.birthDate}
+                                biography={author.biography}
+                                wikipediaUrl={author.wikipediaUrl}
+                                officialWebsite={author.officialWebsite}
                             />
                         ))}
                     </div>

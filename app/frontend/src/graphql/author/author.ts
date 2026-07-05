@@ -10,6 +10,10 @@ export const GET_AUTHORS = gql`
                 isIncomplete
                 nationality
                 bookCount
+                birthDate
+                biography
+                wikipediaUrl
+                officialWebsite
             }
             totalCount
             totalCountAll

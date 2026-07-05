@@ -37,4 +37,8 @@ export type AuthorCardProps = {
     isIncomplete?: boolean;
     nationality?: string;
     bookCount?: number;
+    birthDate?: string;
+    biography?: string;
+    wikipediaUrl?: string;
+    officialWebsite?: string;
 };
