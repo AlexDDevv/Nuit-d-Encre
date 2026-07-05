@@ -70,6 +70,11 @@ export const login = async (
     }
 
     try {
+        // Check if the user has a hashed password (not a Google OAuth user)
+        if (!user.hashedPassword) {
+            throw new AppError("Invalid identifiers", 401, "UnauthorizedError");
+        }
+
         // Check if the password is correct
         const isPasswordValid = await argon2.verify(
             user.hashedPassword,
@@ -188,6 +193,15 @@ export const changePassword = async (
 
     if (!user) {
         throw new AppError("User not found", 404, "NotFoundError");
+    }
+
+    // Check if the user has a hashed password
+    if (!user.hashedPassword) {
+        throw new AppError(
+            "L'utilisateur n'a pas de mot de passe défini",
+            400,
+            "BadRequestError"
+        );
     }
 
     const isValid = await argon2.verify(user.hashedPassword, currentPassword);

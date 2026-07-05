@@ -49,8 +49,12 @@ export class User extends BaseEntity {
     @Column({ length: 254, unique: true })
     email!: string;
 
-    @Column({ length: 255 })
-    hashedPassword!: string;
+    @Column({ type: "varchar", length: 255, nullable: true })
+    hashedPassword?: string | null;
+
+    // Identifiant Google (`sub`) pour les comptes liés à Google. Non exposé en GraphQL.
+    @Column({ type: "varchar", length: 255, nullable: true, unique: true })
+    googleId?: string | null;
 
     @Field()
     @Column({ length: 100 })
