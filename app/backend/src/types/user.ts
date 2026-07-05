@@ -6,6 +6,17 @@ export const Roles = {
 
 export type UserRole = (typeof Roles)[keyof typeof Roles];
 
+/**
+ * Profil issu d'un ID token Google vérifié, consommé par le service d'auth
+ * pour résoudre/créer l'utilisateur associé.
+ */
+export interface GoogleProfile {
+    sub: string;
+    email: string;
+    name?: string | null;
+    picture?: string | null;
+}
+
 export enum UserActionType {
     BOOK_ADDED = "BOOK_ADDED",
     AUTHOR_ADDED = "AUTHOR_ADDED",

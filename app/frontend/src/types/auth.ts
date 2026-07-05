@@ -34,3 +34,16 @@ export interface PasswordRule {
     label: string;
     test: (value: string) => boolean;
 }
+
+/** Variables de la mutation `googleAuth` (authorization code du flux OAuth). */
+export interface GoogleAuthVariables {
+    code: string;
+}
+
+/** Réponse de la mutation `googleAuth` (aligné sur le LogInResponse backend). */
+export interface GoogleAuthResponse {
+    googleAuth: {
+        message: string;
+        cookieSet: boolean;
+    };
+}

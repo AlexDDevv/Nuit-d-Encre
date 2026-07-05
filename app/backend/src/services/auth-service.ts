@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 import { dataSource } from "../database/config/datasource";
 import { LogInResponse, User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
-import { Roles, UserRole } from "../types/types";
+import { GoogleProfile, Roles, UserRole } from "../types/types";
 
 export const register = async (
     email: string,
@@ -75,13 +75,6 @@ const setAuthCookie = (user: User, cookies: Cookies): void => {
         signed: true,
     });
 };
-
-export interface GoogleProfile {
-    sub: string;
-    email: string;
-    name?: string | null;
-    picture?: string | null;
-}
 
 // Génère un userName unique à partir d'une base, en ajoutant un suffixe
 // numérique tant que le nom est déjà pris. Vérification best-effort au
