@@ -18,6 +18,15 @@ export const LOGIN = gql`
     }
 `;
 
+export const GOOGLE_AUTH = gql`
+    mutation GoogleAuth($code: String!) {
+        googleAuth(code: $code) {
+            message
+            cookieSet
+        }
+    }
+`;
+
 export const WHOAMI = gql`
     query Whoami {
         whoami {
