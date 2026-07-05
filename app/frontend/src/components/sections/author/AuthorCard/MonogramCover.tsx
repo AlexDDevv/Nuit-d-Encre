@@ -1,7 +1,4 @@
-type MonogramCoverProps = {
-    first: string;
-    last: string;
-};
+import { MonogramCoverProps } from "@/types/types";
 
 /**
  * « Couverture » d'une carte auteur : un médaillon-monogramme doré serti dans un

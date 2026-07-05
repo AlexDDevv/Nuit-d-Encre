@@ -1,9 +1,5 @@
 import { FaGlobe } from "react-icons/fa6";
-
-type AuthorCardLinksProps = {
-    officialWebsite?: string;
-    wikipediaUrl?: string;
-};
+import { AuthorCardLinksProps } from "@/types/types";
 
 /** Pastille sobre partagée par les deux ressources externes. */
 const pillClass =

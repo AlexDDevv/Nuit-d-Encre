@@ -42,3 +42,13 @@ export type AuthorCardProps = {
     wikipediaUrl?: string;
     officialWebsite?: string;
 };
+
+export type MonogramCoverProps = {
+    first: string;
+    last: string;
+};
+
+export type AuthorCardLinksProps = {
+    officialWebsite?: string;
+    wikipediaUrl?: string;
+};
