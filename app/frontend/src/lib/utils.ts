@@ -1,7 +1,21 @@
 import { Author, Book, RequiredAuthorFields } from "@/types/types";
 import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
+import { extendTailwindMerge } from "tailwind-merge";
 import type { KeyboardEvent } from "react";
+
+/**
+ * tailwind-merge instance qui connaît nos tokens de taille sous-standard
+ * (`text-xxs`, `text-xxxs` définis dans theme.css). Sans ça, tailwind-merge les
+ * classe dans le groupe couleur (`text-*`) et écrase toute classe de couleur
+ * fusionnée avec — laissant l'élément sans couleur.
+ */
+const twMerge = extendTailwindMerge({
+    extend: {
+        classGroups: {
+            "font-size": [{ text: ["xxs", "xxxs"] }],
+        },
+    },
+});
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
