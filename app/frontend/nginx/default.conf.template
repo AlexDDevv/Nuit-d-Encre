@@ -6,10 +6,16 @@ server {
     index index.html;
 
     # API GraphQL — proxy même-origine vers le backend interne CapRover.
-    # Pas de slash final sur proxy_pass : le préfixe /api est conservé
-    # (Apollo standalone monte sur / et répond sur tout chemin).
+    # DNS Docker (127.0.0.11) + proxy_pass via variable => nginx re-résout
+    # l'IP du backend à chaque requête. Le front survit ainsi aux redeploys
+    # du backend (nouvelle IP overlay) sans redémarrage.
+    # $request_uri conserve le préfixe /api (Apollo standalone répond sur tout
+    # chemin) : indispensable avec une variable, car proxy_pass n'ajoute alors
+    # pas l'URI d'origine automatiquement.
     location /api {
-        proxy_pass ${BACKEND_URL};
+        resolver 127.0.0.11 valid=10s;
+        set $backend "${BACKEND_URL}";
+        proxy_pass $backend$request_uri;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
