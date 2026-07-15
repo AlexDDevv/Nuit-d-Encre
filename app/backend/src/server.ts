@@ -176,5 +176,6 @@ if (!process.env.APP_PORT) {
         );
     } catch (error) {
         console.error("🚨 Error during initialization:", error);
+        process.exit(1);
     }
 })();
