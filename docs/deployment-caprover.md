@@ -17,7 +17,9 @@ saisies dans le dashboard CapRover (App Configs → Environmental Variables).
 1. **Postgres** : One-Click Apps → PostgreSQL. Noter le nom d'app (ex.
    `nuit-encre-db`), l'utilisateur, le mot de passe et la base choisis.
 2. **Back** : créer l'app `nuit-encre-back`, renseigner les variables (ci-dessous),
-   puis déployer depuis `app/backend` (`captain-definition` présent).
+   puis déployer depuis `app/backend` (`captain-definition` présent). Le backend
+   n'expose aucun port HTTP public : il n'est joignable que par le front sur le
+   réseau interne CapRover (port 3310).
 3. **Front** : créer l'app `nuit-encre-front`, renseigner `BACKEND_URL`, déployer
    depuis `app/frontend`. Activer HTTPS + le domaine. Régler le **Container HTTP
    Port** sur `8080` (App Configs).
@@ -33,7 +35,6 @@ Déploiement d'une app depuis le monorepo (CLI CapRover) :
 |---|---|---|
 | `NODE_ENV` | `development` | `production` |
 | `APP_PORT` | `3310` | `3310` |
-| `APP_PORT_FRONTEND` | `http://localhost:5173` | URL publique du front |
 | `DB_HOST` | `db` | `srv-captain--nuit-encre-db` |
 | `DB_PORT` | `5432` | `5432` |
 | `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | valeurs locales | valeurs de l'app Postgres CapRover |
@@ -42,6 +43,7 @@ Déploiement d'une app depuis le monorepo (CLI CapRover) :
 | `COOKIE_SECRET` | valeur locale | **secret neuf** généré pour la prod |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_USERNAME` / `ADMIN_ROLE` | valeurs locales | valeurs de prod (mot de passe fort) |
 | `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | valeurs locales | valeurs Cloudinary |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | valeurs du client OAuth de dev | valeurs du client OAuth de prod |
 
 App `front` (CapRover) :
 
