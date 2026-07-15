@@ -1,0 +1,32 @@
+# --- Build stage ---
+FROM node:23-alpine3.21 AS builder
+WORKDIR /app
+RUN corepack enable pnpm
+
+# Dépendances (mêmes conventions que le Dockerfile de dev : pas de lockfile)
+COPY package.json ./
+RUN pnpm install
+
+# Sources + config de compilation
+COPY tsconfig.json ./
+COPY src ./src
+RUN pnpm build
+
+# --- Runtime stage ---
+FROM node:23-alpine3.21 AS runner
+ENV NODE_ENV=production
+WORKDIR /app
+RUN corepack enable pnpm
+
+# Dépendances de production uniquement
+COPY package.json ./
+RUN pnpm install --prod
+
+# Artefacts compilés
+COPY --from=builder /app/dist ./dist
+
+# Exécution non-root
+USER node
+
+EXPOSE 3310
+CMD ["node", "dist/server.js"]
