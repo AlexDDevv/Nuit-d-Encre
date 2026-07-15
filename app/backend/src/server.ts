@@ -86,7 +86,9 @@ if (!process.env.APP_PORT) {
             ],
             validate: true, // Activate validation for input fields
             authChecker: customAuthChecker,
-            emitSchemaFile: true, // Optional , for debugging
+            // Écrit schema.graphql sur disque : utile en dev, désactivé en prod
+            // (conteneur non-root en lecture seule sur /app).
+            emitSchemaFile: process.env.NODE_ENV !== "production",
         });
 
         //Create instance of ApolloServer with the schema
