@@ -2,6 +2,7 @@ import "reflect-metadata";
 import "dotenv/config";
 import { join } from "path";
 import { DataSource } from "typeorm";
+import { shouldRunMigrations } from "./should-run-migrations";
 
 export const dataSource = new DataSource({
     type: "postgres",
@@ -14,10 +15,10 @@ export const dataSource = new DataSource({
     entities: [join(__dirname, "../entities/**/*.{ts,js}")],
     migrations: [join(__dirname, "../migrations/**/*.{ts,js}")],
     synchronize: false,
-    // Auto-run pending migrations on boot in dev for convenience. In prod,
-    // run them as an explicit deploy step (pnpm migration:run) so a failing
-    // or slow migration can't block app startup or race across instances.
-    migrationsRun: process.env.NODE_ENV !== "production",
+    // Auto-run des migrations au boot (dev et prod). Instance unique sur
+    // CapRover : pas de course multi-instances. Désactivable via
+    // DB_MIGRATIONS_RUN="false". Voir should-run-migrations.ts.
+    migrationsRun: shouldRunMigrations(process.env.DB_MIGRATIONS_RUN),
     // En production, ne journalise que les erreurs/avertissements pour éviter
     // d'écrire des données personnelles (emails, etc.) en clair dans les logs.
     logging:
