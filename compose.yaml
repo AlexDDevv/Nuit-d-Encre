@@ -23,10 +23,8 @@ services:
             dockerfile: Dockerfile # Name of the Dockerfile to use
         ports: 
             - 3310:3310
-        environment:    
+        environment:
             - CHOKIDAR_USEPOLLING=true
-            - DB_HOST=db
-        # - JWT_SECRET_KEY=58252e5e-a7ea-4799-a207-87ab40136741
         env_file:
             - ./app/backend/.env # Loads environment variables from a file
         volumes:
