@@ -1,13 +1,11 @@
 import { User } from "../database/entities/user/user"
 import { register } from "../services/auth-service"
-import { Roles, UserRole } from "../types/types"
+import { Roles } from "../types/types"
 
 async function createAdmin() {
 	const email = process.env.ADMIN_EMAIL
 	const password = process.env.ADMIN_PASSWORD
 	const userName = process.env.ADMIN_USERNAME
-		? (process.env.ADMIN_ROLE as UserRole)
-		: Roles.User
 
 	// Verify environment variables
 	if (!email) {
@@ -19,7 +17,7 @@ async function createAdmin() {
 		return
 	}
 	if (!userName) {
-		console.error("❌ ADMIN_NAME is not defined.")
+		console.error("❌ ADMIN_USERNAME is not defined.")
 		return
 	}
 
