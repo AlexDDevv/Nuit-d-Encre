@@ -27,16 +27,17 @@ export class CloudinaryService {
         }
     }
 
-    // Upload signé d'une image fournie en data URI (base64). `publicId` est
+    // Upload signé d'une image, fournie soit en data URI (base64), soit par URL
+    // distante que Cloudinary va chercher lui-même. `publicId` est
     // déterministe (ex. "users/42/avatar") : `overwrite` remplace l'ancien
     // fichier et `invalidate` purge le cache CDN. `asset_folder` (parent du
     // public_id) reproduit l'arborescence dans la vue « Folders » des comptes
     // en mode dossiers dynamiques, où elle ne dérive pas du public_id.
-    async uploadImage(dataUri: string, publicId: string): Promise<string | null> {
+    async uploadImage(source: string, publicId: string): Promise<string | null> {
         try {
             const slash = publicId.lastIndexOf("/");
             const assetFolder = slash > 0 ? publicId.slice(0, slash) : undefined;
-            const result = await cloudinary.uploader.upload(dataUri, {
+            const result = await cloudinary.uploader.upload(source, {
                 public_id: publicId,
                 asset_folder: assetFolder,
                 overwrite: true,

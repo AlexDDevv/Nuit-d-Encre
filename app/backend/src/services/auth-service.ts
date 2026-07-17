@@ -6,6 +6,7 @@ import { dataSource } from "../database/config/datasource";
 import { LogInResponse, User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
 import { GoogleProfile, Roles, UserRole } from "../types/types";
+import { CloudinaryService } from "./cloudinary.service";
 
 export const register = async (
     email: string,
@@ -96,6 +97,32 @@ const generateUniqueUserName = async (
     return candidate;
 };
 
+const cloudinaryService = new CloudinaryService();
+
+// Copie la photo de profil Google sur Cloudinary et renseigne `user.avatar`.
+// L'URL Google (lh3.googleusercontent.com) n'est jamais stockée : hotlinker le
+// CDN de Google renvoie des HTTP 429 et casse l'image côté navigateur.
+//
+// `user` doit déjà être persisté : le public_id dérive de son UUID. Le même
+// public_id que l'upload manuel (`users/<id>/avatar`) est réutilisé, donc un
+// avatar téléversé plus tard écrase cet asset au lieu de l'orpheliner.
+//
+// Ne lève jamais et ne persiste pas : en cas d'échec `avatar` reste inchangé
+// (le profil affiche alors le monogramme d'initiales) et la connexion aboutit.
+const syncGoogleAvatar = async (
+    user: User,
+    pictureUrl?: string | null
+): Promise<void> => {
+    if (!pictureUrl) return;
+
+    const url = await cloudinaryService.uploadImage(
+        pictureUrl,
+        `users/${user.id}/avatar`
+    );
+
+    if (url) user.avatar = url;
+};
+
 // Résout l'utilisateur associé à un profil Google vérifié : par googleId,
 // sinon liaison par email, sinon création d'un nouveau compte.
 export const resolveOrCreateGoogleUser = async (
@@ -115,8 +142,8 @@ export const resolveOrCreateGoogleUser = async (
     });
     if (byEmail) {
         byEmail.googleId = profile.sub;
-        if (!byEmail.avatar && profile.picture) {
-            byEmail.avatar = profile.picture;
+        if (!byEmail.avatar) {
+            await syncGoogleAvatar(byEmail, profile.picture);
         }
         await byEmail.save();
         return byEmail;
@@ -131,7 +158,7 @@ export const resolveOrCreateGoogleUser = async (
         email: profile.email,
         googleId: profile.sub,
         userName,
-        avatar: profile.picture ?? null,
+        avatar: null,
         hashedPassword: null,
         role: Roles.User,
         level: 1,
@@ -139,6 +166,12 @@ export const resolveOrCreateGoogleUser = async (
     });
 
     await user.save();
+
+    // Le public_id dérive de l'UUID : l'utilisateur doit exister en base avant
+    // qu'on puisse nommer son asset Cloudinary.
+    await syncGoogleAvatar(user, profile.picture);
+    if (user.avatar) await user.save();
+
     return user;
 };
 
