@@ -165,7 +165,7 @@ export default function ProfileHero({
             {/* Corps */}
             <div className="relative px-5 pb-6 md:px-8">
                 {/* Avatar chevauchant, éditable en place */}
-                <div className="absolute -top-12 left-1/2 -translate-x-1/2 md:-top-14 md:left-8 md:translate-x-0">
+                <div className="absolute -top-12 left-1/2 z-20 -translate-x-1/2 md:-top-14 md:left-8 md:translate-x-0">
                     <div className="group/av relative">
                         <div className="ring-primary/70 relative h-24 w-24 overflow-hidden rounded-full shadow-[0_8px_30px_-6px_hsl(0_0%_0%/0.6)] ring-2 md:h-28 md:w-28">
                             {user.avatar ? (
