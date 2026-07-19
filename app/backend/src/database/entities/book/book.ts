@@ -213,9 +213,9 @@ export class Book extends BaseEntity {
      * @description
      * Many-to-one relationship with the User entity.
      */
-    @ManyToOne(() => User, (user) => user.books)
-    @Field(() => User)
-    user!: User;
+    @ManyToOne(() => User, (user) => user.books, { nullable: true })
+    @Field(() => User, { nullable: true })
+    user?: User | null;
 
     @OneToMany(() => UserBook, (ub) => ub.book)
     userBooks!: UserBook[];

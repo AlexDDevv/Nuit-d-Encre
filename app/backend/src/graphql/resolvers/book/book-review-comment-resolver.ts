@@ -68,7 +68,7 @@ export class BookReviewCommentsResolver {
             throw new AppError("Comment not found", 404, "NotFoundError");
         }
 
-        if (!isOwnerOrAdmin(comment.user.id, user)) {
+        if (!isOwnerOrAdmin(comment.user?.id ?? "", user)) {
             throw new AppError(
                 "Not authorized to delete this comment",
                 403,

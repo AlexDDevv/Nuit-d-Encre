@@ -160,7 +160,7 @@ export class BookReviewVotesResolver {
             }
 
             // Prevent users from voting on their own reviews
-            if (review.user.id === user.id) {
+            if (review.user?.id === user.id) {
                 throw new AppError(
                     "You cannot vote on your own review",
                     403,
@@ -201,7 +201,7 @@ export class BookReviewVotesResolver {
                 action = "created";
 
                 // Grant XP to the review author when their review receives a helpful vote
-                if (data.isHelpful) {
+                if (data.isHelpful && review.user) {
                     await grantXpService(
                         review.user,
                         UserActionType.REVIEW_VOTED_HELPFUL,
@@ -361,7 +361,7 @@ export class BookReviewVotesResolver {
             }
 
             // Prevent users from voting on their own reviews
-            if (review.user.id === user.id) {
+            if (review.user?.id === user.id) {
                 throw new AppError(
                     "You cannot vote on your own review",
                     403,
@@ -381,17 +381,20 @@ export class BookReviewVotesResolver {
                 },
             });
 
-            const grantHelpfulXp = () => grantXpService(
-                review.user,
-                UserActionType.REVIEW_VOTED_HELPFUL,
-                {
-                    targetId: review.id,
-                    metadata: {
-                        voterId: user.id,
-                        voterName: user.userName || "Unknown",
-                    },
-                }
-            );
+            const grantHelpfulXp = () =>
+                review.user
+                    ? grantXpService(
+                          review.user,
+                          UserActionType.REVIEW_VOTED_HELPFUL,
+                          {
+                              targetId: review.id,
+                              metadata: {
+                                  voterId: user.id,
+                                  voterName: user.userName || "Unknown",
+                              },
+                          }
+                      )
+                    : Promise.resolve();
 
             // If exists and is helpful, remove it (toggle off)
             if (existingVote && existingVote.isHelpful) {

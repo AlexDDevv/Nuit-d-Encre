@@ -133,9 +133,9 @@ export class Author extends BaseEntity {
      * @description
      * Many-to-one relationship with the User entity.
      */
-    @ManyToOne(() => User, (user) => user.authors)
-    @Field(() => User)
-    user!: User;
+    @ManyToOne(() => User, (user) => user.authors, { nullable: true })
+    @Field(() => User, { nullable: true })
+    user?: User | null;
 
     /**
      * Timestamp when the author was created

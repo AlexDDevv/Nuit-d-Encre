@@ -467,7 +467,7 @@ export class BookReviewsResolver {
             }
 
             // Check authorization
-            if (!isOwnerOrAdmin(review.user.id, user)) {
+            if (!isOwnerOrAdmin(review.user?.id ?? "", user)) {
                 throw new AppError(
                     "Not authorized to update this review",
                     403,
@@ -548,7 +548,7 @@ export class BookReviewsResolver {
             }
 
             // Check authorization
-            if (!isOwnerOrAdmin(review.user.id, user)) {
+            if (!isOwnerOrAdmin(review.user?.id ?? "", user)) {
                 throw new AppError(
                     "Not authorized to delete this review",
                     403,

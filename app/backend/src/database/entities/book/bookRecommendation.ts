@@ -72,9 +72,9 @@ export class BookRecommendation extends BaseEntity {
      * Many-to-one relationship with the User entity.
      * Each recommendation belongs to exactly one user.
      */
-    @ManyToOne(() => User, (user) => user.bookRecommendations)
-    @Field(() => User)
-    user!: User;
+    @ManyToOne(() => User, (user) => user.bookRecommendations, { nullable: true })
+    @Field(() => User, { nullable: true })
+    user?: User | null;
 
     /**
      * The book being recommended

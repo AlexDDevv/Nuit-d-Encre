@@ -321,7 +321,7 @@ export class BooksResolver {
                 )
             }
 
-            if (!isOwnerOrAdmin(book.user.id, user)) {
+            if (!isOwnerOrAdmin(book.user?.id ?? "", user)) {
                 throw new AppError(
                     "Not authorized to delete this book",
                     403,
@@ -420,7 +420,7 @@ export class BooksResolver {
                 )
             }
 
-            if (!isOwnerOrAdmin(book.user.id, user)) {
+            if (!isOwnerOrAdmin(book.user?.id ?? "", user)) {
                 throw new AppError(
                     "Not authorized to delete this book",
                     403,

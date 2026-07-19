@@ -26,9 +26,9 @@ export class BookReviewComment extends BaseEntity {
     @Column({ type: "text" })
     content!: string;
 
-    @ManyToOne(() => User)
-    @Field(() => User)
-    user!: User;
+    @ManyToOne(() => User, { nullable: true })
+    @Field(() => User, { nullable: true })
+    user?: User | null;
 
     @ManyToOne(() => BookReview, (review) => review.comments, {
         onDelete: "CASCADE",

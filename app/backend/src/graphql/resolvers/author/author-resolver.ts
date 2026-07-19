@@ -324,7 +324,7 @@ export class AuthorsResolver {
                 throw new AppError("Author not found", 404, "NotFoundError")
             }
 
-            if (!isOwnerOrAdmin(author.user.id, user)) {
+            if (!isOwnerOrAdmin(author.user?.id ?? "", user)) {
                 throw new AppError(
                     "Not authorized to delete this author",
                     403,
@@ -392,7 +392,7 @@ export class AuthorsResolver {
                 throw new AppError("Author not found", 404, "NotFoundError")
             }
 
-            if (!isOwnerOrAdmin(author.user.id, user)) {
+            if (!isOwnerOrAdmin(author.user?.id ?? "", user)) {
                 throw new AppError(
                     "Not authorized to delete this author",
                     403,
