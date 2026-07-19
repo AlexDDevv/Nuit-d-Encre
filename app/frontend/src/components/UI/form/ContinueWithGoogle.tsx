@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import ContinueWith from "@/components/UI/form/ContinueWith";
 import Button from "@/components/UI/Button/Button";
@@ -25,6 +26,13 @@ export default function ContinueWithGoogle() {
             >
                 Continuer avec Google
             </Button>
+            <p className="text-muted-foreground/70 mt-2 text-center text-xs">
+                En continuant avec Google, vous acceptez notre{" "}
+                <Link to="/confidentialite" className="underline">
+                    politique de confidentialité
+                </Link>
+                .
+            </p>
         </>
     );
 }

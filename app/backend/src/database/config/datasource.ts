@@ -18,5 +18,8 @@ export const dataSource = new DataSource({
     // run them as an explicit deploy step (pnpm migration:run) so a failing
     // or slow migration can't block app startup or race across instances.
     migrationsRun: process.env.NODE_ENV !== "production",
-    logging: true,
+    // En production, ne journalise que les erreurs/avertissements pour éviter
+    // d'écrire des données personnelles (emails, etc.) en clair dans les logs.
+    logging:
+        process.env.NODE_ENV === "production" ? ["error", "warn"] : true,
 });
