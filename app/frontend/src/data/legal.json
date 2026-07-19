@@ -10,13 +10,10 @@
             "intro": "Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., nous portons à la connaissance des utilisateurs et visiteurs du site les informations suivantes :",
             "ficheLabel": "Éditeur du site",
             "fiche": [
-                { "k": "Raison sociale", "v": "[Nom de votre entreprise]" },
-                { "k": "Forme juridique", "v": "[Forme juridique]" },
-                { "k": "Adresse", "v": "[Adresse complète]" },
-                { "k": "Téléphone", "v": "[Numéro de téléphone]" },
-                { "k": "Email", "v": "[Adresse email]" },
-                { "k": "SIRET", "v": "[Numéro SIRET]" },
-                { "k": "TVA intracommunautaire", "v": "[Numéro TVA]" }
+                { "k": "Éditeur", "v": "[Prénom Nom] (personne physique)" },
+                { "k": "Contact", "v": "contact@nuitdencre.fr" },
+                { "k": "Directeur de la publication", "v": "[Prénom Nom]" },
+                { "k": "Statut", "v": "Site édité à titre personnel, sans finalité commerciale" }
             ]
         },
         {
@@ -28,8 +25,8 @@
             "ficheLabel": "Hébergeur",
             "fiche": [
                 { "k": "Société", "v": "[Nom de l'hébergeur]" },
-                { "k": "Adresse", "v": "[Adresse de l'hébergeur]" },
-                { "k": "Site web", "v": "[Site web de l'hébergeur]" }
+                { "k": "Adresse", "v": "[Adresse postale de l'hébergeur]" },
+                { "k": "Site web", "v": "[URL du site de l'hébergeur]" }
             ]
         },
         {
@@ -140,7 +137,7 @@
             "id": "durees-conservation",
             "num": "12",
             "title": "Durées de conservation",
-            "icon": "Moon",
+            "icon": "Server",
             "intro": "Vos données personnelles ne sont conservées que pour la durée strictement nécessaire aux finalités poursuivies :",
             "ficheLabel": "Durées de conservation",
             "fiche": [
