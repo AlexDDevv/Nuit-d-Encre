@@ -1,1 +1,1 @@
-export type Tab = "infos" | "security";
+export type Tab = "infos" | "security" | "privacy";

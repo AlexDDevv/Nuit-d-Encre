@@ -1,4 +1,4 @@
-import { FaRegUser, FaShieldHalved } from "react-icons/fa6";
+import { FaRegUser, FaShieldHalved, FaUserShield } from "react-icons/fa6";
 import SegmentedTabs from "@/components/UI/SegmentedTabs";
 import { SegmentedOption } from "@/types/types";
 import { Tab } from "./types";
@@ -6,6 +6,7 @@ import { Tab } from "./types";
 const OPTIONS: SegmentedOption<Tab>[] = [
     { value: "infos", label: "Informations", icon: FaRegUser },
     { value: "security", label: "Sécurité", icon: FaShieldHalved },
+    { value: "privacy", label: "Confidentialité", icon: FaUserShield },
 ];
 
 // - Sélecteur d'onglets segmenté (bascule dorée), via la primitive SegmentedTabs -

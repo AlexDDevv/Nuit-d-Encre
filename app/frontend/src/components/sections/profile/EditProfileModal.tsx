@@ -14,6 +14,7 @@ import TabSwitch from "./editProfile/TabSwitch";
 import Field from "./editProfile/Field";
 import { TextInput, PasswordInput } from "./editProfile/Inputs";
 import { validateInfos, validateSecurity } from "./editProfile/validation";
+import PrivacySection from "./editProfile/PrivacySection";
 
 interface EditProfileModalProps {
     user: User;
@@ -283,7 +284,7 @@ export default function EditProfileModal({
                                 </div>
                             </Field>
                         </div>
-                    ) : (
+                    ) : tab === "security" ? (
                         <div
                             role="tabpanel"
                             id="panel-security"
@@ -366,6 +367,14 @@ export default function EditProfileModal({
                                 />
                             </Field>
                         </div>
+                    ) : (
+                        <div
+                            role="tabpanel"
+                            id="panel-privacy"
+                            aria-labelledby="tab-privacy"
+                        >
+                            <PrivacySection />
+                        </div>
                     )}
                 </div>
 
@@ -392,7 +401,7 @@ export default function EditProfileModal({
                             >
                                 Enregistrer
                             </Button>
-                        ) : (
+                        ) : tab === "security" ? (
                             <Button
                                 variant="primary"
                                 onClick={submitSecurity}
@@ -401,7 +410,7 @@ export default function EditProfileModal({
                             >
                                 Changer le mot de passe
                             </Button>
-                        )}
+                        ) : null}
                     </div>
                 </div>
             </div>
