@@ -112,17 +112,17 @@ Nuit-d-Encre/
 │           │   └── types.ts              # Enums et types partagés backend (UserRole, UserActionType, Context)
 │           ├── database/
 │           │   ├── config/datasource.ts  # Configuration TypeORM DataSource (PostgreSQL)
-│           │   ├── entities/             # Entités TypeORM + TypeGraphQL (11 entités)
-│           │   │   ├── user/             # User, UserBook, UserActions
-│           │   │   ├── book/             # Book, BookReview, BookReviewVote, BookRecommendation
+│           │   ├── entities/             # Entités TypeORM + TypeGraphQL (13 entités)
+│           │   │   ├── user/             # User, UserBook, UserActions, UserFollow
+│           │   │   ├── book/             # Book, BookReview, BookReviewComment, BookReviewVote, BookRecommendation
 │           │   │   ├── author/           # Author
 │           │   │   ├── category/         # Category
 │           │   │   ├── banner/           # SiteBanner
 │           │   │   └── gamification/     # Title
 │           │   └── filteredResults/      # Types TypeGraphQL pour pagination (BooksResult, etc.)
 │           ├── graphql/
-│           │   ├── resolvers/            # 14 resolvers TypeGraphQL
-│           │   │   ├── user/             # AuthResolver, UserBooksResolver, ProfileResolver, UserActionsResolver
+│           │   ├── resolvers/            # 16 resolvers TypeGraphQL
+│           │   │   ├── user/             # AuthResolver, UserBooksResolver, ProfileResolver, UserActionsResolver, FeedResolver, FollowResolver
 │           │   │   ├── book/             # BooksResolver, BookReviewsResolver, BookReviewVotesResolver, BookRecommendationsResolver, BookSearchResolver
 │           │   │   ├── author/           # AuthorsResolver
 │           │   │   ├── category/         # CategoryResolver
