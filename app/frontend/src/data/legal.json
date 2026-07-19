@@ -84,6 +84,99 @@
                 "Pour toute question relative aux présentes mentions légales, vous pouvez contacter l'éditeur à l'adresse suivante :"
             ],
             "contact": "contact@nuitdencre.fr"
+        },
+        {
+            "id": "responsable-traitement",
+            "num": "08",
+            "title": "Responsable du traitement",
+            "icon": "Feather",
+            "paras": [
+                "Le responsable du traitement des données personnelles collectées via ce site est [Prénom Nom], éditeur du site à titre personnel en qualité de personne physique.",
+                "Il n'existe pas de délégué à la protection des données (DPO) désigné, cette désignation n'étant pas obligatoire au regard du volume et de la nature des traitements réalisés."
+            ],
+            "contact": "contact@nuitdencre.fr"
+        },
+        {
+            "id": "donnees-collectees",
+            "num": "09",
+            "title": "Données collectées",
+            "icon": "Shield",
+            "intro": "Dans le cadre du fonctionnement du service, les catégories de données personnelles suivantes sont collectées et traitées :",
+            "paras": [
+                "Données de compte : adresse email, pseudonyme, mot de passe (haché via l'algorithme Argon2, jamais stocké ni transmis en clair), photo de profil (avatar) et bannière de profil, biographie (texte libre).",
+                "Données d'usage du service : bibliothèque personnelle (livres ajoutés, statuts de lecture), critiques rédigées, recommandations, votes sur les critiques, ainsi qu'un journal d'activité retraçant les actions liées à la gamification (points d'expérience, niveaux, titres débloqués).",
+                "En cas de connexion via Google : identifiant Google, adresse email et photo de profil associés à votre compte Google, transmis par Google lors de l'authentification."
+            ]
+        },
+        {
+            "id": "finalites-bases-legales",
+            "num": "10",
+            "title": "Finalités et bases légales",
+            "icon": "Scale",
+            "paras": [
+                "La gestion de votre compte et la fourniture des fonctionnalités du service (bibliothèque, critiques, recommandations, votes) reposent sur l'exécution du contrat qui vous lie à Nuit d'Encre au sens de l'article 6-1-b du RGPD, ce contrat correspondant aux présentes conditions d'utilisation acceptées lors de l'inscription.",
+                "La connexion via Google repose sur votre consentement (article 6-1-a du RGPD), matérialisé par le clic sur le bouton de connexion Google.",
+                "Le traitement des données liées à la gamification (points d'expérience, niveaux, titres) et à la sécurité du service (limitation du nombre de requêtes, prévention des abus) repose sur l'intérêt légitime de l'éditeur (article 6-1-f du RGPD) à animer la communauté et à assurer la disponibilité et la sécurité du site."
+            ]
+        },
+        {
+            "id": "destinataires-sous-traitants",
+            "num": "11",
+            "title": "Destinataires et sous-traitants",
+            "icon": "Server",
+            "intro": "Vos données personnelles peuvent être transmises aux destinataires et sous-traitants suivants, dans la stricte mesure nécessaire à la fourniture du service :",
+            "ficheLabel": "Sous-traitants",
+            "fiche": [
+                { "k": "Hébergeur", "v": "Hébergement de l'application et de la base de données." },
+                { "k": "Cloudinary", "v": "Stockage des images (avatars, bannières de profil) — transfert hors Union européenne (États-Unis)." },
+                { "k": "Google", "v": "Authentification OAuth et récupération de métadonnées de livres — transfert hors Union européenne (États-Unis)." },
+                { "k": "Open Library", "v": "Recherche de métadonnées de livres — aucune donnée personnelle transmise." }
+            ],
+            "paras": [
+                "Les transferts de données hors Union européenne réalisés par Cloudinary et Google sont encadrés par des garanties reconnues par le RGPD : adhésion au Data Privacy Framework UE-États-Unis et/ou clauses contractuelles types de la Commission européenne."
+            ]
+        },
+        {
+            "id": "durees-conservation",
+            "num": "12",
+            "title": "Durées de conservation",
+            "icon": "Moon",
+            "intro": "Vos données personnelles ne sont conservées que pour la durée strictement nécessaire aux finalités poursuivies :",
+            "ficheLabel": "Durées de conservation",
+            "fiche": [
+                { "k": "Compte actif", "v": "Conservé tant que le compte reste actif." },
+                { "k": "Compte inactif", "v": "Suppression ou anonymisation après 3 ans sans connexion." },
+                { "k": "Journal d'activité", "v": "13 mois glissants (les totaux d'expérience et de niveau restent conservés sur le compte)." },
+                { "k": "Journaux techniques", "v": "12 mois maximum." }
+            ]
+        },
+        {
+            "id": "droits-personnes",
+            "num": "13",
+            "title": "Vos droits",
+            "icon": "Gavel",
+            "intro": "Conformément aux articles 15 à 22 du Règlement (UE) 2016/679 (RGPD), vous disposez sur vos données personnelles d'un droit d'accès, de rectification, d'effacement, de portabilité, d'opposition et de limitation du traitement.",
+            "ficheLabel": "Exercer vos droits",
+            "fiche": [
+                { "k": "Espace profil", "v": "Rubriques « Mes données » (export) et « Supprimer mon compte » (effacement), accessibles directement depuis votre profil." },
+                { "k": "Email", "v": "contact@nuitdencre.fr", "email": true },
+                { "k": "Réclamation", "v": "www.cnil.fr", "link": "https://www.cnil.fr" }
+            ],
+            "paras": [
+                "Le droit d'opposition peut notamment être exercé à l'encontre du traitement du journal d'activité lié à la gamification, fondé sur l'intérêt légitime de l'éditeur. Toute demande est traitée manuellement dans les meilleurs délais.",
+                "Si vous estimez, après nous avoir contactés, que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL)."
+            ]
+        },
+        {
+            "id": "cookies-session",
+            "num": "14",
+            "title": "Cookies",
+            "icon": "Cookie",
+            "paras": [
+                "Ce site utilise un unique cookie, strictement nécessaire au fonctionnement du service : le cookie de session (token), qui permet de maintenir votre authentification. Il est de type httpOnly (inaccessible en JavaScript), signé, et ne peut être lu ou modifié que par le serveur.",
+                "Ce cookie étant strictement nécessaire à la fourniture du service, il est exempté de consentement au titre de la réglementation applicable (article 82 de la loi Informatique et Libertés).",
+                "Aucun traceur publicitaire ni aucun outil de mesure d'audience (Google Analytics, Matomo ou équivalent) n'est utilisé sur ce site. En l'absence de cookies non essentiels, aucun bandeau de consentement n'est donc requis."
+            ]
         }
     ]
 }
