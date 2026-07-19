@@ -28,6 +28,7 @@ export default function Signup() {
             email: "",
             password: "",
             confirmPassword: "",
+            acceptTerms: false,
         },
     });
 
@@ -184,6 +185,41 @@ export default function Signup() {
                     }}
                 />
 
+                <div className="flex flex-col gap-1">
+                    <label className="text-muted-foreground flex items-start gap-2 text-sm">
+                        <input
+                            type="checkbox"
+                            {...register("acceptTerms", {
+                                required:
+                                    "Vous devez accepter les conditions pour créer un compte",
+                            })}
+                            className="mt-1"
+                        />
+                        <span>
+                            J&apos;ai lu et j&apos;accepte les{" "}
+                            <Link
+                                to="/terms-of-use"
+                                className="text-primary underline"
+                            >
+                                mentions légales
+                            </Link>{" "}
+                            et la{" "}
+                            <Link
+                                to="/confidentialite"
+                                className="text-primary underline"
+                            >
+                                politique de confidentialité
+                            </Link>
+                            .
+                        </span>
+                    </label>
+                    {errors.acceptTerms && (
+                        <p className="text-destructive text-xs">
+                            {errors.acceptTerms.message}
+                        </p>
+                    )}
+                </div>
+
                 <div className="mt-1">
                     <Button
                         type="submit"
@@ -200,19 +236,8 @@ export default function Signup() {
             {/* Séparateur orné « ou » + bouton Google */}
             <ContinueWithGoogle />
 
-            {/* Mentions légales + navigation vers la page de connexion */}
+            {/* Navigation vers la page de connexion */}
             <div className="mt-6 flex flex-col items-center gap-2.5 text-center">
-                <p className="font-quote text-muted-foreground/70 text-pretty text-sm italic leading-relaxed">
-                    En créant un compte, vous acceptez les conditions exposées
-                    dans nos{" "}
-                    <Link
-                        to="/terms-of-use"
-                        className="text-primary decoration-primary/40 focus-visible:ring-primary/70 rounded-sm font-medium not-italic underline underline-offset-[3px] transition-colors hover:text-[hsl(43_70%_88%)] hover:decoration-[hsl(43_59%_81%)] focus:outline-none focus-visible:ring-2"
-                    >
-                        mentions légales
-                    </Link>
-                    .
-                </p>
                 <p className="font-quote text-muted-foreground/75 text-sm italic leading-relaxed">
                     Déjà une carte d'accès ?{" "}
                     <Link

@@ -89,5 +89,8 @@ export type UserSignUp = UserAuth;
 export type UserSignIn = Pick<UserAuth, "email" | "password">;
 export type UserSignForm = UserSignUp | UserSignIn;
 
-/** Valeurs du formulaire d'inscription (champ `confirmPassword` côté front uniquement). */
-export type UserSignUpForm = UserSignUp & { confirmPassword: string };
+/** Valeurs du formulaire d'inscription (champs `confirmPassword` et `acceptTerms` côté front uniquement). */
+export type UserSignUpForm = UserSignUp & {
+    confirmPassword: string;
+    acceptTerms: boolean;
+};
