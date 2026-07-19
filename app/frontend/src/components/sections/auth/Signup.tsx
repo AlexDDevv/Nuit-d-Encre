@@ -3,7 +3,13 @@ import { UserSignUpForm } from "@/types/types";
 import { ApolloError, useMutation } from "@apollo/client";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useSearchParams } from "react-router-dom";
-import { LuArrowRight, LuLock, LuMail, LuUser } from "react-icons/lu";
+import {
+    LuArrowRight,
+    LuCircleAlert,
+    LuLock,
+    LuMail,
+    LuUser,
+} from "react-icons/lu";
 import TextField from "@/components/sections/shared/fields/TextField";
 import PasswordStrengthMeter from "@/components/sections/auth/PasswordStrengthMeter";
 import AuthShell from "@/components/sections/auth/AuthShell";
@@ -185,7 +191,7 @@ export default function Signup() {
                     }}
                 />
 
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-1.5">
                     <label className="text-muted-foreground flex items-start gap-2 text-sm">
                         <input
                             type="checkbox"
@@ -193,10 +199,11 @@ export default function Signup() {
                                 required:
                                     "Vous devez accepter les conditions pour créer un compte",
                             })}
-                            className="mt-1"
+                            aria-invalid={errors.acceptTerms ? "true" : "false"}
+                            className="border-border bg-input accent-primary mt-1 size-4 shrink-0 rounded-sm border outline-none"
                         />
                         <span>
-                            J&apos;ai lu et j&apos;accepte les{" "}
+                            J'ai lu et j'accepte les{" "}
                             <Link
                                 to="/terms-of-use"
                                 className="text-primary underline"
@@ -214,9 +221,13 @@ export default function Signup() {
                         </span>
                     </label>
                     {errors.acceptTerms && (
-                        <p className="text-destructive text-xs">
+                        <span
+                            role="alert"
+                            className="text-destructive inline-flex items-center gap-1.5 text-xs"
+                        >
+                            <LuCircleAlert size={13} />{" "}
                             {errors.acceptTerms.message}
-                        </p>
+                        </span>
                     )}
                 </div>
 
