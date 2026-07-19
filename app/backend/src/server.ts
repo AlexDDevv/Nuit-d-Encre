@@ -27,6 +27,7 @@ import { BookSearchResolver } from "./graphql/resolvers/book/book-search-resolve
 import { AdminResolver } from "./graphql/resolvers/admin/admin-resolver";
 import { SiteBannersResolver } from "./graphql/resolvers/banner/site-banner-resolver";
 import { StatsResolver } from "./graphql/resolvers/stats/stats-resolver";
+import { PrivacyResolver } from "./graphql/resolvers/user/privacy-resolver";
 import { createLoaders } from "./graphql/dataloaders";
 import { whoami } from "./services/auth-service";
 import { User } from "./database/entities/user/user";
@@ -81,6 +82,7 @@ if (!process.env.APP_PORT) {
                 AdminResolver,
                 SiteBannersResolver,
                 StatsResolver,
+                PrivacyResolver,
             ],
             validate: true, // Activate validation for input fields
             authChecker: customAuthChecker,
