@@ -45,9 +45,9 @@
             "title": "Collecte des données personnelles",
             "icon": "Shield",
             "paras": [
-                "Les informations recueillies via nos formulaires sont enregistrées dans un fichier informatisé par [Nom de votre entreprise] pour [finalité du traitement].",
-                "Conformément au Règlement Général sur la Protection des Données (RGPD), vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en contactant : [contact pour les données personnelles].",
-                "Nous conservons vos données pendant [durée de conservation] à compter de [point de départ de la conservation]."
+                "Les informations recueillies via nos formulaires sont enregistrées dans un fichier informatisé par l'éditeur du site afin de gérer votre compte et de vous fournir les fonctionnalités de la plateforme (gestion de vos lectures, critiques et recommandations).",
+                "Conformément au Règlement Général sur la Protection des Données (RGPD), vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en contactant : contact@nuitdencre.fr.",
+                "Pour le détail des finalités, des bases légales et des durées de conservation, veuillez consulter notre politique de confidentialité."
             ]
         },
         {
@@ -66,8 +66,8 @@
             "title": "Limitation de responsabilité",
             "icon": "Scale",
             "paras": [
-                "[Nom de votre entreprise] ne pourra être tenue responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications techniques requises, soit de l'apparition d'un bug ou d'une incompatibilité.",
-                "[Nom de votre entreprise] ne pourra également être tenue responsable des dommages indirects consécutifs à l'utilisation du site."
+                "L'éditeur du site ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l'utilisateur, lors de l'accès au site, et résultant soit de l'utilisation d'un matériel ne répondant pas aux spécifications techniques requises, soit de l'apparition d'un bug ou d'une incompatibilité.",
+                "L'éditeur du site ne pourra également être tenu responsable des dommages indirects consécutifs à l'utilisation du site."
             ]
         },
         {
