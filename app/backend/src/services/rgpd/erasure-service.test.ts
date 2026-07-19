@@ -19,7 +19,7 @@ const transactionMock = dataSource.transaction as jest.Mock;
 describe("eraseUserAccount", () => {
     it("supprime le personnel, anonymise les contributions et détache le catalogue en une transaction", async () => {
         const deletes: unknown[] = [];
-        const setNulls: unknown[] = [];
+        const setNulls: { target: unknown; where: unknown }[] = [];
 
         const manager = {
             delete: jest.fn(async (entity: unknown) => {
@@ -28,14 +28,18 @@ describe("eraseUserAccount", () => {
             createQueryBuilder: jest.fn(() => {
                 const qb: Record<string, unknown> = {};
                 let target: unknown;
+                let where: unknown;
                 qb.update = (t: unknown) => {
                     target = t;
                     return qb;
                 };
                 qb.set = () => qb;
-                qb.where = () => qb;
+                qb.where = (condition: unknown) => {
+                    where = condition;
+                    return qb;
+                };
                 qb.execute = async () => {
-                    setNulls.push(target);
+                    setNulls.push({ target, where });
                 };
                 return qb;
             }),
@@ -52,7 +56,8 @@ describe("eraseUserAccount", () => {
         // Compte supprimé en dernier (déclenche la cascade user_book/user_follow)
         expect(deletes[deletes.length - 1]).toBe(User);
         // Contributions anonymisées / détachées (SET NULL)
-        expect(setNulls).toEqual(
+        const targets = setNulls.map((s) => s.target);
+        expect(targets).toEqual(
             expect.arrayContaining([
                 BookReview,
                 BookRecommendation,
@@ -62,5 +67,25 @@ describe("eraseUserAccount", () => {
                 Category,
             ]),
         );
+
+        // La colonne FK détachée doit correspondre à l'entité (régression : Category
+        // utilise "createdById", pas "userId")
+        const findSetNull = (entity: unknown) =>
+            setNulls.find((s) => s.target === entity);
+
+        expect(findSetNull(Category)?.where).toEqual(
+            expect.stringContaining("createdById"),
+        );
+        for (const entity of [
+            BookReview,
+            BookRecommendation,
+            BookReviewComment,
+            Book,
+            Author,
+        ]) {
+            expect(findSetNull(entity)?.where).toEqual(
+                expect.stringContaining('"userId"'),
+            );
+        }
     });
 });
