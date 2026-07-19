@@ -5,7 +5,10 @@ import { usePagination } from "@/hooks/admin/usePagination";
 import { useToast } from "@/hooks/toast/useToast";
 import type { AdminReviewRow } from "@/types/types";
 import Pagination from "@/components/UI/Pagination";
-import { EmptyState, SkeletonRows } from "@/components/sections/admin/ui/feedback";
+import {
+    EmptyState,
+    SkeletonRows,
+} from "@/components/sections/admin/ui/feedback";
 import { ConfirmDialog } from "@/components/sections/admin/ui/ConfirmDialog";
 import ReviewsTable from "../reviews/ReviewsTable";
 
@@ -26,7 +29,7 @@ export function ReviewsTab() {
             showToast({
                 type: "success",
                 title: "Critique supprimée",
-                description: `La critique de ${pending.user.userName} a été supprimée.`,
+                description: `La critique de ${pending.user?.userName ?? "Lecteur supprimé"} a été supprimée.`,
             });
         } catch (error) {
             showToast({
@@ -42,11 +45,11 @@ export function ReviewsTab() {
     return (
         <section className="fade-up">
             {isLoadingReviews ? (
-                <div className="rounded-xl border-2 border-border bg-card">
+                <div className="border-border bg-card rounded-xl border-2">
                     <SkeletonRows rows={8} cols={6} />
                 </div>
             ) : reviews.length === 0 ? (
-                <div className="rounded-xl border-2 border-border bg-card">
+                <div className="border-border bg-card rounded-xl border-2">
                     <EmptyState
                         message="Aucune critique"
                         hint="Les critiques publiées apparaîtront ici."
@@ -81,8 +84,8 @@ export function ReviewsTab() {
                 {pending && (
                     <>
                         La critique de{" "}
-                        <span className="font-bold text-foreground">
-                            {pending.user.userName}
+                        <span className="text-foreground font-bold">
+                            {pending.user?.userName ?? "Lecteur supprimé"}
                         </span>{" "}
                         sur «{" "}
                         <span className="font-quote text-foreground">

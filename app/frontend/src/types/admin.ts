@@ -73,7 +73,7 @@ export interface AdminReviewRow {
     rating: number;
     reviewText: string | null;
     createdAt: string;
-    user: { id: string; userName: string; avatar: string | null };
+    user: { id: string; userName: string; avatar: string | null } | null;
     book: {
         id: string;
         title: string;
@@ -117,7 +117,7 @@ export interface AdminRecentActivity {
         rating: number;
         reviewText: string | null;
         createdAt: string;
-        user: { id: string; userName: string; avatar: string | null };
+        user: { id: string; userName: string; avatar: string | null } | null;
         book: { id: string; title: string };
     }[];
     recentActions: AdminActivityItem[];

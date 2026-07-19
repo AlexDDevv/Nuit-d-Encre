@@ -16,15 +16,8 @@ export default function UserLink({
     const initials = userName.slice(0, 2).toUpperCase();
     const box = size === "sm" ? "h-8 w-8 text-sm" : "h-12 w-12 text-lg";
 
-    return (
-        <Link
-            to={`/profil/${id}`}
-            className={cn(
-                "group inline-flex items-center gap-2.5 rounded-full",
-                "focus-visible:ring-primary/50 focus-visible:ring-2 focus-visible:outline-none",
-                className,
-            )}
-        >
+    const content = (
+        <>
             {avatar ? (
                 <img
                     src={avatar}
@@ -46,6 +39,33 @@ export default function UserLink({
             <span className="text-foreground group-hover:text-primary font-title text-sm font-medium transition-colors">
                 {userName}
             </span>
+        </>
+    );
+
+    // Contributeur anonymisé (compte supprimé) : pas de lien vers un profil inexistant.
+    if (!id) {
+        return (
+            <span
+                className={cn(
+                    "inline-flex items-center gap-2.5 rounded-full opacity-80",
+                    className,
+                )}
+            >
+                {content}
+            </span>
+        );
+    }
+
+    return (
+        <Link
+            to={`/profil/${id}`}
+            className={cn(
+                "group inline-flex items-center gap-2.5 rounded-full",
+                "focus-visible:ring-primary/50 focus-visible:outline-none focus-visible:ring-2",
+                className,
+            )}
+        >
+            {content}
         </Link>
     );
 }

@@ -63,7 +63,7 @@ export default function AuthorDetails() {
         throw new Response("Author not found", { status: 404 });
     }
 
-    const isOwner = user && author.user.id === user.id;
+    const isOwner = user && author.user?.id === user.id;
     const isAdmin = user && user.role === "admin";
     const canEdit = !!user && (isOwner || isAdmin);
     const canDelete = !!user && isAdmin;

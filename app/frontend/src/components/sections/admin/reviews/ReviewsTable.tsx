@@ -60,13 +60,16 @@ export default function ReviewsTable({
                                 </span>
                                 <span className="flex min-w-0 items-center gap-2">
                                     <Avatar
-                                        name={r.user.userName}
-                                        avatar={r.user.avatar}
+                                        name={
+                                            r.user?.userName ??
+                                            "Lecteur supprimé"
+                                        }
+                                        avatar={r.user?.avatar ?? null}
                                         size={26}
                                         ring={false}
                                     />
                                     <span className="font-body text-muted-foreground truncate text-xs">
-                                        {r.user.userName}
+                                        {r.user?.userName ?? "Lecteur supprimé"}
                                     </span>
                                 </span>
                                 <NoteBadge note={r.rating} />
@@ -104,13 +107,17 @@ export default function ReviewsTable({
                                 <div className="flex items-center justify-between gap-3">
                                     <span className="flex items-center gap-2">
                                         <Avatar
-                                            name={r.user.userName}
-                                            avatar={r.user.avatar}
+                                            name={
+                                                r.user?.userName ??
+                                                "Lecteur supprimé"
+                                            }
+                                            avatar={r.user?.avatar ?? null}
                                             size={24}
                                             ring={false}
                                         />
                                         <span className="font-body text-muted-foreground text-xs">
-                                            {r.user.userName}
+                                            {r.user?.userName ??
+                                                "Lecteur supprimé"}
                                         </span>
                                     </span>
                                     <StatusChip />
@@ -157,8 +164,10 @@ export default function ReviewsTable({
                                                 {r.reviewText}
                                             </p>
                                             <p className="font-body text-muted-foreground mt-2 text-xs">
-                                                - {r.user.userName} sur «{" "}
-                                                {r.book.title} » de{" "}
+                                                -{" "}
+                                                {r.user?.userName ??
+                                                    "Lecteur supprimé"}{" "}
+                                                sur « {r.book.title} » de{" "}
                                                 {r.book.author.firstname}{" "}
                                                 {r.book.author.lastname}
                                             </p>

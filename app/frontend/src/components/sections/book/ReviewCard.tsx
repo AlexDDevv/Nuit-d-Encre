@@ -25,7 +25,7 @@ export default function ReviewCard({
     isDeletingReview,
 }: ReviewCardProps) {
     const { user } = useAuthContext();
-    const isOwnReview = user?.id === review.user.id;
+    const isOwnReview = !!user && !!review.user && user.id === review.user.id;
 
     const timeAgo = useMemo(
         () =>
@@ -49,11 +49,13 @@ export default function ReviewCard({
                 <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                         <UserLink
-                            id={review.user.id}
-                            userName={review.user.userName}
+                            id={review.user?.id}
+                            userName={
+                                review.user?.userName ?? "Lecteur supprimé"
+                            }
                         />
                         {isOwnReview && (
-                            <span className="border-primary/35 bg-primary/15 text-primary rounded-full border px-2 py-px font-mono text-xxs uppercase tracking-[0.16em]">
+                            <span className="border-primary/35 bg-primary/15 text-primary text-xxs rounded-full border px-2 py-px font-mono uppercase tracking-[0.16em]">
                                 Votre critique
                             </span>
                         )}
@@ -94,7 +96,7 @@ export default function ReviewCard({
             </div>
 
             {review.reviewText && (
-                <p className="text-foreground/85 font-quote italic whitespace-pre-wrap">
+                <p className="text-foreground/85 font-quote whitespace-pre-wrap italic">
                     {review.reviewText}
                 </p>
             )}
@@ -108,7 +110,7 @@ export default function ReviewCard({
                 />
                 <ReviewComments
                     reviewId={review.id}
-                    reviewAuthorId={review.user.id}
+                    reviewAuthorId={review.user?.id}
                     comments={review.comments ?? []}
                     commentCount={review.commentCount ?? 0}
                 />

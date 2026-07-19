@@ -23,7 +23,7 @@ export interface Book {
     isbn13: string;
     coverUrl?: string;
     isImported?: boolean;
-    user: User;
+    user?: User | null;
     averageRating?: number;
     reviewCount?: number;
     recommendationCount?: number;

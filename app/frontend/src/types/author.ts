@@ -13,7 +13,7 @@ export interface Author {
     books: Book[];
     bookCount?: number;
     createdAt?: string;
-    user: User;
+    user?: User | null;
 }
 
 export type CreateAuthorInput = Author;

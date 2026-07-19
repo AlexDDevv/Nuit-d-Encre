@@ -64,7 +64,7 @@ export default function BookDetails() {
         throw new Response("Book not found", { status: 404 });
     }
 
-    const isOwner = user && book.user.id === user.id;
+    const isOwner = user && book.user?.id === user.id;
     const isAdmin = user && user.role === "admin";
     const canEdit = !!user && (isOwner || isAdmin);
     const canDelete = !!user && isAdmin;

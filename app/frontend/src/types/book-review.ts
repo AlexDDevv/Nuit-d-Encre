@@ -7,7 +7,7 @@ export interface BookReview {
     reviewText?: string;
     createdAt: string;
     updatedAt: string;
-    user: User;
+    user?: User | null;
     book: Book;
     helpfulCount?: number;
     notHelpfulCount?: number;
@@ -84,7 +84,7 @@ export interface BookReviewComment {
     id: string;
     content: string;
     createdAt: string;
-    user: User;
+    user?: User | null;
 }
 
 export type CreateBookReviewCommentInput = {

@@ -68,11 +68,12 @@ export default function ReviewComments({
                                         key={comment.id}
                                         comment={comment}
                                         isReviewAuthor={
+                                            !!comment.user &&
                                             comment.user.id === reviewAuthorId
                                         }
                                         canDelete={
                                             !!user &&
-                                            (user.id === comment.user.id ||
+                                            (user.id === comment.user?.id ||
                                                 user.role === "admin")
                                         }
                                         isDeleting={

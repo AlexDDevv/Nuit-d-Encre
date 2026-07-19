@@ -47,7 +47,7 @@ export interface SocialLink {
 }
 
 export interface UserLinkProps {
-    id: string;
+    id?: string | null;
     userName: string;
     avatar?: string | null;
     size?: "sm" | "md";
@@ -106,7 +106,7 @@ export interface LevelBadgeProps {
 
 export interface ReviewCommentsProps {
     reviewId: string;
-    reviewAuthorId: string;
+    reviewAuthorId?: string | null;
     comments: BookReviewComment[];
     commentCount: number;
 }

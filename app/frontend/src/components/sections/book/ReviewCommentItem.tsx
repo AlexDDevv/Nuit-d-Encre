@@ -30,22 +30,21 @@ export default function ReviewCommentItem({
         <li className="relative flex flex-col gap-1.5">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <UserLink
-                    id={comment.user.id}
-                    userName={comment.user.userName}
+                    id={comment.user?.id}
+                    userName={comment.user?.userName ?? "Lecteur supprimé"}
                     size="sm"
                 />
                 {isReviewAuthor && (
-                    <span className="border-primary/35 bg-primary/15 text-primary inline-flex items-center gap-1 rounded-full border px-2 py-px font-mono text-xxs uppercase tracking-[0.16em]">
+                    <span className="border-primary/35 bg-primary/15 text-primary text-xxs inline-flex items-center gap-1 rounded-full border px-2 py-px font-mono uppercase tracking-[0.16em]">
                         <LuFeather size={9} /> Auteur de la critique
                     </span>
                 )}
-                <span className="text-muted-foreground/70 font-mono text-xxs">
-                    ·{" "}
-                    {timeAgo}
+                <span className="text-muted-foreground/70 text-xxs font-mono">
+                    · {timeAgo}
                 </span>
             </div>
 
-            <p className="text-foreground/80 pl-10 font-body text-sm leading-relaxed whitespace-pre-wrap">
+            <p className="text-foreground/80 font-body whitespace-pre-wrap pl-10 text-sm leading-relaxed">
                 {comment.content}
             </p>
 
