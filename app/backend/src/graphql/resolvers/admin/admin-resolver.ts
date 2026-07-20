@@ -8,23 +8,23 @@
  */
 
 import { Arg, Authorized, Ctx, ID, Mutation, Query, Resolver } from "type-graphql";
-import { dataSource } from "../../../database/config/datasource";
 import { User } from "../../../database/entities/user/user";
 import { Book } from "../../../database/entities/book/book";
 import { Author } from "../../../database/entities/author/author";
 import { Category } from "../../../database/entities/category/category";
 import { BookReview } from "../../../database/entities/book/bookReview";
-import { BookReviewVote } from "../../../database/entities/book/bookReviewVote";
-import { BookRecommendation } from "../../../database/entities/book/bookRecommendation";
-import { UserBook } from "../../../database/entities/user/user-book";
 import { UserActions } from "../../../database/entities/user/user-actions";
 import { AdminStats } from "../../../database/filteredResults/admin/admin-stats";
 import { AdminRecentActivity } from "../../../database/filteredResults/admin/admin-recent-activity";
 import { AppError } from "../../../middlewares/error-handler";
+import { CloudinaryService } from "../../../services/cloudinary.service";
+import { eraseUserAccount } from "../../../services/rgpd/erasure-service";
 import { Context, Roles } from "../../../types/types";
 
 @Resolver()
 export class AdminResolver {
+    private cloudinaryService = new CloudinaryService();
+
     /**
      * Compteurs globaux de la plateforme (barre d'analytics).
      */
@@ -100,11 +100,13 @@ export class AdminResolver {
      * Suppression d'un compte utilisateur.
      *
      * @description
-     * Supprime le compte ainsi que les contributions qui lui sont strictement
-     * personnelles (critiques, votes, recommandations, bibliothèque, journal
-     * XP), dans une transaction. Si l'utilisateur a ajouté des livres ou des
-     * auteurs au catalogue (contenu partagé), la suppression est refusée afin
-     * de préserver l'intégrité référentielle.
+     * Applique le même effacement conforme au RGPD que le self-service
+     * (`eraseUserAccount`), dans une transaction : suppression des données
+     * strictement personnelles (votes, journal XP), anonymisation des
+     * contributions publiques (critiques, recommandations, commentaires) et
+     * détachement du catalogue (livres, auteurs, catégories) — le contenu
+     * partagé est préservé, l'identité détachée. Les images Cloudinary sont
+     * ensuite nettoyées en best-effort.
      */
     @Authorized(Roles.Admin)
     @Mutation(() => Boolean)
@@ -126,31 +128,23 @@ export class AdminResolver {
             );
         }
 
-        const user = await User.findOne({
-            where: { id },
-            relations: { books: true, authors: true },
-        });
+        const user = await User.findOne({ where: { id } });
 
         if (!user) {
             throw new AppError("User not found", 404, "NotFoundError");
         }
 
-        if (user.books.length > 0 || user.authors.length > 0) {
-            throw new AppError(
-                "Ce compte a contribué au catalogue (livres ou auteurs). Réattribuez ou supprimez ces contributions avant de supprimer le compte.",
-                409,
-                "ConflictError",
-            );
-        }
+        // Efface les données en base (transaction : anonymisation + détachement).
+        await eraseUserAccount(id);
 
-        await dataSource.transaction(async (manager) => {
-            await manager.delete(BookReviewVote, { user: { id } });
-            await manager.delete(BookRecommendation, { user: { id } });
-            await manager.delete(BookReview, { user: { id } });
-            await manager.delete(UserBook, { user: { id } });
-            await manager.delete(UserActions, { user: { id } });
-            await manager.delete(User, { id });
-        });
+        // Best-effort : supprime les images Cloudinary après l'effacement BDD.
+        // Un échec ici ne doit pas annuler la suppression déjà committée.
+        try {
+            await this.cloudinaryService.deleteImage(`users/${id}/avatar`);
+            await this.cloudinaryService.deleteImage(`users/${id}/banner`);
+        } catch (error) {
+            console.error("Cloudinary cleanup failed for erased user:", error);
+        }
 
         return true;
     }
