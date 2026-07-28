@@ -45,11 +45,29 @@ Déploiement d'une app depuis le monorepo (CLI CapRover) :
 | `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | valeurs locales | valeurs Cloudinary |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | valeurs du client OAuth de dev | valeurs du client OAuth de prod |
 
-App `front` (CapRover) :
+App `front` (CapRover) — deux natures de variables, à ne pas confondre :
+
+**Environmental Variables** (lues au démarrage du conteneur nginx) :
 
 | Variable | Valeur |
 |---|---|
 | `BACKEND_URL` | `http://srv-captain--nuit-encre-back:3310` (**sans** slash final) |
+
+**Build Args** (App Configs → *Build Args*) : les variables `VITE_*` sont inlinées
+dans le bundle JS **au moment du build**. Les poser en Environmental Variables ne
+sert à rien — le bundle est déjà figé.
+
+| Build Arg | Valeur |
+|---|---|
+| `VITE_GOOGLE_CLIENT_ID` | Client ID OAuth Google de prod (identifiant public) |
+
+> Oublier ce build arg ne casse pas le déploiement : le front se construit et se
+> sert normalement, mais le bouton « Continuer avec Google » reçoit un
+> `clientId` vide et la connexion Google échoue silencieusement.
+
+> Le Client ID OAuth de prod doit avoir l'URL publique du front déclarée dans
+> ses *Origines JavaScript autorisées* (console Google Cloud), sinon Google
+> refuse la requête.
 
 > Générer les secrets : `openssl rand -hex 32` pour `JWT_SECRET` et `COOKIE_SECRET`.
 

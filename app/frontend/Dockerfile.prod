@@ -12,6 +12,12 @@ COPY tsconfig.json tsconfig.app.json tsconfig.node.json ./
 COPY vite.config.ts postcss.config.mjs index.html ./
 COPY public ./public
 COPY src ./src
+
+# Les VITE_* sont inlinées dans le bundle au build : elles doivent être
+# présentes ICI, pas au runtime du conteneur nginx. Sur CapRover, renseigner
+# App Configs → Build Args (pas Environmental Variables).
+ARG VITE_GOOGLE_CLIENT_ID
+ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 RUN pnpm build
 
 # --- Runtime stage ---
