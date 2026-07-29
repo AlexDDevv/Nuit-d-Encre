@@ -62,5 +62,11 @@ yarn-error.log*
 __pycache__/
 
 # Documentation
-docs/
+# docs/* (et non docs/) : git ne peut pas ré-inclure un fichier dont un dossier
+# parent est exclu. En excluant le contenu plutôt que le dossier, la règle de
+# ré-inclusion ci-dessous devient applicable.
+docs/*
 *.md
+# Les vraies docs projet (docs/*.md) sont versionnées. Les sous-dossiers de
+# docs/ restent ignorés : specs et plans ne sont jamais commités.
+!docs/*.md
