@@ -24,10 +24,27 @@ saisies dans le dashboard CapRover (App Configs → Environmental Variables).
    depuis `app/frontend`. Activer HTTPS + le domaine. Régler le **Container HTTP
    Port** sur `8080` (App Configs).
 
-Déploiement d'une app depuis le monorepo (CLI CapRover) :
+Déploiement d'une app depuis le monorepo (CLI CapRover), **depuis la racine du
+repo** :
 
-    caprover deploy --appName nuit-encre-back  # exécuté depuis app/backend
-    caprover deploy --appName nuit-encre-front # exécuté depuis app/frontend
+    git archive --format tar -o /tmp/back.tar develop:app/backend
+    caprover deploy -a nuit-encre-back -t /tmp/back.tar
+
+    git archive --format tar -o /tmp/front.tar develop:app/frontend
+    caprover deploy -a nuit-encre-front -t /tmp/front.tar
+
+> **Pourquoi un tar et pas `caprover deploy -b develop` ?** Le déploiement par
+> branche fait un `git archive <branche>` qui archive **toute la racine du
+> repo** : CapRover n'y trouve pas de `captain-definition` à la racine, et le
+> contexte de build ne serait pas le dossier de l'app (nos `Dockerfile.prod`
+> font `COPY package.json ./`, relatif au dossier de l'app). La syntaxe
+> `develop:app/backend` extrait le sous-dossier **à la racine de l'archive** —
+> `captain-definition` et le contexte de build retombent au bon endroit.
+> Bonus : seuls les fichiers commités sont envoyés (pas de `.env` local, pas de
+> `node_modules`).
+
+Procédure détaillée d'installation du serveur : voir
+[`caprover-setup.md`](./caprover-setup.md).
 
 ## Matrice des variables d'environnement
 
@@ -45,24 +62,22 @@ Déploiement d'une app depuis le monorepo (CLI CapRover) :
 | `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | valeurs locales | valeurs Cloudinary |
 | `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | valeurs du client OAuth de dev | valeurs du client OAuth de prod |
 
-App `front` (CapRover) — deux natures de variables, à ne pas confondre :
+App `front` (CapRover) — les deux se saisissent au même endroit (App Configs →
+*Environmental Variables*), mais sont consommées à des moments différents :
 
-**Environmental Variables** (lues au démarrage du conteneur nginx) :
+| Variable | Valeur | Consommée |
+|---|---|---|
+| `BACKEND_URL` | `http://srv-captain--nuit-encre-back:3310` (**sans** slash final) | au démarrage du conteneur nginx |
+| `VITE_GOOGLE_CLIENT_ID` | Client ID OAuth Google de prod (identifiant public) | **au build** (inlinée dans le bundle) |
 
-| Variable | Valeur |
-|---|---|
-| `BACKEND_URL` | `http://srv-captain--nuit-encre-back:3310` (**sans** slash final) |
+CapRover passe les variables d'environnement de l'app en `--build-arg` au
+`docker build` ; le `Dockerfile.prod` du front les récupère via `ARG`/`ENV`
+avant `pnpm build`. Conséquence pratique : **changer `VITE_GOOGLE_CLIENT_ID`
+n'a d'effet qu'après un redéploiement**, pas après un simple restart de l'app —
+le bundle JS est figé à l'image.
 
-**Build Args** (App Configs → *Build Args*) : les variables `VITE_*` sont inlinées
-dans le bundle JS **au moment du build**. Les poser en Environmental Variables ne
-sert à rien — le bundle est déjà figé.
-
-| Build Arg | Valeur |
-|---|---|
-| `VITE_GOOGLE_CLIENT_ID` | Client ID OAuth Google de prod (identifiant public) |
-
-> Oublier ce build arg ne casse pas le déploiement : le front se construit et se
-> sert normalement, mais le bouton « Continuer avec Google » reçoit un
+> Oublier cette variable ne casse pas le déploiement : le front se construit et
+> se sert normalement, mais le bouton « Continuer avec Google » reçoit un
 > `clientId` vide et la connexion Google échoue silencieusement.
 
 > Le Client ID OAuth de prod doit avoir l'URL publique du front déclarée dans

@@ -14,8 +14,9 @@ COPY public ./public
 COPY src ./src
 
 # Les VITE_* sont inlinées dans le bundle au build : elles doivent être
-# présentes ICI, pas au runtime du conteneur nginx. Sur CapRover, renseigner
-# App Configs → Build Args (pas Environmental Variables).
+# présentes ICI, pas au runtime du conteneur nginx. CapRover passe les
+# Environmental Variables de l'app en --build-arg, mais Docker ne les expose
+# au build que si un ARG les déclare : d'où la paire ARG/ENV ci-dessous.
 ARG VITE_GOOGLE_CLIENT_ID
 ENV VITE_GOOGLE_CLIENT_ID=$VITE_GOOGLE_CLIENT_ID
 RUN pnpm build
