@@ -22,8 +22,8 @@ export default function Signin() {
     } = useForm<UserSignIn>({
         mode: "onBlur",
         defaultValues: {
-            email: "admin@example.com",
-            password: "SuperPassword!2025",
+            email: "",
+            password: "",
         },
     });
 
