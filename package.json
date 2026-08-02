@@ -12,7 +12,10 @@
         "scripts": "scripts"
     },
     "scripts": {
-        "start": "docker compose up --build"
+        "start": "docker compose up --build",
+        "deploy:back": "git archive --format tar -o /tmp/back.tar develop:app/backend && caprover deploy -a nuit-encre-back -t /tmp/back.tar",
+        "deploy:front": "git archive --format tar -o /tmp/front.tar develop:app/frontend && caprover deploy -a nuit-encre-front -t /tmp/front.tar",
+        "deploy": "pnpm run deploy:back && pnpm run deploy:front"
     },
     "keywords": [
         "books"
