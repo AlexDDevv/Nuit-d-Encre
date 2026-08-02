@@ -14,11 +14,19 @@
  *    entrées publiques et privées,
  *  - critiques courtes et détaillées (bonus > 200 caractères),
  *  - votes d'utilité (jamais sur sa propre critique),
- *  - recommandations.
+ *  - recommandations,
+ *  - abonnements entre utilisateurs (graphe de follows crédible, sans XP),
+ *  - commentaires plats sous des critiques existantes (sans XP).
  *
  * ⚠️ Destructif : vide toutes les tables métier (sauf `title`) avant insertion.
  *
- * Lancement : `pnpm seed:db` (dans le conteneur back : `docker compose exec back pnpm seed:db`)
+ * Mot de passe des comptes de test : surchargeable via la variable
+ * d'environnement `SEED_PASSWORD` (défaut faible réservé au dev ; mettre une
+ * valeur forte en prod pour ne pas exposer un admin de démo au mdp connu).
+ *
+ * Lancement :
+ *  - dev : `pnpm seed:db` (ou `docker compose exec back pnpm seed:db`)
+ *  - prod (conteneur compilé, sans ts-node) : `node dist/scripts/seed-database.js`
  */
 
 import "reflect-metadata";
@@ -32,7 +40,9 @@ import { Book } from "../database/entities/book/book";
 import { UserBook } from "../database/entities/user/user-book";
 import { BookReview } from "../database/entities/book/bookReview";
 import { BookReviewVote } from "../database/entities/book/bookReviewVote";
+import { BookReviewComment } from "../database/entities/book/bookReviewComment";
 import { BookRecommendation } from "../database/entities/book/bookRecommendation";
+import { UserFollow } from "../database/entities/user/user-follow";
 import { UserActions } from "../database/entities/user/user-actions";
 import { register } from "../services/auth-service";
 import { seedTitles } from "./seed-titles";
@@ -44,7 +54,10 @@ import { Roles, UserRole, ReadingStatus, UserActionType } from "../types/types";
 // Données déclaratives (référencées par clés)
 // ---------------------------------------------------------------------------
 
-const PASSWORD = "Password123!"; // mot de passe commun à tous les comptes de test
+// Mot de passe commun aux comptes de test. Surchargeable via SEED_PASSWORD :
+// en prod, on y met une valeur forte pour ne jamais exposer publiquement un
+// compte admin de démo au mot de passe connu.
+const PASSWORD = process.env.SEED_PASSWORD ?? "Password123!";
 
 // Livre « populaire » qui recevra une masse de critiques (test de pagination,
 // page = 10 critiques côté resolver).
@@ -691,6 +704,129 @@ const completionActions: {
     { user: "elise", type: UserActionType.AUTHOR_COMPLETED, target: "murakami", label: "Haruki Murakami" },
 ];
 
+// Graphe d'abonnements (follower → following). Ni auto-suivi, ni doublon
+// (contrainte d'unicité côté entité). Le doyen « power » est la figure la plus
+// suivie ; « nora » (nouvelle venue) suit quelques actifs sans être suivie ;
+// les figurants gonflent les compteurs d'abonnés des profils phares.
+type FollowSeed = { follower: string; following: string };
+
+const followsData: FollowSeed[] = [
+    // Utilisateurs nommés
+    { follower: "elise", following: "power" },
+    { follower: "elise", following: "admin" },
+    { follower: "elise", following: "marc" },
+    { follower: "admin", following: "elise" },
+    { follower: "admin", following: "power" },
+    { follower: "marc", following: "elise" },
+    { follower: "marc", following: "power" },
+    { follower: "nora", following: "power" },
+    { follower: "nora", following: "elise" },
+    { follower: "nora", following: "admin" },
+    // Le doyen n'est pas complètement à part : il suit deux profils actifs
+    { follower: "power", following: "elise" },
+    { follower: "power", following: "admin" },
+    // Figurants → profils phares (compteurs d'abonnés crédibles)
+    { follower: "filler1", following: "power" },
+    { follower: "filler1", following: "elise" },
+    { follower: "filler2", following: "power" },
+    { follower: "filler2", following: "elise" },
+    { follower: "filler3", following: "power" },
+    { follower: "filler3", following: "admin" },
+    { follower: "filler4", following: "power" },
+    { follower: "filler5", following: "power" },
+    { follower: "filler6", following: "power" },
+    { follower: "filler6", following: "marc" },
+    { follower: "filler7", following: "power" },
+    { follower: "filler7", following: "marc" },
+    { follower: "filler8", following: "elise" },
+    { follower: "filler9", following: "elise" },
+    { follower: "filler10", following: "admin" },
+    { follower: "filler11", following: "power" },
+    { follower: "filler12", following: "power" },
+];
+
+// Commentaires (liste plate) accrochés à des critiques existantes, référencées
+// par la clé `user|book` de `reviewsByKey`. Les commentateurs sont en général
+// différents de l'auteur de la critique — mais l'auteur peut répondre.
+type CommentSeed = { review: string; user: string; content: string };
+
+const commentsData: CommentSeed[] = [
+    // Fil sous la critique détaillée de 1984 par Elise
+    {
+        review: "elise|1984",
+        user: "marc",
+        content:
+            "Entièrement d'accord sur la novlangue — c'est la partie qui m'a le plus marqué. Le passage sur la réduction du vocabulaire donne le vertige.",
+    },
+    {
+        review: "elise|1984",
+        user: "admin",
+        content:
+            "Belle analyse. À rapprocher de l'appendice sur le novlangue, souvent zappé, qui prolonge exactement ton propos.",
+    },
+    {
+        review: "elise|1984",
+        user: "filler1",
+        content: "Ça me donne envie de le relire, merci pour la critique.",
+    },
+    {
+        review: "elise|1984",
+        user: "elise",
+        content:
+            "@Archiviste bien vu pour l'appendice, je l'avais survolé la première fois. Relecture obligatoire du coup !",
+    },
+    // Fil sous la critique courte de 1984 par Marc
+    {
+        review: "marc|1984",
+        user: "elise",
+        content:
+            "Le ventre mou du milieu, je l'ai ressenti aussi — mais je crois que cette lenteur sert la sensation d'enfermement.",
+    },
+    {
+        review: "marc|1984",
+        user: "marc",
+        content:
+            "Pas faux, vu comme ça la longueur devient un parti pris plutôt qu'un défaut.",
+    },
+    // Fil sous la critique de Dune par Elise
+    {
+        review: "elise|dune",
+        user: "filler2",
+        content:
+            "Les longueurs contemplatives, c'est justement ce que je préfère ! Chacun son Arrakis.",
+    },
+    {
+        review: "elise|dune",
+        user: "marc",
+        content:
+            "Le glossaire à la fin m'a sauvé, sinon je me serais perdu dans les maisons et l'épice.",
+    },
+    // Fil sous une critique du doyen (Dune)
+    {
+        review: "power|dune",
+        user: "elise",
+        content:
+            "« chaque relecture en révèle une strate nouvelle » — c'est exactement ça. On n'y lit pas la même chose à 20 et à 40 ans.",
+    },
+    {
+        review: "power|dune",
+        user: "admin",
+        content: "Une référence pour la fiche du livre, merci pour la profondeur.",
+    },
+    // Fil sous une critique figurante du livre populaire
+    {
+        review: "filler3|1984",
+        user: "power",
+        content:
+            "Critique honnête et bien tournée. J'ai voté utile — continue à partager tes lectures.",
+    },
+    {
+        review: "filler3|1984",
+        user: "marc",
+        content: "D'accord avec le doyen, point de vue rafraîchissant.",
+    },
+];
+
 // ---------------------------------------------------------------------------
 // Construction
 // ---------------------------------------------------------------------------
@@ -718,6 +854,8 @@ async function seed() {
     await dataSource.query(
         `TRUNCATE TABLE
             "user_actions",
+            "user_follow",
+            "book_review_comment",
             "book_review_vote",
             "book_recommendation",
             "book_review",
@@ -1153,6 +1291,41 @@ async function seed() {
             `   ↳ ${user.userName} : niveau ${level}, ${xp} XP, ${actions.length + padding} actions`,
         );
     }
+
+    // --- Abonnements (follows) ----------------------------------------------
+    // Aucun XP associé : purs inserts relationnels. On écarte l'auto-suivi et
+    // les doublons pour respecter la contrainte d'unicité de l'entité.
+    const seenFollows = new Set<string>();
+    let followCount = 0;
+    for (const f of followsData) {
+        if (f.follower === f.following) continue;
+        const pairKey = `${f.follower}|${f.following}`;
+        if (seenFollows.has(pairKey)) continue;
+        seenFollows.add(pairKey);
+
+        const follow = UserFollow.create({
+            follower: usersByKey.get(f.follower)!,
+            following: usersByKey.get(f.following)!,
+        });
+        await follow.save();
+        followCount++;
+    }
+    console.log(`🔗 ${followCount} abonnements créés`);
+
+    // --- Commentaires de critiques ------------------------------------------
+    // Liste plate, aucun XP associé. Accrochés aux critiques via `reviewsByKey`.
+    let commentCount = 0;
+    for (const c of commentsData) {
+        const review = reviewsByKey.get(c.review)!;
+        const comment = BookReviewComment.create({
+            content: c.content,
+            user: usersByKey.get(c.user)!,
+            review,
+        });
+        await comment.save();
+        commentCount++;
+    }
+    console.log(`💬 ${commentCount} commentaires de critiques créés`);
 
     console.log("\n✅ Seed terminé.");
     console.log("   Comptes de test (mot de passe commun) :");
