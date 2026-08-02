@@ -142,8 +142,15 @@ if (!process.env.APP_PORT) {
         const { url } = await startStandaloneServer(server, {
             listen: { port: Number(process.env.APP_PORT) || 4000 },
             context: async ({ req, res }) => {
+                // En prod, le TLS est terminé par le reverse proxy et le back
+                // reçoit du HTTP interne. Sans cette option, la lib `cookies`
+                // croit être sur une connexion non chiffrée et lève une
+                // exception plutôt que de poser un cookie `secure` (échec 500
+                // silencieux du login). On lui indique explicitement l'état
+                // sécurisé, aligné sur la condition de `setAuthCookie`.
                 const cookies = new Cookies(req, res, {
                     keys: [process.env.COOKIE_SECRET || "default-secret"],
+                    secure: process.env.NODE_ENV === "production",
                 });
 
                 // Client IP for rate limiting. Behind the Vite proxy / a
