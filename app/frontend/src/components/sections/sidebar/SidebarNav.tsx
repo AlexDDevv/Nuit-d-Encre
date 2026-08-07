@@ -16,7 +16,7 @@ import { FaFeatherPointed } from "react-icons/fa6";
 import { LiaBalanceScaleSolid } from "react-icons/lia";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import { useToast } from "@/hooks/toast/useToast";
-import { SidebarLink } from "@/types/types";
+import { SidebarLink, SidebarNavProps } from "@/types/types";
 
 const MAIN_LINKS: SidebarLink[] = [
     {
@@ -50,10 +50,6 @@ const MAIN_LINKS: SidebarLink[] = [
         ariaLabel: "Mentions légales de Nuit d'Encre",
     },
 ];
-
-interface SidebarNavProps {
-    collapsed: boolean;
-}
 
 export default function SidebarNav({ collapsed }: SidebarNavProps) {
     const { user, logout } = useAuthContext();

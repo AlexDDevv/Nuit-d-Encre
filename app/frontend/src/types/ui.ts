@@ -29,6 +29,10 @@ export interface SidebarHeaderProps {
     onToggle: () => void;
 }
 
+export interface SidebarNavProps {
+    collapsed: boolean;
+}
+
 export interface SidebarFooterProps {
     collapsed: boolean;
     isAuthenticated: boolean;
