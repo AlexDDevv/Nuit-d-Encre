@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { LuMenu } from "react-icons/lu";
 import { useLocalStorage } from "@/hooks/storage/useLocalStorage";
 import { useMediaQuery } from "@/hooks/responsive/useMediaQuery";
@@ -19,10 +20,23 @@ export default function Sidebar() {
         false,
     );
     const [overlayOpen, setOverlayOpen] = useState(false);
+    const { key: locationKey } = useLocation();
+    const [lastLocationKey, setLastLocationKey] = useState(locationKey);
     const isMobile = useMediaQuery("(max-width: 767px)");
     const isTablet = useMediaQuery(
         "(min-width: 768px) and (max-width: 1023px)",
     );
+
+    // La sidebar vit dans le layout racine : React Router ne la démonte jamais,
+    // l'overlay survivrait donc à la navigation. On le referme pendant le rendu
+    // plutôt que dans un effet, pour qu'aucune frame ne montre le menu ouvert
+    // par-dessus la nouvelle page. `key` change à chaque navigation — y compris
+    // vers la route courante et lors des retours navigateur — là où `pathname`
+    // resterait identique.
+    if (locationKey !== lastLocationKey) {
+        setLastLocationKey(locationKey);
+        setOverlayOpen(false);
+    }
 
     const isSmallScreen = isMobile || isTablet;
     const isEffectivelyCollapsed = isSmallScreen ? !overlayOpen : collapsed;
