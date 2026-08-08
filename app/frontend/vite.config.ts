@@ -19,6 +19,35 @@ export default defineConfig(({ command }) => ({
         environment: "node",
         include: ["src/**/*.test.{ts,tsx}"],
     },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (!id.includes("node_modules")) return;
+
+                    if (/[\\/]react-icons[\\/]/.test(id)) return "icons";
+                    if (
+                        /[\\/](@apollo|graphql|@wry|optimism|ts-invariant|zen-observable|symbol-observable)/.test(
+                            id,
+                        )
+                    )
+                        return "apollo";
+                    if (
+                        /[\\/](radix-ui|@radix-ui|motion|motion-dom|motion-utils|sonner|react-hook-form)[\\/]/.test(
+                            id,
+                        )
+                    )
+                        return "ui-vendor";
+                    if (
+                        /[\\/](react|react-dom|react-router|react-router-dom|scheduler)[\\/]/.test(
+                            id,
+                        )
+                    )
+                        return "react-vendor";
+                },
+            },
+        },
+    },
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
