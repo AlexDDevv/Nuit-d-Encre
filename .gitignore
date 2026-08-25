@@ -70,3 +70,5 @@ docs/*
 # Les vraies docs projet (docs/*.md) sont versionnées. Les sous-dossiers de
 # docs/ restent ignorés : specs et plans ne sont jamais commités.
 !docs/*.md
+# Le README de la racine est la vitrine du repo : toujours versionné.
+!/README.md
