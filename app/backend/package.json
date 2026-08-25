@@ -15,7 +15,7 @@
         "migration:revert": "pnpm typeorm migration:revert"
     },
     "author": "",
-    "license": "ISC",
+    "license": "UNLICENSED",
     "description": "",
     "packageManager": "pnpm@10.33.0",
     "dependencies": {
