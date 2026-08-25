@@ -2,7 +2,7 @@
 
 <p align="center">
   <em>La bibliothèque sociale des lecteurs nocturnes.</em><br>
-  Gérez vos lectures, découvrez des livres, écrivez des critiques — et progressez.
+  Gérez vos lectures, découvrez des livres, écrivez des critiques et progressez.
 </p>
 
 <p align="center">
