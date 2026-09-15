@@ -1,5 +1,5 @@
 import { ComponentProps, forwardRef } from "react"
-import { LuChevronLeft, LuChevronRight, LuEllipsis } from "react-icons/lu"
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import { cn } from "@/lib/utils"
 import type { ButtonProps } from "@/components/UI/Button"
 import { baseClasses, variantClasses, sizeClasses } from "@/components/UI/Button/Button.styles"
@@ -93,21 +93,6 @@ const PaginationNext = ({
 )
 PaginationNext.displayName = "PaginationNext"
 
-const PaginationEllipsis = ({
-	className,
-	...props
-}: ComponentProps<"span">) => (
-	<span
-		aria-hidden
-		className={cn("flex h-9 w-9 items-center justify-center", className)}
-		{...props}
-	>
-		<LuEllipsis className="h-4 w-4" />
-		<span className="sr-only">More pages</span>
-	</span>
-)
-PaginationEllipsis.displayName = "PaginationEllipsis"
-
 export {
 	PaginationContainer,
 	PaginationContent,
@@ -115,5 +100,4 @@ export {
 	PaginationItem,
 	PaginationPrevious,
 	PaginationNext,
-	PaginationEllipsis,
 }
