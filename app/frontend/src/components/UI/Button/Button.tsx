@@ -77,7 +77,7 @@ const Button = forwardRef<HTMLElement, ButtonProps>(
                     className={cn('min-w-0 overflow-hidden', variant === 'checkable' && 'w-4/6 flex justify-start', (['bookCard', 'searchResultCard', 'authorCard'] as ButtonVariant[]).includes(variant) && 'contents')}
                 >
                     {!loading && icon && (
-                        <span className={cn(IconClasses[variant], className)}>
+                        <span className={IconClasses[variant]}>
                             {icon}
                         </span>
                     )}
