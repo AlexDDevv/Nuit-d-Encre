@@ -38,10 +38,13 @@ export default function Sidebar() {
     const [overlayOpen, setOverlayOpen] = useState(false);
     const { key: locationKey } = useLocation();
     const [lastLocationKey, setLastLocationKey] = useState(locationKey);
-    const isMobile = useMediaQuery("(max-width: 767px)");
-    const isTablet = useMediaQuery(
-        "(min-width: 768px) and (max-width: 1023px)",
-    );
+    // Uniquement des `min-width` (md/lg de Tailwind) : un couple max-width 767px
+    // / min-width 768px laisse un trou aux largeurs fractionnaires (zoom, mise à
+    // l'échelle Windows) où le rendu desktop déplié s'affichait une frame.
+    const isMdUp = useMediaQuery("(min-width: 768px)");
+    const isLgUp = useMediaQuery("(min-width: 1024px)");
+    const isMobile = !isMdUp;
+    const isTablet = isMdUp && !isLgUp;
 
     // La sidebar vit dans le layout racine : React Router ne la démonte jamais,
     // l'overlay survivrait donc à la navigation. On le referme pendant le rendu
