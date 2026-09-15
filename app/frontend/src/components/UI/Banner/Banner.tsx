@@ -134,7 +134,12 @@ const Banner = ({
         <div
             role={v.role}
             aria-live={v.role === "alert" ? "assertive" : "polite"}
-            className={cn(baseClasses, v.gold && "xp-sweep", className)}
+            className={cn(
+                baseClasses,
+                v.gold && "xp-sweep",
+                dismissible && "sm:pr-12",
+                className,
+            )}
             style={{
                 borderColor: v.border,
                 background: `linear-gradient(0deg, ${v.tint}, ${v.tint}), hsl(20 3% 17%)`,
@@ -195,7 +200,12 @@ const Banner = ({
                 </span>
             )}
 
-            <div className="relative z-10 flex min-w-0 flex-1 items-start gap-3.5 pr-7 sm:pr-0">
+            <div
+                className={cn(
+                    "relative z-10 flex min-w-0 flex-1 items-start gap-3.5",
+                    dismissible && "pr-7 sm:pr-0",
+                )}
+            >
                 <span
                     className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full"
                     style={{
