@@ -38,6 +38,11 @@ export interface SidebarFooterProps {
     isAuthenticated: boolean;
 }
 
+export interface SidebarOverlayProps {
+    visible: boolean;
+    onClose: () => void;
+}
+
 export interface LogoProps {
     to: string;
 }

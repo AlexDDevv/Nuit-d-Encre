@@ -1,19 +1,29 @@
-interface SidebarOverlayProps {
-    visible: boolean;
-    onClose: () => void;
-}
+import { AnimatePresence, motion } from "motion/react";
+import { SidebarOverlayProps } from "@/types/types";
 
 export default function SidebarOverlay({
     visible,
     onClose,
 }: SidebarOverlayProps) {
-    if (!visible) return null;
-
     return (
-        <div
-            className="fixed inset-0 z-40 bg-black/50 transition-opacity duration-200"
-            onClick={onClose}
-            aria-hidden="true"
-        />
+        <AnimatePresence>
+            {visible && (
+                <motion.div
+                    key="sidebar-overlay"
+                    className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[2px]"
+                    onClick={onClose}
+                    aria-hidden="true"
+                    initial={{ opacity: 0 }}
+                    animate={{
+                        opacity: 1,
+                        transition: { duration: 0.35, ease: "easeOut" },
+                    }}
+                    exit={{
+                        opacity: 0,
+                        transition: { duration: 0.28, ease: "easeIn" },
+                    }}
+                />
+            )}
+        </AnimatePresence>
     );
 }
