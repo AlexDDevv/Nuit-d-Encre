@@ -97,7 +97,7 @@ export default function SupportCard({
                         copied ? <LuCheck size={16} /> : <LuCopy size={16} />
                     }
                     className={cn(
-                        "sm:flex-1",
+                        "text-sm sm:flex-1",
                         copied &&
                             "border-success/60 bg-success/10 hover:bg-success/10 text-[hsl(140_45%_72%)] hover:text-[hsl(140_45%_72%)]",
                     )}
