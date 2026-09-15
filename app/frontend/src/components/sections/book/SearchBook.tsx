@@ -59,7 +59,7 @@ export default function SearchBook({ isInLibrary }: { isInLibrary?: boolean }) {
             onSubmit={handleSubmit(onSubmit)}
             className={cn(
                 "flex items-center",
-                isInLibrary ? "min-w-60" : "min-w-md",
+                isInLibrary ? "min-w-60" : "w-full sm:max-w-md",
             )}
         >
             <Label htmlFor="search" className="sr-only">

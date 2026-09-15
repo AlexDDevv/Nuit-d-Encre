@@ -22,7 +22,7 @@ export default function SelectCategory() {
 
     if (isLoadingCategories) {
         return (
-            <Skeleton className="bg-popover/70 border-border flex h-10 w-60 min-w-60 rounded-lg border-2" />
+            <Skeleton className="bg-popover/70 border-border flex h-10 w-full rounded-lg border-2 sm:w-60 sm:shrink-0" />
         );
     }
 
@@ -80,7 +80,10 @@ export default function SelectCategory() {
                 onValueChange={filterByCategory}
             >
                 <SelectTrigger
-                    className={cn(atelierSelectTriggerClass, "w-60 min-w-60")}
+                    className={cn(
+                        atelierSelectTriggerClass,
+                        "w-full sm:w-60 sm:shrink-0",
+                    )}
                 >
                     <SelectValue placeholder="Sélectionnez une catégorie" />
                 </SelectTrigger>
