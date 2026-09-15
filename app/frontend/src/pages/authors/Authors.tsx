@@ -47,16 +47,16 @@ export default function Authors() {
                     content="Page des auteurs enregistrés sur le site Nuit d'Encre."
                 />
             </Helmet>
-            <section className="flex min-h-dvh flex-col items-center justify-center gap-20">
-                <div className="flex flex-col items-center justify-center gap-6">
-                    <h1 className="text-foreground text-4xl font-bold">
+            <section className="flex flex-1 flex-col items-center justify-center gap-20">
+                <div className="flex w-full flex-col items-center justify-center gap-6">
+                    <h1 className="text-foreground text-center text-3xl font-bold sm:text-4xl">
                         Rechercher un auteur
                     </h1>
                     <p className="font-quote text-muted-foreground max-w-xl text-center text-base italic">
                         Derrière chaque ouvrage veille une plume. Partez à la
                         rencontre de celles et ceux qui habitent la maison.
                     </p>
-                    <div className="mt-4 flex items-center justify-center gap-5">
+                    <div className="mt-4 flex w-full items-center justify-center gap-5">
                         <SearchAuthor />
                     </div>
                 </div>
@@ -64,7 +64,7 @@ export default function Authors() {
                     <AuthorCardSkeleton />
                 ) : totalCount === 0 ? (
                     <div className="flex w-full items-center justify-center">
-                        <p className="text-foreground text-xl font-medium">
+                        <p className="text-foreground text-center text-xl font-medium">
                             Aucun auteur n'a encore été enregistré...
                         </p>
                     </div>
