@@ -6,7 +6,6 @@ import {
 	PaginationLink,
 	PaginationNext,
 	PaginationPrevious,
-	PaginationEllipsis,
 } from "./PaginationContainer"
 
 export default function Pagination({
@@ -26,37 +25,14 @@ export default function Pagination({
 		}
 	}
 
+	// Fenêtre glissante de 3 pages autour de la page courante (5 boutons avec
+	// Précédent/Suivant) : au-delà, la barre déborde en largeur sur mobile.
 	const paginationRange = () => {
-		const pages: (number | string)[] = []
+		const start = Math.max(1, Math.min(currentPage - 1, totalPages - 2))
+		const end = Math.min(totalPages, start + 2)
+		const pages: number[] = []
 
-		if (totalPages <= 5) {
-			// Show all pages if totalPages <= 5
-			for (let i = 1; i <= totalPages; i++) pages.push(i)
-		} else {
-			// Always show the first page
-			pages.push(1)
-
-			// Show ellipsis if currentPage is far from the beginning (greater than 3)
-			if (currentPage > 3) {
-				pages.push("...")
-			}
-
-			// Calculate the middle pages to show around the current page
-			const startPage = Math.max(2, currentPage - 1)
-			const endPage = Math.min(totalPages - 1, currentPage + 1)
-
-			for (let i = startPage; i <= endPage; i++) {
-				pages.push(i)
-			}
-
-			// Show Ellipsis if currentPage is far from the end (less than totalPages - 2)
-			if (currentPage < totalPages - 2) {
-				pages.push("...")
-			}
-
-			// Always show the last page
-			pages.push(totalPages)
-		}
+		for (let i = start; i <= end; i++) pages.push(i)
 
 		return pages
 	}
@@ -73,26 +49,20 @@ export default function Pagination({
 						aria-disabled={currentPage === 1}
 					/>
 				</PaginationItem>
-				{pages.map((page, index) =>
-					page === "..." ? (
-						<PaginationItem key={`ellipsis-${index}`}>
-							<PaginationEllipsis className="text-foreground" />
-						</PaginationItem>
-					) : (
-						<PaginationItem key={page}>
-							<PaginationLink
-								href="#"
-								isActive={page === currentPage}
-								onClick={e => {
-									e.preventDefault()
-									goToPage(Number(page))
-								}}
-							>
-								{page}
-							</PaginationLink>
-						</PaginationItem>
-					)
-				)}
+				{pages.map(page => (
+					<PaginationItem key={page}>
+						<PaginationLink
+							href="#"
+							isActive={page === currentPage}
+							onClick={e => {
+								e.preventDefault()
+								goToPage(page)
+							}}
+						>
+							{page}
+						</PaginationLink>
+					</PaginationItem>
+				))}
 				<PaginationItem>
 					<PaginationNext
 						href="#"
