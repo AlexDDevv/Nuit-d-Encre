@@ -97,7 +97,7 @@ export default function SupportCard({
                         copied ? <LuCheck size={16} /> : <LuCopy size={16} />
                     }
                     className={cn(
-                        "flex-1",
+                        "sm:flex-1",
                         copied &&
                             "border-success/60 bg-success/10 hover:bg-success/10 text-[hsl(140_45%_72%)] hover:text-[hsl(140_45%_72%)]",
                     )}
@@ -110,7 +110,7 @@ export default function SupportCard({
                         baseClasses,
                         variantClasses.primary,
                         sizeClasses.md,
-                        "flex-1 gap-2 text-sm",
+                        "gap-2 text-sm sm:flex-1",
                     )}
                 >
                     <LuSendHorizontal />
