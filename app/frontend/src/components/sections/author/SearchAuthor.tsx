@@ -42,7 +42,7 @@ export default function SearchAuthor() {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-lg min-w-lg flex flex-1 items-center"
+            className="flex w-full max-w-lg items-center"
         >
             <Label htmlFor="search" className="sr-only">
                 Rechercher un auteur
