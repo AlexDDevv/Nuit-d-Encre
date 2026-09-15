@@ -8,6 +8,9 @@
     --font-quote: "EB Garamond", serif;
     --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
+    /* breakpoints (sous sm : xs: / max-xs:) */
+    --breakpoint-xs: 30rem;
+
     /* font sizes (sous-standard ; 12px+ via l'échelle Tailwind) */
     --text-xxxs: 8px;
     --text-xxs: 10px;
