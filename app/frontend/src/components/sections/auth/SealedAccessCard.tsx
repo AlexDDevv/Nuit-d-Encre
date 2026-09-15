@@ -198,12 +198,12 @@ export default function SealedAccessCard({
     children,
 }: SealedAccessCardProps) {
     return (
-        <div className="flex w-full items-center justify-center px-4">
+        <div className="flex w-full flex-1 items-center justify-center px-4">
             <section
                 role="dialog"
                 aria-modal="false"
                 aria-labelledby={titleId}
-                className="fade-up relative w-full max-w-md overflow-hidden rounded-2xl border-2 px-7 pb-8 pt-10 text-center sm:px-9"
+                className="fade-up relative w-full max-w-md overflow-hidden rounded-2xl border-2 px-7 pb-6 pt-7 text-center sm:px-9"
                 style={{
                     borderColor: "hsl(43 59% 81% / 0.28)",
                     background:
@@ -230,7 +230,7 @@ export default function SealedAccessCard({
                 <SealEmblem />
 
                 <p
-                    className="text-xxs mt-6 font-mono uppercase tracking-[0.26em]"
+                    className="text-xxs mt-5 font-mono uppercase tracking-[0.26em]"
                     style={{ color: "hsl(43 30% 60%)" }}
                 >
                     {eyebrow}
@@ -245,11 +245,11 @@ export default function SealedAccessCard({
 
                 <span
                     aria-hidden="true"
-                    className="filet mx-auto mt-4 block h-px w-28"
+                    className="filet mx-auto mt-3 block h-px w-28"
                 />
 
                 <p
-                    className="font-quote max-w-62.5 mx-auto mt-4 text-base leading-relaxed"
+                    className="font-quote max-w-62.5 mx-auto mt-3 text-base leading-relaxed"
                     style={{ color: "hsl(20 12% 76%)" }}
                 >
                     {description}

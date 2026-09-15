@@ -26,7 +26,7 @@ export default function AuthRequired() {
             titleId="auth-title"
             description="Vous devez être connecté pour accéder à cette page. Connectez-vous ou créez un compte pour continuer."
         >
-            <nav className="mt-7 flex flex-col gap-3">
+            <nav className="mt-5 flex flex-col gap-3">
                 <AuthButton
                     kind="primary"
                     to={`/register?redirect=${redirectParam}`}
@@ -44,7 +44,7 @@ export default function AuthRequired() {
             </nav>
 
             <p
-                className="text-xxs mt-5 inline-flex max-w-full items-center gap-1.5 font-mono"
+                className="text-xxs mt-4 inline-flex max-w-full items-center gap-1.5 font-mono"
                 style={{ color: "hsl(20 12% 56%)" }}
             >
                 <Icon
@@ -58,7 +58,7 @@ export default function AuthRequired() {
                 </span>
             </p>
 
-            <div className="mt-5">
+            <div className="mt-4">
                 <Link
                     to="/"
                     className="hover:text-foreground focus-visible:ring-primary font-body inline-flex items-center gap-1.5 rounded text-xs underline decoration-dotted underline-offset-4 transition-colors focus-visible:outline-none focus-visible:ring-2"
