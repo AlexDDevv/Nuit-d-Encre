@@ -16,9 +16,16 @@
  *  - votes d'utilité (jamais sur sa propre critique),
  *  - recommandations,
  *  - abonnements entre utilisateurs (graphe de follows crédible, sans XP),
- *  - commentaires plats sous des critiques existantes (sans XP).
+ *  - commentaires plats sous des critiques existantes (sans XP),
+ *  - catalogue assez volumineux pour paginer (livres, auteurs, bibliothèque),
+ *  - contenus extrêmes pour le responsive (titres, noms, bio, critiques et
+ *    commentaires très longs, mot insécable),
+ *  - bannières de site (une active, les autres en historique),
+ *  - compte Google sans mot de passe (bibliothèque entièrement privée),
+ *  - compte supprimé via `eraseUserAccount` (contributions anonymisées).
  *
  * ⚠️ Destructif : vide toutes les tables métier (sauf `title`) avant insertion.
+ * L'admin défini dans `.env` (ADMIN_*) est recréé en fin de seed.
  *
  * Mot de passe des comptes de test : variable d'environnement `SEED_PASSWORD`.
  * Défaut faible toléré en dev uniquement ; en production (`NODE_ENV=production`)
@@ -44,11 +51,21 @@ import { BookReviewComment } from "../database/entities/book/bookReviewComment";
 import { BookRecommendation } from "../database/entities/book/bookRecommendation";
 import { UserFollow } from "../database/entities/user/user-follow";
 import { UserActions } from "../database/entities/user/user-actions";
+import { SiteBanner } from "../database/entities/banner/site-banner";
 import { register } from "../services/auth-service";
+import { eraseUserAccount } from "../services/rgpd/erasure-service";
 import { seedTitles } from "./seed-titles";
+import { createAdmin } from "./create-admin";
 import { addUserXP } from "../services/grind/user-xp-service";
 import { ActionXPMap } from "../utils/actionsXpMap";
-import { Roles, UserRole, ReadingStatus, UserActionType } from "../types/types";
+import {
+    BannerAudience,
+    BannerVariant,
+    Roles,
+    UserRole,
+    ReadingStatus,
+    UserActionType,
+} from "../types/types";
 
 // ---------------------------------------------------------------------------
 // Données déclaratives (référencées par clés)
@@ -79,6 +96,8 @@ type UserSeed = {
     avatar?: string;
     banner?: string;
     bio?: string;
+    // Compte Google pur : pas de mot de passe, connexion impossible en local.
+    googleId?: string;
 };
 
 const usersData: UserSeed[] = [
@@ -114,6 +133,25 @@ const usersData: UserSeed[] = [
         userName: "NoraNouvelle",
         role: Roles.User,
         // nouveau venu : aucun profil, aucune bibliothèque, niveau 1 / 0 XP
+    },
+    {
+        key: "insomniaque",
+        email: "insomniaque@nuitdencre.test",
+        // cas limite responsive : pseudo long, bio à 300 caractères (max)
+        userName: "Bibliothécaire_Insomniaque_des_Grands_Boulevards",
+        role: Roles.User,
+        avatar: "https://i.pravatar.cc/300?img=32",
+        banner: "https://picsum.photos/seed/insomniaque-banner/1600/400",
+        bio: "Je lis la nuit, je relis à l'aube et je note tout dans des carnets qui débordent des étagères. Amatrice de sommes interminables, de notes de bas de page et de digressions, je laisse des critiques beaucoup trop longues. Si vous cherchez un avis concis, passez votre chemin : ici on prend son temps.",
+    },
+    {
+        key: "gaspard",
+        email: "gaspard.google@nuitdencre.test",
+        userName: "Gaspard",
+        role: Roles.User,
+        avatar: "https://i.pravatar.cc/300?img=68",
+        googleId: "seed-google-000000000001",
+        // compte Google pur, bibliothèque entièrement privée, ni bio ni bannière
     },
 ];
 
@@ -224,6 +262,52 @@ const authorsData: AuthorSeed[] = [
         // totalement incomplet : aucun champ optionnel renseigné (hasIncompleteInfo = true)
         creator: "marc",
     },
+
+    // --- Volume (pagination de la page Auteurs : 12 par page) ---------------
+    ...(
+        [
+            ["camus", "Albert", "Camus", "1913-11-07", "fr", "Romancier, essayiste et dramaturge français, prix Nobel de littérature 1957, penseur de l'absurde et de la révolte.", "Albert_Camus", "admin"],
+            ["zola", "Émile", "Zola", "1840-04-02", "fr", "Chef de file du naturalisme, auteur des vingt romans des Rougon-Macquart et figure de l'affaire Dreyfus.", "%C3%89mile_Zola", "admin"],
+            ["verne", "Jules", "Verne", "1828-02-08", "fr", "Pionnier du roman d'aventures scientifiques, auteur des Voyages extraordinaires.", "Jules_Verne", "elise"],
+            ["asimov", "Isaac", "Asimov", "1920-01-02", "us", "Biochimiste et écrivain américain, maître de l'âge d'or de la science-fiction, père des lois de la robotique.", "Isaac_Asimov", "elise"],
+            ["leguin", "Ursula K.", "Le Guin", "1929-10-21", "us", "Autrice américaine de science-fiction et de fantasy, créatrice de Terremer et de l'Ekumen.", "Ursula_K._Le_Guin", "elise"],
+            ["simenon", "Georges", "Simenon", "1903-02-13", "be", "Romancier belge prolifique, créateur du commissaire Maigret.", "Georges_Simenon", "marc"],
+            ["yourcenar", "Marguerite", "Yourcenar", "1903-06-08", "fr", "Romancière et essayiste, première femme élue à l'Académie française.", "Marguerite_Yourcenar", "admin"],
+            ["pratchett", "Terry", "Pratchett", "1948-04-28", "en", "Romancier britannique, auteur satirique des Annales du Disque-monde.", "Terry_Pratchett", "insomniaque"],
+            ["atwood", "Margaret", "Atwood", "1939-11-18", "ca", "Romancière et poétesse canadienne, autrice de La Servante écarlate.", "Margaret_Atwood", "elise"],
+            ["dumas", "Alexandre", "Dumas", "1802-07-24", "fr", "Romancier et dramaturge, maître du roman historique et feuilletonesque.", "Alexandre_Dumas", "admin"],
+            ["beauvoir", "Simone de", "Beauvoir", "1908-01-09", "fr", "Philosophe, romancière et essayiste, figure majeure de l'existentialisme et du féminisme.", "Simone_de_Beauvoir", "insomniaque"],
+        ] as const
+    ).map(
+        ([key, firstname, lastname, birthDate, nationality, biography, wiki, creator]): AuthorSeed => ({
+            key,
+            firstname,
+            lastname,
+            birthDate,
+            nationality,
+            biography,
+            wikipediaUrl: `https://fr.wikipedia.org/wiki/${wiki}`,
+            creator,
+        }),
+    ),
+
+    // --- Cas limite responsive : noms très longs, biographie fleuve ---------
+    {
+        key: "longname",
+        firstname: "Anne-Marie Clémentine Joséphine",
+        lastname: "de La Tour-d'Auvergne-Montmorency-Laval",
+        birthDate: "1954-03-21",
+        nationality: "ch",
+        biography: [
+            "Bibliothécaire de formation, archiviste par vocation et romancière par accident, elle a passé trente ans à classer les fonds oubliés des bibliothèques municipales de Suisse romande avant de publier, sur le tard, une série de chroniques dont la longueur des titres est devenue une marque de fabrique.",
+            "Son œuvre, volontiers digressive, mêle souvenirs de lecture, inventaires imaginaires et portraits de lecteurs de passage. Chaque volume s'ouvre sur une liste d'objets trouvés entre les pages des livres rendus : tickets de métro, fleurs séchées, lettres jamais envoyées.",
+            "Traduite dans une dizaine de langues, elle refuse toute interview et ne répond qu'au courrier manuscrit, qu'elle archive évidemment avec le plus grand soin.",
+        ].join("\n\n"),
+        wikipediaUrl: "https://fr.wikipedia.org/wiki/Biblioth%C3%A9caire",
+        officialWebsite:
+            "https://www.chroniques-crepusculaires-de-la-bibliothecaire-insomniaque.example.org/",
+        creator: "insomniaque",
+    },
 ];
 
 type BookSeed = {
@@ -240,11 +324,28 @@ type BookSeed = {
     format: "hardcover" | "paperback" | "softcover" | "pocket";
     summary: string;
     cover: boolean; // si vrai, couverture Open Library dérivée de l'ISBN
+    coverUrl?: string; // couverture explicite (prioritaire sur `cover`)
     isImported: boolean;
     creator: string;
+    // Exclu du parcours du doyen : garde un livre sans critique ni recommandation.
+    untouched?: boolean;
 };
 
 const IMPORT_SUMMARY = "Importé depuis une source externe.";
+
+// ISBN-13 fictif mais valide (clé de contrôle calculée), préfixe 979-10-9.
+const fakeIsbn13 = (seq: number) => {
+    const base = `9791090${String(seq).padStart(5, "0")}`;
+    const sum = [...base].reduce(
+        (acc, digit, i) => acc + Number(digit) * (i % 2 === 0 ? 1 : 3),
+        0,
+    );
+    return `${base}${(10 - (sum % 10)) % 10}`;
+};
+
+// Couverture de substitution stable pour les livres de volume.
+const placeholderCover = (key: string) =>
+    `https://picsum.photos/seed/nde-${key}/400/600`;
 
 const booksData: BookSeed[] = [
     // --- Livres complets -----------------------------------------------------
@@ -392,6 +493,7 @@ const booksData: BookSeed[] = [
         cover: true,
         isImported: false,
         creator: "admin",
+        untouched: true,
     },
     {
         key: "miserables",
@@ -463,6 +565,88 @@ const booksData: BookSeed[] = [
         isImported: true,
         creator: "elise",
     },
+
+    // --- Volume (pagination de l'accueil : 12 livres par page) --------------
+    // [clé, titre, auteur, catégorie, année, pages, éditeur, format, résumé, créateur, untouched]
+    ...(
+        [
+            ["etranger", "L'Étranger", "camus", "Roman", 1942, 184, "Gallimard", "pocket", "Meursault, employé de bureau à Alger, tue un homme sur une plage écrasée de soleil. Son procès devient celui de son indifférence.", "admin", false],
+            ["peste", "La Peste", "camus", "Roman", 1947, 352, "Folio", "pocket", "Une épidémie de peste met Oran en quarantaine. Le docteur Rieux et quelques hommes résistent au fléau, chacun à sa manière.", "admin", false],
+            ["sisyphe", "Le Mythe de Sisyphe", "camus", "Essai", 1942, 187, "Folio", "pocket", "Essai sur l'absurde : faut-il que la vie ait un sens pour être vécue ? Il faut imaginer Sisyphe heureux.", "insomniaque", false],
+            ["germinal", "Germinal", "zola", "Roman", 1885, 592, "Le Livre de Poche", "pocket", "Étienne Lantier arrive dans le bassin minier du Nord et prend la tête d'une grève qui tourne à la tragédie.", "admin", false],
+            ["assommoir", "L'Assommoir", "zola", "Roman", 1877, 576, "Folio", "paperback", "Gervaise, blanchisseuse courageuse, voit sa vie emportée par l'alcool et la misère du Paris ouvrier.", "admin", false],
+            ["vingtmille", "Vingt mille lieues sous les mers", "verne", "Science-Fiction", 1870, 512, "Hetzel", "hardcover", "Le professeur Aronnax est fait prisonnier à bord du Nautilus, le sous-marin du mystérieux capitaine Nemo.", "elise", false],
+            ["tourdumonde", "Le Tour du monde en quatre-vingts jours", "verne", "Roman", 1872, 320, "Le Livre de Poche", "pocket", "Phileas Fogg parie sa fortune qu'il bouclera le tour du globe en quatre-vingts jours, flanqué de son valet Passepartout.", "elise", false],
+            ["terrelune", "De la Terre à la Lune", "verne", "Science-Fiction", 1865, 288, "Folio", "softcover", "Les membres du Gun-Club de Baltimore décident d'envoyer un obus habité vers la Lune.", "elise", true],
+            ["fondation", "Fondation", "asimov", "Science-Fiction", 1951, 416, "Folio SF", "pocket", "Le mathématicien Hari Seldon prédit la chute de l'Empire galactique et fonde une communauté chargée d'abréger l'âge des ténèbres.", "elise", false],
+            ["robots", "Les Robots", "asimov", "Science-Fiction", 1950, 320, "J'ai lu", "pocket", "Neuf nouvelles explorant les paradoxes des trois lois de la robotique à travers la carrière de la robopsychologue Susan Calvin.", "elise", false],
+            ["terremer", "Le Sorcier de Terremer", "leguin", "Fantasy", 1968, 256, "Le Livre de Poche", "pocket", "Le jeune Ged, doué pour la magie, libère par orgueil une ombre qu'il devra pourchasser jusqu'aux confins de l'archipel.", "elise", false],
+            ["maingauche", "La Main gauche de la nuit", "leguin", "Science-Fiction", 1969, 352, "Robert Laffont", "paperback", "Un envoyé terrien sur la planète glacée Nivôse doit comprendre une société où le genre n'est pas fixe.", "insomniaque", false],
+            ["pietr", "Pietr-le-Letton", "simenon", "Policier", 1931, 190, "Le Livre de Poche", "pocket", "La première enquête du commissaire Maigret, sur la piste d'un escroc international insaisissable.", "marc", false],
+            ["clochard", "Maigret et le Clochard", "simenon", "Policier", 1963, 180, "Presses de la Cité", "softcover", "Un clochard est repêché dans la Seine après une agression. Maigret s'intéresse à cet ancien médecin devenu vagabond.", "marc", true],
+            ["hadrien", "Mémoires d'Hadrien", "yourcenar", "Roman", 1951, 364, "Gallimard", "paperback", "Au soir de sa vie, l'empereur Hadrien écrit à son successeur Marc Aurèle une longue lettre sur le pouvoir, l'amour et la mort.", "admin", false],
+            ["huitiemecouleur", "La Huitième Couleur", "pratchett", "Fantasy", 1983, 288, "Pocket", "pocket", "Rincevent, mage raté, doit escorter Deuxfleurs, premier touriste du Disque-monde, à travers mille catastrophes.", "insomniaque", false],
+            ["mortimer", "Mortimer", "pratchett", "Fantasy", 1987, 320, "Pocket", "pocket", "La Mort prend un apprenti, Mortimer, qui s'empresse de tout dérégler en sauvant une princesse promise au trépas.", "insomniaque", false],
+            ["servante", "La Servante écarlate", "atwood", "Science-Fiction", 1985, 512, "Robert Laffont", "paperback", "Dans la république théocratique de Galaad, Defred est une servante vouée à la reproduction. Elle se souvient d'avant.", "elise", false],
+            ["mousquetaires", "Les Trois Mousquetaires", "dumas", "Roman", 1844, 896, "Folio", "pocket", "Le jeune d'Artagnan monte à Paris et se lie à Athos, Porthos et Aramis au service du roi contre les intrigues de Richelieu.", "admin", false],
+            ["montecristo", "Le Comte de Monte-Cristo", "dumas", "Roman", 1844, 1504, "Le Livre de Poche", "hardcover", "Trahi et emprisonné au château d'If, Edmond Dantès s'évade et prépare une vengeance patiente et implacable.", "admin", false],
+            ["deuxiemesexe", "Le Deuxième Sexe", "beauvoir", "Essai", 1949, 1000, "Gallimard", "paperback", "« On ne naît pas femme : on le devient. » Une analyse fondatrice de la condition féminine.", "insomniaque", false],
+            ["jeunefille", "Mémoires d'une jeune fille rangée", "beauvoir", "Essai", 1958, 480, "Folio", "pocket", "Premier volet autobiographique : l'enfance bourgeoise et l'émancipation intellectuelle de la jeune Simone.", "insomniaque", true],
+            ["nil", "Mort sur le Nil", "christie", "Policier", 1937, 352, "Le Livre de Poche", "pocket", "Une riche héritière est assassinée lors d'une croisière sur le Nil. Hercule Poirot est à bord.", "marc", false],
+            ["ackroyd", "Le Meurtre de Roger Ackroyd", "christie", "Policier", 1926, 312, "Le Livre de Poche", "pocket", "Dans un paisible village anglais, un notable est poignardé. Le dénouement a fait scandale à sa parution.", "marc", false],
+            ["notredame", "Notre-Dame de Paris", "hugo", "Roman", 1831, 940, "Folio", "pocket", "Autour de la cathédrale, le destin tragique d'Esmeralda, de Quasimodo et de l'archidiacre Frollo.", "admin", false],
+            ["hobbit", "Le Hobbit", "tolkien", "Fantasy", 1937, 400, "Le Livre de Poche", "pocket", "Bilbon Sacquet, hobbit casanier, est entraîné par Gandalf et treize nains dans la reconquête d'un trésor gardé par un dragon.", "admin", false],
+            ["messie", "Le Messie de Dune", "herbert", "Science-Fiction", 1969, 336, "Pocket", "pocket", "Douze ans après sa victoire, Paul Atréides règne sur un empire que son propre culte menace de consumer.", "elise", false],
+            ["1q84", "1Q84", "murakami", "Roman", 2009, 560, "10/18", "paperback", "Tokyo, 1984. Aomamé et Tengo glissent dans un monde parallèle éclairé par deux lunes.", "elise", false],
+        ] as const
+    ).map(
+        (
+            [key, title, author, category, publishedYear, pageCount, publisher, format, summary, creator, untouched],
+            i,
+        ): BookSeed => ({
+            key,
+            title,
+            author,
+            category,
+            isbn13: fakeIsbn13(i + 1),
+            pageCount,
+            publishedYear,
+            language: "fr",
+            publisher,
+            format,
+            summary,
+            cover: false,
+            coverUrl: placeholderCover(key),
+            isImported: false,
+            creator,
+            untouched,
+        }),
+    ),
+
+    // --- Cas limite responsive : titre, éditeur et résumé très longs --------
+    {
+        key: "longtitle",
+        title: "Chroniques crépusculaires d'une bibliothécaire insomniaque qui archivait les rêves oubliés des lecteurs de passage entre deux averses sur les quais de la Seine, tome premier : l'encre et la nuit",
+        author: "longname",
+        category: "Littérature de l'imaginaire, récits d'anticipation et autres contrées oniriques",
+        isbn13: fakeIsbn13(999),
+        pageCount: 2468,
+        publishedYear: 2024,
+        language: "fr",
+        publisher:
+            "Éditions des Veilleurs Nocturnes et des Bibliothèques Imaginaires Réunies",
+        format: "hardcover",
+        summary: [
+            "Chaque nuit, lorsque la bibliothèque municipale ferme ses portes, Clémence reste à l'intérieur. Officiellement pour inventorier les retours ; en réalité pour recueillir ce que les lecteurs abandonnent entre les pages : des tickets, des fleurs séchées, des listes de courses, et parfois des rêves entiers, pliés en quatre, que personne n'est jamais revenu chercher.",
+            "Au fil des saisons, elle constitue un fonds clandestin où chaque rêve est classé, coté et relié. Mais lorsqu'un lecteur se présente au guichet pour réclamer le sien, l'ordre patient de ses rayonnages vacille : que se passe-t-il quand on rend à quelqu'un ce qu'il a oublié avoir perdu ?",
+            "Premier tome d'une saga en sept volumes, ce roman-fleuve entremêle journal de bord, fiches de catalogage, correspondances et fragments oniriques. Une déclaration d'amour aux bibliothèques, aux lecteurs anonymes et à toutes les histoires qui continuent de vivre une fois le livre refermé.",
+            "Édition augmentée d'un index des rêves, d'une cartographie des quais et de soixante pages de notes de l'autrice.",
+        ].join("\n\n"),
+        cover: false,
+        coverUrl: placeholderCover("longtitle"),
+        isImported: false,
+        creator: "insomniaque",
+    },
 ];
 
 const categoriesData = [
@@ -473,6 +657,10 @@ const categoriesData = [
     "Policier",
     "Essai",
     "Autre",
+    // catégorie sans aucun livre (filtre vide)
+    "Poésie",
+    // cas limite responsive : nom de catégorie long (max 100)
+    "Littérature de l'imaginaire, récits d'anticipation et autres contrées oniriques",
 ];
 
 type LibrarySeed = {
@@ -580,6 +768,77 @@ const libraryData: LibrarySeed[] = [
         isPublic: true,
     },
     // Nora : aucune entrée (état vide volontaire)
+    // Insomniaque : contenus longs, trois favoris ordonnés
+    {
+        user: "insomniaque",
+        book: "longtitle",
+        status: ReadingStatus.READ,
+        startedAt: "2026-04-01",
+        finishedAt: "2026-07-30",
+        isPublic: true,
+        isFavorite: true,
+        favoriteRank: 1,
+    },
+    {
+        user: "insomniaque",
+        book: "montecristo",
+        status: ReadingStatus.READ,
+        startedAt: "2026-02-01",
+        finishedAt: "2026-03-28",
+        isPublic: true,
+        isFavorite: true,
+        favoriteRank: 2,
+    },
+    {
+        user: "insomniaque",
+        book: "mortimer",
+        status: ReadingStatus.READ,
+        startedAt: "2026-08-01",
+        finishedAt: "2026-08-09",
+        isPublic: true,
+        isFavorite: true,
+        favoriteRank: 3,
+    },
+    {
+        user: "insomniaque",
+        book: "deuxiemesexe",
+        status: ReadingStatus.READING,
+        startedAt: "2026-09-01",
+        isPublic: true,
+    },
+    {
+        user: "insomniaque",
+        book: "sisyphe",
+        status: ReadingStatus.PAUSED,
+        startedAt: "2026-06-15",
+        isPublic: true,
+    },
+    {
+        user: "insomniaque",
+        book: "import_cat_autre",
+        status: ReadingStatus.READ,
+        startedAt: "2026-05-02",
+        finishedAt: "2026-05-04",
+        isPublic: true,
+    },
+    // Gaspard (Google) : bibliothèque entièrement privée
+    {
+        user: "gaspard",
+        book: "fondation",
+        status: ReadingStatus.READING,
+        startedAt: "2026-08-20",
+        isPublic: false,
+    },
+    {
+        user: "gaspard",
+        book: "hobbit",
+        status: ReadingStatus.READ,
+        startedAt: "2026-07-01",
+        finishedAt: "2026-07-12",
+        isPublic: false,
+        isFavorite: true,
+        favoriteRank: 1,
+    },
 ];
 
 const DETAILED = (txt: string) => txt; // simple marqueur de lisibilité
@@ -664,6 +923,27 @@ const reviewsData: ReviewSeed[] = [
             "On croit le connaître par cœur, et pourtant il dit toujours quelque chose de neuf. Sous la simplicité du conte affleure une mélancolie douce sur ce qu'on perd en grandissant. La rose, le renard, l'allumeur de réverbères : autant de petites leçons qui ne moralisent jamais. Bouleversant de sobriété.",
         ),
     },
+    // Cas limites : critique fleuve, note minimale, note seule
+    {
+        user: "insomniaque",
+        book: "montecristo",
+        rating: 5,
+        text: [
+            "Il m'a fallu près de deux mois pour venir à bout de ces mille cinq cents pages, et je ne regrette pas une seule minute passée au château d'If ou dans les salons parisiens. Dumas a ce talent rare de rendre chaque chapitre indispensable tout en donnant l'impression d'improviser au fil de la plume.",
+            "La première partie, celle de l'emprisonnement d'Edmond Dantès, est un sommet. La rencontre avec l'abbé Faria, l'apprentissage des langues, des sciences et de la patience, puis l'évasion dans le linceul : tout y est haletant, et pourtant d'une grande profondeur. On assiste à la mort d'un homme et à la naissance d'un autre, plus froid, plus lucide, plus terrible.",
+            "Vient ensuite la longue mécanique de la vengeance. Certains lecteurs la trouvent interminable ; je l'ai savourée comme une partie d'échecs dont on connaîtrait l'issue sans deviner les coups. Fernand, Danglars, Villefort : chacun tombe par où il a péché, et Monte-Cristo ne fait souvent que tirer sur le fil que leurs propres fautes ont tissé.",
+            "Ce qui m'a le plus frappée, c'est la façon dont le roman interroge la légitimité de cette justice privée. Plus le comte triomphe, plus il doute. La mort du petit Édouard est un point de bascule bouleversant : le justicier découvre qu'il n'est pas la Providence, et que la vengeance a un prix qu'on ne choisit pas de payer.",
+            "Quelques bémols tout de même : certains personnages secondaires restent des silhouettes, les coïncidences s'accumulent parfois un peu trop commodément, et les dialogues ont les défauts de leurs qualités feuilletonesques. Mais qu'importe : « Attendre et espérer », la dernière phrase, résonne longtemps après avoir refermé le livre. Un monument à lire au moins une fois, idéalement lors d'un long hiver.",
+        ].join("\n\n"),
+    },
+    {
+        user: "insomniaque",
+        book: "import_cat_autre",
+        rating: 1,
+        text: "Traduction introuvable, mise en page illisible, et une fin qui n'en est pas une. Je ne le recommande pas.",
+    },
+    { user: "insomniaque", book: "mortimer", rating: 4 },
+    { user: "marc", book: "longtitle", rating: 3, text: "Le titre est plus long que certains chapitres, mais l'idée des rêves oubliés est charmante." },
 ];
 
 type VoteSeed = {
@@ -749,6 +1029,12 @@ const followsData: FollowSeed[] = [
     { follower: "filler10", following: "admin" },
     { follower: "filler11", following: "power" },
     { follower: "filler12", following: "power" },
+    // Nouveaux profils
+    { follower: "insomniaque", following: "elise" },
+    { follower: "insomniaque", following: "power" },
+    { follower: "elise", following: "insomniaque" },
+    { follower: "filler5", following: "insomniaque" },
+    { follower: "gaspard", following: "power" },
 ];
 
 // Commentaires (liste plate) accrochés à des critiques existantes, référencées
@@ -831,6 +1117,75 @@ const commentsData: CommentSeed[] = [
         user: "marc",
         content: "D'accord avec le doyen, point de vue rafraîchissant.",
     },
+    // Cas limites responsive sous la critique fleuve de Monte-Cristo
+    {
+        review: "insomniaque|montecristo",
+        user: "elise",
+        content:
+            "Ta critique est presque aussi longue que le roman, et je l'ai lue d'une traite. La partie sur la mort d'Édouard m'a convaincue de le relire cet hiver.",
+    },
+    {
+        review: "insomniaque|montecristo",
+        user: "filler4",
+        content:
+            "Attendreetespéreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeer !!! https://fr.wikipedia.org/wiki/Le_Comte_de_Monte-Cristo#Accueil_et_post%C3%A9rit%C3%A9_de_l%27%C5%93uvre",
+    },
+    {
+        review: "insomniaque|montecristo",
+        user: "insomniaque",
+        content: "Merci à vous deux !",
+    },
+];
+
+// Bannières de site : une seule active à la fois (invariant du resolver) ;
+// les autres couvrent chaque variante/audience pour l'onglet admin.
+const bannersData: {
+    title: string;
+    message?: string;
+    variant: BannerVariant;
+    audience: BannerAudience;
+    dismissible: boolean;
+    actionLabel?: string;
+    actionUrl?: string;
+    isActive: boolean;
+}[] = [
+    {
+        title: "Nouveau : suivez vos lecteurs préférés",
+        message:
+            "Abonnez-vous aux profils qui vous inspirent et retrouvez leurs dernières lectures dans votre fil d'activité.",
+        variant: BannerVariant.INFO,
+        audience: BannerAudience.ALL,
+        dismissible: true,
+        actionLabel: "Découvrir le catalogue",
+        actionUrl: "/books",
+        isActive: true,
+    },
+    {
+        title: "Maintenance programmée dimanche de 2h à 4h",
+        message:
+            "Le site sera ponctuellement indisponible pendant la mise à jour de la base de données. Vos bibliothèques ne seront pas affectées.",
+        variant: BannerVariant.WARNING,
+        audience: BannerAudience.AUTHENTICATED,
+        dismissible: false,
+        isActive: false,
+    },
+    {
+        title: "Merci ! La Nuit d'Encre a franchi le cap des 1 000 critiques",
+        variant: BannerVariant.SUCCESS,
+        audience: BannerAudience.ALL,
+        dismissible: true,
+        actionLabel: "Lire le billet",
+        actionUrl: "https://example.org/blog/1000-critiques",
+        isActive: false,
+    },
+    {
+        // sans message : titre seul
+        title: "Incident en cours sur l'import Google Books",
+        variant: BannerVariant.ERROR,
+        audience: BannerAudience.ALL,
+        dismissible: false,
+        isActive: false,
+    },
 ];
 
 // ---------------------------------------------------------------------------
@@ -869,6 +1224,7 @@ async function seed() {
             "book",
             "author",
             "category",
+            "site_banner",
             "user"
         RESTART IDENTITY CASCADE`,
     );
@@ -881,7 +1237,17 @@ async function seed() {
     for (const u of usersData) actionsByUser.set(u.key, []);
 
     for (const u of usersData) {
-        const user = await register(u.email, PASSWORD, u.userName, u.role);
+        const user = u.googleId
+            ? User.create({
+                  email: u.email,
+                  googleId: u.googleId,
+                  hashedPassword: null,
+                  userName: u.userName,
+                  role: u.role,
+                  level: 1,
+                  xp: 0,
+              })
+            : await register(u.email, PASSWORD, u.userName, u.role);
         user.avatar = u.avatar ?? null;
         user.banner = u.banner ?? null;
         user.bio = u.bio ?? null;
@@ -956,7 +1322,7 @@ async function seed() {
             language: b.language,
             publisher: b.publisher,
             format: b.format,
-            coverUrl: b.cover ? coverFor(b.isbn13) : undefined,
+            coverUrl: b.coverUrl ?? (b.cover ? coverFor(b.isbn13) : undefined),
             isImported: b.isImported,
             user: usersByKey.get(b.creator)!,
         });
@@ -1056,7 +1422,8 @@ async function seed() {
     // -----------------------------------------------------------------------
     // Cas de charge
     //   1. Une masse de critiques sur un même livre (pagination).
-    //   2. Un lecteur « doyen » poussé au niveau maximum (10).
+    //   2. Un lecteur « doyen » poussé au moins au niveau maximum des titres
+    //      (10) ; l'XP n'étant pas plafonné, son catalogue le fait dépasser.
     // Ces utilisateurs supplémentaires rejoignent le calcul d'XP via
     // `extraXpUsers` ; `targetLevel` déclenche un complément d'actions.
     // -----------------------------------------------------------------------
@@ -1167,8 +1534,9 @@ async function seed() {
     actionsByUser.set("power", []);
     extraXpUsers.push({ key: "power", targetLevel: 10 });
 
-    // Le doyen a lu, critiqué (en détail) et recommandé l'ensemble du catalogue.
-    for (const b of booksData) {
+    // Le doyen a lu, critiqué (en détail) et recommandé l'ensemble du catalogue,
+    // hormis les livres `untouched` qui doivent rester sans critique.
+    for (const b of booksData.filter((b) => !b.untouched)) {
         const book = booksByKey.get(b.key)!;
 
         const entry = UserBook.create({
@@ -1333,12 +1701,121 @@ async function seed() {
     }
     console.log(`💬 ${commentCount} commentaires de critiques créés`);
 
+    // --- Bannières de site ---------------------------------------------------
+    for (const b of bannersData) {
+        await SiteBanner.create({
+            ...b,
+            message: b.message ?? null,
+            actionLabel: b.actionLabel ?? null,
+            actionUrl: b.actionUrl ?? null,
+            createdBy: admin,
+        }).save();
+    }
+    console.log(`📢 ${bannersData.length} bannières créées (1 active)`);
+
+    // --- Compte supprimé (RGPD) ----------------------------------------------
+    // Le compte contribue normalement puis est effacé via le vrai service :
+    // ses critiques, recommandation, commentaire, livre et auteur restent en
+    // base avec un userId NULL (« Lecteur supprimé » côté front).
+    const departed = await register(
+        "parti@nuitdencre.test",
+        PASSWORD,
+        "LecteurParti",
+        Roles.User,
+    );
+    const calvino = await Author.create({
+        firstname: "Italo",
+        lastname: "Calvino",
+        birthDate: "1923-10-15",
+        nationality: "it",
+        biography:
+            "Écrivain italien, conteur des Villes invisibles et architecte de récits combinatoires.",
+        wikipediaUrl: "https://fr.wikipedia.org/wiki/Italo_Calvino",
+        user: departed,
+    }).save();
+    const voyageur = await Book.create({
+        title: "Si par une nuit d'hiver un voyageur",
+        summary:
+            "Un lecteur commence un roman, puis un autre, puis un autre : dix débuts de livres enchâssés dans une enquête sur l'acte même de lire.",
+        author: calvino,
+        category: categoriesByName.get("Roman")!,
+        isbn13: fakeIsbn13(998),
+        pageCount: 288,
+        publishedYear: 1979,
+        language: "fr",
+        publisher: "Points",
+        format: "pocket",
+        coverUrl: placeholderCover("voyageur"),
+        isImported: false,
+        user: departed,
+    }).save();
+    await UserBook.create({
+        user: departed,
+        book: voyageur,
+        status: ReadingStatus.READ,
+        isPublic: true,
+    }).save();
+    const departedReview = await BookReview.create({
+        rating: 4,
+        reviewText:
+            "Un vertige de lecteur : on se fait piéger à chaque chapitre, et on en redemande.",
+        user: departed,
+        book: voyageur,
+    }).save();
+    await BookReview.create({
+        rating: 2,
+        reviewText: "Trop long pour moi, j'ai décroché à la moitié.",
+        user: departed,
+        book: booksByKey.get("dune")!,
+    }).save();
+    await BookRecommendation.create({
+        user: departed,
+        book: booksByKey.get("dune")!,
+    }).save();
+    await BookReviewComment.create({
+        content:
+            "Je découvre ta critique trop tard, mais elle m'a donné envie de m'y remettre.",
+        user: departed,
+        review: reviewsByKey.get("elise|dune")!,
+    }).save();
+    await BookReviewComment.create({
+        content: "Ravie qu'il t'ait plu autant qu'à moi !",
+        user: usersByKey.get("elise")!,
+        review: departedReview,
+    }).save();
+    await BookReviewVote.create({
+        isHelpful: true,
+        user: departed,
+        review: reviewsByKey.get("elise|1984")!,
+    }).save();
+    await BookReviewVote.create({
+        isHelpful: true,
+        user: usersByKey.get("marc")!,
+        review: departedReview,
+    }).save();
+    await UserFollow.create({
+        follower: departed,
+        following: usersByKey.get("elise")!,
+    }).save();
+    await eraseUserAccount(departed.id);
+    console.log(
+        "🕳️  Compte « LecteurParti » effacé (critiques, livre, auteur et commentaire anonymisés)",
+    );
+
+    // --- Admin .env ----------------------------------------------------------
+    // Le TRUNCATE a supprimé l'admin créé au boot : on le restaure.
+    await createAdmin();
+
     console.log("\n✅ Seed terminé.");
     console.log("   Comptes de test (mot de passe commun) :");
     for (const u of usersData) {
-        console.log(`   • ${u.email}  (${u.role})`);
+        console.log(
+            `   • ${u.email}  (${u.role}${u.googleId ? ", compte Google, connexion impossible en local" : ""})`,
+        );
     }
-    console.log("   • doyen@nuitdencre.test  (user, niveau 10)");
+    console.log(
+        `   • doyen@nuitdencre.test  (user, niveau ${usersByKey.get("power")!.level}, au-delà du niveau max affiché)`,
+    );
     console.log(
         `   • lecteur01..${String(FILLER_REVIEWERS).padStart(2, "0")}@nuitdencre.test  (figurants, critiques de « ${popularTitle} »)`,
     );
