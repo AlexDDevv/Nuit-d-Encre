@@ -20,9 +20,9 @@
  *
  * ⚠️ Destructif : vide toutes les tables métier (sauf `title`) avant insertion.
  *
- * Mot de passe des comptes de test : surchargeable via la variable
- * d'environnement `SEED_PASSWORD` (défaut faible réservé au dev ; mettre une
- * valeur forte en prod pour ne pas exposer un admin de démo au mdp connu).
+ * Mot de passe des comptes de test : variable d'environnement `SEED_PASSWORD`.
+ * Défaut faible toléré en dev uniquement ; en production (`NODE_ENV=production`)
+ * le script refuse de s'exécuter sans elle.
  *
  * Lancement :
  *  - dev : `pnpm seed:db` (ou `docker compose exec back pnpm seed:db`)
@@ -54,10 +54,16 @@ import { Roles, UserRole, ReadingStatus, UserActionType } from "../types/types";
 // Données déclaratives (référencées par clés)
 // ---------------------------------------------------------------------------
 
-// Mot de passe commun aux comptes de test. Surchargeable via SEED_PASSWORD :
-// en prod, on y met une valeur forte pour ne jamais exposer publiquement un
-// compte admin de démo au mot de passe connu.
+// Mot de passe commun aux comptes de test. Le défaut est public (versionné) :
+// il n'est toléré qu'en dev, la prod exige SEED_PASSWORD pour ne jamais créer
+// un compte admin de démo au mot de passe connu.
 const PASSWORD = process.env.SEED_PASSWORD ?? "Password123!";
+
+if (process.env.NODE_ENV === "production" && !process.env.SEED_PASSWORD) {
+    throw new Error(
+        "SEED_PASSWORD est obligatoire en production (mot de passe par défaut public).",
+    );
+}
 
 // Livre « populaire » qui recevra une masse de critiques (test de pagination,
 // page = 10 critiques côté resolver).
@@ -1336,7 +1342,11 @@ async function seed() {
     console.log(
         `   • lecteur01..${String(FILLER_REVIEWERS).padStart(2, "0")}@nuitdencre.test  (figurants, critiques de « ${popularTitle} »)`,
     );
-    console.log(`   Mot de passe : ${PASSWORD}`);
+    console.log(
+        process.env.SEED_PASSWORD
+            ? "   Mot de passe : valeur de SEED_PASSWORD"
+            : `   Mot de passe : ${PASSWORD}`,
+    );
 
     await dataSource.destroy();
 }
