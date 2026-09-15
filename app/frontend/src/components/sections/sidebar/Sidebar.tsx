@@ -129,12 +129,14 @@ export default function Sidebar() {
     if (isMobile) {
         return (
             <MotionConfig reducedMotion="user">
-                <Button
-                    variant="hamburger"
-                    onClick={handleToggle}
-                    ariaLabel="Ouvrir la navigation"
-                    icon={<LuMenu />}
-                />
+                <div className="bg-card/85 fixed left-4 top-4 z-30 rounded-lg shadow-md backdrop-blur-sm">
+                    <Button
+                        variant="hamburger"
+                        onClick={handleToggle}
+                        ariaLabel="Ouvrir la navigation"
+                        icon={<LuMenu />}
+                    />
+                </div>
                 <SidebarOverlay
                     visible={overlayOpen}
                     onClose={handleOverlayClose}
