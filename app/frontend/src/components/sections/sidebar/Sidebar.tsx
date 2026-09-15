@@ -112,7 +112,7 @@ export default function Sidebar() {
                     aria-label="Navigation principale"
                     onKeyDown={handleKeyDown}
                     className={cn(
-                        "bg-card border-border flex flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
+                        "bg-card border-border flex shrink-0 flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
                         overlayOpen
                             ? "fixed inset-y-0 left-0 z-50 w-64 shadow-lg"
                             : "w-18 sticky top-0 h-screen",
@@ -166,7 +166,7 @@ export default function Sidebar() {
         <aside
             aria-label="Navigation principale"
             className={cn(
-                "bg-card border-border sticky top-0 flex h-screen flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
+                "bg-card border-border sticky top-0 flex h-screen shrink-0 flex-col overflow-hidden border-r transition-[width] duration-300 ease-in-out",
                 collapsed ? "w-18" : "w-64",
             )}
         >
