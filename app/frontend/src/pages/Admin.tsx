@@ -78,21 +78,21 @@ export default function Admin() {
             </Helmet>
 
             {/* En-tête */}
-            <header className="border-b-2 border-border">
-                <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 pb-4 md:px-6">
+            <header className="border-border border-b-2">
+                <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 pb-4 md:px-4">
                     <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-3">
                             <Ornament width="w-8" />
-                            <span className="font-body text-xs uppercase tracking-[0.3em] text-muted-foreground">
+                            <span className="font-body text-muted-foreground text-xs uppercase tracking-[0.3em]">
                                 Salle des archives
                             </span>
                         </div>
-                        <h1 className="font-quote text-3xl font-medium leading-tight text-foreground md:text-4xl">
+                        <h1 className="font-quote text-foreground text-lg font-medium leading-tight sm:text-3xl md:text-4xl">
                             Gérer la bibliothèque, veiller sur l'encre.
                         </h1>
                     </div>
                     <div className="flex items-center gap-3">
-                        <span className="hidden items-center gap-2 rounded-full border-2 border-primary/40 bg-primary/10 px-3 py-1.5 font-body text-xs font-bold uppercase tracking-[0.14em] text-primary sm:inline-flex">
+                        <span className="border-primary/40 bg-primary/10 font-body text-primary hidden items-center gap-2 rounded-full border-2 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] sm:inline-flex">
                             <LuShield size={13} /> Administration
                         </span>
                     </div>
@@ -100,7 +100,7 @@ export default function Admin() {
             </header>
 
             {/* Contenu */}
-            <main className="mx-auto max-w-7xl px-4 py-6 md:px-6 md:py-8">
+            <main className="mx-auto max-w-7xl py-6 md:px-6 md:py-8">
                 {/* Analytics permanent */}
                 <div className="mb-7">
                     <AnalyticsBar stats={stats} loading={isLoadingStats} />
@@ -139,7 +139,7 @@ export default function Admin() {
                 {/* Épigraphe de pied */}
                 <footer className="mt-14 flex flex-col items-center gap-3 pb-6 text-center">
                     <Ornament />
-                    <p className="max-w-md font-quote text-sm italic text-muted-foreground/65">
+                    <p className="font-quote text-muted-foreground/65 max-w-md text-sm italic">
                         « Un bibliothécaire est un veilleur : il garde la nuit
                         pour que d'autres y trouvent le jour. »
                     </p>

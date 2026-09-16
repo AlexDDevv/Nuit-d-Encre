@@ -35,20 +35,20 @@ export function AnalyticsBar({
                 return (
                     <div
                         key={stat.key}
-                        className="group flex items-center gap-3.5 rounded-xl border-2 border-border bg-card px-4 py-3.5 transition-all duration-200 hover:border-primary/45 hover:shadow-[0_0_24px_-8px_hsl(43_59%_60%/0.3)]"
+                        className="border-border bg-card hover:border-primary/45 group flex items-center gap-2.5 rounded-xl border-2 px-3 py-3 transition-all duration-200 hover:shadow-[0_0_24px_-8px_hsl(43_59%_60%/0.3)] sm:gap-3.5 sm:px-4 sm:py-3.5"
                     >
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border-2 border-border bg-popover text-primary/80 transition-colors duration-200 group-hover:border-primary/45 group-hover:text-primary">
-                            <Icon size={20} />
+                        <span className="border-border bg-popover text-primary/80 group-hover:border-primary/45 group-hover:text-primary grid h-9 w-9 shrink-0 place-items-center rounded-lg border-2 transition-colors duration-200 sm:h-11 sm:w-11">
+                            <Icon className="size-4 sm:size-5" />
                         </span>
                         <div className="min-w-0 leading-none">
-                            <div className="font-title text-3xl font-black tracking-tight text-foreground">
+                            <div className="font-title text-foreground text-xl font-black tracking-tight sm:text-3xl">
                                 {loading || value === undefined ? (
                                     <Skeleton className="inline-block h-6 w-12 align-middle" />
                                 ) : (
                                     value.toLocaleString("fr-FR")
                                 )}
                             </div>
-                            <div className="mt-1 font-body text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                            <div className="font-body text-xxs text-muted-foreground mt-1 truncate font-bold uppercase tracking-widest sm:text-xs sm:tracking-[0.14em]">
                                 {stat.label}
                             </div>
                         </div>
