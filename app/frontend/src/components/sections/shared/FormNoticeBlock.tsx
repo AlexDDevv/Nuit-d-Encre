@@ -14,7 +14,7 @@ export default function FormNoticeBlock({
     children: ReactNode;
 }) {
     return (
-        <div className="grain border-border bg-popover/55 relative overflow-hidden rounded-xl border-2 p-4 sm:p-5">
+        <div className="grain border-border bg-popover/55 xs:p-4 relative overflow-hidden rounded-xl border-2 p-3 sm:p-5">
             <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-0"
@@ -23,14 +23,14 @@ export default function FormNoticeBlock({
                         "radial-gradient(360px 120px at 50% -10%, hsl(43 45% 55% / 0.10), transparent 70%)",
                 }}
             />
-            <div className="border-border relative mb-4 flex items-center justify-between gap-3 border-b border-dashed pb-3">
-                <span className="text-primary/75 flex items-center gap-2 font-mono text-xxs font-semibold uppercase tracking-[0.28em]">
+            <div className="border-border xs:flex-row xs:items-center xs:justify-between xs:gap-3 relative mb-4 flex flex-col items-start gap-1 border-b border-dashed pb-3">
+                <span className="text-primary/75 text-xxs flex items-center gap-2 font-mono font-semibold uppercase tracking-[0.28em]">
                     <span className="text-primary/55 text-xxxs rotate-45 leading-none">
                         ◆
                     </span>{" "}
                     Notice technique
                 </span>
-                <span className="text-muted-foreground/55 font-mono text-xxs tracking-[0.16em]">
+                <span className="text-muted-foreground/55 text-xxs font-mono tracking-[0.16em]">
                     {refLabel} {refValue}
                 </span>
             </div>

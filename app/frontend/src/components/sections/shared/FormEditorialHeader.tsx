@@ -23,10 +23,10 @@ export default function FormEditorialHeader({
             <span className="text-primary/70 mt-4 flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-[0.3em]">
                 <Icon size={13} /> {eyebrow}
             </span>
-            <h1 className="text-foreground font-title mt-3 text-3xl font-black leading-tight tracking-tight sm:text-4xl">
+            <h1 className="text-foreground font-title xs:text-3xl mt-3 text-2xl font-black leading-tight tracking-tight sm:text-4xl">
                 {title}
             </h1>
-            <p className="text-muted-foreground font-quote mt-3 max-w-[52ch] text-base italic leading-snug text-pretty">
+            <p className="text-muted-foreground font-quote mt-3 max-w-[52ch] text-pretty text-base italic leading-snug">
                 {subtitle}
             </p>
             <Ornament className="mt-5" width="w-12" />
