@@ -164,7 +164,7 @@ export default function FavoriteBookModal({
 
     return (
         <div
-            className="z-70 fixed inset-0 flex items-start justify-center overflow-y-auto bg-[hsl(20_3%_7%/0.78)] px-4 py-8 backdrop-blur-[3px] sm:items-center sm:py-10"
+            className="z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]"
             onMouseDown={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
@@ -175,19 +175,19 @@ export default function FavoriteBookModal({
                 aria-modal="true"
                 aria-labelledby="fav-title"
                 aria-describedby="fav-sub"
-                className="border-primary/40 max-w-135 bg-popover relative w-full rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
+                className="border-primary/40 max-w-135 bg-popover relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
             >
                 {/* fermeture */}
                 <button
                     type="button"
                     onClick={onClose}
                     aria-label="Fermer"
-                    className="hover:border-primary/55 hover:text-primary focus-visible:ring-primary absolute right-3.5 top-3.5 z-10 grid h-9 w-9 cursor-pointer place-items-center rounded-full border border-[hsl(0_0%_30%)] bg-[hsl(20_3%_13%/0.6)] text-[hsl(20_12%_70%)] transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2"
+                    className="border-border bg-popover text-muted-foreground hover:border-primary hover:text-primary absolute right-3.5 top-3.5 z-10 grid h-9 w-9 cursor-pointer place-items-center rounded-lg border-2 transition-colors focus:outline-none"
                 >
-                    <FaXmark size={17} aria-hidden="true" />
+                    <FaXmark size={18} aria-hidden="true" />
                 </button>
 
-                <div className="px-6 pb-6 pt-7 sm:px-8 sm:pb-7 sm:pt-8">
+                <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5 pt-7 sm:px-8 sm:pt-8">
                     {/* en-tête */}
                     <div className="text-center">
                         <div className="mb-2.5 flex items-center justify-center gap-2.5">
@@ -249,31 +249,31 @@ export default function FavoriteBookModal({
                         moved={moved}
                         favoriteRank={favoriteRank}
                     />
+                </div>
 
-                    {/* actions */}
-                    <div className="mt-6 flex flex-wrap items-center justify-end gap-2.5 border-t border-dashed border-[hsl(0_0%_100%/0.08)] pt-5">
-                        {isFavorite && selectedRank != null && (
-                            <Button
-                                variant="destructiveGhost"
-                                onClick={() => setSelectedRank(null)}
-                                disabled={loading}
-                                leftIcon={<FaTrashCan aria-hidden="true" />}
-                            >
-                                Retirer des favoris
-                            </Button>
-                        )}
-
+                {/* actions */}
+                <div className="flex shrink-0 flex-wrap items-center justify-end gap-2.5 border-t border-dashed border-[hsl(0_0%_100%/0.08)] px-5 py-4 sm:px-8">
+                    {isFavorite && selectedRank != null && (
                         <Button
-                            variant="primary"
-                            type="button"
-                            onClick={handleValidate}
-                            loading={loading}
-                            disabled={loading || !changed}
-                            leftIcon={<FaCheck aria-hidden="true" />}
+                            variant="destructiveGhost"
+                            onClick={() => setSelectedRank(null)}
+                            disabled={loading}
+                            leftIcon={<FaTrashCan aria-hidden="true" />}
                         >
-                            {loading ? "Validation…" : "Valider"}
+                            Retirer des favoris
                         </Button>
-                    </div>
+                    )}
+
+                    <Button
+                        variant="primary"
+                        type="button"
+                        onClick={handleValidate}
+                        loading={loading}
+                        disabled={loading || !changed}
+                        leftIcon={<FaCheck aria-hidden="true" />}
+                    >
+                        {loading ? "Validation…" : "Valider"}
+                    </Button>
                 </div>
             </div>
         </div>

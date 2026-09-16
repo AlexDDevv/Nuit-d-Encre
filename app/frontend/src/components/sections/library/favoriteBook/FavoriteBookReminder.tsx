@@ -10,21 +10,21 @@ export default function FavoriteBookReminder({
     const author = `${book.author.firstname} ${book.author.lastname}`;
 
     return (
-        <div className="mx-auto mt-6 flex max-w-sm items-center gap-3.5 rounded-xl border border-border bg-[hsl(20_3%_14%/0.6)] px-3.5 py-3">
+        <div className="border-border mt-6 flex w-full items-center gap-3.5 rounded-xl border bg-[hsl(20_3%_14%/0.6)] px-3.5 py-3">
             <BookCover
                 coverUrl={book.coverUrl}
                 title={book.title}
                 author={author}
-                className="aspect-2/3 w-15 shrink-0 rounded-md border border-border shadow-[0_10px_22px_-10px_hsl(20_3%_3%/0.9)] sm:w-17"
+                className="aspect-2/3 w-15 border-border sm:w-17 shrink-0 rounded-md border shadow-[0_10px_22px_-10px_hsl(20_3%_3%/0.9)]"
             />
             <div className="min-w-0 flex-1">
-                <p className="text-primary/55 font-mono text-xxs uppercase tracking-[0.18em]">
+                <p className="text-primary/55 text-xxs font-mono uppercase tracking-[0.18em]">
                     Ouvrage à épingler
                 </p>
                 <h3 className="text-foreground font-quote mt-1 text-xl leading-tight">
                     {book.title}
                 </h3>
-                <p className="mt-0.5 font-body text-xs text-[hsl(20_12%_72%)]">
+                <p className="font-body mt-0.5 text-xs text-[hsl(20_12%_72%)]">
                     {author}
                 </p>
                 {(book.category?.name || book.publishedYear) && (
