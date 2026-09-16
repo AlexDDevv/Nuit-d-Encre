@@ -6,7 +6,13 @@ import { Pill, Ornament, MoonMedallion } from "../ProfileUI";
  * encadré dans le même médaillon doré que la marque. Retombe sur le
  * MoonMedallion générique si la clé est absente ou si le SVG manque.
  */
-function TitleEmblem({ iconKey, size = 50 }: { iconKey?: string | null; size?: number }) {
+function TitleEmblem({
+    iconKey,
+    size = 50,
+}: {
+    iconKey?: string | null;
+    size?: number;
+}) {
     const [failed, setFailed] = useState(false);
 
     if (!iconKey || failed) return <MoonMedallion size={size} />;
@@ -36,11 +42,11 @@ export default function TitlePlate({
     iconKey?: string | null;
 }) {
     return (
-        <div className="flex flex-col items-center gap-3.5 text-center md:items-start md:text-left">
+        <div className="@4xl:items-start @4xl:text-left flex flex-col items-center gap-3.5 text-center">
             <Pill tone="gold">Titre · Niveau {level}</Pill>
             <div className="flex items-center gap-3">
                 <TitleEmblem iconKey={iconKey} />
-                <span className="text-gradient-gold font-quote text-3xl leading-none font-semibold tracking-wide whitespace-nowrap max-sm:text-xl">
+                <span className="text-gradient-gold font-quote whitespace-nowrap text-3xl font-semibold leading-none tracking-wide max-sm:text-xl">
                     {title}
                 </span>
             </div>

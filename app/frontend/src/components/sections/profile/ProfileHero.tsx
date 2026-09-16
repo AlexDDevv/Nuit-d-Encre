@@ -107,7 +107,7 @@ export default function ProfileHero({
     const since = memberSince(user.createdAt);
 
     return (
-        <Card glow={false} className="grain fade-up overflow-hidden">
+        <Card glow={false} className="grain fade-up @container overflow-hidden">
             {/* Bannière éditable en place */}
             <div className="group/banner relative h-32 sm:h-44 md:h-52">
                 {user.banner ? (
@@ -163,11 +163,11 @@ export default function ProfileHero({
             />
 
             {/* Corps */}
-            <div className="relative px-5 pb-6 md:px-8">
+            <div className="@4xl:px-8 relative px-5 pb-6">
                 {/* Avatar chevauchant, éditable en place */}
-                <div className="absolute -top-12 left-1/2 z-20 -translate-x-1/2 md:-top-14 md:left-8 md:translate-x-0">
+                <div className="@4xl:-top-14 @4xl:left-8 @4xl:translate-x-0 absolute -top-12 left-1/2 z-20 -translate-x-1/2">
                     <div className="group/av relative">
-                        <div className="ring-primary/70 relative h-24 w-24 overflow-hidden rounded-full shadow-[0_8px_30px_-6px_hsl(0_0%_0%/0.6)] ring-2 md:h-28 md:w-28">
+                        <div className="ring-primary/70 @4xl:h-28 @4xl:w-28 relative h-24 w-24 overflow-hidden rounded-full shadow-[0_8px_30px_-6px_hsl(0_0%_0%/0.6)] ring-2">
                             {user.avatar ? (
                                 <img
                                     src={user.avatar}
@@ -175,7 +175,7 @@ export default function ProfileHero({
                                     className="h-full w-full object-cover"
                                 />
                             ) : (
-                                <div className="bg-linear-to-br font-title text-primary-foreground grid h-full w-full place-items-center from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] text-3xl font-black md:text-4xl">
+                                <div className="bg-linear-to-br font-title text-primary-foreground @4xl:text-4xl grid h-full w-full place-items-center from-[hsl(43_62%_82%)] to-[hsl(38_42%_50%)] text-3xl font-black">
                                     {initials(user.userName)}
                                 </div>
                             )}
@@ -206,14 +206,14 @@ export default function ProfileHero({
                     </div>
                 </div>
 
-                <div className="flex flex-col items-center pt-16 text-center md:flex-row md:items-end md:justify-between md:pl-40 md:pt-4 md:text-left">
+                <div className="@4xl:flex-row @4xl:items-end @4xl:justify-between @4xl:gap-6 @4xl:pl-40 @4xl:pt-4 @4xl:text-left flex flex-col items-center pt-16 text-center">
                     {/* Identité */}
-                    <div className="flex flex-col items-center gap-3 md:items-start">
-                        <h1 className="text-foreground font-title text-2xl font-black leading-tight md:text-4xl">
+                    <div className="@4xl:items-start flex min-w-0 flex-col items-center gap-3">
+                        <h1 className="text-foreground font-title @4xl:text-4xl text-2xl font-black leading-tight">
                             {user.userName}
                         </h1>
                         {since && (
-                            <div className="text-muted-foreground flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm md:justify-start">
+                            <div className="text-muted-foreground @4xl:justify-start flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-sm">
                                 <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
                                     <FaRegCalendar
                                         size={13}
@@ -234,7 +234,7 @@ export default function ProfileHero({
 
                     {/* Action principale : ouvre la modale */}
                     {isOwner && (
-                        <div className="mt-5 flex shrink-0 items-center gap-2 md:mt-0 md:self-start md:pt-1">
+                        <div className="@4xl:mt-0 @4xl:self-start @4xl:pt-1 mt-5 flex shrink-0 items-center gap-2">
                             <Button
                                 variant="primary"
                                 onClick={onOpenEdit}
@@ -245,7 +245,7 @@ export default function ProfileHero({
                         </div>
                     )}
                     {!isOwner && (
-                        <div className="mt-5 flex shrink-0 items-center gap-2 md:mt-0 md:self-start md:pt-1">
+                        <div className="@4xl:mt-0 @4xl:self-start @4xl:pt-1 mt-5 flex shrink-0 items-center gap-2">
                             <FollowButton
                                 targetId={user.id}
                                 isFollowedByMe={user.isFollowedByMe ?? false}
@@ -255,7 +255,7 @@ export default function ProfileHero({
                 </div>
 
                 {/* Bio */}
-                <div className="mt-5 md:pl-40">
+                <div className="@4xl:pl-40 mt-5">
                     {user.bio ? (
                         <p className="text-foreground/85 font-quote max-w-2xl text-lg italic leading-relaxed">
                             <FaQuoteLeft
@@ -274,7 +274,7 @@ export default function ProfileHero({
                 </div>
 
                 {/* Compteurs abonnés / abonnements + bouton suivre */}
-                <div className="mt-4 flex flex-wrap items-center gap-4 md:pl-40">
+                <div className="@4xl:pl-40 mt-4 flex flex-wrap items-center gap-4">
                     <button
                         type="button"
                         onClick={() => setFollowModal("followers")}
