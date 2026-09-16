@@ -19,6 +19,7 @@ import {
 import type { TabsContentProps, TabsProps, TabsTriggerProps } from '@/components/UI/Tabs/Tab.types'
 import { cn } from '@/lib/utils'
 import { Tooltip } from '@/components/UI/Tooltip/Tooltip'
+import { useWheelHorizontalScroll } from '@/hooks/scroll/useWheelHorizontalScroll'
 
 
 /**
@@ -60,6 +61,7 @@ const Tabs: React.FC<TabsProps> = ({
   const [internalTab, setInternalTab] = useState(value || '')
   const activeTab = value !== undefined ? value : internalTab
   const width = fullWidth && 'w-full'
+  const tabListRef = useWheelHorizontalScroll<HTMLDivElement>()
 
   // Custom setter that also calls the onChange prop
   const handleSetActiveTab = useCallback(
@@ -86,7 +88,10 @@ const Tabs: React.FC<TabsProps> = ({
         {leftComponent && (
           <div className={leftComponentClassname}>{leftComponent}</div>
         )}
-        <div className={cn(TabsWrapperClass[variant], tabBgColor, width)}>
+        <div
+          ref={tabListRef}
+          className={cn(TabsWrapperClass[variant], tabBgColor, width)}
+        >
           {tabs.map((tab) => (
             <TabsTrigger
               key={tab.value}
