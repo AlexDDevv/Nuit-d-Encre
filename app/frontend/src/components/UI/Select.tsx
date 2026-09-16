@@ -60,7 +60,7 @@ const SelectTrigger = forwardRef<
     <SelectTriggerBase
         ref={ref}
         className={cn(
-            "border-border data-placeholder:text-popover-foreground ring-offset-background focus:ring-focus group flex h-10 w-full cursor-pointer items-center justify-between whitespace-nowrap rounded-md border bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+            "border-border data-placeholder:text-popover-foreground ring-offset-background focus:ring-focus group flex h-10 w-full cursor-pointer items-center justify-between whitespace-nowrap rounded-md border bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-1 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:min-w-0 [&>span]:truncate",
             className,
         )}
         {...props}
@@ -133,7 +133,7 @@ const SelectContent = forwardRef<
                     <SelectContentBase
                         ref={ref}
                         className={cn(
-                            "text-popover-foreground bg-popover border-border shadow-default ring-ring relative z-50 min-w-32 origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=close]:ring-0 data-[state=open]:ring-2",
+                            "text-popover-foreground bg-popover border-border shadow-default ring-ring relative z-50 min-w-32 max-w-[max(var(--radix-select-trigger-width),18rem)] origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=close]:ring-0 data-[state=open]:ring-2",
                             position === "popper" &&
                                 "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
                             className,
@@ -150,7 +150,7 @@ const SelectContent = forwardRef<
                 <SelectContentBase
                     ref={ref}
                     className={cn(
-                        "text-popover-foreground bg-popover border-border shadow-default ring-ring relative z-50 min-w-32 origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=close]:ring-0 data-[state=open]:ring-2",
+                        "text-popover-foreground bg-popover border-border shadow-default ring-ring relative z-50 min-w-32 max-w-[max(var(--radix-select-trigger-width),18rem)] origin-[--radix-select-content-transform-origin] overflow-hidden rounded-lg border data-[state=close]:ring-0 data-[state=open]:ring-2",
                         "max-h-[--radix-select-content-available-height] overflow-y-auto",
                         position === "popper" &&
                             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
@@ -202,9 +202,10 @@ const SelectItem = forwardRef<
         <SelectItemBase
             ref={ref}
             className={cn(
-                "focus:bg-ring focus:text-primary-foreground data-disabled:pointer-events-none data-disabled:opacity-50 relative flex w-full cursor-pointer select-none items-center rounded-md py-1.5 pl-2 pr-8 text-sm outline-none",
+                "focus:bg-ring focus:text-primary-foreground data-disabled:pointer-events-none data-disabled:opacity-50 relative flex w-full cursor-pointer select-none items-center rounded-md py-1.5 pl-2 pr-8 text-sm outline-none [&>span:last-child]:min-w-0 [&>span:last-child]:truncate",
                 className,
             )}
+            title={typeof children === "string" ? children : undefined}
             {...props}
             asChild
         >
