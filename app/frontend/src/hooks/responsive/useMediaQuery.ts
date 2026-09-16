@@ -1,21 +1,38 @@
-import { useSyncExternalStore, useCallback } from "react";
+import { useMemo, useSyncExternalStore } from "react";
+
+// Miroir des breakpoints Tailwind : `xs` redéfini dans src/styles/theme.css,
+// le reste correspond aux défauts de Tailwind 4.
+export const BREAKPOINTS = {
+    xs: 480,
+    sm: 640,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    "2xl": 1536,
+} as const;
+
+export type Breakpoint = keyof typeof BREAKPOINTS;
 
 export function useMediaQuery(query: string): boolean {
-    const subscribe = useCallback(
-        (callback: () => void) => {
-            const mediaQueryList = window.matchMedia(query);
+    const mediaQueryList = useMemo(() => window.matchMedia(query), [query]);
+
+    const subscribe = useMemo(
+        () => (callback: () => void) => {
             mediaQueryList.addEventListener("change", callback);
             return () => mediaQueryList.removeEventListener("change", callback);
         },
-        [query],
+        [mediaQueryList],
     );
 
-    const getSnapshot = useCallback(
-        () => window.matchMedia(query).matches,
-        [query],
-    );
+    return useSyncExternalStore(subscribe, () => mediaQueryList.matches);
+}
 
-    const getServerSnapshot = useCallback(() => false, []);
+/** Même borne que les variants `max-*:` de Tailwind : `(width < Npx)`. */
+export function useIsBelow(breakpoint: Breakpoint): boolean {
+    return useMediaQuery(`(width < ${BREAKPOINTS[breakpoint]}px)`);
+}
 
-    return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+/** Même borne que les variants `md:`, `lg:`… de Tailwind : `(width >= Npx)`. */
+export function useIsAbove(breakpoint: Breakpoint): boolean {
+    return useMediaQuery(`(width >= ${BREAKPOINTS[breakpoint]}px)`);
 }
