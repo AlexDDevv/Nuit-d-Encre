@@ -40,7 +40,7 @@ export default function TitlePlate({
             <Pill tone="gold">Titre · Niveau {level}</Pill>
             <div className="flex items-center gap-3">
                 <TitleEmblem iconKey={iconKey} />
-                <span className="text-gradient-gold font-quote text-3xl leading-none font-semibold tracking-wide whitespace-nowrap">
+                <span className="text-gradient-gold font-quote text-3xl leading-none font-semibold tracking-wide whitespace-nowrap max-sm:text-xl">
                     {title}
                 </span>
             </div>
