@@ -203,7 +203,7 @@ export default function UserLibrary() {
             </div>
 
             {layout === "shelf" ? (
-                <div className="grid auto-rows-min grid-cols-[repeat(5,max-content)] items-start justify-center gap-10 max-xl:grid-cols-[repeat(4,max-content)] max-lg:grid-cols-[repeat(3,max-content)] max-md:grid-cols-[repeat(2,max-content)] max-sm:grid-cols-[repeat(1,max-content)]">
+                <div className="grid w-full max-w-180 auto-rows-min grid-cols-[repeat(auto-fill,7rem)] items-start justify-start gap-10">
                     {userBooks.map((userBook: BookCardLibraryProps) => (
                         <BookShelf
                             key={userBook.id}
