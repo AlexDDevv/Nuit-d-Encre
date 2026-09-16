@@ -74,7 +74,7 @@ Nuit-d-Encre/
 │   │       │   ├── userBook/             # useUserBooksData, useUserBookMutations
 │   │       │   ├── category/             # useCategoryData
 │   │       │   ├── auth/                 # useAuthContext
-│   │       │   ├── responsive/           # useMediaQuery, useScreenDetector
+│   │       │   ├── responsive/           # useMediaQuery (+ useIsBelow/useIsAbove)
 │   │       │   ├── storage/              # useLocalStorage
 │   │       │   ├── toast/                # useToast
 │   │       │   └── search/               # useDebounce
