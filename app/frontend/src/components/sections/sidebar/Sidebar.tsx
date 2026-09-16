@@ -8,7 +8,7 @@ import {
     Transition,
 } from "motion/react";
 import { useLocalStorage } from "@/hooks/storage/useLocalStorage";
-import { useMediaQuery } from "@/hooks/responsive/useMediaQuery";
+import { useIsAbove } from "@/hooks/responsive/useMediaQuery";
 import { cn } from "@/lib/utils";
 import { useAuthContext } from "@/hooks/auth/useAuthContext";
 import SidebarHeader from "./SidebarHeader";
@@ -38,11 +38,11 @@ export default function Sidebar() {
     const [overlayOpen, setOverlayOpen] = useState(false);
     const { key: locationKey } = useLocation();
     const [lastLocationKey, setLastLocationKey] = useState(locationKey);
-    // Uniquement des `min-width` (md/lg de Tailwind) : un couple max-width 767px
+    // Uniquement des bornes `>=` (md/lg de Tailwind) : un couple max-width 767px
     // / min-width 768px laisse un trou aux largeurs fractionnaires (zoom, mise à
     // l'échelle Windows) où le rendu desktop déplié s'affichait une frame.
-    const isMdUp = useMediaQuery("(min-width: 768px)");
-    const isLgUp = useMediaQuery("(min-width: 1024px)");
+    const isMdUp = useIsAbove("md");
+    const isLgUp = useIsAbove("lg");
     const isMobile = !isMdUp;
     const isTablet = isMdUp && !isLgUp;
 
