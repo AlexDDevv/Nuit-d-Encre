@@ -105,6 +105,7 @@ export function CategoriesTab() {
                             onKeyDown={(e) => e.key === "Enter" && create()}
                             placeholder="Nom de la nouvelle catégorie…"
                             aria-label="Nom de la catégorie"
+                            maxLength={40}
                             errorMessage=""
                             hideErrorMessage
                             className={atelierControlClass}

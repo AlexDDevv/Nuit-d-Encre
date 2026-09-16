@@ -6,7 +6,7 @@ import { Field, InputType } from "type-graphql"
  * This class is used to validate the category data before updating it in the database.
  *
  * @description
- * - `name`: The name of the book category (must be between 1 and 100 characters).
+ * - `name`: The name of the book category (must be between 1 and 40 characters).
  *
  * The class uses the following decorators:
  * - `@Field()`: Exposes the property in the GraphQL schema (via type-graphql).
@@ -15,6 +15,6 @@ import { Field, InputType } from "type-graphql"
 @InputType()
 export class UpdateCategoryInput {
 	@Field()
-	@Length(1, 100, { message: "Category name must be between 1 and 100 characters" })
+	@Length(1, 40, { message: "Category name must be between 1 and 40 characters" })
 	name!: string
 }

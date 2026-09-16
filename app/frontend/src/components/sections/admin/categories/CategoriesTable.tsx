@@ -55,6 +55,7 @@ export default function CategoriesTable({
                                         <input
                                             autoFocus
                                             value={editing.value}
+                                            maxLength={40}
                                             onChange={(e) =>
                                                 setEditing({
                                                     ...editing,
@@ -143,6 +144,7 @@ export default function CategoriesTable({
                                     <input
                                         autoFocus
                                         value={editing.value}
+                                        maxLength={40}
                                         onChange={(e) =>
                                             setEditing({
                                                 ...editing,
