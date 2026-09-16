@@ -24,6 +24,7 @@ export default function TabSwitch({
             onChange={setTab}
             ariaLabel="Sections du profil"
             fullWidth
+            className="max-xs:[&_button]:px-2 max-xs:[&_button]:text-xs max-xs:[&_svg]:hidden"
         />
     );
 }
