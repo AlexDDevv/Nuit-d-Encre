@@ -174,14 +174,14 @@ export default function UserLibrary() {
 
             {/* ── BARRE DE CONTRÔLE ── */}
             <div className="border-border sticky top-0 z-30 -mx-4 border-y bg-[hsl(20_3%_17%/0.86)] px-4 py-4 backdrop-blur-sm sm:mx-0 sm:rounded-xl sm:border-2 sm:px-5">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <StatusFilterSegments
                         selectedStatus={selectedStatus}
                         onStatusChange={handleStatusChange}
                         countByStatus={countByStatus}
                         total={counts.total}
                     />
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex items-center gap-2">
                         <SelectCategory />
                         {hasAnyFilter && (
                             <button
