@@ -33,7 +33,7 @@ export default function BookScribe() {
                     content="Page pour enregistrer un livre sur le site Nuit d'Encre."
                 />
             </Helmet>
-            <div className="w-3xl mx-auto flex flex-col items-center">
+            <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
                 <BookForm />
             </div>
         </>
