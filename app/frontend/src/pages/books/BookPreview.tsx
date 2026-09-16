@@ -86,9 +86,9 @@ export default function BookPreview() {
                     Recherche
                 </Button>
 
-                <div className="mb-7 mt-8 flex items-center gap-3">
+                <div className="mb-7 mt-8 flex flex-wrap items-center gap-x-3 gap-y-2.5">
                     <span
-                        className="text-xxs inline-flex items-center gap-2 whitespace-nowrap font-mono uppercase tracking-[0.24em]"
+                        className="text-xxs max-xs:whitespace-normal inline-flex items-center gap-2 whitespace-nowrap font-mono uppercase tracking-[0.24em] max-sm:basis-full"
                         style={{ color: "hsl(43 30% 60%)" }}
                     >
                         <Glyph name="external" size={12} /> Venu d'ailleurs -
