@@ -156,6 +156,7 @@ export default function LibraryListRow({
 
             {confirming && (
                 <ConfirmRemoveOverlay
+                    layout="row"
                     title={book.title}
                     loading={isDeletingUserBook}
                     onConfirm={() => handleDeleteUserBook?.(id)}
