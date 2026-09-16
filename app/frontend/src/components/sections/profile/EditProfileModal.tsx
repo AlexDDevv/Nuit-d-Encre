@@ -173,7 +173,7 @@ export default function EditProfileModal({
               : "text-muted-foreground/70";
 
     return (
-        <div className="z-60 fixed inset-0 flex items-end justify-center sm:items-center">
+        <div className="z-60 fixed inset-0 flex items-center justify-center px-4">
             <div
                 className="overlay-in bg-background/70 absolute inset-0 backdrop-blur-sm"
                 onClick={close}
@@ -185,7 +185,7 @@ export default function EditProfileModal({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="edit-modal-title"
-                className="modal-in border-border bg-popover grain sm:w-130 relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)] sm:max-h-[90vh] sm:rounded-2xl"
+                className="modal-in border-border bg-popover grain max-w-130 relative z-10 flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)]"
             >
                 {/* En-tête */}
                 <div className="border-border/70 relative shrink-0 border-b-2 px-5 pb-4 pt-5 md:px-7">
