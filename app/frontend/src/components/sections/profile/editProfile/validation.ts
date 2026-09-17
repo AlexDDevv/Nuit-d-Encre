@@ -1,3 +1,5 @@
+import { isPasswordStrong } from "@/lib/password";
+
 // - Validation des deux onglets du formulaire de profil -
 
 export const validateInfos = ({ name, bio }: { name: string; bio: string }) => {
@@ -22,6 +24,9 @@ export const validateSecurity = ({
     const e: { current?: string; newpw?: string; confirm?: string } = {};
     if (!current) e.current = "Saisissez votre mot de passe actuel.";
     if (newpw.length < 8) e.newpw = "8 caractères minimum.";
+    else if (!isPasswordStrong(newpw))
+        e.newpw =
+            "Ajoutez une majuscule, une minuscule, un chiffre et un symbole (255 caractères max).";
     if (confirm !== newpw) e.confirm = "Les mots de passe ne correspondent pas.";
     return e;
 };
