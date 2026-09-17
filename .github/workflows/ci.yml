@@ -2,8 +2,14 @@ name: CI
 
 on:
     push:
-        branches: [master, develop]
+        branches: [master, test]
     pull_request:
+        branches: [master, test]
+
+# Un nouveau push sur la même branche annule le run précédent devenu obsolète.
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
 
 jobs:
     frontend:
@@ -36,7 +42,7 @@ jobs:
               run: pnpm test
 
     backend:
-        name: Backend (typecheck, test)
+        name: Backend (lint, typecheck, test)
         runs-on: ubuntu-latest
         defaults:
             run:
@@ -54,6 +60,9 @@ jobs:
             - name: Install dependencies
               run: pnpm install --frozen-lockfile
               working-directory: .
+
+            - name: Lint
+              run: pnpm lint
 
             - name: Typecheck
               run: pnpm exec tsc --noEmit
