@@ -33,11 +33,6 @@ export default function ConfirmRemoveOverlay({
                     : "flex-col gap-3",
             )}
         >
-            {!isRow && (
-                <span className="border-destructive/40 grid h-10 w-10 place-items-center rounded-full border-2 text-[hsl(3_84%_64%)]">
-                    <FaTrashCan aria-hidden="true" />
-                </span>
-            )}
             {isRow ? (
                 <p className="text-foreground font-quote min-w-0 max-w-full truncate text-sm italic">
                     Retirer{" "}
@@ -60,7 +55,7 @@ export default function ConfirmRemoveOverlay({
             <div
                 className={cn(
                     "flex items-center gap-2",
-                    isRow ? "shrink-0 flex-row" : "flex-col",
+                    isRow ? "shrink-0 flex-row" : "w-full max-w-32 flex-col",
                 )}
             >
                 <Button
@@ -69,10 +64,16 @@ export default function ConfirmRemoveOverlay({
                     onClick={onConfirm}
                     disabled={loading}
                     leftIcon={<FaTrashCan size={12} aria-hidden="true" />}
+                    className={cn(!isRow && "w-full")}
                 >
                     Retirer
                 </Button>
-                <Button variant="text" size="sm" onClick={onCancel}>
+                <Button
+                    variant="text"
+                    size="sm"
+                    onClick={onCancel}
+                    className={cn(!isRow && "w-full")}
+                >
                     Annuler
                 </Button>
             </div>
