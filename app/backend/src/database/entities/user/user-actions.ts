@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { User } from "./user";
 
 /**
@@ -28,6 +28,10 @@ import { User } from "./user";
  */
 @ObjectType()
 @Entity()
+@Index("UQ_user_actions_user_type_xpKey", ["user", "type", "xpKey"], {
+    unique: true,
+    where: '"xpKey" IS NOT NULL',
+})
 export class UserActions extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     id!: string;
@@ -54,4 +58,9 @@ export class UserActions extends BaseEntity {
     @Field({ nullable: true })
     @Column({ nullable: true })
     metadata?: string;
+
+    // Clé de déduplication de l'XP (non exposée en GraphQL). NULL pour les
+    // actions antérieures à son introduction.
+    @Column({ type: "varchar", length: 255, nullable: true })
+    xpKey?: string | null;
 }

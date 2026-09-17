@@ -18,6 +18,7 @@ import {
 import { AppError } from "../../../middlewares/error-handler";
 import { Context, Roles, UserActionType } from "../../../types/types";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
+import { xpKeys } from "../../../utils/xp-keys";
 import { BookReviewVote } from "../../../database/entities/book/bookReviewVote";
 import { BookReviewVoteResult } from "../../../database/filteredResults/books/book-review-vote-result";
 import { CreateBookReviewVoteInput } from "../../inputs/create/book/create-book-review-vote-input";
@@ -206,6 +207,7 @@ export class BookReviewVotesResolver {
                         review.user,
                         UserActionType.REVIEW_VOTED_HELPFUL,
                         {
+                            xpKey: xpKeys.helpfulVote(review.id, user.id),
                             targetId: review.id,
                             metadata: {
                                 voterId: user.id,
@@ -387,6 +389,7 @@ export class BookReviewVotesResolver {
                           review.user,
                           UserActionType.REVIEW_VOTED_HELPFUL,
                           {
+                              xpKey: xpKeys.helpfulVote(review.id, user.id),
                               targetId: review.id,
                               metadata: {
                                   voterId: user.id,

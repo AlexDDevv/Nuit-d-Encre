@@ -13,24 +13,34 @@ const transactionMock = dataSource.transaction as jest.Mock;
 
 function makeUser(xp: number, level: number): User {
     const user = new User();
+    user.id = "user-1";
     user.xp = xp;
     user.level = level;
     return user;
 }
 
+function mockManager({ exists = false } = {}) {
+    const saved: unknown[] = [];
+    const manager = {
+        exists: jest.fn(async () => exists),
+        save: jest.fn(async (entity: unknown) => saved.push(entity)),
+    };
+    transactionMock.mockImplementation(async (cb) => cb(manager));
+    return { manager, saved };
+}
+
 describe("grantXpService", () => {
     it("persists the updated user and the action log in a single transaction", async () => {
-        const saved: unknown[] = [];
-        transactionMock.mockImplementation(async (cb) =>
-            cb({ save: jest.fn(async (entity: unknown) => saved.push(entity)) })
-        );
+        const { saved } = mockManager();
 
         const user = makeUser(0, 1);
-        await grantXpService(user, UserActionType.BOOK_ADDED, {
+        const granted = await grantXpService(user, UserActionType.BOOK_ADDED, {
+            xpKey: "isbn13:9782070612758",
             targetId: "42",
             metadata: { title: "Le Petit Prince" },
         });
 
+        expect(granted).toBe(true);
         expect(transactionMock).toHaveBeenCalledTimes(1);
         expect(saved[0]).toBe(user);
         expect(user.xp).toBe(ActionXPMap[UserActionType.BOOK_ADDED]);
@@ -39,28 +49,81 @@ describe("grantXpService", () => {
         expect(action).toBeInstanceOf(UserActions);
         expect(action.type).toBe(UserActionType.BOOK_ADDED);
         expect(action.xp).toBe(ActionXPMap[UserActionType.BOOK_ADDED]);
+        expect(action.xpKey).toBe("isbn13:9782070612758");
         expect(action.targetId).toBe("42");
         expect(action.metadata).toBe(JSON.stringify({ title: "Le Petit Prince" }));
     });
 
     it("levels the user up when the XP threshold is crossed", async () => {
-        transactionMock.mockImplementation(async (cb) =>
-            cb({ save: jest.fn() })
-        );
+        mockManager();
 
         // 80 XP + 50 (BOOK_ADDED) = 130 → level 2, 30 XP remaining
         const user = makeUser(80, 1);
-        await grantXpService(user, UserActionType.BOOK_ADDED);
+        await grantXpService(user, UserActionType.BOOK_ADDED, { xpKey: "k" });
 
         expect(user.level).toBe(2);
         expect(user.xp).toBe(30);
     });
 
-    it("propagates the error when the transaction fails", async () => {
-        transactionMock.mockRejectedValue(new Error("db down"));
+    it("looks up an existing grant for the same user, action type and key", async () => {
+        const { manager } = mockManager();
 
+        await grantXpService(makeUser(0, 1), UserActionType.BOOK_RECOMMENDED, {
+            xpKey: "book:b-1",
+        });
+
+        expect(manager.exists).toHaveBeenCalledWith(UserActions, {
+            where: {
+                user: { id: "user-1" },
+                type: UserActionType.BOOK_RECOMMENDED,
+                xpKey: "book:b-1",
+            },
+        });
+    });
+
+    it("grants nothing when the key has already been rewarded", async () => {
+        const { manager } = mockManager({ exists: true });
+
+        const user = makeUser(40, 1);
+        const granted = await grantXpService(
+            user,
+            UserActionType.BOOK_RECOMMENDED,
+            { xpKey: "book:b-1" }
+        );
+
+        expect(granted).toBe(false);
+        expect(manager.save).not.toHaveBeenCalled();
+        expect(user.xp).toBe(40);
+        expect(user.level).toBe(1);
+    });
+
+    it("grants nothing and restores the user when a concurrent grant wins the unique index", async () => {
+        transactionMock.mockImplementation(async (cb) => {
+            await cb({ exists: jest.fn(async () => false), save: jest.fn() });
+            throw Object.assign(new Error("duplicate key"), { code: "23505" });
+        });
+
+        const user = makeUser(80, 1);
+        const granted = await grantXpService(user, UserActionType.BOOK_ADDED, {
+            xpKey: "k",
+        });
+
+        expect(granted).toBe(false);
+        expect(user.xp).toBe(80);
+        expect(user.level).toBe(1);
+    });
+
+    it("propagates other errors and restores the user", async () => {
+        transactionMock.mockImplementation(async (cb) => {
+            await cb({ exists: jest.fn(async () => false), save: jest.fn() });
+            throw new Error("db down");
+        });
+
+        const user = makeUser(80, 1);
         await expect(
-            grantXpService(makeUser(0, 1), UserActionType.BOOK_ADDED)
+            grantXpService(user, UserActionType.BOOK_ADDED, { xpKey: "k" })
         ).rejects.toThrow("db down");
+        expect(user.xp).toBe(80);
+        expect(user.level).toBe(1);
     });
 });

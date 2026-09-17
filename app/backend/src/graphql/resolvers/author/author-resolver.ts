@@ -21,6 +21,7 @@ import {
 import { AppError } from "../../../middlewares/error-handler"
 import { Context, Roles, UserActionType } from "../../../types/types"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
+import { xpKeys } from "../../../utils/xp-keys"
 import { Brackets } from "typeorm"
 import { Author } from "../../../database/entities/author/author"
 import { CreateAuthorInput } from "../../inputs/create/author/create-author-input"
@@ -342,6 +343,7 @@ export class AuthorsResolver {
 
             if (wasIncomplete && !isAuthorIncomplete(author)) {
                 await grantXpService(user, UserActionType.AUTHOR_COMPLETED, {
+                    xpKey: xpKeys.author(author.id),
                     targetId: author.id,
                     metadata: { firstname: author.firstname, lastname: author.lastname },
                 });

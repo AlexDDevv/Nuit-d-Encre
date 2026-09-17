@@ -30,6 +30,7 @@ import { Book } from "../../../database/entities/book/book"
 import { Brackets } from "typeorm"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
+import { xpKeys } from "../../../utils/xp-keys"
 import { UserBooksResult } from "../../../database/filteredResults/user/user-books-result"
 import { UserBookStatusCounts } from "../../../database/filteredResults/user/user-book-status-counts"
 import { UserBooksQueryInput } from "../../queries/user/user-books-input"
@@ -315,12 +316,14 @@ export class UserBooksResolver {
             await newUserBook.save();
 
             await grantXpService(user, UserActionType.BOOK_ADDED_TO_LIBRARY, {
+                xpKey: xpKeys.book(book.id),
                 targetId: newUserBook.id,
                 metadata: { title: book.title },
             });
 
             if (newUserBook.status === ReadingStatus.READ) {
                 await grantXpService(user, UserActionType.BOOK_FINISHED, {
+                    xpKey: xpKeys.book(book.id),
                     targetId: newUserBook.id,
                     metadata: { to: newUserBook.status, title: book.title },
                 });
@@ -414,6 +417,7 @@ export class UserBooksResolver {
             // Grant XP if book status changed to READ
             if (!wasRead && userBook.status === ReadingStatus.READ) {
                 await grantXpService(user, UserActionType.BOOK_FINISHED, {
+                    xpKey: xpKeys.book(userBook.book.id),
                     targetId: userBook.id,
                     metadata: { to: userBook.status, title: userBook.book.title },
                 });

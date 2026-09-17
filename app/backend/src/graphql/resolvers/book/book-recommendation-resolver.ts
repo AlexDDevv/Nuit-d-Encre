@@ -19,6 +19,7 @@ import { AppError } from "../../../middlewares/error-handler";
 import { Context, Roles, UserActionType } from "../../../types/types";
 import { Book } from "../../../database/entities/book/book";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
+import { xpKeys } from "../../../utils/xp-keys";
 import { BookRecommendation } from "../../../database/entities/book/bookRecommendation";
 import { CreateBookRecommendationInput } from "../../inputs/create/book/create-book-recommendation-input";
 import { BookRecommendationToggleResult } from "../../../database/filteredResults/books/book-recommendation-result";
@@ -179,6 +180,7 @@ export class BookRecommendationsResolver {
 
             // Grant XP for recommending a book
             await grantXpService(user, UserActionType.BOOK_RECOMMENDED, {
+                xpKey: xpKeys.book(book.id),
                 targetId: book.id,
                 metadata: { title: book.title },
             });

@@ -31,6 +31,7 @@ import { Brackets } from "typeorm"
 import { dataSource } from "../../../database/config/datasource"
 import { isOwnerOrAdmin } from "../../../utils/authorizations"
 import { grantXpService } from "../../../services/grind/grant-xp-service"
+import { xpKeys } from "../../../utils/xp-keys"
 import { getOrCreateAuthorByFullName } from "../../../utils/author-factory"
 import { BookReview } from "../../../database/entities/book/bookReview"
 
@@ -260,6 +261,7 @@ export class BooksResolver {
             });
 
             await grantXpService(user, UserActionType.BOOK_ADDED, {
+                xpKey: xpKeys.isbn13(newBook.isbn13),
                 targetId: newBook.id,
                 metadata: { title: newBook.title }
             });
@@ -364,6 +366,7 @@ export class BooksResolver {
 
             if (wasIncomplete && !isImportedBookIncomplete(book)) {
                 await grantXpService(user, UserActionType.BOOK_COMPLETED, {
+                    xpKey: xpKeys.book(book.id),
                     targetId: book.id,
                     metadata: { title: book.title },
                 });

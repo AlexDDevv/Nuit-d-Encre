@@ -27,6 +27,7 @@ import {
 } from "../../../types/types";
 import { Book } from "../../../database/entities/book/book";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
+import { xpKeys } from "../../../utils/xp-keys";
 import { isOwnerOrAdmin } from "../../../utils/authorizations";
 import { BookReview } from "../../../database/entities/book/bookReview";
 import { BookReviewsResult } from "../../../database/filteredResults/books/book-reviews-result";
@@ -376,6 +377,7 @@ export class BookReviewsResolver {
 
             // Grant XP for writing a review
             await grantXpService(user, UserActionType.REVIEW_CREATED, {
+                xpKey: xpKeys.book(book.id),
                 targetId: newReview.id,
                 metadata: {
                     bookTitle: book.title,
@@ -389,6 +391,7 @@ export class BookReviewsResolver {
                     user,
                     UserActionType.DETAILED_REVIEW_BONUS,
                     {
+                        xpKey: xpKeys.book(book.id),
                         targetId: newReview.id,
                         metadata: {
                             bookTitle: book.title,

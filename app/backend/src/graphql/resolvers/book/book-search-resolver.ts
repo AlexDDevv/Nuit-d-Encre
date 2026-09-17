@@ -12,6 +12,7 @@ import { CloudinaryService } from "../../../services/cloudinary.service";
 import { AppError } from "../../../middlewares/error-handler";
 import { Context, Roles, UserActionType } from "../../../types/types";
 import { grantXpService } from "../../../services/grind/grant-xp-service";
+import { xpKeys } from "../../../utils/xp-keys";
 import {
     getOrCreateAuthorByFullName,
     parseFullName,
@@ -339,6 +340,7 @@ export class BookSearchResolver {
         }
 
         await grantXpService(user, UserActionType.BOOK_IMPORTED, {
+            xpKey: xpKeys.isbn13(isbn13),
             targetId: book.id,
             metadata: { title: book.title },
         });
