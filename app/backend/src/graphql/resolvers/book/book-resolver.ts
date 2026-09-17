@@ -304,10 +304,12 @@ export class BooksResolver {
             }
 
             const book = await Book.findOne({
-                where: {
-                    id: data.id,
-                    user: { id: user.id }
-                },
+                // Un admin peut corriger la fiche de n'importe qui ; les autres
+                // ne voient que leurs propres livres.
+                where:
+                    user.role === Roles.Admin
+                        ? { id: data.id }
+                        : { id: data.id, user: { id: user.id } },
                 relations: {
                     user: true,
                     category: true,
@@ -325,7 +327,7 @@ export class BooksResolver {
 
             if (!isOwnerOrAdmin(book.user?.id ?? "", user)) {
                 throw new AppError(
-                    "Not authorized to delete this book",
+                    "Not authorized to update this book",
                     403,
                     "ForbiddenError"
                 )

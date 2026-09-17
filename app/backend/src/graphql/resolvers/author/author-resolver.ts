@@ -312,10 +312,12 @@ export class AuthorsResolver {
             }
 
             const author = await Author.findOne({
-                where: {
-                    id: data.id,
-                    user: { id: user.id }
-                },
+                // Un admin peut corriger la fiche de n'importe qui ; les autres
+                // ne voient que leurs propres auteurs.
+                where:
+                    user.role === Roles.Admin
+                        ? { id: data.id }
+                        : { id: data.id, user: { id: user.id } },
                 relations: {
                     user: true,
                 },
@@ -327,7 +329,7 @@ export class AuthorsResolver {
 
             if (!isOwnerOrAdmin(author.user?.id ?? "", user)) {
                 throw new AppError(
-                    "Not authorized to delete this author",
+                    "Not authorized to update this author",
                     403,
                     "ForbiddenError"
                 )
