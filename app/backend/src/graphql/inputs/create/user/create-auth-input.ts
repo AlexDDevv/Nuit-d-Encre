@@ -1,5 +1,9 @@
 import { IsEmail, IsNotEmpty, IsStrongPassword, Length } from "class-validator";
 import { Field, InputType } from "type-graphql";
+import {
+    PASSWORD_MAX_LENGTH,
+    STRONG_PASSWORD_OPTIONS,
+} from "../../../../utils/password-policy";
 
 /**
  * Represents user input for creating a new user (SIGN UP).
@@ -7,7 +11,7 @@ import { Field, InputType } from "type-graphql";
  *
  * - `email`: the user's email address, must be valid.
  * - `password`: the user's password, with specific requirements:
- *   - Must be between 6 and 255 characters.
+ *   - Must be between 8 and 255 characters.
  *   - Must contain at least one uppercase letter, one lowercase letter, one number, and one symbol.
  * - `userName`: the user's name, must be between 2 and 100 characters.
  * - `role`: the user's role, must be one of the valid roles defined in the `Roles` enum.
@@ -26,17 +30,11 @@ export class CreateUserInput {
     email!: string;
 
     @Field()
-    @Length(8, 255, {
-        message: "The password must contain between 6 and 255 characters.",
+    @Length(8, PASSWORD_MAX_LENGTH, {
+        message: "The password must contain between 8 and 255 characters.",
     })
     @IsStrongPassword(
-        {
-            minLength: 8,
-            minLowercase: 1,
-            minUppercase: 1,
-            minNumbers: 1,
-            minSymbols: 1,
-        },
+        STRONG_PASSWORD_OPTIONS,
         {
             message:
                 "The password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol.",

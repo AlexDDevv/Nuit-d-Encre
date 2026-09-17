@@ -6,6 +6,7 @@ import { dataSource } from "../database/config/datasource";
 import { LogInResponse, User } from "../database/entities/user/user";
 import { AppError } from "../middlewares/error-handler";
 import { GoogleProfile, Roles, UserRole } from "../types/types";
+import { isPasswordCompliant } from "../utils/password-policy";
 import { CloudinaryService } from "./cloudinary.service";
 
 export const register = async (
@@ -260,6 +261,7 @@ export const login = async (
             cookieSet: true,
         };
     } catch (error) {
+        if (error instanceof AppError) throw error;
         throw new AppError(
             "Failed to log in the user.",
             500,
@@ -334,6 +336,16 @@ export const changePassword = async (
     currentPassword: string,
     newPassword: string
 ): Promise<boolean> => {
+    // Même politique qu'à l'inscription : sans ce contrôle, le changement
+    // de mot de passe permettait de choisir un mot de passe faible.
+    if (!isPasswordCompliant(newPassword)) {
+        throw new AppError(
+            "Le nouveau mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un symbole.",
+            400,
+            "ValidationError"
+        );
+    }
+
     const userRepository = dataSource.getRepository(User);
 
     const user = await userRepository.findOne({ where: { id: userId } });
