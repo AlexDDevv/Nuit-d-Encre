@@ -70,7 +70,15 @@ export interface FollowButtonProps {
 
 export interface FollowListModalProps {
     userId: string;
+    userName: string;
+    isOwner: boolean;
     mode: "followers" | "following";
+    onClose: () => void;
+}
+
+export interface FavoriteBookPickerProps {
+    rank: 1 | 2 | 3;
+    userId: string;
     onClose: () => void;
 }
 

@@ -278,7 +278,7 @@ export default function ProfileHero({
                     <button
                         type="button"
                         onClick={() => setFollowModal("followers")}
-                        className="text-foreground hover:text-primary text-sm transition-colors"
+                        className="text-foreground hover:text-primary cursor-pointer text-sm transition-colors"
                     >
                         <span className="font-title">
                             {user.followerCount ?? 0}
@@ -288,7 +288,7 @@ export default function ProfileHero({
                     <button
                         type="button"
                         onClick={() => setFollowModal("following")}
-                        className="text-foreground hover:text-primary text-sm transition-colors"
+                        className="text-foreground hover:text-primary cursor-pointer text-sm transition-colors"
                     >
                         <span className="font-title">
                             {user.followingCount ?? 0}
@@ -302,6 +302,8 @@ export default function ProfileHero({
                 {followModal && (
                     <FollowListModal
                         userId={user.id}
+                        userName={user.userName}
+                        isOwner={isOwner}
                         mode={followModal}
                         onClose={() => setFollowModal(null)}
                     />
