@@ -4,6 +4,7 @@
     "main": "server.js",
     "scripts": {
         "test": "jest",
+        "lint": "eslint src",
         "build": "tsc",
         "start": "ts-node-dev ./src/server.ts",
         "start:prod": "node dist/server.js",
@@ -44,6 +45,9 @@
         "@types/jest": "^30.0.0",
         "@types/jsonwebtoken": "^9.0.10",
         "@types/node": "^24.12.2",
+        "@typescript-eslint/eslint-plugin": "^8.59.1",
+        "@typescript-eslint/parser": "^8.59.1",
+        "eslint": "^9.39.4",
         "jest": "^30.3.0",
         "ts-jest": "^29.4.6",
         "typescript": "^5.9.3"
