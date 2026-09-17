@@ -38,6 +38,24 @@ describe("BookRecommendationsResolver.toggleBookRecommendation", () => {
         );
     });
 
+    it("utilise une clé différente pour chaque livre recommandé", async () => {
+        jest.spyOn(BookRecommendation, "findOne").mockResolvedValue(null);
+        jest.spyOn(Book, "findOne").mockResolvedValue(
+            Object.assign(new Book(), { id: "book-2", title: "Fondation" })
+        );
+
+        await resolver.toggleBookRecommendation(
+            { bookId: "book-2" },
+            makeContext(user)
+        );
+
+        expect(grantXp).toHaveBeenCalledWith(
+            user,
+            UserActionType.BOOK_RECOMMENDED,
+            expect.objectContaining({ xpKey: "book:book-2" })
+        );
+    });
+
     it("retire une recommandation existante sans toucher à l'XP", async () => {
         jest.spyOn(BookRecommendation, "findOne").mockResolvedValue(
             new BookRecommendation()

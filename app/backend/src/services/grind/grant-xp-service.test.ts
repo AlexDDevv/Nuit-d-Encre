@@ -81,6 +81,37 @@ describe("grantXpService", () => {
         });
     });
 
+    it("keeps rewarding the same action on a different target", async () => {
+        // Seule la clé déjà récompensée est ignorée : recommander un autre
+        // livre reste une nouvelle action, donc de l'XP.
+        const rewarded = new Set(["book:b-1"]);
+        transactionMock.mockImplementation(async (cb) =>
+            cb({
+                exists: jest.fn(
+                    async (_entity: unknown, options: { where: { xpKey: string } }) =>
+                        rewarded.has(options.where.xpKey)
+                ),
+                save: jest.fn(),
+            })
+        );
+
+        const user = makeUser(0, 1);
+        const again = await grantXpService(
+            user,
+            UserActionType.BOOK_RECOMMENDED,
+            { xpKey: "book:b-1" }
+        );
+        const other = await grantXpService(
+            user,
+            UserActionType.BOOK_RECOMMENDED,
+            { xpKey: "book:b-2" }
+        );
+
+        expect(again).toBe(false);
+        expect(other).toBe(true);
+        expect(user.xp).toBe(ActionXPMap[UserActionType.BOOK_RECOMMENDED]);
+    });
+
     it("grants nothing when the key has already been rewarded", async () => {
         const { manager } = mockManager({ exists: true });
 
