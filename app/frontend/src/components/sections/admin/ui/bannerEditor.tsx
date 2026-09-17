@@ -4,57 +4,19 @@ import { LuPencil, LuPower, LuTrash2 } from "react-icons/lu";
 import Icon from "@/components/UI/Icon/Icon";
 import { Label } from "@/components/UI/form/Label";
 import { variantConfig } from "@/components/UI/Banner/Banner.styles";
-import type { SiteBannerAudience } from "@/types/types";
-
-/** Variantes éditables d'une bannière de site (hors `completion`, réservée à la gamification). */
-export type BannerEditorVariant = "info" | "success" | "warning" | "error";
-
-/** Bannière enregistrée, projetée pour la liste d'historique. */
-export interface SavedBanner {
-    id: string;
-    variant: BannerEditorVariant;
-    title: string;
-    content: string;
-    audience: SiteBannerAudience;
-    dismissible: boolean;
-    action: { label: string; target: string } | null;
-    date: string;
-}
-
-/** Brouillon en cours d'édition. */
-export interface BannerDraft {
-    variant: BannerEditorVariant;
-    title: string;
-    content: string;
-    audience: SiteBannerAudience;
-    hasAction: boolean;
-    actionLabel: string;
-    actionTarget: string;
-    dismissible: boolean;
-}
-
-export const blankDraft = (): BannerDraft => ({
-    variant: "info",
-    title: "",
-    content: "",
-    audience: "ALL",
-    hasAction: false,
-    actionLabel: "",
-    actionTarget: "",
-    dismissible: true,
-});
+import type { BannerEditorVariant, SavedBanner } from "@/types/types";
 
 /** Ordre d'affichage et libellé/anneau propres à chaque variante. Les couleurs
  * (accent, bordure, teinte, fond d'icône, glyphe) sont reprises du composant
  * Banner pour rester strictement cohérentes. */
-export const VARIANT_ORDER: BannerEditorVariant[] = [
+const VARIANT_ORDER: BannerEditorVariant[] = [
     "info",
     "success",
     "warning",
     "error",
 ];
 
-export const VARIANT_META: Record<
+const VARIANT_META: Record<
     BannerEditorVariant,
     { label: string; ring: string }
 > = {

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useToast } from "@/hooks/toast/useToast";
 import { useSiteBanners } from "@/hooks/admin/useSiteBanners";
-import { toBannerVariant, toSiteBannerVariant } from "@/lib/banner";
-import type { SiteBanner } from "@/types/types";
 import {
     blankDraft,
-    type BannerDraft,
-    type SavedBanner,
-} from "@/components/sections/admin/ui/bannerEditor";
+    toBannerVariant,
+    toSiteBannerVariant,
+} from "@/lib/banner";
+import type { BannerDraft, SavedBanner, SiteBanner } from "@/types/types";
 import BannerTabHeader from "../banners/BannerTabHeader";
 import BannerEditorPanel from "../banners/BannerEditorPanel";
 import BannerPreviewPanel from "../banners/BannerPreviewPanel";

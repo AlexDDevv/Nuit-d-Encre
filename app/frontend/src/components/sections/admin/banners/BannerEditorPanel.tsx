@@ -23,8 +23,8 @@ import { cn } from "@/lib/utils";
 import {
     Field,
     StateSelector,
-    type BannerDraft,
 } from "@/components/sections/admin/ui/bannerEditor";
+import type { BannerDraft } from "@/types/types";
 
 /** Panneau gauche : éditeur de bannière (état, titre, contenu, action, options). */
 export default function BannerEditorPanel({

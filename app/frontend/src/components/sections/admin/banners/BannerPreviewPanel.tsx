@@ -1,11 +1,8 @@
 import { LuExternalLink, LuHistory, LuRotateCcw } from "react-icons/lu";
 import Banner from "@/components/UI/Banner/Banner";
 import { Ornament } from "@/components/sections/admin/ui/chips";
-import {
-    SavedBannerRow,
-    type BannerDraft,
-    type SavedBanner,
-} from "@/components/sections/admin/ui/bannerEditor";
+import { SavedBannerRow } from "@/components/sections/admin/ui/bannerEditor";
+import type { BannerDraft, SavedBanner } from "@/types/types";
 
 /** Panneau droit : aperçu en direct de la bannière + historique des bannières. */
 export default function BannerPreviewPanel({

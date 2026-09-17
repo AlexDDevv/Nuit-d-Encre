@@ -6,6 +6,33 @@
 export type SiteBannerVariant = "INFO" | "SUCCESS" | "WARNING" | "ERROR";
 export type SiteBannerAudience = "ALL" | "AUTHENTICATED";
 
+/** Variantes éditables d'une bannière de site (hors `completion`, réservée à la gamification). */
+export type BannerEditorVariant = "info" | "success" | "warning" | "error";
+
+/** Bannière enregistrée, projetée pour la liste d'historique. */
+export interface SavedBanner {
+    id: string;
+    variant: BannerEditorVariant;
+    title: string;
+    content: string;
+    audience: SiteBannerAudience;
+    dismissible: boolean;
+    action: { label: string; target: string } | null;
+    date: string;
+}
+
+/** Brouillon en cours d'édition. */
+export interface BannerDraft {
+    variant: BannerEditorVariant;
+    title: string;
+    content: string;
+    audience: SiteBannerAudience;
+    hasAction: boolean;
+    actionLabel: string;
+    actionTarget: string;
+    dismissible: boolean;
+}
+
 export interface SiteBanner {
     id: string;
     title: string;
