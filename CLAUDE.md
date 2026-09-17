@@ -25,6 +25,8 @@ pnpm preview   # Prévisualisation du build
 
 ```bash
 pnpm start          # Dev server avec ts-node-dev (hot reload)
+pnpm test           # Suite Jest
+pnpm lint           # ESLint (src/)
 pnpm build          # Compile TypeScript → dist/
 pnpm start:prod     # Démarre le serveur compilé
 pnpm seed:books     # Seed de données livres
@@ -298,6 +300,7 @@ Nuit-d-Encre/
 - **Health check** : la BDD doit passer `pg_isready` avant le démarrage du backend (`depends_on: condition: service_healthy`)
 - **Hot reload** : frontend via Vite polling (`usePolling: true`) ; backend via `ts-node-dev`
 - **Commande de démarrage** : `docker compose up --build` depuis la racine du projet
+- **CI GitHub Actions** (`.github/workflows/ci.yml`) : sur push vers `test`/`master` et sur PR ciblant ces branches — job frontend (lint, `tsc -b`, Vitest) et job backend (lint, `tsc --noEmit`, Jest), Node 22. Pas de hooks git locaux (husky) : la CI fait foi. Le lint ne bloque que sur les erreurs, les warnings passent.
 
 ## Code Style
 
