@@ -82,6 +82,12 @@ export interface FavoriteBookPickerProps {
     onClose: () => void;
 }
 
+export interface UseModalTransitionOptions {
+    /** Absent pour une modale montée conditionnellement (toujours ouverte). */
+    isOpen?: boolean;
+    onClose: () => void;
+}
+
 export interface ModalCloseButtonProps {
     onClick: () => void;
     disabled?: boolean;

@@ -169,7 +169,7 @@ body {
     animation: nodeGlow 3s ease-in-out infinite;
 }
 
-/* Entrée modale + overlay + feuille mobile */
+/* Entrée / sortie des modales (voile + boîte) - pilotées par useModalTransition */
 @keyframes overlayIn {
     from {
         opacity: 0;
@@ -178,9 +178,17 @@ body {
         opacity: 1;
     }
 }
+@keyframes overlayOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
 @keyframes modalIn {
     from {
-        transform: translateY(14px) scale(0.98);
+        transform: translateY(18px) scale(0.965);
         opacity: 0;
     }
     to {
@@ -188,12 +196,32 @@ body {
         opacity: 1;
     }
 }
+@keyframes modalOut {
+    from {
+        transform: none;
+        opacity: 1;
+    }
+    to {
+        transform: translateY(10px) scale(0.98);
+        opacity: 0;
+    }
+}
+.overlay-out,
+.modal-out {
+    pointer-events: none;
+}
 @media (prefers-reduced-motion: no-preference) {
     .overlay-in {
-        animation: overlayIn 0.2s ease;
+        animation: overlayIn 0.28s ease-out both;
     }
     .modal-in {
-        animation: modalIn 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+        animation: modalIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .overlay-out {
+        animation: overlayOut 0.2s ease-in both;
+    }
+    .modal-out {
+        animation: modalOut 0.2s cubic-bezier(0.4, 0, 1, 1) both;
     }
 }
 
