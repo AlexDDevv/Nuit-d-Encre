@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { FaCheck, FaLock } from "react-icons/fa6";
 import ModalCloseButton from "@/components/UI/ModalCloseButton";
+import { useModalTransition } from "@/hooks/modal/useModalTransition";
 import Button from "@/components/UI/Button/Button";
 import { UPDATE_PROFILE, CHANGE_PASSWORD } from "@/graphql/user/profile";
 import { WHOAMI } from "@/graphql/user/auth";
@@ -30,6 +31,7 @@ export default function EditProfileModal({
 }: EditProfileModalProps) {
     const dialogRef = useRef<HTMLDivElement>(null);
     const lastFocus = useRef<Element | null>(null);
+    const { closing, requestClose } = useModalTransition({ onClose });
     const { showToast } = useToast();
 
     const [tab, setTab] = useState<Tab>(initialTab);
@@ -90,7 +92,7 @@ export default function EditProfileModal({
 
     // Fermeture inconditionnelle (après succès) : restaure le focus déclencheur.
     const finishClose = () => {
-        onClose();
+        requestClose();
         if (lastFocus.current instanceof HTMLElement) {
             const el = lastFocus.current;
             setTimeout(() => el.focus(), 0);
@@ -176,7 +178,10 @@ export default function EditProfileModal({
     return (
         <div className="z-60 fixed inset-0 flex items-center justify-center px-4">
             <div
-                className="overlay-in bg-background/70 absolute inset-0 backdrop-blur-sm"
+                className={cn(
+                    "bg-background/70 absolute inset-0 backdrop-blur-sm",
+                    closing ? "overlay-out" : "overlay-in",
+                )}
                 onClick={close}
                 aria-hidden="true"
             />
@@ -186,7 +191,10 @@ export default function EditProfileModal({
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="edit-modal-title"
-                className="modal-in border-border bg-popover grain max-w-130 relative z-10 flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)]"
+                className={cn(
+                    closing ? "modal-out" : "modal-in",
+                    "border-border bg-popover grain max-w-130 relative z-10 flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_30px_80px_-20px_hsl(0_0%_0%/0.85)]",
+                )}
             >
                 {/* En-tête */}
                 <div className="border-border/70 relative shrink-0 border-b-2 px-5 pb-4 pt-5 md:px-7">

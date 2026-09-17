@@ -1,6 +1,7 @@
 import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import ModalCloseButton from "@/components/UI/ModalCloseButton";
+import { useModalTransition } from "@/hooks/modal/useModalTransition";
 
 interface ModalProps {
     isOpen: boolean;
@@ -26,11 +27,16 @@ export default function Modal({
     className,
     size = "md",
 }: ModalProps) {
+    const { mounted, closing, requestClose } = useModalTransition({
+        isOpen,
+        onClose,
+    });
+
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "unset";
 
         const handleEscape = (e: KeyboardEvent) => {
-            if (e.key === "Escape" && isOpen) onClose();
+            if (e.key === "Escape" && isOpen) requestClose();
         };
         document.addEventListener("keydown", handleEscape);
 
@@ -38,20 +44,24 @@ export default function Modal({
             document.body.style.overflow = "unset";
             document.removeEventListener("keydown", handleEscape);
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, requestClose]);
 
-    if (!isOpen) return null;
+    if (!mounted) return null;
 
     return (
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
-            onClick={onClose}
+            className={cn(
+                "fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm",
+                closing ? "overlay-out" : "overlay-in",
+            )}
+            onClick={requestClose}
             aria-modal="true"
             role="dialog"
         >
             <div
                 className={cn(
                     "relative w-full overflow-hidden rounded-xl",
+                    closing ? "modal-out" : "modal-in",
                     "border-border border",
                     "shadow-[0_0_0_1px_hsl(43_59%_81%/0.12),0_25px_60px_-10px_rgba(0,0,0,0.9)]",
                     sizeClasses[size],
@@ -68,7 +78,7 @@ export default function Modal({
                     ) : (
                         <span />
                     )}
-                    <ModalCloseButton onClick={onClose} />
+                    <ModalCloseButton onClick={requestClose} />
                 </div>
 
                 {/* Content */}

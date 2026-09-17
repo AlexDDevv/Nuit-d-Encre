@@ -4,6 +4,8 @@ import { FaUserGroup } from "react-icons/fa6";
 import { GET_FOLLOWERS, GET_FOLLOWING } from "@/graphql/user/follow";
 import UserLink from "@/components/sections/profile/UserLink";
 import ModalCloseButton from "@/components/UI/ModalCloseButton";
+import { useModalTransition } from "@/hooks/modal/useModalTransition";
+import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/UI/skeleton/Skeleton";
 import { FollowListModalProps, User } from "@/types/types";
 
@@ -15,6 +17,7 @@ export default function FollowListModal({
     mode,
     onClose,
 }: FollowListModalProps) {
+    const { closing, requestClose } = useModalTransition({ onClose });
     const isFollowers = mode === "followers";
     const query = isFollowers ? GET_FOLLOWERS : GET_FOLLOWING;
     const { data, loading } = useQuery(query, { variables: { userId } });
@@ -33,30 +36,36 @@ export default function FollowListModal({
     useEffect(() => {
         document.body.style.overflow = "hidden";
         const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
+            if (e.key === "Escape") requestClose();
         };
         document.addEventListener("keydown", onKey);
         return () => {
             document.body.style.overflow = "unset";
             document.removeEventListener("keydown", onKey);
         };
-    }, [onClose]);
+    }, [requestClose]);
 
     return (
         <div
-            className="z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]"
+            className={cn(
+                "z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]",
+                closing ? "overlay-out" : "overlay-in",
+            )}
             onMouseDown={(e) => {
-                if (e.target === e.currentTarget) onClose();
+                if (e.target === e.currentTarget) requestClose();
             }}
         >
             <div
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="follow-title"
-                className="border-primary/40 bg-popover relative flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
+                className={cn(
+                    "border-primary/40 bg-popover relative flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]",
+                    closing ? "modal-out" : "modal-in",
+                )}
             >
                 <ModalCloseButton
-                    onClick={onClose}
+                    onClick={requestClose}
                     className="absolute right-3.5 top-3.5 z-10"
                 />
 
@@ -102,7 +111,10 @@ export default function FollowListModal({
                                 : "Aucun abonnement pour l'instant."}
                         </p>
                     ) : (
-                        <ul className="flex flex-col gap-2" onClick={onClose}>
+                        <ul
+                            className="flex flex-col gap-2"
+                            onClick={requestClose}
+                        >
                             {users.map((u) => (
                                 <li key={u.id}>
                                     <UserLink

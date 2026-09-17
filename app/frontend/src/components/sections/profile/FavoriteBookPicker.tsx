@@ -4,6 +4,7 @@ import { FaStar } from "react-icons/fa6";
 import BookCover from "@/components/sections/book/BookCover";
 import SearchField from "@/components/sections/shared/fields/SearchField";
 import ModalCloseButton from "@/components/UI/ModalCloseButton";
+import { useModalTransition } from "@/hooks/modal/useModalTransition";
 import { PLACE_LABEL } from "@/components/sections/library/favoriteBook/podium";
 import {
     SET_FAVORITE_BOOK,
@@ -20,6 +21,7 @@ export default function FavoriteBookPicker({
     onClose,
 }: FavoriteBookPickerProps) {
     const [query, setQuery] = useState("");
+    const { closing, requestClose } = useModalTransition({ onClose });
 
     const { data, loading: loadingBooks } = useQuery(GET_USER_BOOKS, {
         variables: { filters: { limit: 200 } },
@@ -29,20 +31,20 @@ export default function FavoriteBookPicker({
         refetchQueries: [
             { query: GET_USER_FAVORITE_BOOKS, variables: { userId } },
         ],
-        onCompleted: onClose,
+        onCompleted: requestClose,
     });
 
     useEffect(() => {
         document.body.style.overflow = "hidden";
         const onKey = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
+            if (e.key === "Escape") requestClose();
         };
         document.addEventListener("keydown", onKey);
         return () => {
             document.body.style.overflow = "unset";
             document.removeEventListener("keydown", onKey);
         };
-    }, [onClose]);
+    }, [requestClose]);
 
     const userBooks: UserBook[] = data?.userBooks?.userBooks ?? [];
     const filtered = query
@@ -53,19 +55,25 @@ export default function FavoriteBookPicker({
 
     return (
         <div
-            className="z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]"
+            className={cn(
+                "z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]",
+                closing ? "overlay-out" : "overlay-in",
+            )}
             onMouseDown={(e) => {
-                if (e.target === e.currentTarget) onClose();
+                if (e.target === e.currentTarget) requestClose();
             }}
         >
             <div
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="picker-title"
-                className="border-primary/40 max-w-135 bg-popover relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
+                className={cn(
+                    "border-primary/40 max-w-135 bg-popover relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]",
+                    closing ? "modal-out" : "modal-in",
+                )}
             >
                 <ModalCloseButton
-                    onClick={onClose}
+                    onClick={requestClose}
                     className="absolute right-3.5 top-3.5 z-10"
                 />
 

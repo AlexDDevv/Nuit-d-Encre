@@ -14,6 +14,8 @@ import Socle from "./favoriteBook/Socle";
 import FavoriteBookReminder from "./favoriteBook/FavoriteBookReminder";
 import FavoriteMoveNote from "./favoriteBook/FavoriteMoveNote";
 import Button from "@/components/UI/Button";
+import { useModalTransition } from "@/hooks/modal/useModalTransition";
+import { cn } from "@/lib/utils";
 import ModalCloseButton from "@/components/UI/ModalCloseButton";
 
 // ── La modale ───────────────────────────────────────────────────────────────
@@ -28,6 +30,10 @@ export default function FavoriteBookModal({
     const { user } = useAuthContext();
     const { showToast } = useToast();
     const dialogRef = useRef<HTMLDivElement>(null);
+    const { mounted, closing, requestClose } = useModalTransition({
+        isOpen,
+        onClose,
+    });
 
     const [selectedRank, setSelectedRank] = useState<Rank | null>(
         (favoriteRank as Rank) ?? null,
@@ -81,7 +87,7 @@ export default function FavoriteBookModal({
         const onKey = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
                 e.preventDefault();
-                onClose();
+                requestClose();
                 return;
             }
             if (e.key !== "Tab") return;
@@ -102,14 +108,14 @@ export default function FavoriteBookModal({
             document.body.style.overflow = "unset";
             document.removeEventListener("keydown", onKey);
         };
-    }, [isOpen, onClose]);
+    }, [isOpen, requestClose]);
 
     const onPick = useCallback((rank: Rank) => setSelectedRank(rank), []);
 
     const handleValidate = useCallback(async () => {
         const bookTitle = book.title;
         if (selectedRank === (favoriteRank ?? null)) {
-            onClose();
+            requestClose();
             return;
         }
         try {
@@ -130,7 +136,7 @@ export default function FavoriteBookModal({
                     description: `« ${bookTitle} » est épinglé en ${PLACE_LABEL[selectedRank]}.`,
                 });
             }
-            onClose();
+            requestClose();
         } catch {
             showToast({
                 type: "error",
@@ -146,10 +152,10 @@ export default function FavoriteBookModal({
         setFavoriteBook,
         removeFavoriteBook,
         showToast,
-        onClose,
+        requestClose,
     ]);
 
-    if (!isOpen) return null;
+    if (!mounted) return null;
 
     const changed = selectedRank !== (favoriteRank ?? null);
     const moved =
@@ -165,9 +171,12 @@ export default function FavoriteBookModal({
 
     return (
         <div
-            className="z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]"
+            className={cn(
+                "z-70 fixed inset-0 flex items-center justify-center bg-[hsl(20_3%_7%/0.78)] px-4 backdrop-blur-[3px]",
+                closing ? "overlay-out" : "overlay-in",
+            )}
             onMouseDown={(e) => {
-                if (e.target === e.currentTarget) onClose();
+                if (e.target === e.currentTarget) requestClose();
             }}
         >
             <div
@@ -176,11 +185,14 @@ export default function FavoriteBookModal({
                 aria-modal="true"
                 aria-labelledby="fav-title"
                 aria-describedby="fav-sub"
-                className="border-primary/40 max-w-135 bg-popover relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
+                className={cn(
+                    "border-primary/40 max-w-135 bg-popover relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]",
+                    closing ? "modal-out" : "modal-in",
+                )}
             >
                 {/* fermeture */}
                 <ModalCloseButton
-                    onClick={onClose}
+                    onClick={requestClose}
                     className="absolute right-3.5 top-3.5 z-10"
                 />
 
