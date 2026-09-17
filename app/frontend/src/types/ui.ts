@@ -74,6 +74,12 @@ export interface FollowListModalProps {
     onClose: () => void;
 }
 
+export interface ModalCloseButtonProps {
+    onClick: () => void;
+    disabled?: boolean;
+    className?: string;
+}
+
 /* ──────────────────────────── Primitives UI génériques ──────────────────────────── */
 
 export interface SegmentedOption<T extends string> {

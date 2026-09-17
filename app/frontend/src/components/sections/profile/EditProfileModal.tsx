@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { FaXmark, FaCheck, FaLock } from "react-icons/fa6";
+import { FaCheck, FaLock } from "react-icons/fa6";
+import ModalCloseButton from "@/components/UI/ModalCloseButton";
 import Button from "@/components/UI/Button/Button";
 import { UPDATE_PROFILE, CHANGE_PASSWORD } from "@/graphql/user/profile";
 import { WHOAMI } from "@/graphql/user/auth";
@@ -189,15 +190,11 @@ export default function EditProfileModal({
             >
                 {/* En-tête */}
                 <div className="border-border/70 relative shrink-0 border-b-2 px-5 pb-4 pt-5 md:px-7">
-                    <button
-                        type="button"
+                    <ModalCloseButton
                         onClick={close}
-                        aria-label="Fermer"
                         disabled={submitting}
-                        className="border-border text-muted-foreground hover:border-primary hover:text-primary absolute right-3.5 top-3.5 grid h-9 w-9 place-items-center rounded-lg border-2 transition-colors focus:outline-none disabled:opacity-40"
-                    >
-                        <FaXmark size={18} />
-                    </button>
+                        className="absolute right-3.5 top-3.5"
+                    />
                     <div className="flex flex-col items-start gap-1 pr-10">
                         <span className="text-muted-foreground font-body text-xs uppercase tracking-[0.28em]">
                             Votre profil

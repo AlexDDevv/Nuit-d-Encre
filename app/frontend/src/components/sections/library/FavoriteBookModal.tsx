@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { FaXmark, FaStar, FaTrashCan, FaCheck } from "react-icons/fa6";
+import { FaStar, FaTrashCan, FaCheck } from "react-icons/fa6";
 import {
     SET_FAVORITE_BOOK,
     REMOVE_FAVORITE_BOOK,
@@ -14,6 +14,7 @@ import Socle from "./favoriteBook/Socle";
 import FavoriteBookReminder from "./favoriteBook/FavoriteBookReminder";
 import FavoriteMoveNote from "./favoriteBook/FavoriteMoveNote";
 import Button from "@/components/UI/Button";
+import ModalCloseButton from "@/components/UI/ModalCloseButton";
 
 // ── La modale ───────────────────────────────────────────────────────────────
 export default function FavoriteBookModal({
@@ -178,14 +179,10 @@ export default function FavoriteBookModal({
                 className="border-primary/40 max-w-135 bg-popover relative flex max-h-[90vh] w-full flex-col overflow-hidden rounded-2xl border-2 shadow-[0_40px_90px_-28px_hsl(20_3%_2%/0.95),0_0_0_1px_hsl(20_3%_8%)]"
             >
                 {/* fermeture */}
-                <button
-                    type="button"
+                <ModalCloseButton
                     onClick={onClose}
-                    aria-label="Fermer"
-                    className="border-border bg-popover text-muted-foreground hover:border-primary hover:text-primary absolute right-3.5 top-3.5 z-10 grid h-9 w-9 cursor-pointer place-items-center rounded-lg border-2 transition-colors focus:outline-none"
-                >
-                    <FaXmark size={18} aria-hidden="true" />
-                </button>
+                    className="absolute right-3.5 top-3.5 z-10"
+                />
 
                 <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-5 pt-7 sm:px-8 sm:pt-8">
                     {/* en-tête */}

@@ -1,7 +1,6 @@
-import { LuX } from "react-icons/lu";
 import { ReactNode, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import Button from "@/components/UI/Button/Button";
+import ModalCloseButton from "@/components/UI/ModalCloseButton";
 
 interface ModalProps {
     isOpen: boolean;
@@ -69,13 +68,7 @@ export default function Modal({
                     ) : (
                         <span />
                     )}
-                    <Button
-                        variant="ghost"
-                        onClick={onClose}
-                        ariaLabel="Fermer la modale"
-                        icon={<LuX />}
-                        className="text-muted-foreground hover:text-foreground"
-                    />
+                    <ModalCloseButton onClick={onClose} />
                 </div>
 
                 {/* Content */}
