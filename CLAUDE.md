@@ -301,6 +301,7 @@ Nuit-d-Encre/
 - **Hot reload** : frontend via Vite polling (`usePolling: true`) ; backend via `ts-node-dev`
 - **Commande de démarrage** : `docker compose up --build` depuis la racine du projet
 - **CI GitHub Actions** (`.github/workflows/ci.yml`) : sur push vers `test`/`master` et sur PR ciblant ces branches — job frontend (lint, `tsc -b`, Vitest) et job backend (lint, `tsc --noEmit`, Jest), Node 22. Pas de hooks git locaux (husky) : la CI fait foi. Lint strict (`--max-warnings 0`) : un warning fait échouer la CI.
+- **Protection de `master`** (ruleset GitHub) : suppression et force push interdits, checks `Frontend (lint, typecheck, test)` et `Backend (lint, typecheck, test)` requis. Les checks sont liés au commit : pousser d'abord sur `test`, attendre la CI verte, puis pousser le **même** commit sur `master` — un commit non vérifié poussé directement sur `master` est refusé. Renommer un job dans `ci.yml` casse la règle (le check requis n'existe plus) : mettre le ruleset à jour en même temps.
 
 ## Code Style
 
