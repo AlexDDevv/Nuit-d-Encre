@@ -65,7 +65,7 @@ export class ProfileResolver {
                 .andWhere("userBook.isFavorite = true")
                 .orderBy("userBook.favoriteRank", "ASC")
                 .getMany();
-        } catch (error) {
+        } catch {
             throw new AppError("Failed to fetch favorite books", 500, "InternalServerError");
         }
     }

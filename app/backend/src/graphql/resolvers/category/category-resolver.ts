@@ -44,7 +44,7 @@ export class CategoryResolver {
 					createdBy: true,
 				},
 			})
-		} catch (error) {
+		} catch {
 			throw new AppError(
 				"Failed to fetch categories",
 				500,

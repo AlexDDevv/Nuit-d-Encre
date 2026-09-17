@@ -30,7 +30,7 @@ export const customAuthChecker: AuthChecker<Context> = async (
 
         // Return true if the user is authenticated and has the required role
         return isAuthenticated && hasRole;
-    } catch (error) {
+    } catch {
         return false; // Return false if any error occurs
     }
 };

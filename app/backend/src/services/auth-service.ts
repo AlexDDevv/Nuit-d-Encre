@@ -296,7 +296,7 @@ export const whoami = async (cookies: Cookies): Promise<User | null> => {
         }
 
         return user;
-    } catch (error) {
+    } catch {
         throw new AppError("Invalid token", 401, "UnauthorizedError");
     }
 };

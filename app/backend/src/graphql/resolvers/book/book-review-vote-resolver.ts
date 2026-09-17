@@ -85,7 +85,7 @@ export class BookReviewVotesResolver {
             });
 
             return vote;
-        } catch (error) {
+        } catch {
             throw new AppError(
                 "Failed to fetch vote",
                 500,

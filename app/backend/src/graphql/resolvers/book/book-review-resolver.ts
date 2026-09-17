@@ -94,7 +94,7 @@ export class BookReviewsResolver {
             }
 
             return review;
-        } catch (error) {
+        } catch {
             throw new AppError(
                 "Failed to fetch review",
                 500,
@@ -289,7 +289,7 @@ export class BookReviewsResolver {
             });
 
             return review;
-        } catch (error) {
+        } catch {
             throw new AppError(
                 "Failed to fetch review",
                 500,

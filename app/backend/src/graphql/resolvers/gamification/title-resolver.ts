@@ -10,7 +10,7 @@ export class TitleResolver {
     async getTitles(): Promise<Title[]> {
         try {
             return Title.find({ order: { minLevel: "ASC" } });
-        } catch (error) {
+        } catch {
             throw new AppError("Failed to fetch titles", 500, "InternalServerError");
         }
     }

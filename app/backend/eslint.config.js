@@ -13,7 +13,9 @@ module.exports = [
 			"@typescript-eslint": require("@typescript-eslint/eslint-plugin"),
 		},
 		rules: {
-			"@typescript-eslint/no-unused-vars": "warn",
+			// ignoreRestSiblings : `const { id, ...data } = input` sert à exclure
+			// un champ, la variable écartée n'est pas un oubli.
+			"@typescript-eslint/no-unused-vars": ["warn", { ignoreRestSiblings: true }],
 			"prefer-const": "error",
 			"no-var": "error",
 		},
