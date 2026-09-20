@@ -1,5 +1,5 @@
 {
-    "lastUpdate": "28/08/2025",
+    "lastUpdate": "20/09/2026",
     "contactEmail": "contact@nuitdencre.fr",
     "sections": [
         {
@@ -10,10 +10,30 @@
             "intro": "Conformément aux dispositions des articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la Confiance dans l'économie numérique, dite L.C.E.N., nous portons à la connaissance des utilisateurs et visiteurs du site les informations suivantes :",
             "ficheLabel": "Éditeur du site",
             "fiche": [
-                { "k": "Éditeur", "v": "[Prénom Nom] (personne physique)" },
-                { "k": "Contact", "v": "contact@nuitdencre.fr" },
-                { "k": "Directeur de la publication", "v": "[Prénom Nom]" },
-                { "k": "Statut", "v": "Site édité à titre personnel, sans finalité commerciale" }
+                {
+                    "k": "Éditeur",
+                    "v": "Personne physique éditant le site à titre non professionnel"
+                },
+                {
+                    "k": "Contact",
+                    "v": "contact@nuitdencre.fr"
+                },
+                {
+                    "k": "Directeur de la publication",
+                    "v": "L'éditeur du site"
+                },
+                {
+                    "k": "Statut",
+                    "v": "Site édité à titre personnel, sans finalité commerciale"
+                },
+                {
+                    "k": "Identité",
+                    "v": "Communiquée à l'hébergeur désigné ci-après"
+                }
+            ],
+            "paras": [
+                "Le site est édité par une personne physique qui n'exerce à ce titre aucune activité professionnelle ni commerciale. À ce titre, le 2 de l'article 6-III de la L.C.E.N. lui ouvre la faculté de ne pas rendre publiques son identité et ses coordonnées, sous réserve d'avoir communiqué ces éléments à son hébergeur.",
+                "Ces éléments ont été communiqués à l'hébergeur désigné à la section suivante, qui les tient à la disposition de l'autorité judiciaire. Toute demande relative au site peut être adressée à l'adresse de contact ci-dessus."
             ]
         },
         {
@@ -24,9 +44,19 @@
             "intro": "Le site est hébergé par le prestataire désigné ci-dessous, qui assure la disponibilité et la sécurité des données stockées dans le cadre de l'exploitation du service.",
             "ficheLabel": "Hébergeur",
             "fiche": [
-                { "k": "Société", "v": "[Nom de l'hébergeur]" },
-                { "k": "Adresse", "v": "[Adresse postale de l'hébergeur]" },
-                { "k": "Site web", "v": "[URL du site de l'hébergeur]" }
+                {
+                    "k": "Société",
+                    "v": "OVH SAS"
+                },
+                {
+                    "k": "Adresse",
+                    "v": "2 rue Kellermann, 59100 Roubaix, France"
+                },
+                {
+                    "k": "Site web",
+                    "v": "www.ovhcloud.com",
+                    "link": "https://www.ovhcloud.com"
+                }
             ]
         },
         {
@@ -56,8 +86,9 @@
             "title": "Cookies",
             "icon": "Cookie",
             "paras": [
-                "Notre site internet utilise des cookies pour améliorer l'expérience utilisateur et analyser le trafic du site. Vous pouvez accepter ou refuser ces cookies à tout moment en modifiant les paramètres de votre navigateur.",
-                "Pour plus d'informations sur notre utilisation des cookies, veuillez consulter notre politique de confidentialité."
+                "Ce site dépose un unique cookie, strictement nécessaire à son fonctionnement : le cookie de session, qui maintient votre authentification une fois que vous êtes connecté. Aucun cookie publicitaire et aucun outil de mesure d'audience n'est utilisé.",
+                "Deux préférences d'affichage — le repli du menu latéral et la fermeture d'une bannière d'information — sont enregistrées dans le stockage local de votre navigateur, à la suite de votre propre action. Elles ne quittent jamais votre appareil et ne permettent aucun suivi.",
+                "Aucun traceur soumis à consentement n'étant utilisé, le site n'affiche pas de bandeau cookies. Le détail de ces traceurs figure dans la section « Cookies » de la politique de confidentialité."
             ]
         },
         {
@@ -88,7 +119,7 @@
             "title": "Responsable du traitement",
             "icon": "Feather",
             "paras": [
-                "Le responsable du traitement des données personnelles collectées via ce site est [Prénom Nom], éditeur du site à titre personnel en qualité de personne physique.",
+                "Le responsable du traitement des données personnelles collectées via ce site est son éditeur, personne physique agissant à titre non professionnel, dont l'identité a été communiquée à l'hébergeur dans les conditions prévues à l'article 6-III-2 de la L.C.E.N.",
                 "Il n'existe pas de délégué à la protection des données (DPO) désigné, cette désignation n'étant pas obligatoire au regard du volume et de la nature des traitements réalisés."
             ],
             "contact": "contact@nuitdencre.fr"
@@ -124,10 +155,22 @@
             "intro": "Vos données personnelles peuvent être transmises aux destinataires et sous-traitants suivants, dans la stricte mesure nécessaire à la fourniture du service :",
             "ficheLabel": "Sous-traitants",
             "fiche": [
-                { "k": "Hébergeur", "v": "Hébergement de l'application et de la base de données." },
-                { "k": "Cloudinary", "v": "Stockage des images (avatars, bannières de profil) — transfert hors Union européenne (États-Unis)." },
-                { "k": "Google", "v": "Authentification OAuth et récupération de métadonnées de livres — transfert hors Union européenne (États-Unis)." },
-                { "k": "Open Library", "v": "Recherche de métadonnées de livres — aucune donnée personnelle transmise." }
+                {
+                    "k": "Hébergeur",
+                    "v": "Hébergement de l'application et de la base de données."
+                },
+                {
+                    "k": "Cloudinary",
+                    "v": "Stockage des images (avatars, bannières de profil) — transfert hors Union européenne (États-Unis)."
+                },
+                {
+                    "k": "Google",
+                    "v": "Authentification OAuth et récupération de métadonnées de livres — transfert hors Union européenne (États-Unis)."
+                },
+                {
+                    "k": "Open Library",
+                    "v": "Recherche de métadonnées de livres — aucune donnée personnelle transmise."
+                }
             ],
             "paras": [
                 "Les transferts de données hors Union européenne réalisés par Cloudinary et Google sont encadrés par des garanties reconnues par le RGPD : adhésion au Data Privacy Framework UE-États-Unis et/ou clauses contractuelles types de la Commission européenne."
@@ -141,10 +184,22 @@
             "intro": "Vos données personnelles ne sont conservées que pour la durée strictement nécessaire aux finalités poursuivies :",
             "ficheLabel": "Durées de conservation",
             "fiche": [
-                { "k": "Compte actif", "v": "Conservé tant que le compte reste actif." },
-                { "k": "Compte inactif", "v": "Suppression ou anonymisation après 3 ans sans connexion." },
-                { "k": "Journal d'activité", "v": "13 mois glissants (les totaux d'expérience et de niveau restent conservés sur le compte)." },
-                { "k": "Journaux techniques", "v": "12 mois maximum." }
+                {
+                    "k": "Compte actif",
+                    "v": "Conservé tant que le compte reste actif."
+                },
+                {
+                    "k": "Compte inactif",
+                    "v": "Suppression ou anonymisation après 3 ans sans connexion."
+                },
+                {
+                    "k": "Journal d'activité",
+                    "v": "13 mois glissants (les totaux d'expérience et de niveau restent conservés sur le compte)."
+                },
+                {
+                    "k": "Journaux techniques",
+                    "v": "12 mois maximum."
+                }
             ]
         },
         {
@@ -155,9 +210,20 @@
             "intro": "Conformément aux articles 15 à 22 du Règlement (UE) 2016/679 (RGPD), vous disposez sur vos données personnelles d'un droit d'accès, de rectification, d'effacement, de portabilité, d'opposition et de limitation du traitement.",
             "ficheLabel": "Exercer vos droits",
             "fiche": [
-                { "k": "Espace profil", "v": "Rubriques « Mes données » (export) et « Supprimer mon compte » (effacement), accessibles directement depuis votre profil." },
-                { "k": "Email", "v": "contact@nuitdencre.fr", "email": true },
-                { "k": "Réclamation", "v": "www.cnil.fr", "link": "https://www.cnil.fr" }
+                {
+                    "k": "Espace profil",
+                    "v": "Rubriques « Mes données » (export) et « Supprimer mon compte » (effacement), accessibles directement depuis votre profil."
+                },
+                {
+                    "k": "Email",
+                    "v": "contact@nuitdencre.fr",
+                    "email": true
+                },
+                {
+                    "k": "Réclamation",
+                    "v": "www.cnil.fr",
+                    "link": "https://www.cnil.fr"
+                }
             ],
             "paras": [
                 "Le droit d'opposition peut notamment être exercé à l'encontre du traitement du journal d'activité lié à la gamification, fondé sur l'intérêt légitime de l'éditeur. Toute demande est traitée manuellement dans les meilleurs délais.",
@@ -170,9 +236,11 @@
             "title": "Cookies",
             "icon": "Cookie",
             "paras": [
-                "Ce site utilise un unique cookie, strictement nécessaire au fonctionnement du service : le cookie de session (token), qui permet de maintenir votre authentification. Il est de type httpOnly (inaccessible en JavaScript), signé, et ne peut être lu ou modifié que par le serveur.",
+                "Ce site utilise un unique cookie, strictement nécessaire au fonctionnement du service : le cookie de session (token), qui permet de maintenir votre authentification. Il est de type httpOnly (inaccessible en JavaScript), signé, restreint au site (SameSite strict), et ne peut être lu ou modifié que par le serveur. Sa durée de validité est d'une journée.",
                 "Ce cookie étant strictement nécessaire à la fourniture du service, il est exempté de consentement au titre de la réglementation applicable (article 82 de la loi Informatique et Libertés).",
-                "Aucun traceur publicitaire ni aucun outil de mesure d'audience (Google Analytics, Matomo ou équivalent) n'est utilisé sur ce site. En l'absence de cookies non essentiels, aucun bandeau de consentement n'est donc requis."
+                "Deux préférences d'affichage sont par ailleurs conservées dans le stockage local de votre navigateur : le repli du menu latéral et la fermeture d'une bannière d'information. Enregistrées à la suite d'une action de votre part, elles demeurent sur votre appareil, ne sont jamais transmises au serveur et relèvent de la même exemption.",
+                "Le script d'authentification de Google n'est chargé que sur les pages de connexion et d'inscription, où il rend possible le bouton « Continuer avec Google ». Il n'est présent sur aucune autre page. Les polices de caractères sont servies depuis ce site et non depuis un service tiers.",
+                "Aucun traceur publicitaire ni aucun outil de mesure d'audience (Google Analytics, Matomo ou équivalent) n'est utilisé sur ce site. En l'absence de traceur soumis à consentement, aucun bandeau n'est donc requis."
             ]
         }
     ]
