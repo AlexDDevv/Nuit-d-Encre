@@ -23,8 +23,9 @@ export default function LegalHeader({ lastUpdate }: { lastUpdate: string }) {
                 </div>
 
                 <p className="text-muted-foreground mt-5 max-w-md font-quote text-lg italic leading-relaxed">
-                    Informations juridiques relatives au site Nuit d'Encre - sa
-                    veillée, sa bibliothèque et ses lecteurs.
+                    Informations juridiques et politique de confidentialité du
+                    site Nuit d'Encre - sa veillée, sa bibliothèque et ses
+                    lecteurs.
                 </p>
 
                 <p className="text-muted-foreground/70 mt-6 font-mono text-xs uppercase tracking-[0.22em]">

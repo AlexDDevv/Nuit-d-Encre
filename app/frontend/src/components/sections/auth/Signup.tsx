@@ -208,14 +208,8 @@ export default function Signup() {
                                 to="/terms-of-use"
                                 className="text-primary underline"
                             >
-                                mentions légales
-                            </Link>{" "}
-                            et la{" "}
-                            <Link
-                                to="/confidentialite"
-                                className="text-primary underline"
-                            >
-                                politique de confidentialité
+                                mentions légales et la politique de
+                                confidentialité
                             </Link>
                             .
                         </span>

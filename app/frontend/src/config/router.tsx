@@ -290,22 +290,6 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: "confidentialite",
-                element: (
-                    <Suspense
-                        fallback={
-                            <NocturneLoader
-                                concept="chandelle"
-                                fullscreen
-                                label
-                            />
-                        }
-                    >
-                        <TermsOfUse />
-                    </Suspense>
-                ),
-            },
-            {
                 path: "about",
                 element: (
                     <Suspense

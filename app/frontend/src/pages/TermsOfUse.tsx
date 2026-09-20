@@ -51,13 +51,13 @@ export default function TermsOfUse() {
     return (
         <>
             <Helmet>
-                <title>Mentions Légales | Nuit d'Encre</title>
+                <title>Mentions légales et confidentialité | Nuit d'Encre</title>
                 <meta
                     name="description"
-                    content="Mentions légales et informations juridiques concernant Nuit d'Encre, application de bibliothèque en ligne."
+                    content="Mentions légales, politique de confidentialité et informations juridiques concernant Nuit d'Encre, application de bibliothèque en ligne."
                 />
                 <meta name="robots" content="index, follow" />
-                <link rel="canonical" href="/legal" />
+                <link rel="canonical" href="/terms-of-use" />
             </Helmet>
 
             <div className="mx-auto w-full max-w-6xl">

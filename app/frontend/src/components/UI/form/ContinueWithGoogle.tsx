@@ -28,7 +28,7 @@ export default function ContinueWithGoogle() {
             </Button>
             <p className="text-muted-foreground/70 mt-2 text-center text-xs">
                 En continuant avec Google, vous acceptez notre{" "}
-                <Link to="/confidentialite" className="underline">
+                <Link to="/terms-of-use" className="underline">
                     politique de confidentialité
                 </Link>
                 .
