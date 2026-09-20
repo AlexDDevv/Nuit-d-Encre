@@ -28,7 +28,7 @@ export default function ErrorScreen({
     }, [content.code, content.label]);
 
     return (
-        <main className="candle-vignette bg-background text-foreground flex min-h-screen flex-col items-center justify-center px-5 py-10 text-center">
+        <main className="candle-vignette bg-background text-foreground flex min-h-dvh flex-col items-center justify-center px-5 py-10 text-center">
             <div
                 ref={blockRef}
                 role="alert"

@@ -198,7 +198,7 @@ export default function SealedAccessCard({
     children,
 }: SealedAccessCardProps) {
     return (
-        <div className="flex w-full flex-1 items-center justify-center px-4">
+        <div className="flex w-full flex-1 items-center justify-center px-4 pb-8 md:pb-0">
             <section
                 role="dialog"
                 aria-modal="false"

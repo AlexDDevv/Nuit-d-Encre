@@ -72,7 +72,7 @@ export default function Admin() {
     };
 
     return (
-        <div className="min-h-screen">
+        <div className="min-h-dvh">
             <Helmet>
                 <title>Administration - Nuit d'Encre</title>
             </Helmet>
