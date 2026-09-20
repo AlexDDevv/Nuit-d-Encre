@@ -5,6 +5,12 @@ server {
     root /usr/share/nginx/html;
     index index.html;
 
+    # Redirections en chemin relatif. Le conteneur écoute en clair sur 8080
+    # derrière le proxy CapRover : laissé à lui-même, nginx reconstruirait un
+    # Location absolu avec ce schéma et ce port internes, injoignables depuis
+    # l'extérieur (http://nuitdencre.fr:8080/...).
+    absolute_redirect off;
+
     # API GraphQL — proxy même-origine vers le backend interne CapRover.
     # DNS Docker (127.0.0.11) + proxy_pass via variable => nginx re-résout
     # l'IP du backend à chaque requête. Le front survit ainsi aux redeploys
@@ -21,6 +27,13 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # L'ancienne URL de la politique de confidentialité rendait le même
+    # document que /terms-of-use ; la route a été supprimée du SPA. Redirection
+    # permanente pour ne pas casser les liens déjà publiés ou indexés.
+    location = /confidentialite {
+        return 301 /terms-of-use;
     }
 
     # SPA — fallback history sur index.html
