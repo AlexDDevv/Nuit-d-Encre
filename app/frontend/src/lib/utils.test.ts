@@ -176,15 +176,22 @@ describe("libellés d'accessibilité", () => {
         ).toContain("- Livre");
     });
 
-    // Comportement actuel, documenté tel quel : un auteur sans nom laisse un
-    // double espace dans le libellé lu par les lecteurs d'écran.
-    it("laisse un espace vide quand l'auteur n'a pas de nom", () => {
+    it("omet la mention « par » quand l'auteur n'a pas de nom", () => {
         expect(
             buildBookAriaLabel("Le Roman de Renart", {
                 firstname: "",
                 lastname: "",
             }),
-        ).toBe("Voir le livre Le Roman de Renart par  - Livre");
+        ).toBe("Voir le livre Le Roman de Renart - Livre");
+    });
+
+    it("n'insère pas d'espace en trop avec un auteur partiel", () => {
+        expect(
+            buildBookAriaLabel("Le Misanthrope", {
+                firstname: "",
+                lastname: "Molière",
+            }),
+        ).toBe("Voir le livre Le Misanthrope par Molière - Livre");
         expect(buildAuthorAriaLabel("", "Molière")).toBe(
             "Voir la fiche de l'auteur Molière",
         );

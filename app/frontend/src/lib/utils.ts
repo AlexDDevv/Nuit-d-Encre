@@ -43,9 +43,14 @@ export function buildBookAriaLabel(
     author: { firstname: string; lastname: string },
     category = "Livre",
 ) {
-    const authorName =
-        `${author.firstname || ""} ${author.lastname || ""}`.trim();
-    return `Voir le livre ${title} par ${authorName} - ${category}`;
+    const authorName = [author.firstname, author.lastname]
+        .filter(Boolean)
+        .join(" ")
+        .trim();
+    // Sans nom d'auteur, on n'annonce pas « par » : le lecteur d'écran lirait
+    // une formule tronquée.
+    const by = authorName ? ` par ${authorName}` : "";
+    return `Voir le livre ${title}${by} - ${category}`;
 }
 
 export function buildAuthorAriaLabel(firstname: string, lastname: string) {
