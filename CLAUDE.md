@@ -10,13 +10,19 @@ Plateforme sociale de bibliothèque en ligne (SPA + API GraphQL) permettant aux 
 docker compose up --build   # Démarre tous les services (frontend, backend, BDD)
 docker compose up           # Démarre sans rebuild
 docker compose down         # Arrête les services
+
+pnpm --filter backend test  # Tests d'un seul workspace depuis la racine
+pnpm --filter frontend test
 ```
+
+Avant de pousser, ce que la CI vérifiera : `pnpm lint` + `pnpm test` dans les deux workspaces, `pnpm build` (front) et `pnpm exec tsc --noEmit` (back).
 
 ### Frontend (`app/frontend/`)
 
 ```bash
 pnpm dev       # Dev server sur le port 5173
 pnpm build     # Build TypeScript + Vite
+pnpm test      # Suite Vitest
 pnpm lint      # ESLint (--max-warnings 0)
 pnpm preview   # Prévisualisation du build
 ```
@@ -96,11 +102,17 @@ Nuit-d-Encre/
 │   │       │   └── router.tsx            # React Router v7 avec lazy loading + guards
 │   │       ├── constants/
 │   │       │   └── bookStatus.ts         # Mapping statuts de lecture
-│   │       ├── types/
-│   │       │   └── types.ts              # Types TypeScript partagés frontend (~690 lignes)
-│   │       ├── lib/
-│   │       │   ├── utils.ts              # cn(), slugify(), hasIncompleteBookInfo(), hasIncompleteInfo(), getRatingClasses()
-│   │       │   └── filterMaps.ts         # Mappings format/langue/statut pour filtres
+│   │       ├── types/                    # Un fichier par domaine, re-exportés par types.ts
+│   │       │   ├── types.ts              # Barrel : export * de chaque domaine
+│   │       │   └── user.ts, book.ts, author.ts, admin.ts, banner.ts, feed.ts, ui.ts…
+│   │       ├── lib/                      # Logique pure (couverte par Vitest)
+│   │       │   ├── utils.ts              # cn(), slugify(), hasIncompleteBookInfo(), hasIncompleteInfo(), getRatingClasses(), aria labels
+│   │       │   ├── filterMaps.ts         # Mappings format/langue/statut/pays pour filtres
+│   │       │   ├── profileActivity.ts    # computeStats(), describeAction(), timeBucket(), formatRelativeDate()
+│   │       │   ├── password.ts           # Règles de robustesse (miroir de utils/password-policy.ts backend)
+│   │       │   ├── banner.ts             # Variantes de bannière + blankDraft() de l'éditeur admin
+│   │       │   ├── image.ts              # fileToDataUrl(), MAX_IMAGE_BYTES
+│   │       │   └── downloadJson.ts       # Téléchargement de l'export RGPD
 │   │       ├── styles/
 │   │       │   ├── index.css             # Imports Tailwind + CSS global
 │   │       │   ├── theme.css             # Variables CSS (design tokens)
@@ -121,16 +133,19 @@ Nuit-d-Encre/
 │           │   │   ├── category/         # Category
 │           │   │   ├── banner/           # SiteBanner
 │           │   │   └── gamification/     # Title
-│           │   └── filteredResults/      # Types TypeGraphQL pour pagination (BooksResult, etc.)
+│           │   ├── filteredResults/      # Types TypeGraphQL pour pagination (BooksResult, etc.)
+│           │   └── migrations/           # Migrations TypeORM (jouées au boot)
 │           ├── graphql/
-│           │   ├── resolvers/            # 16 resolvers TypeGraphQL
-│           │   │   ├── user/             # AuthResolver, UserBooksResolver, ProfileResolver, UserActionsResolver, FeedResolver, FollowResolver
-│           │   │   ├── book/             # BooksResolver, BookReviewsResolver, BookReviewVotesResolver, BookRecommendationsResolver, BookSearchResolver
+│           │   ├── resolvers/            # 19 resolvers TypeGraphQL
+│           │   │   ├── user/             # AuthResolver, UserBooksResolver, ProfileResolver, UserActionsResolver, FeedResolver, FollowResolver, PrivacyResolver (RGPD)
+│           │   │   ├── book/             # BooksResolver, BookReviewsResolver, BookReviewCommentsResolver, BookReviewVotesResolver, BookRecommendationsResolver, BookSearchResolver
 │           │   │   ├── author/           # AuthorsResolver
 │           │   │   ├── category/         # CategoryResolver
 │           │   │   ├── admin/            # AdminResolver (adminStats, recentActivity, listes/suppressions)
 │           │   │   ├── banner/           # SiteBannersResolver (CRUD admin + activeSiteBanner public)
+│           │   │   ├── stats/            # StatsResolver (compteurs publics du site)
 │           │   │   └── gamification/     # TitleResolver
+│           │   ├── dataloaders/          # DataLoaders par requête (compteurs, follows, titres)
 │           │   ├── inputs/               # Input types TypeGraphQL (create/, update/)
 │           │   └── queries/              # Types d'entrée pour les queries de recherche
 │           ├── services/                 # Logique métier
@@ -138,21 +153,31 @@ Nuit-d-Encre/
 │           │   ├── grind/
 │           │   │   ├── grant-xp-service.ts  # Attribution XP et calcul de niveau
 │           │   │   └── user-xp-service.ts   # Mapping XP → niveau
+│           │   ├── rgpd/
+│           │   │   ├── export-service.ts      # Portabilité : export JSON des données
+│           │   │   └── erasure-service.ts     # Effacement du compte (transaction)
 │           │   ├── cloudinary.service.ts # Upload images (avatar, bannière, couverture)
 │           │   └── books/
 │           │       ├── google-books.service.ts    # Intégration API Google Books
 │           │       └── open-library.service.ts    # Intégration API Open Library
 │           ├── middlewares/
 │           │   ├── auth-checker.ts       # AuthChecker TypeGraphQL (JWT via cookie)
+│           │   ├── rate-limiter.ts       # Fenêtre fixe en mémoire (login, register, googleAuth, importBook)
 │           │   └── error-handler.ts      # Classe AppError avec errorType et statusCode
 │           ├── utils/
 │           │   ├── author-factory.ts     # getOrCreateAuthorByFullName()
-│           │   ├── authorizations.ts     # Vérifications de permissions
+│           │   ├── authorizations.ts     # isOwnerOrAdmin()
+│           │   ├── banner-visibility.ts  # isBannerVisibleTo() (audience d'une bannière)
+│           │   ├── password-policy.ts    # Règles de mot de passe partagées inscription/changement
+│           │   ├── xp-keys.ts            # Clés de déduplication de l'XP (book, isbn13, author, helpfulVote)
 │           │   └── actionsXpMap.ts       # Table XP par action (BOOK_ADDED: 50, REVIEW_CREATED: 100, etc.)
+│           ├── test/
+│           │   └── factories.ts          # makeUser(), makeContext(), stubPersistence() pour les tests Jest
 │           └── scripts/
 │               ├── create-admin.ts       # Seeding de l'utilisateur admin
 │               └── seed-titles.ts        # Seeding des titres/badges de gamification
 │
+├── .github/workflows/ci.yml              # CI : lint, tests, build/typecheck sur test et master
 ├── docs/superpowers/
 │   ├── specs/                            # Design specs (sidebar, recherche hybride, bannière, admin, etc.)
 │   └── plans/                            # Plans d'implémentation
@@ -242,7 +267,7 @@ Nuit-d-Encre/
 - **Livres importés** : `isImported: true` signale un livre venant de Google Books / Open Library. `hasIncompleteBookInfo()` détecte les champs manquants (summary par défaut, pageCount = 0, catégorie "Autre", pas de couverture).
 - **`slugify()`** est utilisé pour générer les URLs des livres et auteurs depuis leur titre/nom — s'assurer que les slugs sont bien formés avant navigation.
 - **Package manager : pnpm uniquement** — workspace pnpm configuré dans `pnpm-workspace.yaml`.
-- **Tests** — ciblés sur le sensible uniquement (auth, autorisations, XP, RGPD), pas de couverture exhaustive. Backend : Jest (`pnpm --filter backend test`) — services (`auth-service`, `grind/*`, `rgpd/*`), `auth-checker`, `rate-limiter`, `utils/{authorizations,banner-visibility}` et resolvers de mutations (appel direct de la méthode avec `makeContext`/`makeUser`/`stubPersistence` de `src/test/factories.ts`, statiques TypeORM mockés via `jest.spyOn`, pas de BDD). Frontend : **Vitest** (`pnpm --filter frontend test`, environnement `node`) sur la logique pure — `lib/{profileActivity,filterMaps,utils,password,downloadJson}`, `sections/feed/feedTargetHref`, validation de formulaires. Pas de tests de composants ni de hooks : il faudrait jsdom + Testing Library pour peu de valeur (la logique des hooks de liste tient dans les mappings de `filterMaps`, déjà couverts). Les tests de dates figent l'horloge (`vi.setSystemTime`). Pour un simple contrôle de types côté backend, utiliser `pnpm --filter backend exec tsc --noEmit` (4 s) plutôt que `pnpm build`, qui compile vers `dist/` (`outDir` défini dans `tsconfig.json`).
+- **Tests** — ciblés sur le sensible uniquement (auth, autorisations, XP, RGPD), pas de couverture exhaustive. Backend : Jest (`pnpm --filter backend test`) — services (`auth-service`, `grind/*`, `rgpd/*`), `auth-checker`, `rate-limiter`, `utils/{authorizations,banner-visibility}` et resolvers de mutations (appel direct de la méthode avec `makeContext`/`makeUser`/`stubPersistence` de `src/test/factories.ts`, statiques TypeORM mockés via `jest.spyOn`, pas de BDD). Frontend : **Vitest** (`pnpm --filter frontend test`, environnement `node`) sur la logique pure — `lib/{profileActivity,filterMaps,utils,password,downloadJson}`, `sections/feed/feedTargetHref`, validation de formulaires. Pas de tests de composants ni de hooks : il faudrait jsdom + Testing Library pour peu de valeur (la logique des hooks de liste tient dans les mappings de `filterMaps`, déjà couverts). Les tests de dates figent l'horloge (`vi.setSystemTime`). Jest tourne avec `maxWorkers: "25%"` (`jest.config.js`) : ts-jest type-checke dans chaque worker et la valeur par défaut sature la mémoire (workers tués par SIGKILL). Pour un simple contrôle de types côté backend, utiliser `pnpm --filter backend exec tsc --noEmit` (4 s) plutôt que `pnpm build`, qui compile vers `dist/` (`outDir` défini dans `tsconfig.json`).
 - **Migrations TypeORM** : `datasource.ts` utilise `synchronize: false` + `migrationsRun: true` (hors prod). Les migrations sont dans `src/database/migrations/`. Le schéma initial est rejoué au boot après `docker compose down -v`. `logging: true` est actif en permanence.
 - **Identifiants UUID** : toutes les entités utilisent une PK UUID (`@PrimaryGeneratedColumn("uuid")`, `gen_random_uuid()` natif PostgreSQL 15). Le scalaire GraphQL `ID` sérialise en string ; les ids sont des `string` côté back et front. Les URLs sont `/<uuid>-<slug>` et l'id est extrait via `slug.slice(0, 36)` (un UUID contient des tirets).
 - **Admin & Profil implémentés et câblés** : `pages/Admin.tsx` (7 onglets — Dashboard, Utilisateurs, Livres, Auteurs, Catégories, Critiques, Bannières — + `AnalyticsBar`) et `pages/UserProfile.tsx` (hero éditable, stats, progression, favoris, activité) sont complets côté front ET backend. Backend : `AdminResolver` (`adminStats`, `recentActivity`, listes, suppressions), mutations de suppression réparties dans les resolvers de domaine (`deleteBook`/`deleteAuthor`/`updateCategory`/`deleteCategory`), `SiteBannersResolver` (CRUD + `activeSiteBanner`). Hooks front dans `hooks/admin/`. Les stats du profil sont calculées côté front via `lib/profileActivity` (`computeStats`) à partir des `UserActions`, pas via un FieldResolver.
