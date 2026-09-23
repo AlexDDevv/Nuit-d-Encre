@@ -32,7 +32,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 22
+                  node-version: 24
                   cache: pnpm
 
             - name: Install dependencies
@@ -42,11 +42,11 @@ jobs:
             - name: Lint
               run: pnpm lint
 
-            - name: Build
-              run: pnpm build
-
             - name: Test
               run: pnpm test
+
+            - name: Build
+              run: pnpm build
 
     backend:
         # Nom figé : voir le job frontend.
@@ -63,7 +63,7 @@ jobs:
 
             - uses: actions/setup-node@v4
               with:
-                  node-version: 22
+                  node-version: 24
                   cache: pnpm
 
             - name: Install dependencies
