@@ -102,7 +102,7 @@ Le projet est un **monorepo pnpm** en deux workspaces (`app/frontend`,
 ### Prérequis
 
 - **Docker** et **Docker Compose**
-- **pnpm** 10.33 (via `corepack enable pnpm`) et **Node 22+** si vous travaillez hors conteneur
+- **pnpm** 10.33 (via `corepack enable pnpm`) et **Node 24** si vous travaillez hors conteneur (version des images Docker et de la CI)
 - Un compte **Cloudinary** (upload d'images) et, en option, des identifiants **Google OAuth**
 
 ### Installation
@@ -187,7 +187,7 @@ pnpm deploy         # les deux, dans l'ordre
 pnpm dev            # serveur de dev Vite (port 5173)
 pnpm build          # tsc -b && vite build
 pnpm preview        # prévisualisation du build
-pnpm lint           # ESLint
+pnpm lint           # ESLint (--max-warnings 0)
 pnpm test           # Vitest
 ```
 
@@ -196,16 +196,18 @@ pnpm test           # Vitest
 ```bash
 pnpm start                # ts-node-dev avec hot reload
 pnpm start:prod           # exécute le serveur compilé
+pnpm build                # tsc → dist/
+pnpm lint                 # ESLint (--max-warnings 0)
 pnpm test                 # Jest
 pnpm migration:generate   # génère une migration TypeORM
 pnpm migration:run        # applique les migrations
 pnpm migration:revert     # annule la dernière migration
 ```
 
-> [!WARNING]
-> Le script `build` du backend n'a pas d'`outDir` : `tsc` émet les `.js`
-> directement dans `src/`. Pour un simple contrôle de types, utiliser
-> `pnpm --filter backend exec tsc --noEmit` — jamais `pnpm build`.
+> [!TIP]
+> Pour un simple contrôle de types côté backend, `pnpm --filter backend exec
+> tsc --noEmit` suffit et prend ~4 s, là où `pnpm build` compile l'ensemble
+> vers `dist/`.
 
 ## Architecture
 
@@ -340,6 +342,12 @@ niveau est dérivé du total, et les titres se débloquent par palier.
 Le bonus de critique détaillée s'applique au-delà de 200 caractères de texte.
 Chaque gain est tracé dans `UserActions` avec son horodatage.
 
+Une action ne rapporte qu'**une seule fois par cible** : chaque gain porte une
+clé stable (le livre, l'ISBN, l'auteur, ou le couple critique/votant) et une
+contrainte d'unicité en base l'empêche d'être crédité deux fois. Retirer puis
+remettre une recommandation ne rapporte donc rien de plus, alors que
+recommander un autre livre crédite normalement.
+
 ## Tests & CI
 
 ```bash
@@ -347,15 +355,34 @@ pnpm --filter frontend test    # Vitest
 pnpm --filter backend test     # Jest
 ```
 
-La CI GitHub Actions (`.github/workflows/ci.yml`) s'exécute sur `master`,
-`develop` et chaque pull request, en deux jobs parallèles :
+La CI GitHub Actions (`.github/workflows/ci.yml`) s'exécute sur les pushs vers
+`test` et `master`, ainsi que sur les pull requests visant ces branches, en deux
+jobs parallèles sous Node 24 (même version que les images Docker) :
 
-- **Frontend** — lint (ESLint), typecheck (`tsc -b`), tests (Vitest)
-- **Backend** — typecheck (`tsc --noEmit`), tests (Jest)
+- **Frontend** — lint (ESLint), tests (Vitest), build (`tsc -b` + Vite)
+- **Backend** — lint (ESLint), typecheck (`tsc --noEmit`), tests (Jest)
 
-Couverture actuelle : services de gamification, rate limiter, garde de
-migrations, services RGPD (export et effacement) côté backend ; helpers `lib/`
-côté frontend. Pas encore de tests de composants.
+Les étapes sont ordonnées de la moins coûteuse à la plus coûteuse pour échouer
+au plus tôt, le lint est strict (`--max-warnings 0` : un avertissement fait
+échouer la CI) et chaque job a un `timeout-minutes`. Pas de hooks git locaux
+(husky) : la CI fait foi. La branche `master` est protégée par un ruleset —
+force push et suppression interdits, les deux checks doivent être verts. Comme
+un check est attaché à un commit, le flux est : pousser sur `test`, attendre la
+CI verte, puis pousser le **même** commit sur `master`.
+
+Les tests visent le sensible plutôt que la couverture exhaustive.
+
+**Backend (Jest)** — authentification (connexion, session JWT, changement de mot
+de passe, OAuth Google), contrôle d'accès (`auth-checker`, propriétaire/admin),
+gamification (attribution d'XP et déduplication par cible), RGPD (export et
+effacement de compte), rate limiter, et les mutations sensibles des resolvers
+(bibliothèque, critiques, votes, recommandations, commentaires, favoris,
+abonnements). Les accès TypeORM sont simulés : pas de base de données requise.
+
+**Frontend (Vitest)** — logique pure uniquement : agrégation et libellés du
+journal d'activité, liens du fil, mappings de filtres envoyés à l'API, règles de
+robustesse des mots de passe (miroir du backend) et helpers `lib/`. Pas de tests
+de composants : il faudrait jsdom et Testing Library pour peu de valeur.
 
 ## Déploiement
 
@@ -365,7 +392,7 @@ interne — même origine, cookie `SameSite=Strict` préservé). Aucun secret da
 repo : les valeurs sensibles sont saisies dans le dashboard CapRover.
 
 ```bash
-pnpm deploy          # back puis front, depuis la branche develop
+pnpm deploy          # back puis front, depuis la branche test
 ```
 
 Procédure complète, matrice des variables dev/prod et installation du serveur :
