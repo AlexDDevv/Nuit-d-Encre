@@ -11,10 +11,17 @@ concurrency:
     group: ci-${{ github.ref }}
     cancel-in-progress: true
 
+# La CI ne fait que lire le dépôt.
+permissions:
+    contents: read
+
 jobs:
     frontend:
+        # Nom figé : c'est le check exigé par le ruleset de protection de
+        # master. Le renommer désactiverait silencieusement la règle.
         name: Frontend (lint, typecheck, test)
         runs-on: ubuntu-latest
+        timeout-minutes: 10
         defaults:
             run:
                 working-directory: app/frontend
@@ -35,15 +42,17 @@ jobs:
             - name: Lint
               run: pnpm lint
 
-            - name: Typecheck
-              run: pnpm exec tsc -b
+            - name: Build
+              run: pnpm build
 
             - name: Test
               run: pnpm test
 
     backend:
+        # Nom figé : voir le job frontend.
         name: Backend (lint, typecheck, test)
         runs-on: ubuntu-latest
+        timeout-minutes: 10
         defaults:
             run:
                 working-directory: app/backend
