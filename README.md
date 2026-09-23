@@ -91,11 +91,11 @@ Le projet est un **monorepo pnpm** en deux workspaces (`app/frontend`,
 
 ## Stack technique
 
-|              | Technologies                                                                                 |
-| ------------ | -------------------------------------------------------------------------------------------- |
+|              | Technologies                                                                                                                             |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | **Frontend** | React 19, Vite 5, TypeScript, React Router 7, Apollo Client, Tailwind CSS 4, CVA, Radix UI, React Hook Form, Motion, react-icons, Sonner |
-| **Backend**  | Apollo Server 4, TypeGraphQL, TypeORM, PostgreSQL 15, Argon2, JWT, class-validator, Cloudinary, DataLoader |
-| **Outils**   | pnpm workspace, Docker Compose, ESLint, Prettier, Vitest (front), Jest (back), GitHub Actions |
+| **Backend**  | Apollo Server 4, TypeGraphQL, TypeORM, PostgreSQL 15, Argon2, JWT, class-validator, Cloudinary, DataLoader                               |
+| **Outils**   | pnpm workspace, Docker Compose, ESLint, Prettier, Vitest (front), Jest (back), GitHub Actions                                            |
 
 ## Démarrage rapide
 
@@ -120,11 +120,11 @@ cp app/frontend/.env.sample app/frontend/.env
 docker compose up --build
 ```
 
-| Service     | URL                                              |
-| ----------- | ------------------------------------------------ |
-| Frontend    | http://localhost:5173                            |
-| API GraphQL | http://localhost:3310 (proxifiée sur `/api`)     |
-| PostgreSQL  | `localhost:5433`                                 |
+| Service     | URL                                          |
+| ----------- | -------------------------------------------- |
+| Frontend    | http://localhost:5173                        |
+| API GraphQL | http://localhost:3310 (proxifiée sur `/api`) |
+| PostgreSQL  | `localhost:5433`                             |
 
 Au premier démarrage, le backend applique les migrations TypeORM, crée
 l'utilisateur admin (variables `ADMIN_*`) et seed les titres de gamification.
@@ -147,23 +147,23 @@ pnpm --filter backend seed:db      # jeu de données complet
 
 ### Backend — `app/backend/.env`
 
-| Variable                                              | Rôle                                                     |
-| ----------------------------------------------------- | -------------------------------------------------------- |
-| `NODE_ENV`                                            | `development` ou `production`                            |
-| `APP_PORT`                                            | Port du serveur Apollo (3310)                            |
-| `DB_HOST` / `DB_PORT`                                 | Hôte et port PostgreSQL (`db` / `5432` dans Docker)      |
-| `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD` | Connexion PostgreSQL                                     |
-| `DB_MIGRATIONS_RUN`                                   | Auto-run des migrations au démarrage (défaut : `true`)   |
-| `JWT_SECRET`                                          | Clé de signature des tokens JWT                          |
-| `COOKIE_SECRET`                                       | Clé de signature des cookies                             |
-| `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_USERNAME` / `ADMIN_ROLE` | Admin créé au premier boot               |
-| `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | Uploads d'images (signés côté serveur) |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`           | OAuth Google (échange de code + audience)                |
+| Variable                                                                 | Rôle                                                   |
+| ------------------------------------------------------------------------ | ------------------------------------------------------ |
+| `NODE_ENV`                                                               | `development` ou `production`                          |
+| `APP_PORT`                                                               | Port du serveur Apollo (3310)                          |
+| `DB_HOST` / `DB_PORT`                                                    | Hôte et port PostgreSQL (`db` / `5432` dans Docker)    |
+| `POSTGRES_DB` / `POSTGRES_USER` / `POSTGRES_PASSWORD`                    | Connexion PostgreSQL                                   |
+| `DB_MIGRATIONS_RUN`                                                      | Auto-run des migrations au démarrage (défaut : `true`) |
+| `JWT_SECRET`                                                             | Clé de signature des tokens JWT                        |
+| `COOKIE_SECRET`                                                          | Clé de signature des cookies                           |
+| `ADMIN_EMAIL` / `ADMIN_PASSWORD` / `ADMIN_USERNAME` / `ADMIN_ROLE`       | Admin créé au premier boot                             |
+| `CLOUDINARY_CLOUD_NAME` / `CLOUDINARY_API_KEY` / `CLOUDINARY_API_SECRET` | Uploads d'images (signés côté serveur)                 |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`                              | OAuth Google (échange de code + audience)              |
 
 ### Frontend — `app/frontend/.env`
 
-| Variable                | Rôle                                                        |
-| ----------------------- | ----------------------------------------------------------- |
+| Variable                | Rôle                                                              |
+| ----------------------- | ----------------------------------------------------------------- |
 | `VITE_GOOGLE_CLIENT_ID` | Identifiant public du client OAuth Google (`GoogleOAuthProvider`) |
 
 L'endpoint GraphQL est relatif (`/api`) : résolu par le proxy Vite en
@@ -205,9 +205,9 @@ pnpm migration:revert     # annule la dernière migration
 ```
 
 > [!TIP]
-> Pour un simple contrôle de types côté backend, `pnpm --filter backend exec
-> tsc --noEmit` suffit et prend ~4 s, là où `pnpm build` compile l'ensemble
-> vers `dist/`.
+> Pour un simple contrôle de types côté backend,
+> `pnpm --filter backend exec tsc --noEmit` suffit et prend ~4 s, là où
+> `pnpm build` compile l'ensemble vers `dist/`.
 
 ## Architecture
 
@@ -289,13 +289,13 @@ extrait par `slug.slice(0, 36)`.
 
 13 entités TypeORM, exposées telles quelles au schéma GraphQL via TypeGraphQL :
 
-| Domaine          | Entités                                                                        |
-| ---------------- | ------------------------------------------------------------------------------ |
-| **Utilisateur**  | `User`, `UserBook` (bibliothèque), `UserActions` (journal XP), `UserFollow`     |
+| Domaine          | Entités                                                                           |
+| ---------------- | --------------------------------------------------------------------------------- |
+| **Utilisateur**  | `User`, `UserBook` (bibliothèque), `UserActions` (journal XP), `UserFollow`       |
 | **Livre**        | `Book`, `BookReview`, `BookReviewComment`, `BookReviewVote`, `BookRecommendation` |
-| **Référentiel**  | `Author`, `Category`                                                           |
-| **Site**         | `SiteBanner`                                                                   |
-| **Gamification** | `Title`                                                                        |
+| **Référentiel**  | `Author`, `Category`                                                              |
+| **Site**         | `SiteBanner`                                                                      |
+| **Gamification** | `Title`                                                                           |
 
 Contraintes notables : unicité `(user, book)` sur `BookReview` — une seule
 critique par utilisateur et par livre, garantie en base ; unicité du nom complet
@@ -309,12 +309,12 @@ après un `docker compose down -v`.
 
 18 resolvers TypeGraphQL, organisés par domaine :
 
-| Domaine          | Resolvers                                                                                       |
-| ---------------- | ----------------------------------------------------------------------------------------------- |
-| **Utilisateur**  | `Auth`, `UserBooks`, `Profile`, `UserActions`, `Feed`, `Follow`, `Privacy`                       |
-| **Livre**        | `Books`, `BookReviews`, `BookReviewComments`, `BookReviewVotes`, `BookRecommendations`, `BookSearch` |
-| **Référentiel**  | `Authors`, `Category`                                                                            |
-| **Transverse**   | `Admin`, `Stats`, `SiteBanners`, `Title`                                                          |
+| Domaine         | Resolvers                                                                                            |
+| --------------- | ---------------------------------------------------------------------------------------------------- |
+| **Utilisateur** | `Auth`, `UserBooks`, `Profile`, `UserActions`, `Feed`, `Follow`, `Privacy`                           |
+| **Livre**       | `Books`, `BookReviews`, `BookReviewComments`, `BookReviewVotes`, `BookRecommendations`, `BookSearch` |
+| **Référentiel** | `Authors`, `Category`                                                                                |
+| **Transverse**  | `Admin`, `Stats`, `SiteBanners`, `Title`                                                             |
 
 L'autorisation passe par le décorateur `@Authorized()` et le
 `customAuthChecker`, qui lit le cookie JWT à chaque requête. Le fichier
@@ -326,18 +326,18 @@ pas l'éditer à la main.
 Chaque action gratifiante crédite de l'XP (table `utils/actionsXpMap.ts`), le
 niveau est dérivé du total, et les titres se débloquent par palier.
 
-| Action                        | XP  |
-| ----------------------------- | --- |
-| Critique rédigée              | 100 |
-| Livre terminé                 | 70  |
+| Action                         | XP  |
+| ------------------------------ | --- |
+| Critique rédigée               | 100 |
+| Livre terminé                  | 70  |
 | Livre ajouté au catalogue      | 50  |
-| Livre recommandé              | 50  |
-| Fiche livre/auteur complétée  | 50  |
-| Bonus critique détaillée      | +50 |
-| Auteur ajouté                 | 30  |
+| Livre recommandé               | 50  |
+| Fiche livre/auteur complétée   | 50  |
+| Bonus critique détaillée       | +50 |
+| Auteur ajouté                  | 30  |
 | Livre ajouté à la bibliothèque | 30  |
-| Livre importé                 | 30  |
-| Vote « critique utile »       | 20  |
+| Livre importé                  | 30  |
+| Vote « critique utile »        | 20  |
 
 Le bonus de critique détaillée s'applique au-delà de 200 caractères de texte.
 Chaque gain est tracé dans `UserActions` avec son horodatage.
