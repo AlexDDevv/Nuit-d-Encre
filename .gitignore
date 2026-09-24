@@ -72,3 +72,5 @@ docs/*
 !docs/*.md
 # Le README de la racine est la vitrine du repo : toujours versionné.
 !/README.md
+# Contexte du projet (le « pourquoi »), public : toujours versionné.
+!/CONTEXT.md
