@@ -284,6 +284,7 @@ Nuit-d-Encre/
 - **Cloudinary unsigned** : les uploads d'images frontend utilisent un preset non signé (`VITE_CLOUDINARY_UPLOAD_PRESET`) — le backend utilise les clés API pour les opérations serveur.
 - **Contrainte unique** `(user, book)` sur `BookReview` — une seule critique par utilisateur par livre, géré par contrainte BDD.
 - **Prettier 4 espaces** : tabWidth: 4 avec `prettier-plugin-tailwindcss` pour le tri automatique des classes Tailwind.
+- **`CONTEXT.md` (public)** : source de référence sur le « pourquoi » du projet, lue par une IA qui rédige des posts. Le mettre à jour lors de toute décision importante (nouvelle fonctionnalité, changement de schéma ou migration, bug marquant) : décision, intention, alternative écartée, effet ou coût, avec le commit ou le fichier de référence. Ne jamais y inventer d'intention : la demander à l'utilisateur, ou décrire la décision sans intention. Style sobre, sans tiret cadratin. Ne rien y écrire de secret, de personnel ni sur la situation professionnelle de l'auteur.
 
 ## Environment Variables
 
