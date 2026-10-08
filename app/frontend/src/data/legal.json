@@ -70,19 +70,8 @@
             ]
         },
         {
-            "id": "collecte-donnees",
-            "num": "04",
-            "title": "Collecte des données personnelles",
-            "icon": "Shield",
-            "paras": [
-                "Les informations recueillies via nos formulaires sont enregistrées dans un fichier informatisé par l'éditeur du site afin de gérer votre compte et de vous fournir les fonctionnalités de la plateforme (gestion de vos lectures, critiques et recommandations).",
-                "Conformément au Règlement Général sur la Protection des Données (RGPD), vous pouvez exercer votre droit d'accès aux données vous concernant et les faire rectifier en contactant : contact@nuitdencre.fr.",
-                "Pour le détail des finalités, des bases légales et des durées de conservation, veuillez consulter notre politique de confidentialité."
-            ]
-        },
-        {
             "id": "responsabilite",
-            "num": "05",
+            "num": "04",
             "title": "Limitation de responsabilité",
             "icon": "Scale",
             "paras": [
@@ -92,7 +81,7 @@
         },
         {
             "id": "droit-applicable",
-            "num": "06",
+            "num": "05",
             "title": "Droit applicable et juridiction compétente",
             "icon": "Gavel",
             "paras": [
@@ -104,7 +93,7 @@
         },
         {
             "id": "responsable-traitement",
-            "num": "07",
+            "num": "06",
             "title": "Responsable du traitement",
             "icon": "Feather",
             "paras": [
@@ -115,7 +104,7 @@
         },
         {
             "id": "donnees-collectees",
-            "num": "08",
+            "num": "07",
             "title": "Données collectées",
             "icon": "Shield",
             "intro": "Dans le cadre du fonctionnement du service, les catégories de données personnelles suivantes sont collectées et traitées :",
@@ -127,7 +116,7 @@
         },
         {
             "id": "finalites-bases-legales",
-            "num": "09",
+            "num": "08",
             "title": "Finalités et bases légales",
             "icon": "Scale",
             "paras": [
@@ -138,7 +127,7 @@
         },
         {
             "id": "destinataires-sous-traitants",
-            "num": "10",
+            "num": "09",
             "title": "Destinataires et sous-traitants",
             "icon": "Server",
             "intro": "Vos données personnelles peuvent être transmises aux destinataires et sous-traitants suivants, dans la stricte mesure nécessaire à la fourniture du service :",
@@ -167,7 +156,7 @@
         },
         {
             "id": "durees-conservation",
-            "num": "11",
+            "num": "10",
             "title": "Durées de conservation",
             "icon": "Server",
             "intro": "Vos données personnelles ne sont conservées que pour la durée strictement nécessaire aux finalités poursuivies :",
@@ -193,7 +182,7 @@
         },
         {
             "id": "droits-personnes",
-            "num": "12",
+            "num": "11",
             "title": "Vos droits",
             "icon": "Gavel",
             "intro": "Conformément aux articles 15 à 22 du Règlement (UE) 2016/679 (RGPD), vous disposez sur vos données personnelles d'un droit d'accès, de rectification, d'effacement, de portabilité, d'opposition et de limitation du traitement.",
@@ -221,7 +210,7 @@
         },
         {
             "id": "cookies",
-            "num": "13",
+            "num": "12",
             "title": "Cookies",
             "icon": "Cookie",
             "paras": [
